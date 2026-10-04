@@ -1,0 +1,233 @@
+{
+  "schema_version": "2.0",
+  "world_id": "ash_observatory_core_zero",
+  "time": {"tick": 0, "sim_time": 0.0},
+  "rng": {},
+  "entities": [
+    {
+      "id": "room:airlock",
+      "archetype": "room",
+      "name": "起始气闸",
+      "tags": [],
+      "components": {
+        "room": {"description": "结霜的外门仍保持密封。带回零号核心后，从这里撤离。"},
+        "interaction": {"actions": ["mission.extract"]}
+      }
+    },
+    {
+      "id": "room:hall",
+      "archetype": "room",
+      "name": "中央走廊",
+      "tags": [],
+      "components": {"room": {"description": "应急灯把走廊切成一段段灰白色。各区的标牌仍然清晰。"}}
+    },
+    {
+      "id": "room:infirmary",
+      "archetype": "room",
+      "name": "医务室",
+      "tags": [],
+      "components": {"room": {"description": "倾倒的药柜旁，一名幸存工程师靠墙坐着。"}}
+    },
+    {
+      "id": "room:generator",
+      "archetype": "room",
+      "name": "发电机室",
+      "tags": [],
+      "components": {"room": {"description": "备用发电机沉默着，检修盖板已经松动。"}}
+    },
+    {
+      "id": "room:archive",
+      "archetype": "room",
+      "name": "档案室",
+      "tags": [],
+      "components": {
+        "room": {"description": "烧焦的档案柜围着一台离线终端。空气里有金属灰尘。"},
+        "interaction": {"actions": ["investigation.search"]}
+      }
+    },
+    {
+      "id": "room:vault_ante",
+      "archetype": "room",
+      "name": "零号金库前室",
+      "tags": [],
+      "components": {"room": {"description": "厚重的金库门封住北侧通道，机械键盘还亮着微光。"}}
+    },
+    {
+      "id": "room:vault",
+      "archetype": "room",
+      "name": "零号金库",
+      "tags": [],
+      "components": {"room": {"description": "隔热支架中央悬着一枚暗红色能源核心。"}}
+    },
+    {
+      "id": "actor:player",
+      "archetype": "investigator",
+      "name": "调查员",
+      "tags": [],
+      "components": {
+        "health": {"hp": 100, "max_hp": 100},
+        "combat": {"attack": 18},
+        "position": {"room": "room:airlock"},
+        "game": {"victory": false},
+        "public": {"description": "进入灰烬观测站执行回收任务的调查员。"},
+        "interaction": {"actions": ["medical.bandage_self"]}
+      }
+    },
+    {
+      "id": "npc:mira",
+      "archetype": "npc",
+      "name": "Mira",
+      "tags": [],
+      "components": {
+        "position": {"room": "room:infirmary"},
+        "public": {"condition": "injured", "role": "station engineer", "dialogue": "她警惕地看着你。", "description": "一名被困在研究站里的站点工程师。"},
+        "interaction": {"actions": ["social.talk", "medical.stabilize"]},
+        "secret": {"vault_code": "3142", "knows_terminal_trap": true}
+      }
+    },
+    {
+      "id": "machine:generator",
+      "archetype": "machine",
+      "name": "备用发电机",
+      "tags": [],
+      "components": {
+        "position": {"room": "room:generator"},
+        "power": {"online": false},
+        "repair": {"state": "broken"},
+        "public": {"description": "一台带有外露检修盖板的备用发电机。"},
+        "interaction": {"actions": ["machine.repair"]}
+      }
+    },
+    {
+      "id": "terminal:archive",
+      "archetype": "terminal",
+      "name": "档案终端",
+      "tags": [],
+      "components": {
+        "position": {"room": "room:archive"},
+        "power": {"online": false},
+        "security": {"locked": true, "channeling": false},
+        "public": {"description": "一台连接站内安保系统的档案终端。"},
+        "interaction": {"actions": ["security.hack"]}
+      }
+    },
+    {
+      "id": "trap:archive_wire",
+      "archetype": "trap",
+      "name": "细线触发器",
+      "tags": ["hidden"],
+      "components": {
+        "position": {"room": "room:archive"},
+        "trap": {"armed": true, "damage": 20},
+        "discovery": {"player": false},
+        "public": {"description": "一套藏在终端周围的细线触发装置。"},
+        "interaction": {"actions": ["trap.disable"]}
+      }
+    },
+    {
+      "id": "door:vault",
+      "archetype": "door",
+      "name": "零号金库门",
+      "tags": [],
+      "components": {
+        "position": {"room": "room:vault_ante"},
+        "door": {"locked": true, "destroyed": false},
+        "alarm": {"active": false},
+        "public": {"description": "封锁零号核心储藏室的加固金库门。"},
+        "interaction": {"actions": ["security.enter_code", "explosive.breach"]}
+      }
+    },
+    {
+      "id": "item:wrench",
+      "archetype": "item",
+      "name": "工程扳手",
+      "tags": [],
+      "components": {
+        "position": {"room": "inventory:actor:player"},
+        "item": {"kind": "tool"},
+        "public": {"description": "一把结实的工程扳手。\n可用于维修或拆解机械装置。"}
+      }
+    },
+    {
+      "id": "item:bandage",
+      "archetype": "item",
+      "name": "绷带",
+      "tags": [],
+      "components": {
+        "position": {"room": "inventory:actor:player"},
+        "item": {"kind": "medical"},
+        "public": {"description": "快速止血用品。\n适合处理自己的持续出血，但不足以稳定严重创伤。"}
+      }
+    },
+    {
+      "id": "item:breach_charge",
+      "archetype": "item",
+      "name": "爆破药",
+      "tags": [],
+      "components": {
+        "position": {"room": "inventory:actor:player"},
+        "item": {"kind": "explosive"},
+        "public": {"description": "用于破坏坚固结构的延时爆破药。\n安装后不会立即爆炸。"}
+      }
+    },
+    {
+      "id": "item:medkit",
+      "archetype": "item",
+      "name": "医疗箱",
+      "tags": ["available"],
+      "components": {
+        "position": {"room": "room:infirmary"},
+        "item": {"kind": "medical"},
+        "public": {"description": "完整医疗用品。\n可用于稳定严重伤势。"},
+        "interaction": {"actions": ["inventory.take"]}
+      }
+    },
+    {
+      "id": "artifact:core_zero",
+      "archetype": "artifact",
+      "name": "零号核心",
+      "tags": ["available"],
+      "components": {
+        "position": {"room": "room:vault"},
+        "artifact": {"class": "energy_core"},
+        "public": {"description": "一枚仍在缓慢放出暗红辉光的原型能源核心。"},
+        "interaction": {"actions": ["artifact.take"]}
+      }
+    },
+    {
+      "id": "fact:vault_code",
+      "archetype": "fact",
+      "name": "金库机械码",
+      "tags": ["hidden"],
+      "components": {
+        "fact": {"text": "零号金库的机械码是 3142。"},
+        "secret": {"code": "3142"}
+      }
+    },
+    {
+      "id": "fact:archive_warning",
+      "archetype": "fact",
+      "name": "档案室警告",
+      "tags": ["hidden"],
+      "components": {"fact": {"text": "档案终端周围安装过一套细线触发器。"}}
+    }
+  ],
+  "relations": [
+    {"id": "path:airlock:hall", "type": "connected_to", "source": "room:airlock", "target": "room:hall", "tags": [], "components": {"access": {"open": true}}},
+    {"id": "path:hall:airlock", "type": "connected_to", "source": "room:hall", "target": "room:airlock", "tags": [], "components": {"access": {"open": true}}},
+    {"id": "path:hall:infirmary", "type": "connected_to", "source": "room:hall", "target": "room:infirmary", "tags": [], "components": {"access": {"open": true}}},
+    {"id": "path:infirmary:hall", "type": "connected_to", "source": "room:infirmary", "target": "room:hall", "tags": [], "components": {"access": {"open": true}}},
+    {"id": "path:hall:generator", "type": "connected_to", "source": "room:hall", "target": "room:generator", "tags": [], "components": {"access": {"open": true}}},
+    {"id": "path:generator:hall", "type": "connected_to", "source": "room:generator", "target": "room:hall", "tags": [], "components": {"access": {"open": true}}},
+    {"id": "path:hall:archive", "type": "connected_to", "source": "room:hall", "target": "room:archive", "tags": [], "components": {"access": {"open": true}}},
+    {"id": "path:archive:hall", "type": "connected_to", "source": "room:archive", "target": "room:hall", "tags": [], "components": {"access": {"open": true}}},
+    {"id": "path:hall:vault_ante", "type": "connected_to", "source": "room:hall", "target": "room:vault_ante", "tags": [], "components": {"access": {"open": true}}},
+    {"id": "path:vault_ante:hall", "type": "connected_to", "source": "room:vault_ante", "target": "room:hall", "tags": [], "components": {"access": {"open": true}}},
+    {"id": "path:vault_ante:vault", "type": "connected_to", "source": "room:vault_ante", "target": "room:vault", "tags": [], "components": {"access": {"open": false}}},
+    {"id": "path:vault:vault_ante", "type": "connected_to", "source": "room:vault", "target": "room:vault_ante", "tags": [], "components": {"access": {"open": false}}},
+    {"id": "owned:wrench:player", "type": "owned_by", "source": "item:wrench", "target": "actor:player", "tags": [], "components": {}},
+    {"id": "owned:bandage:player", "type": "owned_by", "source": "item:bandage", "target": "actor:player", "tags": [], "components": {}},
+    {"id": "owned:breach_charge:player", "type": "owned_by", "source": "item:breach_charge", "target": "actor:player", "tags": [], "components": {}}
+  ],
+  "scheduled_events": []
+}

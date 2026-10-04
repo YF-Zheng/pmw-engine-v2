@@ -1,0 +1,16 @@
+{
+  "schema_version": "2.0",
+  "laws": [
+    {
+      "id": "mechanics.brittle_fracture",
+      "priority": 100,
+      "bindings": {"x": {"kind": "entity", "requires": ["material", "structural"]}},
+      "when": {"all": [{"event.type": {"eq": "impact"}}, {"event.target": {"eq": "$x.id"}}, {"ref": "$x.material.brittleness", "gt": 0.7}, {"ref": "$event.payload.force", "gt": "$x.structural.fracture_threshold"}]},
+      "effects": [
+        {"op": "add_tag", "target": "$x", "value": "fractured"},
+        {"op": "delta", "target": "$x.structural.integrity", "value": -0.5},
+        {"op": "emit_event", "event": {"type": "fracture", "source": "$x.id"}}
+      ]
+    }
+  ]
+}

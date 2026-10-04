@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "actions": [
+    {
+      "id": "social.talk",
+      "namespace": "social",
+      "label": "交谈",
+      "description": "与当前关注的角色交谈。",
+      "allowed_contexts": ["environment"],
+      "event_type": "talk",
+      "time_cost": 1
+    },
+    {
+      "id": "inventory.take",
+      "namespace": "inventory",
+      "label": "拾取",
+      "description": "取得当前关注的物品。",
+      "allowed_contexts": ["environment"],
+      "requires_target_tags": ["available"],
+      "target_state_reason": "这个物品目前无法拾取。",
+      "event_type": "take",
+      "time_cost": 1
+    },
+    {
+      "id": "artifact.take",
+      "namespace": "artifact",
+      "label": "取得核心",
+      "description": "从支架上取下当前关注的能源核心。",
+      "allowed_contexts": ["environment"],
+      "requires_target_tags": ["available"],
+      "target_state_reason": "核心已经不在支架上。",
+      "event_type": "take",
+      "time_cost": 1
+    },
+    {
+      "id": "medical.stabilize",
+      "namespace": "medical",
+      "label": "稳定伤势",
+      "description": "使用完整医疗用品处理目标的严重伤势。",
+      "allowed_contexts": ["environment"],
+      "requires_items": ["item:medkit"],
+      "requires_observed_target_paths": [
+        {"path": "public.condition", "op": "eq", "value": "injured", "reason": "目标目前不需要稳定伤势。"}
+      ],
+      "event_type": "use",
+      "event_payload": {"item": "item:medkit"},
+      "time_cost": 1
+    },
+    {
+      "id": "medical.bandage_self",
+      "namespace": "medical",
+      "label": "使用绷带止血",
+      "description": "使用绷带处理自己的持续出血。",
+      "allowed_contexts": ["self"],
+      "requires_items": ["item:bandage"],
+      "requires_observed_relation_types": [
+        {"type": "bleeding", "reason": "你目前没有流血。"}
+      ],
+      "self_action": true,
+      "event_type": "use",
+      "event_payload": {"item": "item:bandage"},
+      "time_cost": 1
+    },
+    {
+      "id": "machine.repair",
+      "namespace": "machine",
+      "label": "开始维修",
+      "description": "使用工程工具维修当前关注的设备。",
+      "allowed_contexts": ["environment"],
+      "requires_items": ["item:wrench"],
+      "requires_observed_target_paths": [
+        {"path": "repair.state", "op": "eq", "value": "broken", "reason": "设备当前不需要维修。"}
+      ],
+      "hide_if_observed_target_paths": [
+        {"path": "repair.state", "op": "eq", "value": "channeling"}
+      ],
+      "event_type": "repair",
+      "time_cost": 1
+    },
+    {
+      "id": "trap.disable",
+      "namespace": "trap",
+      "label": "拆除触发器",
+      "description": "使用工程工具解除当前关注的触发装置。",
+      "allowed_contexts": ["environment"],
+      "requires_items": ["item:wrench"],
+      "requires_observed_target_paths": [
+        {"path": "trap.armed", "op": "eq", "value": true, "reason": "触发器已经解除。"}
+      ],
+      "event_type": "disable",
+      "time_cost": 1
+    },
+    {
+      "id": "security.hack",
+      "namespace": "security",
+      "label": "破解终端",
+      "description": "开始破解当前关注的安保终端。",
+      "allowed_contexts": ["environment"],
+      "requires_observed_target_paths": [
+        {"path": "power.online", "op": "eq", "value": true, "reason": "终端未通电。"},
+        {"path": "security.locked", "op": "eq", "value": true, "reason": "终端已经解锁。"}
+      ],
+      "forbid_observed_target_paths": [
+        {"path": "security.channeling", "op": "eq", "value": true, "reason": "破解正在进行。"}
+      ],
+      "hide_if_observed_target_paths": [
+        {"path": "security.channeling", "op": "eq", "value": true}
+      ],
+      "event_type": "hack",
+      "time_cost": 1
+    },
+    {
+      "id": "security.enter_code",
+      "namespace": "security",
+      "label": "输入密码",
+      "description": "在当前关注的门禁键盘上输入四位密码。",
+      "allowed_contexts": ["environment"],
+      "requires_observed_target_paths": [
+        {"path": "door.locked", "op": "eq", "value": true, "reason": "金库门已经打开。"}
+      ],
+      "input_fields": [
+        {"name": "code", "prompt": "输入四位密码：", "type": "string", "pattern": "^[0-9]{4}$", "error": "请输入四位数字。"}
+      ],
+      "event_type": "enter_code",
+      "time_cost": 1
+    },
+    {
+      "id": "explosive.breach",
+      "namespace": "explosive",
+      "label": "安装爆破药",
+      "description": "把延时爆破药安装到当前关注的坚固结构上。",
+      "allowed_contexts": ["environment"],
+      "requires_items": ["item:breach_charge"],
+      "requires_observed_target_paths": [
+        {"path": "door.locked", "op": "eq", "value": true, "reason": "金库门已经打开。"}
+      ],
+      "event_type": "use",
+      "event_payload": {"item": "item:breach_charge"},
+      "time_cost": 1
+    },
+    {
+      "id": "combat.attack",
+      "namespace": "combat",
+      "label": "攻击",
+      "description": "攻击当前关注的敌对目标。",
+      "allowed_contexts": ["environment"],
+      "requires_observed_target_paths": [
+        {"path": "health.hp", "op": "gt", "value": 0, "reason": "目标已经失去行动能力。"}
+      ],
+      "event_type": "attack",
+      "time_cost": 1
+    },
+    {
+      "id": "investigation.search",
+      "namespace": "investigation",
+      "label": "仔细搜索",
+      "description": "花时间检查当前关注区域中不易察觉的细节。",
+      "allowed_contexts": ["environment"],
+      "hide_if_observed_entities": ["trap:archive_wire"],
+      "event_type": "search",
+      "time_cost": 2
+    },
+    {
+      "id": "mission.extract",
+      "namespace": "mission",
+      "label": "携带核心撤离",
+      "description": "通过气闸完成本次回收任务。",
+      "allowed_contexts": ["environment"],
+      "requires_items": ["artifact:core_zero"],
+      "event_type": "extract",
+      "time_cost": 1
+    }
+  ]
+}

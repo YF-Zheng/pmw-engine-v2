@@ -1,0 +1,143 @@
+{
+  "schema_version": "2.0",
+  "observation_rules": [
+    {
+      "id": "observe.self",
+      "bindings": {},
+      "when": {"all": []},
+      "subject": "$observer",
+      "reveal": {
+        "core": ["name"],
+        "tags": ["dead"],
+        "components": ["health.hp", "health.max_hp", "position.room", "game.victory", "public.description", "interaction.actions"]
+      }
+    },
+    {
+      "id": "observe.current_room",
+      "bindings": {"room": {"kind": "entity", "requires": ["room"]}},
+      "when": {"ref": "$room.id", "eq": "$observer.position.room"},
+      "subject": "$room",
+      "reveal": {
+        "core": ["archetype", "name"],
+        "components": ["room.description", "interaction.actions"]
+      }
+    },
+    {
+      "id": "observe.open_exits",
+      "bindings": {
+        "current": {"kind": "entity", "requires": ["room"]},
+        "destination": {"kind": "entity", "requires": ["room"]},
+        "path": {"kind": "relation", "type": "connected_to", "source": "$current", "target": "$destination", "requires": ["access"]}
+      },
+      "when": {"all": [
+        {"ref": "$current.id", "eq": "$observer.position.room"},
+        {"ref": "$path.access.open", "eq": true}
+      ]},
+      "subject": "$destination",
+      "reveal": {"core": ["archetype", "name"]}
+    },
+    {
+      "id": "observe.same_room_public_entity",
+      "bindings": {"subject": {"kind": "entity", "requires": ["position"]}},
+      "when": {"all": [
+        {"ref": "$subject.position.room", "eq": "$observer.position.room"},
+        {"ref": "$subject.id", "neq": "$observer.id"},
+        {"not": {"has_tag": ["$subject", "hidden"]}}
+      ]},
+      "subject": "$subject",
+      "reveal": {
+        "core": ["archetype", "name"],
+        "tags": ["available", "dead"],
+        "components": [
+          "public.condition",
+          "public.role",
+          "public.dialogue",
+          "public.description",
+          "power.online",
+          "repair.state",
+          "security.locked",
+          "security.channeling",
+          "door.locked",
+          "door.destroyed",
+          "alarm.active",
+          "health.hp",
+          "health.max_hp",
+          "item.kind",
+          "artifact.class",
+          "interaction.actions"
+        ]
+      }
+    },
+    {
+      "id": "observe.inventory",
+      "bindings": {
+        "item": {"kind": "entity"},
+        "ownership": {"kind": "relation", "type": "owned_by", "source": "$item", "target": "$observer"}
+      },
+      "when": {"all": []},
+      "subject": "$item",
+      "reveal": {
+        "core": ["archetype", "name"],
+        "tags": ["available"],
+        "components": ["item.kind", "artifact.class", "public.description", "interaction.actions"]
+      }
+    },
+    {
+      "id": "observe.known_facts",
+      "bindings": {
+        "fact": {"kind": "entity", "requires": ["fact"]},
+        "knowledge": {"kind": "relation", "type": "knows", "source": "$observer", "target": "$fact"}
+      },
+      "when": {"all": []},
+      "subject": "$fact",
+      "reveal": {
+        "core": ["archetype", "name"],
+        "components": ["fact.text"]
+      }
+    },
+    {
+      "id": "observe.inventory_relations",
+      "bindings": {
+        "item": {"kind": "entity"},
+        "ownership": {"kind": "relation", "type": "owned_by", "source": "$item", "target": "$observer"}
+      },
+      "when": {"all": []},
+      "subject": "$ownership",
+      "reveal": {"core": ["type", "source", "target"]}
+    },
+    {
+      "id": "observe.discovered_hidden_object",
+      "bindings": {
+        "subject": {"kind": "entity", "requires": ["position"]},
+        "discovery": {"kind": "relation", "type": "discovered", "source": "$observer", "target": "$subject"}
+      },
+      "when": {"ref": "$subject.position.room", "eq": "$observer.position.room"},
+      "subject": "$subject",
+      "reveal": {
+        "core": ["archetype", "name"],
+        "components": ["trap.armed", "public.description", "interaction.actions"]
+      }
+    },
+    {
+      "id": "observe.player_bleeding",
+      "bindings": {
+        "status": {"kind": "relation", "type": "bleeding", "source": "$observer", "target": "$observer"}
+      },
+      "when": {"all": []},
+      "subject": "$status",
+      "reveal": {"core": ["type"]}
+    },
+    {
+      "id": "observe.player_channel",
+      "bindings": {
+        "channel": {"kind": "relation", "type": "channeling", "source": "$observer", "requires": ["channel"]}
+      },
+      "when": {"all": []},
+      "subject": "$channel",
+      "reveal": {
+        "core": ["type"],
+        "components": ["channel.kind"]
+      }
+    }
+  ]
+}

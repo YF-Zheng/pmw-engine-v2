@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pmw.local/schemas/observation.schema.json",
+  "title": "PMW Engine v2 Observation Rules",
+  "type": "object",
+  "required": ["schema_version", "observation_rules"],
+  "properties": {
+    "schema_version": {"const": "2.0"},
+    "observation_rules": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/observationRule"}
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "bindingName": {
+      "type": "string",
+      "pattern": "^(?!observer$|event$)[A-Za-z_][A-Za-z0-9_]*$"
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "kind": {"enum": ["entity", "relation"]},
+        "type": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "pattern": "^\\$[A-Za-z_][A-Za-z0-9_]*$"},
+        "target": {"type": "string", "pattern": "^\\$[A-Za-z_][A-Za-z0-9_]*$"},
+        "requires": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "additionalProperties": false
+    },
+    "stringSet": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "componentPaths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[^.*]+(?:\\.[^.*]+)*$"
+      },
+      "uniqueItems": true
+    },
+    "observationRule": {
+      "type": "object",
+      "required": ["id", "subject", "reveal"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "bindings": {
+          "type": "object",
+          "propertyNames": {"$ref": "#/$defs/bindingName"},
+          "additionalProperties": {"$ref": "#/$defs/binding"}
+        },
+        "when": {"type": "object", "minProperties": 1},
+        "subject": {"type": "string", "pattern": "^\\$[A-Za-z_][A-Za-z0-9_]*$"},
+        "reveal": {
+          "type": "object",
+          "properties": {
+            "core": {"$ref": "#/$defs/stringSet"},
+            "tags": {"$ref": "#/$defs/stringSet"},
+            "components": {"$ref": "#/$defs/componentPaths"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,729 @@
+{
+  "schema_version": "2.0",
+  "laws": [
+    {
+      "id": "action.move.connected",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "from": {"kind": "entity", "requires": ["room"]},
+        "destination": {"kind": "entity", "requires": ["room"]},
+        "path": {"kind": "relation", "type": "connected_to", "source": "$from", "target": "$destination", "requires": ["access"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "move"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$destination.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$player.position.room", "eq": "$from.id"},
+        {"ref": "$path.access.open", "eq": true},
+        {"not": {"has_tag": ["$player", "dead"]}}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$player.position.room", "value": "$destination.id"}
+      ]
+    },
+    {
+      "id": "action.move.interrupt_repair",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "from": {"kind": "entity", "requires": ["room"]},
+        "destination": {"kind": "entity", "requires": ["room"]},
+        "path": {"kind": "relation", "type": "connected_to", "source": "$from", "target": "$destination", "requires": ["access"]},
+        "generator": {"kind": "entity", "requires": ["repair"]},
+        "channel": {"kind": "relation", "type": "channeling", "source": "$player", "target": "$generator", "requires": ["channel"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "move"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$destination.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$player.position.room", "eq": "$from.id"},
+        {"ref": "$path.access.open", "eq": true},
+        {"ref": "$generator.id", "eq": "machine:generator"},
+        {"ref": "$channel.channel.kind", "eq": "repair"}
+      ]},
+      "effects": [
+        {"op": "delete_relation", "target": "$channel"},
+        {"op": "cancel_scheduled", "value": "$channel.channel.completion_event_id"},
+        {"op": "set", "target": "$generator.repair.state", "value": "broken"}
+      ]
+    },
+    {
+      "id": "action.move.interrupt_hack",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "from": {"kind": "entity", "requires": ["room"]},
+        "destination": {"kind": "entity", "requires": ["room"]},
+        "path": {"kind": "relation", "type": "connected_to", "source": "$from", "target": "$destination", "requires": ["access"]},
+        "terminal": {"kind": "entity", "requires": ["security"]},
+        "channel": {"kind": "relation", "type": "channeling", "source": "$player", "target": "$terminal", "requires": ["channel"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "move"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$destination.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$player.position.room", "eq": "$from.id"},
+        {"ref": "$path.access.open", "eq": true},
+        {"ref": "$terminal.id", "eq": "terminal:archive"},
+        {"ref": "$channel.channel.kind", "eq": "hack"}
+      ]},
+      "effects": [
+        {"op": "delete_relation", "target": "$channel"},
+        {"op": "cancel_scheduled", "value": "$channel.channel.completion_event_id"},
+        {"op": "set", "target": "$terminal.security.channeling", "value": false}
+      ]
+    },
+    {
+      "id": "action.talk.mira_injured",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "mira": {"kind": "entity", "requires": ["position", "public"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "talk"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$mira.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$mira.id", "eq": "npc:mira"},
+        {"ref": "$player.position.room", "eq": "$mira.position.room"},
+        {"ref": "$mira.public.condition", "eq": "injured"}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$mira.public.dialogue", "value": "她虚弱地说：医药柜里也许还有能用的东西。"}
+      ]
+    },
+    {
+      "id": "action.talk.mira_stable",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "mira": {"kind": "entity", "requires": ["position", "public"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "talk"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$mira.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$mira.id", "eq": "npc:mira"},
+        {"ref": "$player.position.room", "eq": "$mira.position.room"},
+        {"ref": "$mira.public.condition", "neq": "injured"}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$mira.public.dialogue", "value": "她低声说：记住我告诉你的金库机械码。"}
+      ]
+    },
+    {
+      "id": "item.take.medkit",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "item": {"kind": "entity", "requires": ["position", "item"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "take"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$item.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$item.id", "eq": "item:medkit"},
+        {"ref": "$player.position.room", "eq": "$item.position.room"},
+        {"has_tag": ["$item", "available"]}
+      ]},
+      "effects": [
+        {"op": "remove_tag", "target": "$item", "value": "available"},
+        {"op": "set", "target": "$item.position.room", "value": "inventory:actor:player"},
+        {"op": "create_relation", "value": {"id": "owned:medkit:player", "type": "owned_by", "source": "item:medkit", "target": "actor:player", "tags": [], "components": {}}}
+      ]
+    },
+    {
+      "id": "item.use.medkit_on_mira",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "mira": {"kind": "entity", "requires": ["position", "public"]},
+        "medkit": {"kind": "entity", "requires": ["item"]},
+        "ownership": {"kind": "relation", "type": "owned_by", "source": "$medkit", "target": "$player"}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "use"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$mira.id"}},
+        {"ref": "$event.payload.item", "eq": "$medkit.id"},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$mira.id", "eq": "npc:mira"},
+        {"ref": "$medkit.id", "eq": "item:medkit"},
+        {"ref": "$player.position.room", "eq": "$mira.position.room"},
+        {"ref": "$mira.public.condition", "eq": "injured"}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$mira.public.condition", "value": "stable"},
+        {"op": "set", "target": "$mira.public.dialogue", "value": "她处理好伤口，把两条重要情报告诉了你。"},
+        {"op": "delete_relation", "target": "$ownership"},
+        {"op": "add_tag", "target": "$medkit", "value": "consumed"},
+        {"op": "set", "target": "$medkit.position.room", "value": "consumed"},
+        {"op": "create_relation", "value": {"id": "knows:player:vault_code", "type": "knows", "source": "actor:player", "target": "fact:vault_code", "tags": [], "components": {}}},
+        {"op": "create_relation", "value": {"id": "knows:player:archive_warning", "type": "knows", "source": "actor:player", "target": "fact:archive_warning", "tags": [], "components": {}}},
+        {"op": "emit_event", "event": {"type": "mira_followup", "time": {"add": ["$event.time", 2]}, "source": "$mira.id", "target": "$player.id"}}
+      ]
+    },
+    {
+      "id": "future.mira_followup",
+      "mode": "event",
+      "bindings": {"mira": {"kind": "entity", "requires": ["public"]}},
+      "when": {"all": [
+        {"event.type": {"eq": "mira_followup"}},
+        {"ref": "$mira.id", "eq": "npc:mira"}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$mira.public.dialogue", "value": "Mira 已经能自己站起来了。"}
+      ]
+    },
+    {
+      "id": "channel.repair.start",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "generator": {"kind": "entity", "requires": ["position", "power", "repair"]},
+        "wrench": {"kind": "entity", "requires": ["item"]},
+        "ownership": {"kind": "relation", "type": "owned_by", "source": "$wrench", "target": "$player"}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "repair"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$generator.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$generator.id", "eq": "machine:generator"},
+        {"ref": "$wrench.id", "eq": "item:wrench"},
+        {"ref": "$player.position.room", "eq": "$generator.position.room"},
+        {"ref": "$generator.repair.state", "eq": "broken"}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$generator.repair.state", "value": "channeling"},
+        {"op": "create_relation", "value": {"id": "channel:repair:generator", "type": "channeling", "source": "actor:player", "target": "machine:generator", "tags": [], "components": {"channel": {"kind": "repair", "completion_event_id": "complete:repair:generator"}}}},
+        {"op": "schedule_event", "event": {"id": "complete:repair:generator", "type": "complete_repair", "time": {"add": ["$event.time", 3]}, "source": "$player.id", "target": "$generator.id"}}
+      ]
+    },
+    {
+      "id": "channel.repair.reschedule",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "generator": {"kind": "entity", "requires": ["position", "repair"]},
+        "channel": {"kind": "relation", "type": "channeling", "source": "$player", "target": "$generator", "requires": ["channel"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "repair"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$generator.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$generator.id", "eq": "machine:generator"},
+        {"ref": "$player.position.room", "eq": "$generator.position.room"},
+        {"ref": "$generator.repair.state", "eq": "channeling"},
+        {"ref": "$channel.channel.kind", "eq": "repair"}
+      ]},
+      "effects": [
+        {"op": "reschedule_scheduled", "value": {"id": "$channel.channel.completion_event_id", "time": {"add": ["$event.time", 3]}}}
+      ]
+    },
+    {
+      "id": "channel.repair.complete",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity"},
+        "generator": {"kind": "entity", "requires": ["power", "repair"]},
+        "channel": {"kind": "relation", "type": "channeling", "source": "$player", "target": "$generator", "requires": ["channel"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "complete_repair"}},
+        {"event.id": {"eq": "$channel.channel.completion_event_id"}},
+        {"ref": "$generator.id", "eq": "machine:generator"},
+        {"ref": "$channel.channel.kind", "eq": "repair"}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$generator.power.online", "value": true},
+        {"op": "set", "target": "$generator.repair.state", "value": "online"},
+        {"op": "delete_relation", "target": "$channel"}
+      ]
+    },
+    {
+      "id": "closure.generator_powers_archive",
+      "mode": "state",
+      "bindings": {
+        "generator": {"kind": "entity", "requires": ["power"]},
+        "terminal": {"kind": "entity", "requires": ["power"]}
+      },
+      "when": {"all": [
+        {"ref": "$generator.id", "eq": "machine:generator"},
+        {"ref": "$terminal.id", "eq": "terminal:archive"},
+        {"ref": "$generator.power.online", "eq": true},
+        {"ref": "$terminal.power.online", "eq": false}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$terminal.power.online", "value": true}
+      ]
+    },
+    {
+      "id": "action.search.archive_trap",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "trap": {"kind": "entity", "requires": ["position", "trap", "discovery"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "search"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$trap.id", "eq": "trap:archive_wire"},
+        {"ref": "$player.position.room", "eq": "$trap.position.room"},
+        {"ref": "$trap.discovery.player", "eq": false}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$trap.discovery.player", "value": true},
+        {"op": "create_relation", "value": {"id": "discovered:player:archive_wire", "type": "discovered", "source": "actor:player", "target": "trap:archive_wire", "tags": [], "components": {}}}
+      ]
+    },
+    {
+      "id": "action.disable.archive_trap",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "trap": {"kind": "entity", "requires": ["position", "trap"]},
+        "wrench": {"kind": "entity", "requires": ["item"]},
+        "ownership": {"kind": "relation", "type": "owned_by", "source": "$wrench", "target": "$player"},
+        "discovery": {"kind": "relation", "type": "discovered", "source": "$player", "target": "$trap"}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "disable"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$trap.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$trap.id", "eq": "trap:archive_wire"},
+        {"ref": "$wrench.id", "eq": "item:wrench"},
+        {"ref": "$player.position.room", "eq": "$trap.position.room"},
+        {"ref": "$trap.trap.armed", "eq": true}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$trap.trap.armed", "value": false}
+      ]
+    },
+    {
+      "id": "channel.hack.start",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "terminal": {"kind": "entity", "requires": ["position", "power", "security"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "hack"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$terminal.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$terminal.id", "eq": "terminal:archive"},
+        {"ref": "$player.position.room", "eq": "$terminal.position.room"},
+        {"ref": "$terminal.power.online", "eq": true},
+        {"ref": "$terminal.security.locked", "eq": true},
+        {"ref": "$terminal.security.channeling", "eq": false}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$terminal.security.channeling", "value": true},
+        {"op": "create_relation", "value": {"id": "channel:hack:archive", "type": "channeling", "source": "actor:player", "target": "terminal:archive", "tags": [], "components": {"channel": {"kind": "hack", "completion_event_id": "complete:hack:archive"}}}},
+        {"op": "schedule_event", "event": {"id": "complete:hack:archive", "type": "complete_hack", "time": {"add": ["$event.time", 5]}, "source": "$player.id", "target": "$terminal.id"}}
+      ]
+    },
+    {
+      "id": "channel.hack.reschedule",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "terminal": {"kind": "entity", "requires": ["position", "security"]},
+        "channel": {"kind": "relation", "type": "channeling", "source": "$player", "target": "$terminal", "requires": ["channel"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "hack"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$terminal.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$terminal.id", "eq": "terminal:archive"},
+        {"ref": "$player.position.room", "eq": "$terminal.position.room"},
+        {"ref": "$terminal.security.channeling", "eq": true},
+        {"ref": "$channel.channel.kind", "eq": "hack"}
+      ]},
+      "effects": [
+        {"op": "reschedule_scheduled", "value": {"id": "$channel.channel.completion_event_id", "time": {"add": ["$event.time", 5]}}}
+      ]
+    },
+    {
+      "id": "trap.archive.trigger_on_hack",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position", "health"]},
+        "terminal": {"kind": "entity", "requires": ["position", "power", "security"]},
+        "trap": {"kind": "entity", "requires": ["position", "trap"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "hack"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$terminal.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$terminal.id", "eq": "terminal:archive"},
+        {"ref": "$trap.id", "eq": "trap:archive_wire"},
+        {"ref": "$player.position.room", "eq": "$terminal.position.room"},
+        {"ref": "$player.position.room", "eq": "$trap.position.room"},
+        {"ref": "$terminal.power.online", "eq": true},
+        {"ref": "$terminal.security.locked", "eq": true},
+        {"ref": "$terminal.security.channeling", "eq": false},
+        {"ref": "$trap.trap.armed", "eq": true}
+      ]},
+      "effects": [
+        {"op": "delta", "target": "$player.health.hp", "value": {"mul": [-1, "$trap.trap.damage"]}},
+        {"op": "set", "target": "$trap.trap.armed", "value": false},
+        {"op": "create_relation", "value": {"id": "status:bleeding:player", "type": "bleeding", "source": "actor:player", "target": "actor:player", "tags": [], "components": {"status": {"pulse_event_id": "pulse:bleeding:player", "expiry_event_id": "expire:bleeding:player", "damage": 4}}}},
+        {"op": "schedule_event", "event": {"id": "pulse:bleeding:player", "type": "bleeding_pulse", "time": {"add": ["$event.time", 2]}, "source": "$player.id", "target": "$player.id"}},
+        {"op": "schedule_event", "event": {"id": "expire:bleeding:player", "type": "bleeding_expire", "time": {"add": ["$event.time", 8]}, "source": "$player.id", "target": "$player.id"}}
+      ]
+    },
+    {
+      "id": "trap.archive.discover_on_trigger",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "terminal": {"kind": "entity", "requires": ["position", "power", "security"]},
+        "trap": {"kind": "entity", "requires": ["position", "trap", "discovery"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "hack"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$terminal.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$terminal.id", "eq": "terminal:archive"},
+        {"ref": "$trap.id", "eq": "trap:archive_wire"},
+        {"ref": "$player.position.room", "eq": "$terminal.position.room"},
+        {"ref": "$player.position.room", "eq": "$trap.position.room"},
+        {"ref": "$terminal.power.online", "eq": true},
+        {"ref": "$terminal.security.locked", "eq": true},
+        {"ref": "$terminal.security.channeling", "eq": false},
+        {"ref": "$trap.trap.armed", "eq": true},
+        {"ref": "$trap.discovery.player", "eq": false}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$trap.discovery.player", "value": true},
+        {"op": "create_relation", "value": {"id": "discovered:player:archive_wire", "type": "discovered", "source": "actor:player", "target": "trap:archive_wire", "tags": [], "components": {}}}
+      ]
+    },
+    {
+      "id": "channel.hack.complete",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity"},
+        "terminal": {"kind": "entity", "requires": ["security"]},
+        "door": {"kind": "entity", "requires": ["door"]},
+        "channel": {"kind": "relation", "type": "channeling", "source": "$player", "target": "$terminal", "requires": ["channel"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "complete_hack"}},
+        {"event.id": {"eq": "$channel.channel.completion_event_id"}},
+        {"ref": "$terminal.id", "eq": "terminal:archive"},
+        {"ref": "$door.id", "eq": "door:vault"},
+        {"ref": "$channel.channel.kind", "eq": "hack"}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$terminal.security.locked", "value": false},
+        {"op": "set", "target": "$terminal.security.channeling", "value": false},
+        {"op": "set", "target": "$door.door.locked", "value": false},
+        {"op": "delete_relation", "target": "$channel"}
+      ]
+    },
+    {
+      "id": "door.enter_code.correct",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "door": {"kind": "entity", "requires": ["position", "door"]},
+        "code_fact": {"kind": "entity", "requires": ["secret"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "enter_code"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$door.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$door.id", "eq": "door:vault"},
+        {"ref": "$code_fact.id", "eq": "fact:vault_code"},
+        {"ref": "$player.position.room", "eq": "$door.position.room"},
+        {"ref": "$door.door.locked", "eq": true},
+        {"ref": "$event.payload.code", "eq": "$code_fact.secret.code"}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$door.door.locked", "value": false}
+      ]
+    },
+    {
+      "id": "door.breach.attach",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "door": {"kind": "entity", "requires": ["position", "door"]},
+        "charge_item": {"kind": "entity", "requires": ["item", "position"]},
+        "ownership": {"kind": "relation", "type": "owned_by", "source": "$charge_item", "target": "$player"}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "use"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$door.id"}},
+        {"ref": "$event.payload.item", "eq": "$charge_item.id"},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$door.id", "eq": "door:vault"},
+        {"ref": "$charge_item.id", "eq": "item:breach_charge"},
+        {"ref": "$player.position.room", "eq": "$door.position.room"},
+        {"ref": "$door.door.locked", "eq": true}
+      ]},
+      "effects": [
+        {"op": "delete_relation", "target": "$ownership"},
+        {"op": "add_tag", "target": "$charge_item", "value": "consumed"},
+        {"op": "set", "target": "$charge_item.position.room", "value": "deployed"},
+        {"op": "create_relation", "value": {"id": "charge:attached:vault", "type": "attached_charge", "source": "item:breach_charge", "target": "door:vault", "tags": [], "components": {"charge": {"detonation_event_id": "detonate:vault"}}}},
+        {"op": "schedule_event", "event": {"id": "detonate:vault", "type": "detonate_vault", "time": {"add": ["$event.time", 2]}, "source": "$player.id", "target": "$door.id"}}
+      ]
+    },
+    {
+      "id": "door.breach.detonate",
+      "mode": "event",
+      "bindings": {
+        "charge_item": {"kind": "entity"},
+        "door": {"kind": "entity", "requires": ["door", "alarm"]},
+        "charge": {"kind": "relation", "type": "attached_charge", "source": "$charge_item", "target": "$door", "requires": ["charge"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "detonate_vault"}},
+        {"event.id": {"eq": "$charge.charge.detonation_event_id"}},
+        {"ref": "$door.id", "eq": "door:vault"}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$door.door.locked", "value": false},
+        {"op": "set", "target": "$door.door.destroyed", "value": true},
+        {"op": "set", "target": "$door.alarm.active", "value": true},
+        {"op": "delete_relation", "target": "$charge"},
+        {"op": "schedule_event", "event": {"id": "spawn:security_drone", "type": "spawn_security_drone", "time": {"add": ["$event.time", 3]}, "source": "door:vault", "target": "room:vault_ante"}}
+      ]
+    },
+    {
+      "id": "enemy.security_drone.spawn",
+      "mode": "event",
+      "bindings": {},
+      "when": {"all": [
+        {"event.type": {"eq": "spawn_security_drone"}},
+        {"event.id": {"eq": "spawn:security_drone"}}
+      ]},
+      "effects": [
+        {"op": "create_entity", "value": {"id": "enemy:security_drone", "archetype": "enemy", "name": "安保无人机", "tags": [], "components": {"health": {"hp": 45, "max_hp": 45}, "combat": {"attack": 10}, "position": {"room": "room:vault_ante"}, "public": {"description": "一台由站内警报唤醒的轻型安保无人机。"}, "interaction": {"actions": ["combat.attack"]}}}},
+        {"op": "schedule_event", "event": {"id": "attack:security_drone", "type": "drone_attack", "time": {"add": ["$event.time", 2]}, "source": "enemy:security_drone", "target": "actor:player"}}
+      ]
+    },
+    {
+      "id": "enemy.security_drone.attack_damage",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position", "health"]},
+        "drone": {"kind": "entity", "requires": ["position", "health", "combat"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "drone_attack"}},
+        {"event.source": {"eq": "$drone.id"}},
+        {"event.target": {"eq": "$player.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$drone.id", "eq": "enemy:security_drone"},
+        {"ref": "$drone.health.hp", "gt": 0},
+        {"ref": "$player.position.room", "eq": "$drone.position.room"}
+      ]},
+      "effects": [
+        {"op": "delta", "target": "$player.health.hp", "value": {"mul": [-1, "$drone.combat.attack"]}}
+      ]
+    },
+    {
+      "id": "enemy.security_drone.attack_repeat",
+      "mode": "event",
+      "bindings": {"drone": {"kind": "entity", "requires": ["health"]}},
+      "when": {"all": [
+        {"event.type": {"eq": "drone_attack"}},
+        {"event.source": {"eq": "$drone.id"}},
+        {"ref": "$drone.id", "eq": "enemy:security_drone"},
+        {"ref": "$drone.health.hp", "gt": 0}
+      ]},
+      "effects": [
+        {"op": "schedule_event", "event": {"id": "attack:security_drone", "type": "drone_attack", "time": {"add": ["$event.time", 2]}, "source": "$drone.id", "target": "actor:player"}}
+      ]
+    },
+    {
+      "id": "combat.player_attack_drone",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position", "health", "combat"]},
+        "drone": {"kind": "entity", "requires": ["position", "health"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "attack"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$drone.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$drone.id", "eq": "enemy:security_drone"},
+        {"ref": "$player.position.room", "eq": "$drone.position.room"},
+        {"ref": "$drone.health.hp", "gt": 0},
+        {"not": {"has_tag": ["$player", "dead"]}}
+      ]},
+      "effects": [
+        {"op": "delta", "target": "$drone.health.hp", "value": {"mul": [-1, "$player.combat.attack"]}}
+      ]
+    },
+    {
+      "id": "status.bleeding.pulse",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["health"]},
+        "bleeding": {"kind": "relation", "type": "bleeding", "source": "$player", "target": "$player", "requires": ["status"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "bleeding_pulse"}},
+        {"event.id": {"eq": "$bleeding.status.pulse_event_id"}},
+        {"ref": "$player.id", "eq": "actor:player"}
+      ]},
+      "effects": [
+        {"op": "delta", "target": "$player.health.hp", "value": {"mul": [-1, "$bleeding.status.damage"]}},
+        {"op": "schedule_event", "event": {"id": "$bleeding.status.pulse_event_id", "type": "bleeding_pulse", "time": {"add": ["$event.time", 2]}, "source": "$player.id", "target": "$player.id"}}
+      ]
+    },
+    {
+      "id": "status.bleeding.expire",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity"},
+        "bleeding": {"kind": "relation", "type": "bleeding", "source": "$player", "target": "$player", "requires": ["status"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "bleeding_expire"}},
+        {"event.id": {"eq": "$bleeding.status.expiry_event_id"}},
+        {"ref": "$player.id", "eq": "actor:player"}
+      ]},
+      "effects": [
+        {"op": "delete_relation", "target": "$bleeding"},
+        {"op": "cancel_scheduled", "value": "$bleeding.status.pulse_event_id"}
+      ]
+    },
+    {
+      "id": "item.use.bandage",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "bandage": {"kind": "entity", "requires": ["item", "position"]},
+        "ownership": {"kind": "relation", "type": "owned_by", "source": "$bandage", "target": "$player"},
+        "bleeding": {"kind": "relation", "type": "bleeding", "source": "$player", "target": "$player", "requires": ["status"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "use"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$player.id"}},
+        {"ref": "$event.payload.item", "eq": "$bandage.id"},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$bandage.id", "eq": "item:bandage"}
+      ]},
+      "effects": [
+        {"op": "delete_relation", "target": "$bleeding"},
+        {"op": "cancel_scheduled", "value": "$bleeding.status.pulse_event_id"},
+        {"op": "cancel_scheduled", "value": "$bleeding.status.expiry_event_id"},
+        {"op": "delete_relation", "target": "$ownership"},
+        {"op": "add_tag", "target": "$bandage", "value": "consumed"},
+        {"op": "set", "target": "$bandage.position.room", "value": "consumed"}
+      ]
+    },
+    {
+      "id": "item.take.core_zero",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position"]},
+        "core": {"kind": "entity", "requires": ["position", "artifact"]}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "take"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"event.target": {"eq": "$core.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$core.id", "eq": "artifact:core_zero"},
+        {"ref": "$player.position.room", "eq": "$core.position.room"},
+        {"has_tag": ["$core", "available"]}
+      ]},
+      "effects": [
+        {"op": "remove_tag", "target": "$core", "value": "available"},
+        {"op": "set", "target": "$core.position.room", "value": "inventory:actor:player"},
+        {"op": "create_relation", "value": {"id": "owned:core_zero:player", "type": "owned_by", "source": "artifact:core_zero", "target": "actor:player", "tags": [], "components": {}}}
+      ]
+    },
+    {
+      "id": "game.extract_with_core",
+      "mode": "event",
+      "bindings": {
+        "player": {"kind": "entity", "requires": ["position", "game"]},
+        "core": {"kind": "entity", "requires": ["artifact"]},
+        "ownership": {"kind": "relation", "type": "owned_by", "source": "$core", "target": "$player"}
+      },
+      "when": {"all": [
+        {"event.type": {"eq": "extract"}},
+        {"event.source": {"eq": "$player.id"}},
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$core.id", "eq": "artifact:core_zero"},
+        {"ref": "$player.position.room", "eq": "room:airlock"},
+        {"ref": "$player.game.victory", "eq": false}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$player.game.victory", "value": true}
+      ]
+    },
+    {
+      "id": "closure.unlock_vault_paths",
+      "mode": "state",
+      "bindings": {
+        "door": {"kind": "entity", "requires": ["door"]},
+        "forward": {"kind": "relation", "type": "connected_to", "requires": ["access"]},
+        "reverse": {"kind": "relation", "type": "connected_to", "requires": ["access"]}
+      },
+      "when": {"all": [
+        {"ref": "$door.id", "eq": "door:vault"},
+        {"ref": "$door.door.locked", "eq": false},
+        {"ref": "$forward.id", "eq": "path:vault_ante:vault"},
+        {"ref": "$reverse.id", "eq": "path:vault:vault_ante"},
+        {"ref": "$forward.access.open", "eq": false}
+      ]},
+      "effects": [
+        {"op": "set", "target": "$forward.access.open", "value": true},
+        {"op": "set", "target": "$reverse.access.open", "value": true}
+      ]
+    },
+    {
+      "id": "closure.drone_dead",
+      "mode": "state",
+      "bindings": {"drone": {"kind": "entity", "requires": ["health"]}},
+      "when": {"all": [
+        {"ref": "$drone.id", "eq": "enemy:security_drone"},
+        {"ref": "$drone.health.hp", "lte": 0},
+        {"not": {"has_tag": ["$drone", "dead"]}}
+      ]},
+      "effects": [
+        {"op": "add_tag", "target": "$drone", "value": "dead"}
+      ]
+    },
+    {
+      "id": "closure.player_dead",
+      "mode": "state",
+      "bindings": {"player": {"kind": "entity", "requires": ["health"]}},
+      "when": {"all": [
+        {"ref": "$player.id", "eq": "actor:player"},
+        {"ref": "$player.health.hp", "lte": 0},
+        {"not": {"has_tag": ["$player", "dead"]}}
+      ]},
+      "effects": [
+        {"op": "add_tag", "target": "$player", "value": "dead"}
+      ]
+    }
+  ]
+}

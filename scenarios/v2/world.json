@@ -1,0 +1,11 @@
+{
+  "schema_version": "2.0",
+  "world_id": "materials_demo",
+  "time": {"tick": 0, "sim_time": 0.0},
+  "rng": {"seed": 404},
+  "entities": [
+    {"id": "crystal_017", "archetype": "test_specimen", "tags": ["solid"], "components": {"structural": {"integrity": 1.0, "fracture_threshold": 30.0}, "material": {"brittleness": 0.82}}}
+  ],
+  "relations": [],
+  "scheduled_events": []
+}
