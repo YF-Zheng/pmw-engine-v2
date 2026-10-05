@@ -1,17 +1,21 @@
-# Generative Mechanics Lab: paper protocol v0.2
+# Generative Mechanics Lab: Protocol v0.2-Controlled
 
-This isolated research lab runs on the frozen PMW engine. Protocol v0.2 fixes
-the pre-pilot experimental contract; checked-in deterministic fixtures validate
-infrastructure and are not LLM findings.
+This isolated research lab runs on the frozen PMW engine. Protocol
+v0.2-Controlled fixes the controlled-invention pre-pilot contract; checked-in
+deterministic fixtures validate infrastructure and are not LLM findings.
 
 ## Frozen study design
 
 - Generation uses three controls: `isolated_direct_effect`, `world_substrate`,
   and expression-budget-matched `matched_direct_outcome`.
 - Every provider request has a coordinate-derived sample ID, seed, nonce, and
-  canonical prompt hash. Repeated samples within a cell are distinct requests.
+  canonical prompt hash. The Controlled envelope also carries the master seed
+  and sample index, and ingestion re-derives all three identity values.
+  Repeated samples within a cell are distinct requests.
 - Prompts disclose normalized public-channel semantics, compact generic-law
-  summaries, and six scored calibration examples. Evaluation environment state
+  summaries, and six scored calibration examples for the requested baseline:
+  two each for Low, Mid, and High. The frozen artifact therefore contains 18
+  examples across three schema-matched baselines. Evaluation environment state
   and the Oracle distribution are never disclosed.
 - The eight substrate fields are bounded to `[0, 1]` by traced PMW laws and
   undergo explicit step-driven dissipation.
@@ -20,8 +24,9 @@ infrastructure and are not LLM findings.
   change for a scenario backpack of 10 skills after adding one candidate, with
   active count and slot cost both capped at 6.
 - Calibration, evaluation, and hidden Oracle are separate. The deterministic
-  144-case Oracle defines `OracleIntrinsicPower` and
-  `OraclePersonalizedDelta` targets.
+  144-case Oracle defines `OracleIntrinsicPower`. Exact
+  `OraclePersonalizedDelta` uses a preregistered, category/environment-stratified
+  24-case subset; nested 12- and 18-case subsets are sensitivity profiles.
 - Cross-environment results are reported by baseline. Structural diversity and
   parametric diversity are reported separately.
 - Parameter rescaling in `batch.py` is a deterministic controller baseline. It
@@ -35,6 +40,7 @@ evaluation. Exact Oracle personalized search is intentionally expensive.
 
 ```text
 generation.py           v0.1 replay plus v0.2 request/envelope contracts
+free_invention.py        v0.3 request/ingestion/static-evidence scaffold
 baseline_v02.py         expression-matched direct-outcome control
 power_v02.py            authoritative scale and the two power estimands
 scenario.py             calibration/evaluation/oracle scenario contract
@@ -60,6 +66,9 @@ PYTHONPATH=src:. python3 -m experiments.generative_mechanics evaluate-candidate 
 # v0.2 is the default: 3 baselines x 3 bands x 15 = 135 pilot requests
 PYTHONPATH=src:. python3 -m experiments.generative_mechanics generate-requests /tmp/gml-pilot-requests.jsonl --per-cell 15
 
+# v0.3-Free-Invention scaffold: request generation and strict ingestion
+PYTHONPATH=src:. python3 -m experiments.generative_mechanics generate-free-invention-requests /tmp/gml-free-requests.jsonl --per-baseline 15
+
 # CI defers exact contextual search; real/final runs must request it explicitly
 PYTHONPATH=src:. python3 -m experiments.generative_mechanics run-batch responses.jsonl results/pilot --profile full --contextual exact
 PYTHONPATH=src:. python3 -m experiments.generative_mechanics analyze-results responses.jsonl results/pilot results/pilot-analysis.json --ground-truth oracle-targets.json
@@ -80,4 +89,17 @@ contextual Oracle target. The old `sample_id -> scalar` format remains readable
 only as an intrinsic-only replay format.
 
 `generate-requests --protocol v0.1` exists solely to reproduce the historical
-two-baseline fixture protocol. New model collection must use the default v0.2.
+two-baseline fixture protocol. New controlled collection uses
+`gm-generation-v0.2-controlled`. Archived `gm-generation-v0.2` responses remain
+verifiable through their original shared-six-example canonical prompt; their
+prompt hashes are never checked against the Controlled prompt.
+
+Protocol v0.3-Free-Invention currently freezes request identity, prompt,
+envelope validation, trusted compilation, and static evidence. Its dynamic
+interaction, causal-depth, cross-environment, downstream, build-combination,
+and self-containment evaluators remain explicitly unavailable. This scaffold is
+not evidence that the Free Invention benchmark or a model study has completed.
+
+Oracle targets are realized utility under the declared executable scoring
+function and preregistered world-state distribution. They are machine-verifiable
+study targets, not an objective human notion of game balance.

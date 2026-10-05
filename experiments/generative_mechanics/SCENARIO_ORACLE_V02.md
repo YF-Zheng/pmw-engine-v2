@@ -51,3 +51,19 @@ observable root or scheduler dispatch.
 rebuilds 144 canonical micro-scenarios spanning all categories, environments,
 variants, channels, program shapes, ten-skill backpacks, legal six-skill
 builds, and aftermath horizons. Expanded cases and traces are not committed.
+
+The 144-case distribution remains the registered target for
+`OracleIntrinsicPower`. Exact 10-to-11 build search is substantially more
+expensive, so `OraclePersonalizedDelta` uses a separately registered subset
+drawn from those same 144 cases. Its formal profile contains 24 contexts, one
+for every category/environment stratum. Deterministic 12- and 18-context
+profiles are available only for preregistered sensitivity or pilot runs. They
+are strict nested subsets of the 24-case profile, so increasing the size adds
+contexts without replacing earlier observations.
+Selection seed, algorithm name, allowed sizes, and SHA-256 digests are frozen
+in the same manifest. The audit projection records IDs, environments,
+categories, variants, backpacks, active builds, and initial-field diversity.
+
+These Oracle values are definitions of utility under this executable world,
+its declared capability weights, horizons, and legal-build search. They are
+not claims about an objective human judgment of a mechanic's strength.

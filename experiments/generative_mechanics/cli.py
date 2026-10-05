@@ -25,6 +25,11 @@ from .generation import (
     GenerationContractError, ingest_path, write_fixture_jsonl, write_request_jsonl,
     write_request_jsonl_v02,
 )
+from .free_invention import (
+    PROTOCOL_VERSION as FREE_INVENTION_PROTOCOL_VERSION,
+    ingest_path as ingest_free_invention_path,
+    write_request_jsonl as write_free_invention_request_jsonl,
+)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -54,8 +59,20 @@ def _parser() -> argparse.ArgumentParser:
     requests.add_argument("output", type=Path); requests.add_argument("--seed", type=int, default=2601)
     requests.add_argument("--per-cell", type=int, default=40)
     requests.add_argument("--protocol", choices=("v0.2", "v0.1"), default="v0.2")
+    free_requests = commands.add_parser(
+        "generate-free-invention-requests",
+        help="write Protocol v0.3 free-invention request JSONL",
+    )
+    free_requests.add_argument("output", type=Path)
+    free_requests.add_argument("--seed", type=int, default=2603)
+    free_requests.add_argument("--per-baseline", type=int, default=40)
     ingest = commands.add_parser("ingest-responses", help="strictly ingest versioned response JSONL")
     ingest.add_argument("input", type=Path)
+    free_ingest = commands.add_parser(
+        "ingest-free-invention-responses",
+        help="strictly ingest Protocol v0.3 free-invention response JSONL",
+    )
+    free_ingest.add_argument("input", type=Path)
     batch = commands.add_parser("run-batch", help="run a fault-isolated generated-mechanic batch")
     batch.add_argument("input", type=Path); batch.add_argument("output", type=Path)
     batch.add_argument("--profile", choices=("ci", "full"), default="ci")
@@ -137,7 +154,7 @@ def main(argv: list[str] | None = None) -> int:
                     args.output, master_seed=args.seed, per_cell=args.per_cell,
                 )
                 cells = 9
-                protocol = "gm-generation-v0.2"
+                protocol = "gm-generation-v0.2-controlled"
             else:
                 digest = write_request_jsonl(args.output, seed=args.seed, per_cell=args.per_cell)
                 cells = 6
@@ -146,11 +163,34 @@ def main(argv: list[str] | None = None) -> int:
                 "count": cells * args.per_cell, "output": str(args.output),
                 "sha256": digest, "source_kind": "provider_request", "protocol": protocol,
             }))
+        elif args.command == "generate-free-invention-requests":
+            if args.per_baseline < 1:
+                raise ValueError("per-baseline must be positive")
+            digest = write_free_invention_request_jsonl(
+                args.output, master_seed=args.seed, per_baseline=args.per_baseline,
+            )
+            print(canonical_json({
+                "count": 3 * args.per_baseline,
+                "output": str(args.output),
+                "sha256": digest,
+                "source_kind": "provider_request",
+                "protocol": FREE_INVENTION_PROTOCOL_VERSION,
+            }))
         elif args.command == "ingest-responses":
             result = ingest_path(args.input)
             print(canonical_json({"valid": len(result.samples), "invalid": len(result.errors),
                                   "samples": [item.to_dict() for item in result.samples],
                                   "errors": [item.to_dict() for item in result.errors]}))
+            return 0 if not result.errors else 2
+        elif args.command == "ingest-free-invention-responses":
+            result = ingest_free_invention_path(args.input)
+            print(canonical_json({
+                "protocol": FREE_INVENTION_PROTOCOL_VERSION,
+                "valid": len(result.samples),
+                "invalid": len(result.errors),
+                "samples": [item.to_dict() for item in result.samples],
+                "errors": [item.to_dict() for item in result.errors],
+            }))
             return 0 if not result.errors else 2
         elif args.command == "run-batch":
             ingestion = ingest_path(args.input)

@@ -7,6 +7,7 @@ and traces are not checked in.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import random
 from pathlib import Path
@@ -19,6 +20,7 @@ from .substrate import CHANNELS, ENVIRONMENT_VARIANTS
 
 ROOT = Path(__file__).resolve().parent
 MANIFEST_PATH = ROOT / "oracle" / "manifest.json"
+CONTEXTUAL_COUNTS = (12, 18, 24)
 ENVIRONMENTS = ("fragile_bridge", "industrial_yard", "mine", "wetland")
 CATEGORY_ORDER = (
     "short_combat", "long_combat", "resource_limited", "multi_target",
@@ -44,13 +46,37 @@ CAPABILITY_WEIGHTS = {
 
 def _manifest(path: str | Path = MANIFEST_PATH) -> dict[str, Any]:
     raw = json.loads(Path(path).read_text(encoding="utf-8"))
-    expected = {"protocol", "seed", "case_count"}
+    expected = {"protocol", "seed", "case_count", "contextual_subset"}
     if not isinstance(raw, dict) or set(raw) != expected:
-        raise ValueError("oracle manifest must contain exactly protocol, seed, case_count")
+        raise ValueError(
+            "oracle manifest must contain exactly protocol, seed, case_count, contextual_subset"
+        )
     if raw["protocol"] != "gm-oracle-v0.2":
         raise ValueError("unsupported oracle protocol")
     if not isinstance(raw["seed"], int) or not 120 <= raw["case_count"] <= 300:
         raise ValueError("oracle seed/count contract violated")
+    contextual = raw["contextual_subset"]
+    contextual_expected = {
+        "protocol", "selection_seed", "default_case_count", "allowed_case_counts",
+        "selection", "digests",
+    }
+    if not isinstance(contextual, dict) or set(contextual) != contextual_expected:
+        raise ValueError("contextual subset manifest contract violated")
+    if contextual["protocol"] != "gm-contextual-oracle-v0.3":
+        raise ValueError("unsupported contextual Oracle protocol")
+    if contextual["selection"] != "nested-category-environment-stratified-v1":
+        raise ValueError("unsupported contextual Oracle selection")
+    if contextual["allowed_case_counts"] != list(CONTEXTUAL_COUNTS):
+        raise ValueError("contextual subset allowed counts must be 12, 18, 24")
+    if contextual["default_case_count"] != 24 or not isinstance(contextual["selection_seed"], int):
+        raise ValueError("contextual subset seed/default contract violated")
+    if set(contextual["digests"]) != {str(value) for value in CONTEXTUAL_COUNTS}:
+        raise ValueError("contextual subset digest contract violated")
+    if not all(
+        isinstance(value, str) and len(value) == 64
+        for value in contextual["digests"].values()
+    ):
+        raise ValueError("contextual subset digests must be SHA-256 hex strings")
     return raw
 
 
@@ -129,30 +155,158 @@ def build_oracle_suite(manifest_path: str | Path = MANIFEST_PATH) -> tuple[Scena
 
 
 def canonical_oracle_cases() -> list[dict[str, Any]]:
-    """Return a stable projection useful for determinism auditing."""
-    result = []
-    for scenario in build_oracle_suite():
-        result.append({
-            "id": scenario.id,
-            "category": scenario.category,
-            "environment": scenario.environment,
-            "environment_variant": scenario.environment_variant,
-            "initial_fields": dict(sorted(scenario.initial_fields.items())),
+    """Return the full execution-semantic projection for determinism audits."""
+    return [_scenario_projection(scenario) for scenario in build_oracle_suite()]
+
+
+def _scenario_projection(scenario: Scenario) -> dict[str, Any]:
+    """Canonical projection of every field that can affect execution utility."""
+    return {
+        "id": scenario.id,
+        "split": scenario.split,
+        "category": scenario.category,
+        "environment": scenario.environment,
+        "environment_variant": scenario.environment_variant,
+        "initial_fields": dict(sorted(scenario.initial_fields.items())),
+        "build": {
             "backpack": list(scenario.build.backpack),
             "active": list(scenario.build.active),
-            "program": [
-                {name: getattr(command, name) for name in command.__dataclass_fields__}
-                for command in scenario.program
-            ],
-            "horizons": scenario.horizons,
-            "horizon_weights": scenario.horizon_weights,
-        })
+        },
+        "program": [
+            {name: getattr(command, name) for name in command.__dataclass_fields__}
+            for command in scenario.program
+        ],
+        "horizons": dict(sorted(scenario.horizons.items())),
+        "horizon_weights": dict(sorted(scenario.horizon_weights.items())),
+        "weights": dict(sorted(scenario.weights.items())),
+        "target_count": scenario.target_count,
+    }
+
+
+def contextual_subset_digest(suite: tuple[Scenario, ...]) -> str:
+    """Hash selection plus every scenario input that affects execution utility."""
+    payload = json.dumps(
+        [_scenario_projection(item) for item in suite],
+        sort_keys=True, separators=(",", ":"), ensure_ascii=True,
+    ).encode("ascii")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def contextual_subset_audit(suite: tuple[Scenario, ...]) -> dict[str, Any]:
+    """Return the compact, serializable coverage record used for preregistration."""
+    return {
+        "case_count": len(suite),
+        "digest": contextual_subset_digest(suite),
+        "case_ids": [item.id for item in suite],
+        "categories": sorted({item.category for item in suite}),
+        "environments": sorted({item.environment for item in suite}),
+        "environment_variants": sorted({item.environment_variant for item in suite}),
+        "distinct_backpacks": len({item.build.backpack for item in suite}),
+        "distinct_active_builds": len({item.build.active for item in suite}),
+        "distinct_initial_fields": len({
+            json.dumps(item.initial_fields, sort_keys=True, separators=(",", ":"))
+            for item in suite
+        }),
+    }
+
+
+def _validate_contextual_coverage(suite: tuple[Scenario, ...], case_count: int) -> None:
+    audit = contextual_subset_audit(suite)
+    if audit["case_count"] != case_count:
+        raise ValueError("contextual Oracle subset has the wrong size")
+    if len(audit["categories"]) != len(CATEGORY_ORDER):
+        raise ValueError("contextual Oracle subset must cover every category")
+    if len(audit["environments"]) != len(ENVIRONMENTS):
+        raise ValueError("contextual Oracle subset must cover every environment")
+    if len(audit["environment_variants"]) < 3:
+        raise ValueError("contextual Oracle subset has insufficient variant coverage")
+    for key in ("distinct_backpacks", "distinct_active_builds", "distinct_initial_fields"):
+        if audit[key] < case_count // 2:
+            raise ValueError(f"contextual Oracle subset has insufficient {key} coverage")
+
+
+def build_contextual_oracle_suite(
+    manifest_path: str | Path = MANIFEST_PATH, *, case_count: int | None = None,
+) -> tuple[Scenario, ...]:
+    """Select the preregistered exact-search subset from the 144-case Oracle.
+
+    Counts 12 and 18 are deterministic sensitivity-analysis profiles. The
+    formal paper target defaults to 24: one case in every category/environment
+    stratum. No contexts are generated specially for the contextual target.
+    """
+    manifest = _manifest(manifest_path)
+    contract = manifest["contextual_subset"]
+    requested = contract["default_case_count"] if case_count is None else case_count
+    if requested not in CONTEXTUAL_COUNTS:
+        raise ValueError("contextual Oracle case_count must be one of 12, 18, 24")
+
+    suite = build_oracle_suite(manifest_path)
+    by_stratum = {
+        (category, environment): [
+            item for item in suite
+            if item.category == category and item.environment == environment
+        ]
+        for category in CATEGORY_ORDER for environment in ENVIRONMENTS
+    }
+    per_category = requested // len(CATEGORY_ORDER)
+    offset = contract["selection_seed"] % len(ENVIRONMENTS)
+    selected: list[Scenario] = []
+    for category_index, category in enumerate(CATEGORY_ORDER):
+        environment_indices = (
+            range(len(ENVIRONMENTS)) if per_category == len(ENVIRONMENTS)
+            else (
+                (category_index + offset + step) % len(ENVIRONMENTS)
+                for step in range(per_category)
+            )
+        )
+        for environment_index in environment_indices:
+            environment = ENVIRONMENTS[environment_index]
+            candidates = by_stratum[(category, environment)]
+            if not candidates:
+                raise ValueError(f"empty Oracle stratum {category}/{environment}")
+            selected.append(min(
+                candidates,
+                key=lambda item: hashlib.sha256(
+                    f"{contract['selection_seed']}:{item.id}".encode("ascii")
+                ).hexdigest(),
+            ))
+    result = tuple(sorted(selected, key=lambda item: item.id))
+    _validate_contextual_coverage(result, requested)
+    actual = contextual_subset_digest(result)
+    expected = contract["digests"][str(requested)]
+    if actual != expected:
+        raise ValueError(
+            f"contextual Oracle digest mismatch for {requested} cases: "
+            f"expected {expected}, got {actual}"
+        )
     return result
 
 
 def public_scenario_assets() -> tuple[Path, ...]:
     """Assets permitted in generator prompts: calibration only."""
     return public_calibration_paths()
+
+
+def _registered_intrinsic_suite(suite: tuple[Scenario, ...] | None) -> tuple[Scenario, ...]:
+    canonical = build_oracle_suite()
+    if suite is None:
+        return canonical
+    supplied = tuple(suite)
+    if supplied != canonical:
+        raise ValueError("custom intrinsic Oracle suites are not registered")
+    return supplied
+
+
+def _registered_contextual_suite(suite: tuple[Scenario, ...] | None) -> tuple[Scenario, ...]:
+    if suite is None:
+        return build_contextual_oracle_suite()
+    supplied = tuple(suite)
+    if len(supplied) not in CONTEXTUAL_COUNTS:
+        raise ValueError("custom contextual Oracle suites are not registered")
+    canonical = build_contextual_oracle_suite(case_count=len(supplied))
+    if supplied != canonical:
+        raise ValueError("custom contextual Oracle suites are not registered")
+    return supplied
 
 
 def evaluate_oracle_intrinsic(
@@ -164,7 +318,7 @@ def evaluate_oracle_intrinsic(
     from .compiler import compile_skill
 
     return evaluate_power(
-        suite or build_oracle_suite(), active_skill_ids, split="oracle",
+        _registered_intrinsic_suite(suite), active_skill_ids, split="oracle",
         catalog=catalog,
         compile_mechanic=compile_mechanic or compile_skill,
         world_setup=world_setup,
@@ -186,7 +340,8 @@ def evaluate_oracle_personalized_delta(
     from .compiler import compile_skill
 
     return evaluate_contextual_power(
-        suite or build_oracle_suite(), candidate_skill, split="oracle",
+        _registered_contextual_suite(suite),
+        candidate_skill, split="oracle",
         catalog=catalog,
         compile_mechanic=compile_mechanic or compile_skill,
         world_setup=world_setup, score_fn=score_fn, cache=cache,

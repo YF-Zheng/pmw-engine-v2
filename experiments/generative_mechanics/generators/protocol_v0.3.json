@@ -1,0 +1,37 @@
+{
+  "baselines": {
+    "isolated_direct_effect": {"schema": "DirectEffectSpec v0.1", "surface": "direct_outcome", "world_laws_may_read_surface": false},
+    "matched_direct_outcome": {"schema": "MatchedDirectOutcomeSpec v0.2", "surface": "direct_outcome", "world_laws_may_read_surface": false},
+    "world_substrate": {
+      "channels": ["temperature", "wetness", "electric_field", "fire_intensity", "sound_level", "ground_stability", "water_level", "visibility"],
+      "schema": "SkillSpec v0.1",
+      "surface": "public_world_channels"
+    }
+  },
+  "envelope": {
+    "encoding": "UTF-8 JSON Lines",
+    "fields": ["protocol_version", "sample_id", "sample_nonce", "baseline", "request_coordinates", "source_kind", "provenance", "response"],
+    "request_coordinates": {"strict_fields": ["master_seed", "sample_index"]},
+    "response_fields": ["mechanic"],
+    "strict": true
+  },
+  "evaluation": {
+    "dimensions": ["structural_novelty", "interaction_surface", "causal_depth", "cross_environment_differentiation", "downstream_consequences", "combinatorial_potential", "self_containment"],
+    "missing_evidence_policy": "available=false with reason; never substitute zero",
+    "scores_are_generator_inputs": false
+  },
+  "generation": {
+    "independent_single_pass": true,
+    "private_world_instances_disclosed": false,
+    "scored_examples_disclosed": false,
+    "score_targets_disclosed": false
+  },
+  "network_allowed": false,
+  "pmw_laws_allowed": false,
+  "protocol_version": "gm-free-invention-v0.3",
+  "request_identity": {
+    "canonical_prompt_contains": ["sample_id", "sample_nonce", "derived_seed"],
+    "derivation": "sha256(protocol_version|master_seed|baseline|sample_index)",
+    "validation": "recompute sample_id, seed, and nonce from strict request_coordinates"
+  }
+}

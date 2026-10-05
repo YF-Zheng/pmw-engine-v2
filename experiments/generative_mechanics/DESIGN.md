@@ -77,6 +77,12 @@ cast/step/advance program, three ordered horizons, a horizon-weight vector, and
 a five-dimensional capability-weight vector. Every rollout loads a clean world
 and creates a new PMW Runtime.
 
+All 144 Oracle cases define the intrinsic target. Because exact 10-to-11 build
+search is substantially more expensive, the contextual target defaults to a
+preregistered 24-case subset with one case per category/environment stratum.
+The deterministic 12- and 18-case profiles are strictly nested within it and
+exist for sensitivity analysis, not as alternative post-hoc samples.
+
 ## PowerProfile
 
 For scenario scalar scores `s_1..s_n`:
@@ -131,13 +137,21 @@ The static detector reports causal SCC, no-cost positive feedback, resource self
 
 ## Generation protocol and controls
 
-`gm-generation-v0.2` is the collection protocol. Its strict JSONL envelope
-contains a coordinate-derived unique sample ID, nonce and seed, baseline,
-target band, source kind, canonical prompt hash, provider/model identity, raw
-response ID, mechanic, and optional declared power. The prompt discloses public
-channel semantics, a compact public projection of generic laws, and two scored
-calibration-only examples per band. It discloses neither evaluation environment
-state nor Oracle cases. `v0.1` is frozen only for historical fixture replay.
+`gm-generation-v0.2-controlled` is the Controlled Invention collection
+protocol. Its strict JSONL envelope contains master-seed/sample-index request
+coordinates, a re-derived unique sample ID, nonce and seed, baseline, target
+band, source kind, canonical prompt hash, provider/model identity, raw response
+ID, mechanic, and optional declared power. The prompt discloses public channel
+semantics, a compact public projection of generic laws, and exactly six
+calibration-only examples matching the current baseline schema: two per power
+band. The frozen calibration artifact contains 18 examples total, and every
+score is rebuilt with that baseline's compiler and world setup. It discloses
+neither evaluation environment state nor Oracle cases.
+
+Archived `gm-generation-v0.2` envelopes retain a separate compatibility path
+that reconstructs the original shared-six-example prompt. Legacy and Controlled
+prompt hashes cannot be interchanged. `v0.1` is frozen only for historical
+fixture replay.
 
 The experiment has three intentionally separate conditions:
 
@@ -154,6 +168,17 @@ with 15 samples in each of nine cells contains 135 genuine provider requests.
 Fixture rows have `source_kind=deterministic_fixture`; they are never model
 findings.
 
+## Free Invention scaffold
+
+`gm-free-invention-v0.3` removes power bands, scored examples, declared power,
+and revision policy. The implemented scaffold freezes coordinate-bound request
+identity, a public-only prompt, strict response ingestion, trusted compilation,
+and static contract evidence. It declares the intended invention dimensions,
+but dynamic interaction surface, causal depth, cross-environment
+differentiation, downstream consequences, combinatorial potential, and
+self-containment remain unavailable until paired execution evaluators and their
+reporting protocol are frozen. No dynamic Free benchmark result is claimed.
+
 ## Batch and targeted revision
 
 Batch execution is fault-isolated and resumable under a versioned config hash. Rates use staged denominators:
@@ -168,6 +193,9 @@ Structural diversity removes IDs/names and bins numeric parameters; parametric
 diversity retains exact values. Evaluator analysis has two tasks. Intrinsic
 estimators predict `OracleIntrinsicPower`; contextual estimators predict
 `OraclePersonalizedDelta`. Error is never computed across the two estimands.
+Both are formal realized-utility targets under the declared scoring function
+and preregistered world-state distribution. They are not human annotations or
+claims of objective game balance.
 
 The deterministic controller gets one revision attempt. It rescales bounded
 mechanic parameters, validates and recompiles the revised spec, and reruns the
@@ -186,6 +214,7 @@ Figures 1-5 are rendered from result tables as PDF, SVG, and 300 dpi PNG. Figure
 ## Deferred external work
 
 Provider execution, the 135-response genuine-model pilot, statistical tests,
-and paper claims remain external experiment runs. Hidden Oracle execution is
-machine ground truth rather than human scalar annotation. The repository stays
+dynamic Free Invention evaluation, and paper claims remain external experiment
+runs. Hidden Oracle execution is formal machine ground truth under the declared
+utility function rather than human scalar annotation. The repository stays
 provider-neutral and does not contain credentials or an implicit network call.

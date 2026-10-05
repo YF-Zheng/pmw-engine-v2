@@ -1,5 +1,17 @@
 {
   "case_count": 144,
+  "contextual_subset": {
+    "allowed_case_counts": [12, 18, 24],
+    "default_case_count": 24,
+    "digests": {
+      "12": "e528557da7f4ca95be1a60cdfdb801cc2913413f2ceddb5fb8bb4d9f45f6608d",
+      "18": "585267b5be08d5e823fcea7754dfa65541e909074854fe0ba8fbb21a2f6a663f",
+      "24": "1e4ef7f509bc701fde7c93b2b3beb2631da5e9aff55f42be457f117502a932d5"
+    },
+    "protocol": "gm-contextual-oracle-v0.3",
+    "selection": "nested-category-environment-stratified-v1",
+    "selection_seed": 26022028
+  },
   "protocol": "gm-oracle-v0.2",
   "seed": 26022027
 }

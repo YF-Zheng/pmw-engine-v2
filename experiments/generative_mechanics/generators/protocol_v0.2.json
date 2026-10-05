@@ -33,14 +33,19 @@
     }
   },
   "calibration_examples": {
+    "artifact": "calibration_examples_v0.2-controlled.json",
+    "artifact_sha256": "cb994095142e59c2634319f7122e71b81bcc772800c596fdd44cec794674cd4d",
+    "baseline_specific": true,
+    "count_per_baseline": 6,
     "count_per_power_band": 2,
     "provenance_split": "calibration",
-    "version": "gm-calibration-example-v0.1"
+    "version": "gm-calibration-examples-v0.2-controlled"
   },
   "envelope": {
     "encoding": "UTF-8 JSON Lines",
     "fields": [
       "protocol_version",
+      "request_coordinates",
       "sample_id",
       "sample_nonce",
       "baseline",
@@ -49,6 +54,11 @@
       "provenance",
       "response"
     ],
+    "request_coordinates": {
+      "fields": ["master_seed", "sample_index"],
+      "identity_fields": ["sample_id", "sample_nonce", "provenance.seed"],
+      "validation": "derive_sample_identity must exactly reproduce all identity fields"
+    },
     "strict": true
   },
   "network_allowed": false,
@@ -58,7 +68,15 @@
     "samples_per_baseline_band_cell": 15,
     "requires_contextual_mode": "exact"
   },
-  "protocol_version": "gm-generation-v0.2",
+  "protocol_version": "gm-generation-v0.2-controlled",
+  "legacy_protocol_version": "gm-generation-v0.2",
+  "legacy_compatibility": {
+    "envelope_has_request_coordinates": false,
+    "prompt_calibration": "shared six world_substrate examples",
+    "validation": "rebuild the archived canonical prompt for hash verification"
+  },
+  "display_name": "Protocol v0.2-Controlled",
+  "track": "controlled",
   "request_identity": {
     "canonical_prompt_contains": ["sample_id", "sample_nonce", "derived_seed"],
     "derivation": "sha256(protocol_version|master_seed|baseline|target_band|sample_index)"

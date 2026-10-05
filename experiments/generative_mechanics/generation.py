@@ -113,16 +113,21 @@ class ProviderAdapter(Protocol):
 
 # v0.1 above is frozen for replaying the checked-in fixture study. New model
 # collection must opt in to v0.2 through the explicitly suffixed APIs below.
-PROTOCOL_VERSION_V02 = "gm-generation-v0.2"
+LEGACY_PROTOCOL_VERSION_V02 = "gm-generation-v0.2"
+PROTOCOL_VERSION_V02 = "gm-generation-v0.2-controlled"
+PROTOCOL_DISPLAY_NAME_V02 = "Protocol v0.2-Controlled"
+PROTOCOL_TRACK_V02 = "controlled"
 BASELINES_V02 = (
     "isolated_direct_effect",
     "world_substrate",
     "matched_direct_outcome",
 )
-V02_ENVELOPE_FIELDS = frozenset({
+LEGACY_V02_ENVELOPE_FIELDS = frozenset({
     "protocol_version", "sample_id", "sample_nonce", "baseline", "target_band",
     "source_kind", "provenance", "response",
 })
+V02_ENVELOPE_FIELDS = LEGACY_V02_ENVELOPE_FIELDS | {"request_coordinates"}
+REQUEST_COORDINATE_FIELDS = frozenset({"master_seed", "sample_index"})
 
 CHANNEL_SEMANTICS = {
     "temperature": "normalized local thermal intensity; larger means hotter",
@@ -212,12 +217,104 @@ def public_rule_summary() -> dict[str, Any]:
     }
 
 
-def calibration_examples_v02() -> tuple[dict[str, Any], ...]:
-    """Return scored seed examples sourced exclusively from calibration.
+def _load_calibration_artifact_v02(
+    path: str | Path | None = None, *, expected_sha256: str | None = None,
+) -> dict[str, Any]:
+    """Load the frozen Controlled calibration artifact with fail-closed checks."""
+    from .baseline_v02 import validate_matched_direct_outcome
 
-    Scores are frozen artifacts of ``evaluate_power`` over all six calibration
-    scenarios. A regression test rebuilds them through the authoritative scorer.
+    root = Path(__file__).with_name("generators")
+    artifact_path = Path(path) if path is not None else root / "calibration_examples_v0.2-controlled.json"
+    source = artifact_path.read_bytes()
+    if expected_sha256 is None:
+        manifest = json.loads((root / "protocol_v0.2.json").read_text(encoding="utf-8"))
+        expected_sha256 = manifest.get("calibration_examples", {}).get("artifact_sha256")
+    actual_sha256 = hashlib.sha256(source).hexdigest()
+    if not isinstance(expected_sha256, str) or actual_sha256 != expected_sha256:
+        raise GenerationContractError("controlled calibration artifact SHA-256 mismatch")
+    artifact = json.loads(source)
+    required_top = {
+        "artifact_version", "protocol_version", "track", "source_split",
+        "scenario_set", "scorer_interface", "examples",
+    }
+    if not isinstance(artifact, dict) or set(artifact) != required_top:
+        raise GenerationContractError("controlled calibration artifact has invalid top-level fields")
+    if (
+        artifact["artifact_version"] != "gm-calibration-examples-v0.2-controlled"
+        or artifact["protocol_version"] != PROTOCOL_VERSION_V02
+        or artifact["track"] != PROTOCOL_TRACK_V02
+        or artifact["source_split"] != "calibration"
+        or artifact["scenario_set"] != "calibration/all-six"
+        or artifact["scorer_interface"] != "gm-authoritative-scorer-v0.1"
+        or not isinstance(artifact["examples"], list)
+        or len(artifact["examples"]) != 18
+    ):
+        raise GenerationContractError("invalid controlled calibration artifact contract")
+    counts = {(baseline, band): 0 for baseline in BASELINES_V02 for band in POWER_BANDS}
+    example_ids: set[str] = set()
+    required_example = {"example_id", "baseline", "target_band", "realized_score", "mechanic"}
+    for item in artifact["examples"]:
+        if not isinstance(item, dict) or set(item) != required_example:
+            raise GenerationContractError("controlled calibration example has invalid fields")
+        example_id, baseline, band = item["example_id"], item["baseline"], item["target_band"]
+        if not isinstance(example_id, str) or not example_id or example_id in example_ids:
+            raise GenerationContractError("controlled calibration example_id is invalid or duplicate")
+        if (baseline, band) not in counts:
+            raise GenerationContractError("controlled calibration example has unknown baseline or band")
+        score = item["realized_score"]
+        if isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(score):
+            raise GenerationContractError("controlled calibration score must be finite")
+        low, high = POWER_BANDS[band]
+        if not low <= float(score) <= high:
+            raise GenerationContractError("controlled calibration score falls outside its target band")
+        try:
+            if baseline == "isolated_direct_effect":
+                validate_direct_effect(item["mechanic"])
+            elif baseline == "world_substrate":
+                validate_skill(item["mechanic"])
+            else:
+                validate_matched_direct_outcome(item["mechanic"])
+        except (GenerationContractError, SkillSpecError) as exc:
+            raise GenerationContractError(f"invalid controlled calibration mechanic: {exc}") from exc
+        example_ids.add(example_id)
+        counts[(baseline, band)] += 1
+    if set(counts.values()) != {2}:
+        raise GenerationContractError("controlled calibration artifact requires two examples per cell")
+    return artifact
+
+
+def calibration_examples_v02(baseline: str | None = None) -> tuple[dict[str, Any], ...]:
+    """Load frozen, baseline-specific examples scored only on calibration.
+
+    Passing a baseline returns the six examples disclosed to that generation
+    task. ``None`` returns all 18 for auditing and score reconstruction.
     """
+    if baseline is not None and baseline not in BASELINES_V02:
+        raise GenerationContractError("unknown v0.2 baseline")
+    artifact = _load_calibration_artifact_v02()
+    rows = tuple(
+        {
+            **item,
+            "example_version": artifact["artifact_version"],
+            "provenance": {
+                "split": artifact["source_split"],
+                "scenario_id": artifact["scenario_set"],
+                "scorer_interface": artifact["scorer_interface"],
+                "compiler": item["baseline"],
+                "score_rebuild_key": (
+                    f"calibration/all-six::{item['baseline']}::{item['mechanic']['id']}"
+                    "::gm-power-scale-v0.2"
+                ),
+            },
+        }
+        for item in artifact["examples"]
+        if baseline is None or item.get("baseline") == baseline
+    )
+    return rows
+
+
+def legacy_calibration_examples_v02() -> tuple[dict[str, Any], ...]:
+    """Rebuild the shared six-example artifact used by archived v0.2 prompts."""
     selected = {
         "Low": (("bedrock_memory", 22.621255584726), ("mud_anchor", 26.734121491106134)),
         "Mid": (("floodgate", 46.38383359857627), ("flash_flood", 49.1890896022264)),
@@ -227,18 +324,21 @@ def calibration_examples_v02() -> tuple[dict[str, Any], ...]:
     rows: list[dict[str, Any]] = []
     for band in POWER_BANDS:
         for example_index, (skill_id, realized_score) in enumerate(selected[band]):
-            mechanic = json.loads((skill_root / f"{skill_id}.json").read_text(encoding="utf-8"))
             rows.append({
                 "example_version": "gm-calibration-example-v0.1",
                 "example_id": f"calibration.{band.lower()}.{example_index + 1}",
                 "target_band": band,
-                "mechanic": mechanic,
+                "mechanic": json.loads(
+                    (skill_root / f"{skill_id}.json").read_text(encoding="utf-8")
+                ),
                 "realized_score": realized_score,
                 "provenance": {
                     "split": "calibration",
                     "scenario_id": "calibration/all-six",
                     "scorer_interface": "gm-authoritative-scorer-v0.1",
-                    "score_rebuild_key": f"calibration/all-six::{skill_id}::gm-power-scale-v0.2",
+                    "score_rebuild_key": (
+                        f"calibration/all-six::{skill_id}::gm-power-scale-v0.2"
+                    ),
                 },
             })
     return tuple(rows)
@@ -284,19 +384,20 @@ def derive_sample_identity(
     return sample_id, derived_seed, sample_nonce
 
 
-def prompt_request_v02(
+def legacy_prompt_request_v02(
     baseline: str,
     target_band: str,
     derived_seed: int,
     sample_id: str,
     sample_nonce: str,
 ) -> dict[str, Any]:
+    """Rebuild archived gm-generation-v0.2 prompts byte-for-byte."""
     if baseline not in BASELINES_V02 or target_band not in POWER_BANDS:
-        raise GenerationContractError("unknown v0.2 baseline or target band")
+        raise GenerationContractError("unknown legacy v0.2 baseline or target band")
     if not sample_id or not sample_nonce:
         raise GenerationContractError("sample_id and sample_nonce must be non-empty")
     return {
-        "protocol_version": PROTOCOL_VERSION_V02,
+        "protocol_version": LEGACY_PROTOCOL_VERSION_V02,
         "sample_id": sample_id,
         "sample_nonce": sample_nonce,
         "derived_seed": derived_seed,
@@ -306,7 +407,53 @@ def prompt_request_v02(
             "channel_semantics": CHANNEL_SEMANTICS,
             "generic_rule_summary": public_rule_summary(),
         },
-        "calibration_examples": list(calibration_examples_v02()),
+        "calibration_examples": list(legacy_calibration_examples_v02()),
+        "response_contract": {
+            "strict_fields": ["mechanic", "declared_power"],
+            "declared_power": "finite number or null",
+            "mechanic": _v02_mechanic_contract(baseline),
+        },
+        "constraints": {
+            "json_only": True,
+            "pmw_laws_allowed": False,
+            "private_world_instances_disclosed": False,
+        },
+    }
+
+
+def prompt_request_v02(
+    baseline: str,
+    target_band: str,
+    derived_seed: int,
+    sample_id: str,
+    sample_nonce: str,
+    *,
+    master_seed: int,
+    sample_index: int,
+) -> dict[str, Any]:
+    if baseline not in BASELINES_V02 or target_band not in POWER_BANDS:
+        raise GenerationContractError("unknown v0.2 baseline or target band")
+    if not sample_id or not sample_nonce:
+        raise GenerationContractError("sample_id and sample_nonce must be non-empty")
+    if any(isinstance(value, bool) or not isinstance(value, int) for value in (master_seed, sample_index)):
+        raise GenerationContractError("controlled request coordinates must be integers")
+    if sample_index < 0:
+        raise GenerationContractError("sample_index must be non-negative")
+    return {
+        "protocol_version": PROTOCOL_VERSION_V02,
+        "protocol_display_name": PROTOCOL_DISPLAY_NAME_V02,
+        "track": PROTOCOL_TRACK_V02,
+        "sample_id": sample_id,
+        "sample_nonce": sample_nonce,
+        "derived_seed": derived_seed,
+        "request_coordinates": {"master_seed": master_seed, "sample_index": sample_index},
+        "baseline": baseline,
+        "target_band": {"name": target_band, "range": list(POWER_BANDS[target_band])},
+        "public_world_model": {
+            "channel_semantics": CHANNEL_SEMANTICS,
+            "generic_rule_summary": public_rule_summary(),
+        },
+        "calibration_examples": list(calibration_examples_v02(baseline)),
         "response_contract": {
             "strict_fields": ["mechanic", "declared_power"],
             "declared_power": "finite number or null",
@@ -324,6 +471,10 @@ def prompt_hash_v02(request: dict[str, Any]) -> str:
     return hashlib.sha256(render_prompt(request).encode("utf-8")).hexdigest()
 
 
+def legacy_prompt_hash_v02(request: dict[str, Any]) -> str:
+    return prompt_hash_v02(request)
+
+
 def build_request_rows_v02(master_seed: int = 2602, per_cell: int = 40) -> tuple[dict[str, Any], ...]:
     if isinstance(per_cell, bool) or not isinstance(per_cell, int) or per_cell < 1:
         raise GenerationContractError("per_cell must be a positive integer")
@@ -332,7 +483,10 @@ def build_request_rows_v02(master_seed: int = 2602, per_cell: int = 40) -> tuple
         for band in POWER_BANDS:
             for index in range(per_cell):
                 sample_id, seed, nonce = derive_sample_identity(master_seed, baseline, band, index)
-                request = prompt_request_v02(baseline, band, seed, sample_id, nonce)
+                request = prompt_request_v02(
+                    baseline, band, seed, sample_id, nonce,
+                    master_seed=master_seed, sample_index=index,
+                )
                 rows.append({
                     "protocol_version": PROTOCOL_VERSION_V02,
                     "sample_id": sample_id,
@@ -340,6 +494,7 @@ def build_request_rows_v02(master_seed: int = 2602, per_cell: int = 40) -> tuple
                     "baseline": baseline,
                     "target_band": band,
                     "seed": seed,
+                    "request_coordinates": {"master_seed": master_seed, "sample_index": index},
                     "prompt": render_prompt(request),
                     "prompt_sha256": prompt_hash_v02(request),
                 })
@@ -360,9 +515,16 @@ def write_request_jsonl_v02(
 def validate_envelope_v02(raw: Any) -> GeneratedSample:
     from .baseline_v02 import validate_matched_direct_outcome
 
-    data = _strict(raw, V02_ENVELOPE_FIELDS, "$")
-    if data["protocol_version"] != PROTOCOL_VERSION_V02:
-        raise GenerationContractError("protocol_version: expected gm-generation-v0.2")
+    if not isinstance(raw, dict):
+        raise GenerationContractError("$: must be an object")
+    version = raw.get("protocol_version")
+    if version not in {PROTOCOL_VERSION_V02, LEGACY_PROTOCOL_VERSION_V02}:
+        raise GenerationContractError("protocol_version: unsupported v0.2 revision")
+    data = _strict(
+        raw,
+        V02_ENVELOPE_FIELDS if version == PROTOCOL_VERSION_V02 else LEGACY_V02_ENVELOPE_FIELDS,
+        "$",
+    )
     if data["baseline"] not in BASELINES_V02 or data["target_band"] not in POWER_BANDS:
         raise GenerationContractError("unknown v0.2 baseline or target band")
     if data["source_kind"] not in SOURCE_KINDS:
@@ -376,9 +538,28 @@ def validate_envelope_v02(raw: Any) -> GeneratedSample:
         raise GenerationContractError("provenance: string fields must be non-empty")
     if isinstance(prov["seed"], bool) or not isinstance(prov["seed"], int):
         raise GenerationContractError("provenance.seed: must be an integer")
-    request = prompt_request_v02(
-        data["baseline"], data["target_band"], prov["seed"], data["sample_id"], data["sample_nonce"],
-    )
+    if data["protocol_version"] == PROTOCOL_VERSION_V02:
+        coordinates = _strict(data["request_coordinates"], REQUEST_COORDINATE_FIELDS, "request_coordinates")
+        master_seed, sample_index = coordinates["master_seed"], coordinates["sample_index"]
+        if any(isinstance(value, bool) or not isinstance(value, int) for value in (master_seed, sample_index)):
+            raise GenerationContractError("request_coordinates: values must be integers")
+        expected_id, expected_seed, expected_nonce = derive_sample_identity(
+            master_seed, data["baseline"], data["target_band"], sample_index,
+        )
+        if (data["sample_id"], prov["seed"], data["sample_nonce"]) != (
+            expected_id, expected_seed, expected_nonce,
+        ):
+            raise GenerationContractError("request_coordinates: derived identity mismatch")
+        request = prompt_request_v02(
+            data["baseline"], data["target_band"], prov["seed"],
+            data["sample_id"], data["sample_nonce"],
+            master_seed=master_seed, sample_index=sample_index,
+        )
+    else:
+        request = legacy_prompt_request_v02(
+            data["baseline"], data["target_band"], prov["seed"],
+            data["sample_id"], data["sample_nonce"],
+        )
     if prov["prompt_sha256"] != prompt_hash_v02(request):
         raise GenerationContractError("provenance.prompt_sha256: does not match the canonical v0.2 request")
     response = _strict(data["response"], RESPONSE_FIELDS, "response")
@@ -565,7 +746,9 @@ def prompt_hash(request: dict[str, Any]) -> str:
 
 
 def validate_envelope(raw: Any) -> GeneratedSample:
-    if isinstance(raw, dict) and raw.get("protocol_version") == PROTOCOL_VERSION_V02:
+    if isinstance(raw, dict) and raw.get("protocol_version") in {
+        PROTOCOL_VERSION_V02, LEGACY_PROTOCOL_VERSION_V02,
+    }:
         return validate_envelope_v02(raw)
     data = _strict(raw, ENVELOPE_FIELDS, "$")
     if data["protocol_version"] != PROTOCOL_VERSION:
@@ -621,7 +804,9 @@ def ingest_jsonl(lines: Iterable[str]) -> IngestionResult:
             sample = validate_envelope(raw)
             if sample.sample_id in seen:
                 raise GenerationContractError("sample_id: duplicate")
-            if raw.get("protocol_version") == PROTOCOL_VERSION_V02:
+            if raw.get("protocol_version") in {
+                PROTOCOL_VERSION_V02, LEGACY_PROTOCOL_VERSION_V02,
+            }:
                 identities = {
                     "sample_nonce": raw["sample_nonce"],
                     "seed": raw["provenance"]["seed"],
