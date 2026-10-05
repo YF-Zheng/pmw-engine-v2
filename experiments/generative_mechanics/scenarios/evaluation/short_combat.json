@@ -1,9 +1,11 @@
 {
-  "id": "held_out_short_combat",
-  "split": "held_out",
+  "id": "evaluation_short_combat",
+  "split": "evaluation",
   "category": "short_combat",
   "target_count": 1,
   "environment": "mine",
+  "environment_variant": "charged",
+  "initial_fields": {"visibility": 0.55},
   "build": {
     "backpack": ["flash_fire", "thunderclap", "static_grave", "thermal_lance", "kindling_arc", "storm_coil", "grounding_rod", "firebreak", "mud_anchor", "clear_sky"],
     "active": ["flash_fire", "thunderclap", "static_grave", "thermal_lance", "kindling_arc", "storm_coil"]
@@ -13,5 +15,6 @@
     {"op": "step", "repeats": 2}
   ],
   "horizons": {"combat_end": 0, "short": 8, "medium": 36},
+  "horizon_weights": {"combat_end": 0.7, "short": 0.2, "medium": 0.1},
   "weights": {"combat": 0.5, "survival": 0.1, "control": 0.15, "utility": 0.1, "exploration_world_impact": 0.15}
 }

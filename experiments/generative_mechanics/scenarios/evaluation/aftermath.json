@@ -1,9 +1,11 @@
 {
-  "id": "held_out_aftermath",
-  "split": "held_out",
+  "id": "evaluation_aftermath",
+  "split": "evaluation",
   "category": "aftermath",
   "target_count": 1,
   "environment": "industrial_yard",
+  "environment_variant": "charged",
+  "initial_fields": {"fire_intensity": 0.25},
   "build": {
     "backpack": ["flash_fire", "static_grave", "flash_flood", "thermal_lance", "thunderclap", "bedrock_memory", "firebreak", "grounding_rod", "drying_wind", "mud_anchor"],
     "active": ["flash_fire", "static_grave", "flash_flood", "thermal_lance", "thunderclap", "bedrock_memory"]
@@ -13,5 +15,6 @@
     {"op": "step", "repeats": 3}
   ],
   "horizons": {"combat_end": 0, "short": 15, "medium": 75},
+  "horizon_weights": {"combat_end": 0.15, "short": 0.3, "medium": 0.55},
   "weights": {"combat": 0.05, "survival": 0.1, "control": 0.15, "utility": 0.15, "exploration_world_impact": 0.55}
 }

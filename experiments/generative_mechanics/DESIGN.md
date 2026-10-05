@@ -19,7 +19,10 @@ Every zone exposes exactly eight normalized public channels:
 7. `water_level`
 8. `visibility`
 
-Skill deltas are bounded to `[-1, 1]`. Trigger thresholds are bounded to `[0, 1]`. The present PMW substrate does not clamp aggregate state; evaluator work must measure excursions rather than silently alter them.
+Skill deltas are bounded to `[-1, 1]` and trigger thresholds to `[0, 1]`.
+Aggregate state is truly normalized: traced PMW closure laws saturate all eight
+channels to `[0, 1]`, and explicit `lab.dissipate` roots relax them toward
+frozen neutral values. The runner never performs an untraced Python clamp.
 
 ## SkillSpec v0.1
 
@@ -62,9 +65,17 @@ Generic laws live under `gm.world.*` and cannot mention skill IDs or activation 
 
 The four environments share actor, zone, and skill-instance shapes. They differ only in initial public fields and environment material/process state. Thus a skill specifies the same perturbation everywhere, while discharge, steam, visibility, fuel, stability, alert, and charged-ore consequences belong to the world.
 
-## Phase 2 scenario contract
+## Scenario and Oracle contract
 
-The benchmark has six `calibration` and six disjoint `held_out` executable scenarios. Each split covers short combat, long combat, resource-limited, multi-target, environmental hazard, and aftermath. A scenario strictly declares its environment, 10-item backpack, 6-item default active build, cast/step/advance program, three ordered horizons, and a normalized five-dimensional weight vector. Every rollout loads a clean world and creates a new PMW Runtime; runtime state is never shared across evaluations.
+The public benchmark has six `calibration` and six disjoint `evaluation`
+scenarios. A deterministic hidden `oracle` distribution reconstructs 144 more
+micro-scenarios from a frozen manifest. Each distribution covers short combat,
+long combat, resource-limited, multi-target, environmental hazard, and
+aftermath. A scenario strictly declares its environment and variant, public
+initial-field overrides, 10-item backpack, 6-item active build,
+cast/step/advance program, three ordered horizons, a horizon-weight vector, and
+a five-dimensional capability-weight vector. Every rollout loads a clean world
+and creates a new PMW Runtime.
 
 ## PowerProfile
 
@@ -76,7 +87,11 @@ P90 Power     = sorted(s)[ceil(0.9*n)-1]       # nearest rank
 Ceiling Power = max(s)
 ```
 
-The five capability dimensions are `Combat`, `Survival`, `Control`, `Utility`, and `ExplorationWorldImpact`. Let `d(x)` be the build-minus-empty medium-horizon delta, with fields/processes averaged across targets and discrete outcomes summed across targets:
+The five capability dimensions are `Combat`, `Survival`, `Control`, `Utility`,
+and `ExplorationWorldImpact`. Let `d_h(x)` be the build-minus-empty delta at
+horizon `h`, with fields/processes averaged across targets and discrete outcomes
+summed across targets. Each horizon gets a capability vector and the scenario
+score is the declared weighted sum of combat-end, short, and medium vectors.
 
 ```text
 Combat = 20*d(discharges) + 12*d(charged_ore) + 5*max(0,d(fire_intensity))
@@ -87,16 +102,24 @@ Control = 4*sum(abs(d(x)))
 Utility = 3*sum(abs(d(x))) for x in temperature,water_level,visibility
           + 2*abs(d(alert))
 ExplorationWorldImpact = 5*number_of_differing_zone_leaves
-Scenario score = dot(capability vector, scenario weight vector)
+Scenario score = sum_h horizon_weight[h] * dot(capability[h], scenario weights)
 ```
 
-`Interaction Surface` is the mean count of additional distinct `gm.world.*` laws. `Persistent World Impact` is the mean count of differing zone leaves at the medium horizon. Calibration and held-out profiles are requested explicitly and never pooled. Multi-target scenarios set `target_count > 1`; the runner clones independent zones, casts against each canonical target, advances all zones, and aggregates them only at scoring time.
+`Interaction Surface` is the mean count of additional distinct `gm.world.*`
+laws. `Persistent World Impact` alone is measured at the medium horizon.
+Calibration, evaluation, and Oracle profiles are requested explicitly and never
+pooled. All execution-based routes share `PowerScaleContract v0.2`; there is no
+batch-only scale.
 
 Every serialized PowerProfile contains the eight formal metrics: Typical Power, P90 Power, Ceiling Power, Personalized Build Delta, Synergy Amplification, Interaction Surface, Exploit Risk, and Persistent World Impact, plus the capability vector. For active build `B`, `SynergyAmplification = V(B) - sum(V({s})) + (|B|-1)*V(empty)` on the same split and scenarios. `ExploitRisk` is the maximum static severity over the combined compiled laws in `B`. `PersonalizedBuildDelta` is undefined outside a candidate-before/after context and is serialized as `null`, never a fabricated zero. `evaluate_candidate` fills it with exhaustive `best(pool + candidate) - best(pool)`.
 
 ## Build search
 
-A backpack contains at most 10 unique SkillSpecs. Exhaustive search emits each unique sorted subset exactly once, including the empty build, subject to active count `<= 6` and summed `slot_cost <= 6`. Equal scores use lexicographic skill-ID tie-breaking. Pairwise synergy is `V(a,b)-V(a)-V(b)+V(empty)`. Personalized delta is `best(pool + candidate)-best(pool)`.
+A player backpack contains 10 unique specs. Candidate evaluation compares the
+exact legal optimum before with the exact optimum after adding the eleventh
+candidate, subject to active count `<= 6` and summed `slot_cost <= 6`. Equal
+scores use lexicographic skill-ID tie-breaking. The resulting
+`ContextualMarginalPower` is separate from intrinsic absolute power.
 
 ## Emergent Reach
 
@@ -108,16 +131,28 @@ The static detector reports causal SCC, no-cost positive feedback, resource self
 
 ## Generation protocol and controls
 
-`gm-generation-v0.1` is a strict JSONL envelope containing a sample ID, baseline, target band, source kind, canonical prompt hash, provider/model identity, seed, raw response ID, mechanic, and optional declared power. The prompt hash must match the frozen request. Invalid lines are isolated and never enter compilation.
+`gm-generation-v0.2` is the collection protocol. Its strict JSONL envelope
+contains a coordinate-derived unique sample ID, nonce and seed, baseline,
+target band, source kind, canonical prompt hash, provider/model identity, raw
+response ID, mechanic, and optional declared power. The prompt discloses public
+channel semantics, a compact public projection of generic laws, and two scored
+calibration-only examples per band. It discloses neither evaluation environment
+state nor Oracle cases. `v0.1` is frozen only for historical fixture replay.
 
-The experiment has two intentionally separate controls:
+The experiment has three intentionally separate conditions:
 
 - `world_substrate` emits SkillSpec v0.1 and can mutate only the eight public channels.
-- `direct_effect` emits restricted DirectEffectSpec v0.1 (`damage/heal/buff/debuff`). Trusted code writes only an experimental `direct_outcome` component. Generic world laws never read it, so a direct control cannot accidentally become a substrate mechanism.
+- `isolated_direct_effect` is the narrow manipulation control formerly named
+  `direct_effect`.
+- `matched_direct_outcome` matches effect count, public conditions, temporal
+  mode, cost, charges and slots, but writes only `direct_outcome.*`.
 
 Both paths use PMW execution, identical scenarios, resource/charge accounting, and the same evaluation table. Direct effects contribute only to their matching capability proxy and must have zero downstream world-law reach.
 
-The checked-in fixture protocol creates 240 balanced samples: 40 per `(baseline, Low/Mid/High)` cell. It includes immediate, finite-duration, and finite-periodic mechanics. These samples have `source_kind=deterministic_fixture`; they validate infrastructure and are never model findings.
+The checked-in 240-sample v0.1 fixture remains a replay artifact. A v0.2 pilot
+with 15 samples in each of nine cells contains 135 genuine provider requests.
+Fixture rows have `source_kind=deterministic_fixture`; they are never model
+findings.
 
 ## Batch and targeted revision
 
@@ -129,13 +164,20 @@ compile rate       = compiled / schema-valid
 execution validity = executed / compiled
 ```
 
-Mechanic diversity hashes structure after removing `id` and `name`. The four evaluator columns are declared LLM self-rating (unavailable when absent), static heuristic, standard PMW simulation, and PMW simulation plus exhaustive contextual search. The experiment proxy is reported on a frozen scale of 8 so requested bands `[20,30]`, `[40,50]`, and `[60,70]` are readable in the same table; this scale is not learned from held-out results.
+Structural diversity removes IDs/names and bins numeric parameters; parametric
+diversity retains exact values. Evaluator analysis has two tasks. Intrinsic
+estimators predict `OracleIntrinsicPower`; contextual estimators predict
+`OraclePersonalizedDelta`. Error is never computed across the two estimands.
 
-Guided revision gets one attempt. It changes bounded mechanic parameters, validates and recompiles the revised spec, and reruns the same held-out scenarios. It never edits an evaluator score.
+The deterministic controller gets one revision attempt. It rescales bounded
+mechanic parameters, validates and recompiles the revised spec, and reruns the
+same evaluation scenarios. It never edits a score and is not LLM self-revision.
 
 ## Cross-environment and aftermath analysis
 
-Each unchanged mechanic is paired against an empty run in Mine, Wetland, Industrial Yard, and Fragile Bridge. Reports contain additional `gm.world.*` signatures, an environment-difference rate, and state-difference trajectories at `combat_end`, `short`, and `medium`. Direct controls must keep identical direct outcomes across environments and zero additional world laws. Duration fixtures explicitly cover recovery by the medium horizon.
+Each unchanged mechanic is paired against an empty run in Mine, Wetland,
+Industrial Yard, and Fragile Bridge. Primary aggregate tables are stratified by
+baseline; an overall value may appear only as a secondary diagnostic.
 
 Kill criteria cover substrate collapse into self-contained effects, downstream scarcity, environment sameness, validity bottlenecks, and contextual evaluator advantage. The last item requires independent ground truth. Without it the status is `UNAVAILABLE`, and no correlation, error, or advantage is fabricated.
 
@@ -143,4 +185,7 @@ Figures 1-5 are rendered from result tables as PDF, SVG, and 300 dpi PNG. Figure
 
 ## Deferred external work
 
-Online provider calls, collection of 200-500 actual model responses, independent ground-truth annotation, statistical hypothesis tests, and paper claims remain external experiment runs. The repository supplies provider-neutral JSONL import so those runs use the same frozen pipeline.
+Provider execution, the 135-response genuine-model pilot, statistical tests,
+and paper claims remain external experiment runs. Hidden Oracle execution is
+machine ground truth rather than human scalar annotation. The repository stays
+provider-neutral and does not contain credentials or an implicit network call.

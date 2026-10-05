@@ -12,6 +12,7 @@ from pmw import Engine, Entity, Event, load_laws, load_world, parse_law
 from .compiler import compile_skill
 from .execution import activation_event
 from .spec import SkillSpec, load_skill
+from .substrate import apply_public_initialization, public_fields_are_bounded, system_laws
 
 ROOT = Path(__file__).resolve().parent
 ACTOR_ID = "actor:researcher"
@@ -102,8 +103,15 @@ def run_scenario(
     environment = _field(scenario, "environment")
     path = ROOT / "environments" / f"{environment}.json"
     world = load_world(path)
+    apply_public_initialization(
+        world,
+        variant=_field(scenario, "environment_variant", "standard"),
+        overrides=_field(scenario, "initial_fields", {}),
+    )
     if world_setup is not None:
         world_setup(world)
+    if not public_fields_are_bounded(world.to_dict()):
+        raise ScenarioExecutionError("scenario setup produced an invalid normalized public field")
     zone_id = _zone_id(world)
     target_count = int(_field(scenario, "target_count", 1))
     zone_ids = [zone_id]
@@ -119,13 +127,27 @@ def run_scenario(
         instance_id = f"skill:{skill_id}"
         world.entities[instance_id] = Entity(instance_id, archetype="skill_instance", components={"skill": {"spec_id": skill_id, "owner": ACTOR_ID, "charges": spec.charges}})
 
-    laws = load_laws(ROOT / "substrate" / "world_laws.json")
+    laws = load_laws(ROOT / "substrate" / "world_laws.json") + system_laws()
     laws += [parse_law(raw) for skill_id in selected for raw in compile_mechanic(catalog[skill_id])["laws"]]
     runtime = Engine(laws).attach(world)
     initial = runtime.state.to_dict()
     roots: list[RootExecution] = []
     cast_serial = step_serial = 0
     scenario_id = _field(scenario, "id")
+
+    def ensure_bounded() -> None:
+        if not public_fields_are_bounded(runtime.state.to_dict()):
+            raise ScenarioExecutionError("normalized public field invariant was not restored by PMW closure")
+
+    def dissipate(command_id: str) -> None:
+        nonlocal step_serial
+        event = Event(
+            f"{scenario_id}.dissipate.{step_serial:03d}", "lab.dissipate",
+            time=runtime.state.sim_time, source=None, target=zone_id,
+        )
+        roots.append(_record(command_id, runtime.run_event(event)))
+        ensure_bounded()
+
     for command_index, command in enumerate(_field(scenario, "program", ())):
         op = _field(command, "op")
         command_id = f"{scenario_id}.cmd.{command_index:03d}.{op}"
@@ -143,17 +165,21 @@ def run_scenario(
                         actor_id=ACTOR_ID, zone_id=target_zone_id, time=runtime.state.sim_time,
                     ))
                     roots.append(_record(command_id, result))
+                    ensure_bounded()
         elif op == "step":
             repeats = _field(command, "repeats", 1)
             for _ in range(repeats):
                 step_serial += 1
                 event = Event(f"{scenario_id}.step.{step_serial:03d}", "lab.step", time=runtime.state.sim_time, source=None, target=zone_id)
                 roots.append(_record(command_id, runtime.run_event(event)))
+                ensure_bounded()
+                dissipate(command_id)
         elif op == "advance":
             target = _field(command, "to")
             advance = runtime.advance_to(float(target))
             for dispatch in advance.dispatches:
                 roots.append(_record(command_id, dispatch.result))
+                ensure_bounded()
         else:
             raise ScenarioExecutionError(f"unsupported program operation {op!r}")
 
@@ -166,6 +192,7 @@ def run_scenario(
         advance = runtime.advance_to(float(when))
         for dispatch in advance.dispatches:
             roots.append(_record(f"{scenario_id}.horizon.{name}", dispatch.result))
+            ensure_bounded()
         horizons[name] = runtime.state.to_dict()
     return ScenarioRun(
         scenario_id, _field(scenario, "split"), environment, selected, initial,

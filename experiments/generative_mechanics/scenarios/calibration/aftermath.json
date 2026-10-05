@@ -4,6 +4,8 @@
   "category": "aftermath",
   "target_count": 1,
   "environment": "wetland",
+  "environment_variant": "saturated",
+  "initial_fields": {},
   "build": {
     "backpack": ["flash_fire", "thermal_lance", "static_grave", "monsoon_seed", "floodgate", "mud_anchor", "grounding_rod", "firebreak", "clear_sky", "drying_wind"],
     "active": ["flash_fire", "thermal_lance", "static_grave", "monsoon_seed", "floodgate", "mud_anchor"]
@@ -13,5 +15,6 @@
     {"op": "step", "repeats": 2}
   ],
   "horizons": {"combat_end": 0, "short": 12, "medium": 60},
+  "horizon_weights": {"combat_end": 0.15, "short": 0.3, "medium": 0.55},
   "weights": {"combat": 0.05, "survival": 0.15, "control": 0.15, "utility": 0.15, "exploration_world_impact": 0.5}
 }

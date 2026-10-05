@@ -4,6 +4,8 @@
   "category": "environmental_hazard",
   "target_count": 1,
   "environment": "fragile_bridge",
+  "environment_variant": "unstable",
+  "initial_fields": {"visibility": 0.75},
   "build": {
     "backpack": ["bedrock_memory", "mud_anchor", "stability_charge", "grounding_rod", "firebreak", "drying_wind", "clear_sky", "cold_sink", "spark_tax", "reservoir_echo"],
     "active": ["bedrock_memory", "mud_anchor", "stability_charge", "grounding_rod", "firebreak", "drying_wind"]
@@ -15,5 +17,6 @@
     {"op": "step", "repeats": 2}
   ],
   "horizons": {"combat_end": 6, "short": 20, "medium": 80},
+  "horizon_weights": {"combat_end": 0.35, "short": 0.4, "medium": 0.25},
   "weights": {"combat": 0.05, "survival": 0.35, "control": 0.15, "utility": 0.2, "exploration_world_impact": 0.25}
 }

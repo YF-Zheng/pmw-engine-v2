@@ -178,6 +178,11 @@ class Phase3ExecutionTests(unittest.TestCase):
         self.assertEqual(result["schema_validity"], 2 / 3)
         self.assertEqual(result["compile_rate"], 1 / 2)
         self.assertEqual(result["execution_validity"], 1.0)
+        self.assertEqual(set(result["diversity"]), {
+            "structural_unique", "structural_ratio",
+            "parametric_unique", "parametric_ratio",
+        })
+        self.assertIn("deterministic_controller_hit_rate", result)
 
 
 class AnalysisAndFigureTests(unittest.TestCase):
@@ -205,10 +210,39 @@ class AnalysisAndFigureTests(unittest.TestCase):
             }
         result = evaluator_comparison(
             [row("a", 5, 8, 9, 10), row("b", 30, 24, 21, 20)],
-            {"a": 10, "b": 20},
+            {
+                "IntrinsicPower": {"a": 10, "b": 20},
+                "ContextualMarginalPower": {"a": 10, "b": 20},
+            },
         )
         self.assertTrue(result["available"])
-        self.assertEqual(result["evaluators"]["pmw_contextual_search"]["mae"], 0)
+        self.assertEqual(
+            result["tasks"]["ContextualMarginalPower"]["evaluators"]
+            ["pmw_contextual_search"]["mae"], 0,
+        )
+        self.assertNotIn(
+            "pmw_contextual_search",
+            result["tasks"]["IntrinsicPower"]["evaluators"],
+        )
+        self.assertFalse(result["cross_estimand_comparisons"])
+        self.assertEqual(
+            result["tasks"]["ContextualMarginalPower"]["oracle_target"],
+            "OraclePersonalizedDelta",
+        )
+
+    def test_legacy_ground_truth_is_intrinsic_only(self):
+        rows = [{
+            "sample_id": sample_id, "status": "ok",
+            "evaluators": {
+                "self_rating": {"available": True, "score": score},
+                "static_heuristic": {"available": True, "score": score},
+                "pmw_standard_simulation": {"available": True, "score": score},
+                "pmw_contextual_search": {"available": True, "score": score},
+            },
+        } for sample_id, score in (("a", 1), ("b", 2))]
+        result = evaluator_comparison(rows, {"a": 1, "b": 2})
+        self.assertTrue(result["tasks"]["IntrinsicPower"]["available"])
+        self.assertFalse(result["tasks"]["ContextualMarginalPower"]["available"])
 
     def test_analysis_marks_fixture_results(self):
         result = analyze([], [], {"schema_validity": 0, "compile_rate": 0, "execution_validity": 0})

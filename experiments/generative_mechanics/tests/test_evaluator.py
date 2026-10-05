@@ -50,10 +50,11 @@ class RunnerTests(unittest.TestCase):
 
 
 class EvaluatorTests(unittest.TestCase):
-    def test_held_out_profile_uses_exactly_six_scenarios(self):
+    def test_evaluation_profile_uses_exactly_six_scenarios(self):
         profile = evaluate_build(scenarios(), ("static_grave",), split="held_out")
         self.assertEqual(len(profile.scenario_scores), 6)
-        self.assertTrue(all(item.scenario_id.startswith("held_out_") for item in profile.scenario_scores))
+        self.assertEqual(profile.split, "evaluation")
+        self.assertTrue(all(item.scenario_id.startswith("evaluation_") for item in profile.scenario_scores))
 
     def test_calibration_and_held_out_are_separate(self):
         calibration = evaluate_build(scenarios(), ("static_grave",), split="calibration")
@@ -103,7 +104,7 @@ class EvaluatorTests(unittest.TestCase):
         self.assertGreater(profile.persistent_world_impact, 0)
 
     def test_emergent_reach_uses_paired_counterfactual(self):
-        wetland = next(item for item in scenarios() if item.split == "held_out" and item.environment == "wetland")
+        wetland = next(item for item in scenarios() if item.split == "evaluation" and item.environment == "wetland")
         reach = emergent_reach(wetland, ("static_grave",), "static_grave")
         self.assertGreater(reach.direct_law_count, 0)
         self.assertGreater(reach.downstream_law_count, 0)
@@ -113,7 +114,7 @@ class EvaluatorTests(unittest.TestCase):
         self.assertGreater(reach.persistent_consequence_count, 0)
 
     def test_direct_only_change_is_not_counted_as_downstream(self):
-        mine = next(item for item in scenarios() if item.split == "held_out" and item.environment == "mine")
+        mine = next(item for item in scenarios() if item.split == "evaluation" and item.environment == "mine")
         reach = emergent_reach(mine, ("stability_charge",), "stability_charge")
         self.assertGreater(reach.direct_law_count, 0)
         self.assertEqual((reach.downstream_law_count, reach.affected_subsystem_count, reach.persistent_consequence_count), (0, 0, 0))

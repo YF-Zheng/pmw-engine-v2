@@ -10,14 +10,17 @@ import re
 from typing import Any
 
 from .spec import SkillSpec, load_skill
+from .substrate import ENVIRONMENT_VARIANTS, validate_public_fields
 
 
 ROOT = Path(__file__).resolve().parent
 SCENARIO_FIELDS = frozenset({
     "id", "split", "category", "environment", "build", "program",
-    "horizons", "weights", "target_count",
+    "horizons", "horizon_weights", "weights", "target_count",
+    "environment_variant", "initial_fields",
 })
-SPLITS = frozenset({"calibration", "held_out"})
+SPLITS = frozenset({"calibration", "evaluation", "oracle"})
+LEGACY_SPLIT_ALIASES = {"held_out": "evaluation"}
 CATEGORIES = frozenset({
     "short_combat", "long_combat", "resource_limited", "multi_target",
     "environmental_hazard", "aftermath",
@@ -69,15 +72,36 @@ class Scenario:
     split: str
     category: str
     environment: str
+    environment_variant: str
+    initial_fields: dict[str, float]
     build: Build
     program: tuple[ProgramInstruction, ...]
     horizons: dict[str, float]
+    horizon_weights: dict[str, float]
     weights: dict[str, float]
     target_count: int
 
 
 def _fail(path: str, message: str) -> None:
     raise ScenarioError(f"{path}: {message}")
+
+
+def normalize_split(split: str) -> str:
+    """Resolve the one supported pre-v0.2 split name."""
+    return LEGACY_SPLIT_ALIASES.get(split, split)
+
+
+def split_directory(split: str) -> Path:
+    """Return the canonical asset directory, accepting the v0.1 alias."""
+    canonical = normalize_split(split)
+    if canonical not in {"calibration", "evaluation"}:
+        raise ScenarioError("only public calibration/evaluation splits have asset directories")
+    return ROOT / "scenarios" / canonical
+
+
+def public_calibration_paths() -> tuple[Path, ...]:
+    """The complete and exclusive scenario surface allowed in prompts."""
+    return tuple(sorted(split_directory("calibration").glob("*.json")))
 
 
 def _strict_object(value: Any, path: str, fields: set[str] | frozenset[str]) -> dict[str, Any]:
@@ -136,9 +160,12 @@ def validate_scenario(
     scenario_id = data["id"]
     if not isinstance(scenario_id, str) or not ID_PATTERN.fullmatch(scenario_id):
         _fail("id", "must match [a-z][a-z0-9_]{2,63}")
-    split = data["split"]
+    raw_split = data["split"]
+    split = normalize_split(raw_split)
     if split not in SPLITS:
         _fail("split", f"must be one of {sorted(SPLITS)}")
+    if raw_split == "held_out" and scenario_id.startswith("held_out_"):
+        scenario_id = f"evaluation_{scenario_id.removeprefix('held_out_')}"
     if not scenario_id.startswith(f"{split}_"):
         _fail("id", "must start with its split name")
     category = data["category"]
@@ -156,6 +183,13 @@ def validate_scenario(
     env_dir = Path(environments_dir) if environments_dir is not None else ROOT / "environments"
     if not (env_dir / f"{environment}.json").is_file():
         _fail("environment", f"unknown environment: {environment}")
+    environment_variant = data["environment_variant"]
+    if environment_variant not in ENVIRONMENT_VARIANTS:
+        _fail("environment_variant", f"must be one of {sorted(ENVIRONMENT_VARIANTS)}")
+    try:
+        initial_fields = validate_public_fields(data["initial_fields"])
+    except ValueError as exc:
+        raise ScenarioError(str(exc)) from exc
 
     skill_dir = Path(skills_dir) if skills_dir is not None else ROOT / "skills"
     catalog = _skill_catalog(skill_dir)
@@ -208,16 +242,31 @@ def validate_scenario(
     if last_advance > horizons["combat_end"]:
         _fail("program", "advance cannot exceed combat_end; later times are observation horizons")
 
+    horizon_weights_raw = _strict_object(data["horizon_weights"], "horizon_weights", frozenset(HORIZON_KEYS))
+    horizon_weights = {
+        key: _finite(horizon_weights_raw[key], f"horizon_weights.{key}", high=1.0)
+        for key in HORIZON_KEYS
+    }
+    if not math.isclose(sum(horizon_weights.values()), 1.0, abs_tol=1e-9):
+        _fail("horizon_weights", "must sum to 1.0")
+
     weights_raw = _strict_object(data["weights"], "weights", frozenset(WEIGHT_KEYS))
     weights = {key: _finite(weights_raw[key], f"weights.{key}", high=1.0) for key in WEIGHT_KEYS}
     if not math.isclose(sum(weights.values()), 1.0, abs_tol=1e-9):
         _fail("weights", "must sum to 1.0")
-    return Scenario(scenario_id, split, category, environment, build, tuple(program), horizons, weights, target_count)
+    return Scenario(
+        scenario_id, split, category, environment, environment_variant,
+        initial_fields, build, tuple(program), horizons, horizon_weights,
+        weights, target_count,
+    )
 
 
 def load_scenario(path: str | Path) -> Scenario:
+    source = Path(path)
+    if not source.is_file() and source.parent.name == "held_out":
+        source = source.parent.parent / "evaluation" / source.name
     try:
-        raw = json.loads(Path(path).read_text(encoding="utf-8"))
+        raw = json.loads(source.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise ScenarioError(f"{path}: cannot load scenario: {exc}") from exc
     return validate_scenario(raw)

@@ -9,6 +9,7 @@ from typing import Callable, Iterable
 from .spec import SkillSpec
 
 MAX_BACKPACK = 10
+MAX_AUGMENTED_BACKPACK = 11
 MAX_ACTIVE = 6
 MAX_SLOT_COST = 6
 
@@ -37,19 +38,23 @@ class PersonalizedDelta:
     delta: float
 
 
-def _catalog(skills: Iterable[SkillSpec]) -> dict[str, SkillSpec]:
+def _catalog(
+    skills: Iterable[SkillSpec], *, max_backpack: int = MAX_BACKPACK,
+) -> dict[str, SkillSpec]:
     result: dict[str, SkillSpec] = {}
     for spec in skills:
         if spec.id in result:
             raise BuildSearchError(f"duplicate backpack skill {spec.id!r}")
         result[spec.id] = spec
-    if len(result) > MAX_BACKPACK:
-        raise BuildSearchError(f"backpack exceeds {MAX_BACKPACK} skills")
+    if len(result) > max_backpack:
+        raise BuildSearchError(f"backpack exceeds {max_backpack} skills")
     return result
 
 
-def legal_builds(skills: Iterable[SkillSpec]) -> tuple[tuple[str, ...], ...]:
-    catalog = _catalog(skills)
+def legal_builds(
+    skills: Iterable[SkillSpec], *, max_backpack: int = MAX_BACKPACK,
+) -> tuple[tuple[str, ...], ...]:
+    catalog = _catalog(skills, max_backpack=max_backpack)
     ids = tuple(sorted(catalog))
     builds: list[tuple[str, ...]] = [()]
     for size in range(1, min(MAX_ACTIVE, len(ids)) + 1):
@@ -59,8 +64,11 @@ def legal_builds(skills: Iterable[SkillSpec]) -> tuple[tuple[str, ...], ...]:
     return tuple(builds)
 
 
-def search_best(skills: Iterable[SkillSpec], value_fn: Callable[[tuple[str, ...]], float]) -> SearchResult:
-    builds = legal_builds(skills)
+def search_best(
+    skills: Iterable[SkillSpec], value_fn: Callable[[tuple[str, ...]], float],
+    *, max_backpack: int = MAX_BACKPACK,
+) -> SearchResult:
+    builds = legal_builds(skills, max_backpack=max_backpack)
     scored = [BuildScore(build, float(value_fn(build))) for build in builds]
     best = min(scored, key=lambda item: (-item.value, item.skills))
     return SearchResult(best=best, evaluations=len(scored), legal_builds=len(builds))
@@ -85,5 +93,8 @@ def personalized_delta(
     if candidate.id in {item.id for item in before_specs}:
         raise BuildSearchError("candidate already exists in backpack")
     before = search_best(before_specs, value_fn).best
-    after = search_best((*before_specs, candidate), value_fn).best
+    after = search_best(
+        (*before_specs, candidate), value_fn,
+        max_backpack=MAX_AUGMENTED_BACKPACK,
+    ).best
     return PersonalizedDelta(before, after, after.value - before.value)

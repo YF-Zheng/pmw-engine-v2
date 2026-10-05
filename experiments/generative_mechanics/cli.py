@@ -3,15 +3,19 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace
 import json
 from pathlib import Path
 
 from .compiler import canonical_json, compile_skill
 from .build_search import pairwise_synergy, personalized_delta, search_best
-from .evaluator import emergent_reach, evaluate_build, evaluate_candidate
+from .evaluator import (
+    emergent_reach, evaluate_build, evaluate_candidate,
+    evaluate_contextual_candidate,
+)
 from .exploit import detect_exploits
 from .runner import load_skill_catalog, run_scenario
-from .scenario import load_scenario
+from .scenario import load_scenario, normalize_split
 from .smoke import ROOT, default_smoke
 from .spec import SkillSpecError, load_skill
 from .analysis import analyze
@@ -19,6 +23,7 @@ from .batch import BatchConfig, run_batch
 from .figures import render_figures
 from .generation import (
     GenerationContractError, ingest_path, write_fixture_jsonl, write_request_jsonl,
+    write_request_jsonl_v02,
 )
 
 
@@ -34,24 +39,27 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("path", type=Path)
     run.add_argument("--skills", nargs="*", default=None)
     skill = commands.add_parser("evaluate-skill", help="evaluate one skill on a strict scenario split")
-    skill.add_argument("skill_id"); skill.add_argument("--split", choices=("calibration", "held_out"), default="held_out")
+    split_choices = ("calibration", "evaluation", "oracle", "held_out")
+    skill.add_argument("skill_id"); skill.add_argument("--split", choices=split_choices, default="evaluation")
     build = commands.add_parser("evaluate-build", help="evaluate an active build")
-    build.add_argument("skill_ids", nargs="+"); build.add_argument("--split", choices=("calibration", "held_out"), default="held_out")
+    build.add_argument("skill_ids", nargs="+"); build.add_argument("--split", choices=split_choices, default="evaluation")
     search = commands.add_parser("search-build", help="exhaustively search a backpack once")
-    search.add_argument("skill_ids", nargs="+"); search.add_argument("--split", choices=("calibration", "held_out"), default="calibration")
+    search.add_argument("skill_ids", nargs="+"); search.add_argument("--split", choices=split_choices, default="calibration")
     candidate = commands.add_parser("evaluate-candidate", help="compare exhaustive best builds before and after a candidate")
     candidate.add_argument("candidate_skill"); candidate.add_argument("existing_backpack", nargs="*")
-    candidate.add_argument("--split", choices=("calibration", "held_out"), default="held_out")
+    candidate.add_argument("--split", choices=split_choices, default="evaluation")
     fixture = commands.add_parser("generate-fixture", help="write balanced deterministic JSONL fixtures")
     fixture.add_argument("output", type=Path); fixture.add_argument("--seed", type=int, default=2601)
     requests = commands.add_parser("generate-requests", help="write provider-neutral prompt request JSONL")
     requests.add_argument("output", type=Path); requests.add_argument("--seed", type=int, default=2601)
     requests.add_argument("--per-cell", type=int, default=40)
+    requests.add_argument("--protocol", choices=("v0.2", "v0.1"), default="v0.2")
     ingest = commands.add_parser("ingest-responses", help="strictly ingest versioned response JSONL")
     ingest.add_argument("input", type=Path)
     batch = commands.add_parser("run-batch", help="run a fault-isolated generated-mechanic batch")
     batch.add_argument("input", type=Path); batch.add_argument("output", type=Path)
     batch.add_argument("--profile", choices=("ci", "full"), default="ci")
+    batch.add_argument("--contextual", choices=("deferred", "exact"), default="deferred")
     analysis = commands.add_parser("analyze-results", help="compute cross-environment and kill-criteria tables")
     analysis.add_argument("input", type=Path); analysis.add_argument("batch_dir", type=Path)
     analysis.add_argument("output", type=Path); analysis.add_argument("--limit", type=int, default=None)
@@ -83,7 +91,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "evaluate-skill":
             catalog = load_skill_catalog(); spec = catalog[args.skill_id]
             scenarios = _scenarios(); profile = evaluate_build(scenarios, (spec.id,), split=args.split)
-            relevant = next(item for item in scenarios if item.split == args.split)
+            relevant = next(item for item in scenarios if item.split == normalize_split(args.split))
             compiled = compile_skill(spec)
             print(canonical_json({
                 "PowerProfile": profile.to_dict(),
@@ -107,9 +115,16 @@ def main(argv: list[str] | None = None) -> int:
                 "pairwise_synergy": pairwise_synergy(specs, value),
             }))
         elif args.command == "evaluate-candidate":
-            print(canonical_json(evaluate_candidate(
-                _scenarios(), args.existing_backpack, args.candidate_skill, split=args.split,
-            ).to_dict()))
+            result = (
+                evaluate_candidate(
+                    _scenarios(), args.existing_backpack, args.candidate_skill, split=args.split,
+                )
+                if args.existing_backpack
+                else evaluate_contextual_candidate(
+                    _scenarios(), args.candidate_skill, split=args.split,
+                )
+            )
+            print(canonical_json(result.to_dict()))
         elif args.command == "generate-fixture":
             digest = write_fixture_jsonl(args.output, seed=args.seed)
             print(canonical_json({"count": 240, "output": str(args.output), "sha256": digest,
@@ -117,10 +132,19 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "generate-requests":
             if args.per_cell < 1:
                 raise ValueError("per-cell must be positive")
-            digest = write_request_jsonl(args.output, seed=args.seed, per_cell=args.per_cell)
+            if args.protocol == "v0.2":
+                digest = write_request_jsonl_v02(
+                    args.output, master_seed=args.seed, per_cell=args.per_cell,
+                )
+                cells = 9
+                protocol = "gm-generation-v0.2"
+            else:
+                digest = write_request_jsonl(args.output, seed=args.seed, per_cell=args.per_cell)
+                cells = 6
+                protocol = "gm-generation-v0.1"
             print(canonical_json({
-                "count": 6 * args.per_cell, "output": str(args.output),
-                "sha256": digest, "source_kind": "provider_request",
+                "count": cells * args.per_cell, "output": str(args.output),
+                "sha256": digest, "source_kind": "provider_request", "protocol": protocol,
             }))
         elif args.command == "ingest-responses":
             result = ingest_path(args.input)
@@ -131,6 +155,8 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "run-batch":
             ingestion = ingest_path(args.input)
             config = BatchConfig.full_fixture() if args.profile == "full" else BatchConfig()
+            if args.contextual != config.contextual_mode:
+                config = replace(config, contextual_mode=args.contextual)
             result = run_batch(
                 ingestion.samples, args.output, config,
                 ingestion_errors=ingestion.errors,
@@ -152,7 +178,10 @@ def main(argv: list[str] | None = None) -> int:
             )
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-            print(canonical_json({"output": str(args.output), "cross_environment_n": result["cross_environment_aggregate"]["n"]}))
+            print(canonical_json({
+                "output": str(args.output),
+                "cross_environment_n": result["cross_environment_aggregate"]["overall_secondary"]["n"],
+            }))
         elif args.command == "render-figures":
             records = [json.loads(line) for line in (args.batch_dir / "records.jsonl").read_text(encoding="utf-8").splitlines()]
             summary = json.loads((args.batch_dir / "summary.json").read_text(encoding="utf-8"))

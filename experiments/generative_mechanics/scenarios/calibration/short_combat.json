@@ -4,6 +4,8 @@
   "category": "short_combat",
   "target_count": 1,
   "environment": "industrial_yard",
+  "environment_variant": "standard",
+  "initial_fields": {},
   "build": {
     "backpack": ["static_grave", "kindling_arc", "thermal_lance", "bedrock_memory", "cold_sink", "storm_coil", "firebreak", "mud_anchor", "clear_sky", "whiteout_veil"],
     "active": ["static_grave", "kindling_arc", "thermal_lance", "bedrock_memory", "cold_sink", "storm_coil"]
@@ -13,5 +15,6 @@
     {"op": "step", "repeats": 2}
   ],
   "horizons": {"combat_end": 0, "short": 10, "medium": 40},
+  "horizon_weights": {"combat_end": 0.7, "short": 0.2, "medium": 0.1},
   "weights": {"combat": 0.45, "survival": 0.1, "control": 0.15, "utility": 0.1, "exploration_world_impact": 0.2}
 }

@@ -9,30 +9,35 @@ import math
 from pathlib import Path
 from typing import Any, Iterable
 
-from .build_search import search_best
 from .compiler import canonical_json, compile_skill
-from .evaluator import CAPABILITIES, _delta, _weights
+from .diversity import parametric_fingerprint, structural_fingerprint
+from .power_v02 import (
+    ContextualSearchCache,
+    evaluate_contextual_power,
+    evaluate_power,
+)
 from .exploit import detect_exploits
 from .generation import (
     DirectEffectSpec, GeneratedSample, IngestionError, POWER_BANDS,
     balanced_sample, compile_direct_effect, prepare_direct_world, skill_to_dict,
 )
 from .runner import load_skill_catalog, run_scenario
-from .scenario import load_scenario
+from .scenario import load_scenario, normalize_split
 from .smoke import ROOT
 from .spec import SkillSpec, validate_skill
 
-BATCH_SCHEMA_VERSION = "gm-batch-v0.1"
-REALIZED_POWER_SCALE = 8.0
+BATCH_SCHEMA_VERSION = "gm-batch-v0.2"
 
 
 @dataclass(frozen=True, slots=True)
 class BatchConfig:
     profile: str = "ci"
-    split: str = "held_out"
+    split: str = "evaluation"
     sample_limit: int | None = 12
     scenario_limit: int = 2
-    contextual_pool: tuple[str, ...] = ("static_grave", "kindling_arc")
+    # Deprecated v0.1 compatibility input. v0.2 always uses scenario backpacks.
+    contextual_pool: tuple[str, ...] = ()
+    contextual_mode: str = "deferred"
     revision_enabled: bool = True
 
     def to_dict(self) -> dict[str, Any]:
@@ -47,35 +52,25 @@ def config_hash(config: BatchConfig) -> str:
     return hashlib.sha256(canonical_json(config.to_dict()).encode("utf-8")).hexdigest()
 
 
-def load_scenarios(split: str = "held_out", limit: int | None = None) -> tuple[Any, ...]:
+def load_scenarios(split: str = "evaluation", limit: int | None = None) -> tuple[Any, ...]:
+    split = normalize_split(split)
     result = tuple(
         load_scenario(path) for path in sorted((ROOT / "scenarios" / split).glob("*.json"))
     )
     return result[:limit] if limit is not None else result
 
 
-def compile_mechanic(mechanic: SkillSpec | DirectEffectSpec) -> dict[str, Any]:
-    return compile_skill(mechanic) if isinstance(mechanic, SkillSpec) else compile_direct_effect(mechanic)
-
-
-def _direct_capabilities(with_run, baseline) -> dict[str, float]:
-    def totals(run):
-        result = {key: 0.0 for key in ("damage", "heal", "buff", "debuff")}
-        for entity in run.final_state["entities"]:
-            values = entity.get("components", {}).get("direct_outcome")
-            if values:
-                for key in result:
-                    result[key] += float(values[key])
-        return result
-    left, right = totals(with_run), totals(baseline)
-    delta = {key: left[key] - right[key] for key in left}
-    return {
-        "Combat": 100.0 * delta["damage"],
-        "Survival": 100.0 * delta["heal"],
-        "Control": 100.0 * delta["debuff"],
-        "Utility": 100.0 * delta["buff"],
-        "ExplorationWorldImpact": 0.0,
-    }
+def compile_mechanic(mechanic: Any) -> dict[str, Any]:
+    if isinstance(mechanic, SkillSpec):
+        return compile_skill(mechanic)
+    if isinstance(mechanic, DirectEffectSpec):
+        return compile_direct_effect(mechanic)
+    # MatchedDirectOutcome is optional at this layer and deliberately duck-typed
+    # so the authoritative evaluator does not depend on a baseline implementation.
+    from .baseline_v02 import MatchedDirectOutcomeSpec, compile_matched_direct_outcome
+    if isinstance(mechanic, MatchedDirectOutcomeSpec):
+        return compile_matched_direct_outcome(mechanic)
+    raise TypeError(f"unsupported mechanic type: {type(mechanic).__name__}")
 
 
 def _dispatcher(mechanic: SkillSpec | DirectEffectSpec) -> dict[str, Any]:
@@ -85,30 +80,22 @@ def _dispatcher(mechanic: SkillSpec | DirectEffectSpec) -> dict[str, Any]:
 def execution_score(
     scenarios: Iterable[Any], build: Iterable[str], catalog: dict[str, Any],
 ) -> tuple[float, list[float], float, float]:
-    """Return mean score, per-scenario scores, interaction surface, persistence."""
-    values: list[float] = []
-    surfaces: list[int] = []
-    persistence: list[int] = []
-    for scenario in scenarios:
-        with_run = run_scenario(
-            scenario, build, catalog=catalog, compile_mechanic=_dispatcher,
-            world_setup=prepare_direct_world,
-        )
-        baseline = run_scenario(
-            scenario, (), catalog=catalog, compile_mechanic=_dispatcher,
-            world_setup=prepare_direct_world,
-        )
-        capabilities, differences, _ = _delta(with_run, baseline)
-        direct = _direct_capabilities(with_run, baseline)
-        combined = {name: capabilities[name] + direct[name] for name in CAPABILITIES}
-        weights = _weights(scenario)
-        values.append(sum(combined[name] * weights[name] for name in CAPABILITIES))
-        with_world = {law for root in with_run.roots for law in root.triggered_law_ids if law.startswith("gm.world.")}
-        base_world = {law for root in baseline.roots for law in root.triggered_law_ids if law.startswith("gm.world.")}
-        surfaces.append(len(with_world - base_world))
-        persistence.append(differences)
-    scaled = [value * REALIZED_POWER_SCALE for value in values]
-    return sum(scaled) / len(scaled), scaled, sum(surfaces) / len(surfaces), sum(persistence) / len(persistence)
+    """Compatibility facade over the authoritative PowerScaleContract."""
+    scenario_tuple = tuple(scenarios)
+    if not scenario_tuple:
+        raise ValueError("execution_score requires at least one scenario")
+    first = scenario_tuple[0]
+    split = normalize_split(first["split"] if isinstance(first, dict) else first.split)
+    profile = evaluate_power(
+        scenario_tuple, build, split=split, catalog=catalog,
+        compile_mechanic=_dispatcher, world_setup=prepare_direct_world,
+    )
+    return (
+        profile.typical_power,
+        [item.value for item in profile.scenario_scores],
+        profile.interaction_surface,
+        profile.persistent_world_impact,
+    )
 
 
 def static_heuristic(mechanic: SkillSpec | DirectEffectSpec) -> float:
@@ -121,12 +108,9 @@ def static_heuristic(mechanic: SkillSpec | DirectEffectSpec) -> float:
     return 100.0 * magnitude + min(20.0, mechanic.duration / 15.0) - 0.15 * mechanic.resource_cost
 
 
-def mechanic_fingerprint(mechanic: SkillSpec | DirectEffectSpec) -> str:
-    """Hash mechanic structure while ignoring labels that inflate diversity."""
-    raw = asdict(mechanic) if isinstance(mechanic, DirectEffectSpec) else skill_to_dict(mechanic)
-    raw.pop("id", None)
-    raw.pop("name", None)
-    return hashlib.sha256(canonical_json(raw).encode("utf-8")).hexdigest()
+def mechanic_fingerprint(mechanic: Any) -> str:
+    """Deprecated v0.1 alias for the exact parametric fingerprint."""
+    return parametric_fingerprint(mechanic)
 
 
 def _catalog(sample: GeneratedSample) -> dict[str, Any]:
@@ -140,24 +124,22 @@ def _catalog(sample: GeneratedSample) -> dict[str, Any]:
 def evaluate_four_baselines(
     sample: GeneratedSample, scenarios: Iterable[Any], contextual_pool: Iterable[str],
     *, contextual_base_values: dict[tuple[str, ...], float] | None = None,
+    contextual_cache: ContextualSearchCache | None = None,
+    contextual_mode: str = "deferred",
 ) -> dict[str, dict[str, Any]]:
     scenario_tuple = tuple(scenarios)
     catalog = _catalog(sample)
     standard, _, surface, persistence = execution_score(scenario_tuple, (sample.mechanic.id,), catalog)
-    pool = tuple(sorted(contextual_pool))
-    missing = set(pool) - set(catalog)
-    if missing:
-        raise ValueError(f"unknown contextual pool skills: {sorted(missing)}")
-    cache: dict[tuple[str, ...], float] = dict(contextual_base_values or {})
-    cache[()] = 0.0
-    cache[(sample.mechanic.id,)] = standard
-    def value(build: tuple[str, ...]) -> float:
-        canonical = tuple(sorted(build))
-        if canonical not in cache:
-            cache[canonical] = execution_score(scenario_tuple, canonical, catalog)[0]
-        return cache[canonical]
-    before = search_best((catalog[item] for item in pool), value).best
-    after = search_best((catalog[item] for item in (*pool, sample.mechanic.id)), value).best
+    if contextual_mode not in {"deferred", "exact"}:
+        raise ValueError("contextual_mode must be 'deferred' or 'exact'")
+    contextual = None
+    if contextual_mode == "exact":
+        split = scenario_tuple[0].split if not isinstance(scenario_tuple[0], dict) else scenario_tuple[0]["split"]
+        contextual = evaluate_contextual_power(
+            scenario_tuple, sample.mechanic.id, split=split, catalog=catalog,
+            compile_mechanic=_dispatcher, world_setup=prepare_direct_world,
+            cache=contextual_cache,
+        )
     self_rating = sample.declared_power
     return {
         "self_rating": {"available": self_rating is not None, "score": self_rating},
@@ -167,8 +149,17 @@ def evaluate_four_baselines(
             "interaction_surface": surface, "persistent_world_impact": persistence,
         },
         "pmw_contextual_search": {
-            "available": True, "score": after.value - before.value,
-            "best_before": list(before.skills), "best_after": list(after.skills),
+            **({
+                "available": True, "score": contextual.mean,
+                "mean": contextual.mean, "p90": contextual.p90, "max": contextual.maximum,
+                "estimand": "ContextualMarginalPower",
+                "contexts": [item.to_dict() for item in contextual.contexts],
+            } if contextual is not None else {
+                "available": False,
+                "score": None,
+                "estimand": "ContextualMarginalPower",
+                "reason": "deferred; rerun with contextual_mode='exact'",
+            }),
         },
     }
 
@@ -185,7 +176,9 @@ def revise_sample(sample: GeneratedSample, realized_score: float) -> GeneratedSa
         revised = replace(sample.mechanic, magnitude=max(0.01, min(1.0, round(sample.mechanic.magnitude * factor, 6))))
         raw = asdict(revised)
     else:
-        raw = skill_to_dict(sample.mechanic)
+        from .baseline_v02 import MatchedDirectOutcomeSpec, validate_matched_direct_outcome
+        matched = isinstance(sample.mechanic, MatchedDirectOutcomeSpec)
+        raw = sample.mechanic.to_dict() if matched else skill_to_dict(sample.mechanic)
         for effect in raw["effects"]:
             value = effect["delta"]
             if realized_score == 0:
@@ -193,7 +186,7 @@ def revise_sample(sample: GeneratedSample, realized_score: float) -> GeneratedSa
             else:
                 value = max(-1.0, min(1.0, value * factor))
             effect["delta"] = round(value, 6)
-        revised = validate_skill(raw)
+        revised = validate_matched_direct_outcome(raw) if matched else validate_skill(raw)
     return replace(sample, mechanic=revised, raw_mechanic=raw)
 
 
@@ -205,34 +198,51 @@ def _in_band(score: float, band: str) -> bool:
 def evaluate_sample(
     sample: GeneratedSample, config: BatchConfig, *, scenarios: Iterable[Any] | None = None,
     contextual_base_values: dict[tuple[str, ...], float] | None = None,
+    contextual_cache: ContextualSearchCache | None = None,
 ) -> dict[str, Any]:
     scenarios = tuple(scenarios) if scenarios is not None else load_scenarios(config.split, config.scenario_limit)
     compiled = compile_mechanic(sample.mechanic)
     evaluators = evaluate_four_baselines(
         sample, scenarios, config.contextual_pool,
         contextual_base_values=contextual_base_values,
+        contextual_cache=contextual_cache,
+        contextual_mode=config.contextual_mode,
     )
     standard = float(evaluators["pmw_standard_simulation"]["score"])
     revised = revise_sample(sample, standard) if config.revision_enabled else sample
     revised_score = standard
     if revised.mechanic != sample.mechanic:
-        revised_score = float(evaluate_four_baselines(
-            revised, scenarios, config.contextual_pool,
-            contextual_base_values=contextual_base_values,
-        )["pmw_standard_simulation"]["score"])
+        revised_catalog = _catalog(revised)
+        revised_score = execution_score(
+            scenarios, (revised.mechanic.id,), revised_catalog,
+        )[0]
     exploit = detect_exploits(compiled).to_dict()
     return {
         "sample_id": sample.sample_id, "baseline": sample.baseline,
         "target_band": sample.target_band, "source_kind": sample.source_kind,
         "status": "ok", "schema_valid": True, "compile_valid": True,
         "execution_valid": True, "evaluators": evaluators, "exploit": exploit,
+        "prediction_tables": {
+            "IntrinsicPower": {
+                key: evaluators[key]
+                for key in ("self_rating", "static_heuristic", "pmw_standard_simulation")
+            },
+            "ContextualMarginalPower": {
+                "pmw_contextual_search": evaluators["pmw_contextual_search"],
+            },
+        },
         "one_shot_hit": _in_band(standard, sample.target_band),
         "guided_score": revised_score,
         "guided_hit": _in_band(revised_score, sample.target_band),
+        "revision_method": "deterministic_controller",
+        "controller_score": revised_score,
+        "controller_hit": _in_band(revised_score, sample.target_band),
         "revision_applied": revised.mechanic != sample.mechanic,
         "revision_changed_spec": revised.raw_mechanic != sample.raw_mechanic,
         "revised_mechanic": revised.raw_mechanic if revised.mechanic != sample.mechanic else None,
         "mechanic_fingerprint": mechanic_fingerprint(sample.mechanic),
+        "structural_fingerprint": structural_fingerprint(sample.raw_mechanic),
+        "parametric_fingerprint": parametric_fingerprint(sample.raw_mechanic),
         "self_containment": float(
             evaluators["pmw_standard_simulation"]["interaction_surface"] == 0
         ),
@@ -248,7 +258,12 @@ def summarize(
     compile_valid = tuple(row for row in schema_valid if row.get("compile_valid"))
     def rate(key):
         return sum(bool(row.get(key)) for row in ok) / len(ok) if ok else 0.0
-    signatures = {row["mechanic_fingerprint"] for row in ok}
+    structural_signatures = {
+        row.get("structural_fingerprint", row["mechanic_fingerprint"]) for row in ok
+    }
+    parametric_signatures = {
+        row.get("parametric_fingerprint", row["mechanic_fingerprint"]) for row in ok
+    }
     scores = [row["evaluators"]["pmw_standard_simulation"]["score"] for row in ok]
     by_baseline = {}
     for baseline in sorted({row["baseline"] for row in ok}):
@@ -268,6 +283,7 @@ def summarize(
         by_target_band[band] = {
             "n": len(selected),
             "one_shot_hit_rate": mean_value(float(row["one_shot_hit"]) for row in selected),
+            "deterministic_controller_hit_rate": mean_value(float(row["controller_hit"]) for row in selected),
             "guided_hit_rate": mean_value(float(row["guided_hit"]) for row in selected),
         }
     total_inputs = len(rows) + len(ingest_failures)
@@ -279,7 +295,14 @@ def summarize(
         "schema_validity": len(schema_valid) / total_inputs if total_inputs else 0.0,
         "compile_rate": len(compile_valid) / len(schema_valid) if schema_valid else 0.0,
         "execution_validity": len(ok) / len(compile_valid) if compile_valid else 0.0,
-        "mechanic_diversity": len(signatures) / len(ok) if ok else 0.0,
+        "diversity": {
+            "structural_unique": len(structural_signatures),
+            "structural_ratio": len(structural_signatures) / len(ok) if ok else 0.0,
+            "parametric_unique": len(parametric_signatures),
+            "parametric_ratio": len(parametric_signatures) / len(ok) if ok else 0.0,
+        },
+        # v0.1 read compatibility; this was exact-parametric diversity despite its name.
+        "mechanic_diversity": len(parametric_signatures) / len(ok) if ok else 0.0,
         "mean_self_containment": sum(row["self_containment"] for row in ok) / len(ok) if ok else 0.0,
         "mean_interaction_surface": sum(row["evaluators"]["pmw_standard_simulation"]["interaction_surface"] for row in ok) / len(ok) if ok else 0.0,
         "mean_persistent_world_impact": sum(row["evaluators"]["pmw_standard_simulation"]["persistent_world_impact"] for row in ok) / len(ok) if ok else 0.0,
@@ -287,7 +310,9 @@ def summarize(
             "min": min(scores) if scores else None, "mean": sum(scores) / len(scores) if scores else None,
             "max": max(scores) if scores else None,
         },
-        "one_shot_hit_rate": rate("one_shot_hit"), "guided_hit_rate": rate("guided_hit"),
+        "one_shot_hit_rate": rate("one_shot_hit"),
+        "deterministic_controller_hit_rate": rate("controller_hit"),
+        "guided_hit_rate": rate("guided_hit"),
         "by_baseline": by_baseline, "by_target_band": by_target_band,
         "errors": [row for row in rows if row.get("status") != "ok"],
         "ingestion_errors": list(ingest_failures),
@@ -316,17 +341,7 @@ def run_batch(
             row = json.loads(line); existing[row["sample_id"]] = row
     selected = balanced_sample(samples, config.sample_limit)
     scenarios = load_scenarios(config.split, config.scenario_limit)
-    seed_catalog = load_skill_catalog()
-    missing_pool = set(config.contextual_pool) - set(seed_catalog)
-    if missing_pool:
-        raise ValueError(f"unknown contextual pool skills: {sorted(missing_pool)}")
-    contextual_base_values: dict[tuple[str, ...], float] = {(): 0.0}
-    def seed_value(build: tuple[str, ...]) -> float:
-        canonical = tuple(sorted(build))
-        if canonical not in contextual_base_values:
-            contextual_base_values[canonical] = execution_score(scenarios, canonical, seed_catalog)[0]
-        return contextual_base_values[canonical]
-    search_best((seed_catalog[item] for item in config.contextual_pool), seed_value)
+    contextual_cache = ContextualSearchCache()
     for sample in selected:
         if sample.sample_id in existing:
             continue
@@ -340,7 +355,7 @@ def run_batch(
             base["compile_valid"] = True
             existing[sample.sample_id] = evaluate_sample(
                 sample, config, scenarios=scenarios,
-                contextual_base_values=contextual_base_values,
+                contextual_cache=contextual_cache,
             )
         except Exception as exc:  # per-sample isolation is part of the batch contract
             existing[sample.sample_id] = {

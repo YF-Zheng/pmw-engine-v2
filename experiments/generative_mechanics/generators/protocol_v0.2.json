@@ -1,0 +1,66 @@
+{
+  "baselines": {
+    "isolated_direct_effect": {
+      "schema": "DirectEffectSpec v0.1",
+      "surface": "direct_outcome",
+      "world_laws_may_read_surface": false
+    },
+    "matched_direct_outcome": {
+      "budget": [
+        "multiple_effects",
+        "public_trigger_conditions",
+        "duration_or_periodic",
+        "resource_cost",
+        "charges",
+        "slot_cost"
+      ],
+      "schema": "MatchedDirectOutcomeSpec v0.2",
+      "surface": "direct_outcome",
+      "world_laws_may_read_surface": false
+    },
+    "world_substrate": {
+      "channels": [
+        "temperature",
+        "wetness",
+        "electric_field",
+        "fire_intensity",
+        "sound_level",
+        "ground_stability",
+        "water_level",
+        "visibility"
+      ],
+      "schema": "SkillSpec v0.1"
+    }
+  },
+  "calibration_examples": {
+    "count_per_power_band": 2,
+    "provenance_split": "calibration",
+    "version": "gm-calibration-example-v0.1"
+  },
+  "envelope": {
+    "encoding": "UTF-8 JSON Lines",
+    "fields": [
+      "protocol_version",
+      "sample_id",
+      "sample_nonce",
+      "baseline",
+      "target_band",
+      "source_kind",
+      "provenance",
+      "response"
+    ],
+    "strict": true
+  },
+  "network_allowed": false,
+  "pmw_laws_allowed": false,
+  "pilot": {
+    "genuine_model_responses": 135,
+    "samples_per_baseline_band_cell": 15,
+    "requires_contextual_mode": "exact"
+  },
+  "protocol_version": "gm-generation-v0.2",
+  "request_identity": {
+    "canonical_prompt_contains": ["sample_id", "sample_nonce", "derived_seed"],
+    "derivation": "sha256(protocol_version|master_seed|baseline|target_band|sample_index)"
+  }
+}

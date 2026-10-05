@@ -12,6 +12,13 @@ from .compiler import compile_skill
 from .exploit import detect_exploits
 from .runner import ScenarioRun, run_scenario
 from .spec import SkillSpec
+from .power_v02 import (
+    POWER_SCALE,
+    ContextualMarginalPower,
+    ContextualSearchCache,
+    evaluate_contextual_power,
+    evaluate_power,
+)
 
 CAPABILITIES = ("Combat", "Survival", "Control", "Utility", "ExplorationWorldImpact")
 
@@ -51,6 +58,7 @@ class PowerProfile:
             "ExploitRisk": self.exploit_risk,
             "PersistentWorldImpact": self.persistent_world_impact,
             "scenario_scores": [item.to_dict() for item in self.scenario_scores],
+            "power_scale": POWER_SCALE.to_dict(),
         }
 
 
@@ -156,29 +164,29 @@ def _evaluate_core(
     scenarios: tuple[Any, ...], active: tuple[str, ...], split: str,
     catalog: dict[str, SkillSpec] | None = None,
 ) -> PowerProfile:
-    selected_scenarios = tuple(sorted((item for item in scenarios if (item["split"] if isinstance(item, dict) else item.split) == split), key=lambda item: item["id"] if isinstance(item, dict) else item.id))
-    if not selected_scenarios:
-        raise ValueError(f"no scenarios in split {split!r}")
-    scores: list[ScenarioScore] = []
-    surfaces: list[int] = []
-    persistent: list[int] = []
-    for scenario in selected_scenarios:
-        with_run = run_scenario(scenario, active, catalog=catalog)
-        baseline = run_scenario(scenario, (), catalog=catalog)
-        capabilities, difference_count, _ = _delta(with_run, baseline)
-        weights = _weights(scenario)
-        value = sum(capabilities[name] * weights[name] for name in CAPABILITIES)
-        scenario_id = scenario["id"] if isinstance(scenario, dict) else scenario.id
-        scores.append(ScenarioScore(scenario_id, value, capabilities))
-        world_delta = _law_counter(with_run, "gm.world.") - _law_counter(baseline, "gm.world.")
-        surfaces.append(len(world_delta))
-        persistent.append(difference_count)
-    values = sorted(item.value for item in scores)
-    p90 = values[max(0, math.ceil(.9 * len(values)) - 1)]
-    vector = {name: sum(item.capabilities[name] for item in scores) / len(scores) for name in CAPABILITIES}
+    intrinsic = evaluate_power(scenarios, active, split=split, catalog=catalog)
+    scores = tuple(
+        ScenarioScore(item.scenario_id, item.value, item.capabilities)
+        for item in intrinsic.scenario_scores
+    )
     return PowerProfile(
-        split, sum(values) / len(values), p90, max(values), None, 0.0, vector,
-        sum(surfaces) / len(surfaces), "LOW", sum(persistent) / len(persistent), tuple(scores),
+        intrinsic.split, intrinsic.typical_power, intrinsic.p90_power,
+        intrinsic.ceiling_power, None, 0.0, intrinsic.capability_vector,
+        intrinsic.interaction_surface, "LOW", intrinsic.persistent_world_impact, scores,
+    )
+
+
+def evaluate_contextual_candidate(
+    scenarios: Iterable[Any], candidate_skill: str, *, split: str = "evaluation",
+    catalog: dict[str, Any] | None = None,
+    compile_mechanic=compile_skill, world_setup=None,
+    cache: ContextualSearchCache | None = None, score_fn=None,
+) -> ContextualMarginalPower:
+    """Public evaluator facade for the ContextualMarginalPower estimand."""
+    return evaluate_contextual_power(
+        scenarios, candidate_skill, split=split, catalog=catalog,
+        compile_mechanic=compile_mechanic, world_setup=world_setup,
+        cache=cache, score_fn=score_fn,
     )
 
 
@@ -200,7 +208,7 @@ def _complete_profile(core, active, get_core, catalog, *, personalized=None):
 
 
 def evaluate_build(
-    scenarios: Iterable[Any], active_skill_ids: Iterable[str], *, split: str = "held_out",
+    scenarios: Iterable[Any], active_skill_ids: Iterable[str], *, split: str = "evaluation",
     catalog: dict[str, SkillSpec] | None = None,
 ) -> PowerProfile:
     from .runner import load_skill_catalog
@@ -221,7 +229,7 @@ def evaluate_build(
 
 def evaluate_candidate(
     scenarios: Iterable[Any], existing_backpack: Iterable[str], candidate_skill: str,
-    *, split: str = "held_out", catalog: dict[str, SkillSpec] | None = None,
+    *, split: str = "evaluation", catalog: dict[str, SkillSpec] | None = None,
 ) -> CandidateEvaluation:
     from .runner import load_skill_catalog
     scenario_tuple = tuple(scenarios)

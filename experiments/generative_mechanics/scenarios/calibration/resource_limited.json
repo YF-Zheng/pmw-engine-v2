@@ -4,6 +4,8 @@
   "category": "resource_limited",
   "target_count": 1,
   "environment": "wetland",
+  "environment_variant": "dry",
+  "initial_fields": {},
   "build": {
     "backpack": ["static_grave", "spark_tax", "cold_sink", "quake_engine", "kindling_arc", "storm_coil", "thermal_lance", "firebreak", "drying_wind", "stability_charge"],
     "active": ["static_grave", "spark_tax", "cold_sink", "quake_engine", "kindling_arc", "storm_coil"]
@@ -15,5 +17,6 @@
     {"op": "step", "repeats": 2}
   ],
   "horizons": {"combat_end": 0, "short": 12, "medium": 60},
+  "horizon_weights": {"combat_end": 0.45, "short": 0.35, "medium": 0.2},
   "weights": {"combat": 0.2, "survival": 0.3, "control": 0.2, "utility": 0.2, "exploration_world_impact": 0.1}
 }

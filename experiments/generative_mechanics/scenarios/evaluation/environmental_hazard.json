@@ -1,9 +1,11 @@
 {
-  "id": "held_out_environmental_hazard",
-  "split": "held_out",
+  "id": "evaluation_environmental_hazard",
+  "split": "evaluation",
   "category": "environmental_hazard",
   "target_count": 1,
   "environment": "mine",
+  "environment_variant": "unstable",
+  "initial_fields": {"wetness": 0.5},
   "build": {
     "backpack": ["mud_anchor", "bedrock_memory", "stability_charge", "clear_sky", "firebreak", "grounding_rod", "drying_wind", "cold_sink", "reservoir_echo", "spark_tax"],
     "active": ["mud_anchor", "bedrock_memory", "stability_charge", "clear_sky", "firebreak", "grounding_rod"]
@@ -15,5 +17,6 @@
     {"op": "step", "repeats": 2}
   ],
   "horizons": {"combat_end": 6, "short": 24, "medium": 84},
+  "horizon_weights": {"combat_end": 0.35, "short": 0.4, "medium": 0.25},
   "weights": {"combat": 0.05, "survival": 0.3, "control": 0.2, "utility": 0.25, "exploration_world_impact": 0.2}
 }

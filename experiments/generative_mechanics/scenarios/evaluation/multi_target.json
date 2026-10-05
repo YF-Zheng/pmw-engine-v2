@@ -1,9 +1,11 @@
 {
-  "id": "held_out_multi_target",
-  "split": "held_out",
+  "id": "evaluation_multi_target",
+  "split": "evaluation",
   "category": "multi_target",
   "target_count": 3,
   "environment": "wetland",
+  "environment_variant": "saturated",
+  "initial_fields": {"ground_stability": 0.25},
   "build": {
     "backpack": ["thunderclap", "flash_flood", "monsoon_seed", "floodgate", "static_grave", "fault_whisper", "grounding_rod", "drying_wind", "clear_sky", "mud_anchor"],
     "active": ["thunderclap", "flash_flood", "monsoon_seed", "floodgate", "static_grave", "fault_whisper"]
@@ -13,5 +15,6 @@
     {"op": "step", "repeats": 4}
   ],
   "horizons": {"combat_end": 0, "short": 16, "medium": 64},
+  "horizon_weights": {"combat_end": 0.55, "short": 0.3, "medium": 0.15},
   "weights": {"combat": 0.25, "survival": 0.15, "control": 0.3, "utility": 0.1, "exploration_world_impact": 0.2}
 }

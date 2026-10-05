@@ -11,13 +11,14 @@ from pmw import Engine, Event, load_laws, load_world, parse_law
 from .compiler import compile_skill
 from .execution import activation_event
 from .spec import SkillSpec, load_skill
+from .substrate import public_fields_are_bounded, system_laws
 
 ROOT = Path(__file__).resolve().parent
 
 
 def run_cross_environment(spec: SkillSpec) -> dict[str, Any]:
     compiled = compile_skill(spec)
-    laws = [parse_law(raw) for raw in compiled["laws"]] + load_laws(ROOT / "substrate" / "world_laws.json")
+    laws = [parse_law(raw) for raw in compiled["laws"]] + load_laws(ROOT / "substrate" / "world_laws.json") + system_laws()
     result: dict[str, Any] = {}
     for path in sorted((ROOT / "environments").glob("*.json")):
         world = load_world(path)
@@ -30,9 +31,12 @@ def run_cross_environment(spec: SkillSpec) -> dict[str, Any]:
             actor_id="actor:researcher", zone_id=zone.id, time=0.0,
         ))
         step = runtime.run_event(Event(id=f"step:{path.stem}", type="lab.step", time=0.0, source=None, target=zone.id))
+        runtime.run_event(Event(id=f"dissipate:{path.stem}", type="lab.dissipate", time=0.0, source=None, target=zone.id))
         if runtime.state.scheduled_events:
             runtime.advance_to(max(item.time for item in runtime.state.scheduled_events))
         final_zone = runtime.state.entities[zone.id]
+        if not public_fields_are_bounded(runtime.state.to_dict()):
+            raise RuntimeError("normalized public field invariant failed")
         result[path.stem] = {
             "activation_laws": sorted(activation.triggered_law_ids),
             "step_laws": sorted(step.triggered_law_ids),

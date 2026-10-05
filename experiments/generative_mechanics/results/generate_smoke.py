@@ -18,16 +18,16 @@ def result():
     catalog = load_skill_catalog()
     scenarios = [load_scenario(path) for path in sorted((ROOT / "scenarios").glob("*/*.json"))]
     skill = catalog["static_grave"]
-    held_wetland = next(item for item in scenarios if item.split == "held_out" and item.environment == "wetland")
+    evaluation_wetland = next(item for item in scenarios if item.split == "evaluation" and item.environment == "wetland")
     one_slot = tuple(item for item in catalog.values() if item.slot_cost == 1)[:10]
     return {
         "build_enumeration_count": len(legal_builds(one_slot)),
-        "candidate_evaluation": evaluate_candidate(scenarios, ("kindling_arc", "clear_sky"), skill.id, split="held_out").to_dict(),
+        "candidate_evaluation": evaluate_candidate(scenarios, ("kindling_arc", "clear_sky"), skill.id, split="evaluation").to_dict(),
         "cross_environment": default_smoke(),
-        "emergent_reach": emergent_reach(held_wetland, (skill.id,), skill.id).to_dict(),
+        "emergent_reach": emergent_reach(evaluation_wetland, (skill.id,), skill.id).to_dict(),
         "exploit_report": detect_exploits(compile_skill(skill)).to_dict(),
-        "power_profile": evaluate_build(scenarios, (skill.id,), split="held_out").to_dict(),
-        "scenario_split": {"calibration": 6, "held_out": 6},
+        "power_profile": evaluate_build(scenarios, (skill.id,), split="evaluation").to_dict(),
+        "scenario_split": {"calibration": 6, "evaluation": 6},
     }
 
 

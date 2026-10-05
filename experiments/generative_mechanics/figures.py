@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-FIGURE_VERSION = "gm-figures-v0.1"
+FIGURE_VERSION = "gm-figures-v0.2"
 COLORS = {"blue": "#0072B2", "orange": "#E69F00", "green": "#009E73",
           "red": "#D55E00", "purple": "#CC79A7", "gray": "#666666"}
 
@@ -63,43 +63,53 @@ def render_figures(batch: dict[str, Any], analysis: dict[str, Any], output_dir: 
     env_rows = analysis.get("cross_environment", [])
     fig, ax = plt.subplots(figsize=(6.4, 3.8))
     environments = ("mine", "wetland", "industrial_yard", "fragile_bridge")
-    values = [sum(row["environments"][env]["downstream_count"] for row in env_rows) / len(env_rows)
-              if env_rows else 0 for env in environments]
-    ax.bar(range(4), values, color=[COLORS["blue"], COLORS["green"], COLORS["orange"], COLORS["purple"]])
+    baselines = sorted({row.get("baseline", "unspecified") for row in env_rows})
+    width = .8 / max(1, len(baselines))
+    palette = (COLORS["orange"], COLORS["blue"], COLORS["green"])
+    for index, baseline in enumerate(baselines):
+        rows = [row for row in env_rows if row.get("baseline", "unspecified") == baseline]
+        values = [sum(row["environments"][env]["downstream_count"] for row in rows) / len(rows)
+                  if rows else 0 for env in environments]
+        positions = [position - .4 + width / 2 + index * width for position in range(4)]
+        ax.bar(positions, values, width=width, color=palette[index % len(palette)],
+               label=baseline.replace("_", " "))
     ax.set_xticks(range(4), ["Mine", "Wetland", "Industrial Yard", "Fragile Bridge"])
     ax.set_ylabel("Mean additional world laws")
     ax.set_title("Same unchanged mechanics across environments")
+    if baselines:
+        ax.legend(frameon=False)
     ax.spines[["top", "right"]].set_visible(False)
     artifacts += _save(fig, output / "fig2_cross_environment"); plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(6.0, 4.0))
     target_mid = {"Low": 25, "Mid": 45, "High": 65}
-    for baseline, color, marker in (("direct_effect", COLORS["orange"], "o"),
-                                     ("world_substrate", COLORS["blue"], "s")):
+    for baseline, color, marker in (("isolated_direct_effect", COLORS["orange"], "o"),
+                                     ("world_substrate", COLORS["blue"], "s"),
+                                     ("matched_direct_outcome", COLORS["green"], "^"),
+                                     ("direct_effect", COLORS["orange"], "o")):
         rows = [row for row in records if row["baseline"] == baseline]
         ax.scatter([target_mid[row["target_band"]] for row in rows],
                    [row["evaluators"]["pmw_standard_simulation"]["score"] for row in rows],
                    facecolors="none", edgecolors=color, marker=marker, alpha=.7,
                    label=baseline.replace("_", " ") + " one-shot")
         ax.scatter([target_mid[row["target_band"]] for row in rows],
-                   [row["guided_score"] for row in rows], color=color, marker="x", alpha=.65,
-                   label=baseline.replace("_", " ") + " guided")
+                   [row.get("controller_score", row["guided_score"]) for row in rows],
+                   color=color, marker="x", alpha=.65,
+                   label=baseline.replace("_", " ") + " deterministic controller")
     ax.plot([15, 75], [15, 75], color=COLORS["gray"], linestyle="--", linewidth=1)
-    ax.set(xlabel="Requested target midpoint", ylabel="Held-out realized power",
+    ax.set(xlabel="Requested target midpoint", ylabel="Evaluation realized power",
            title="Requested versus realized power")
     ax.legend(frameon=False); ax.spines[["top", "right"]].set_visible(False)
     artifacts += _save(fig, output / "fig3_target_vs_realized"); plt.close(fig)
 
-    fig, ax = plt.subplots(figsize=(6.2, 3.5)); ax.axis("off")
+    fig, axes = plt.subplots(1, 2, figsize=(9.0, 3.5))
     comparison = analysis.get("evaluator_comparison", {})
-    if not comparison.get("available"):
-        ax.text(.5, .56, "Evaluator accuracy unavailable", ha="center", va="center",
-                fontsize=13, fontweight="bold", transform=ax.transAxes)
-        ax.text(.5, .40, "No independent ground truth supplied.\nFixture scores are not substituted.",
-                ha="center", va="center", color=COLORS["gray"], transform=ax.transAxes)
-    else:
+    tasks = comparison.get("tasks", {})
+    for ax, task_name in zip(axes, ("IntrinsicPower", "ContextualMarginalPower")):
+        ax.axis("off")
+        task = tasks.get(task_name, {})
         available = [
-            (name, item) for name, item in comparison["evaluators"].items()
+            (name, item) for name, item in task.get("evaluators", {}).items()
             if item.get("mae") is not None
         ]
         if available:
@@ -107,18 +117,23 @@ def render_figures(batch: dict[str, Any], analysis: dict[str, Any], output_dir: 
             ax.axis("on"); ax.bar(range(len(names)), [item["mae"] for item in metrics], color=COLORS["blue"])
             ax.set_xticks(range(len(names)), [name.replace("_", "\n") for name in names]); ax.set_ylabel("MAE")
         else:
-            ax.text(.5, .5, "Insufficient paired evaluator data", ha="center", va="center",
+            ax.text(.5, .5, "Oracle target unavailable", ha="center", va="center",
                     transform=ax.transAxes)
-    ax.set_title("Evaluator comparison (fixture protocol)")
+        ax.set_title(task_name.replace("Power", " Power"))
+    fig.suptitle("Estimator accuracy by estimand")
     artifacts += _save(fig, output / "fig4_evaluator_comparison"); plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(6.0, 4.0))
-    global_scores = [row["evaluators"]["pmw_standard_simulation"]["score"] for row in records]
-    deltas = [row["evaluators"]["pmw_contextual_search"]["score"] for row in records]
-    colors = [COLORS["orange"] if row["baseline"] == "direct_effect" else COLORS["blue"] for row in records]
+    contextual_rows = [
+        row for row in records
+        if row.get("evaluators", {}).get("pmw_contextual_search", {}).get("available")
+    ]
+    global_scores = [row["evaluators"]["pmw_standard_simulation"]["score"] for row in contextual_rows]
+    deltas = [row["evaluators"]["pmw_contextual_search"]["score"] for row in contextual_rows]
+    colors = [COLORS["orange"] if "direct" in row["baseline"] else COLORS["blue"] for row in contextual_rows]
     ax.scatter(global_scores, deltas, c=colors, alpha=.65)
     ax.axhline(0, color=COLORS["gray"], linewidth=1)
-    ax.set(xlabel="Global held-out power", ylabel="Personalized build delta",
+    ax.set(xlabel="Intrinsic evaluation power", ylabel="Contextual marginal power",
            title="Global power versus contextual value")
     ax.spines[["top", "right"]].set_visible(False)
     artifacts += _save(fig, output / "fig5_global_vs_personalized"); plt.close(fig)

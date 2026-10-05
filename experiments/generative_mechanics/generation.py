@@ -111,6 +111,295 @@ class ProviderAdapter(Protocol):
     def generate(self, request: dict[str, Any]) -> dict[str, Any]: ...
 
 
+# v0.1 above is frozen for replaying the checked-in fixture study. New model
+# collection must opt in to v0.2 through the explicitly suffixed APIs below.
+PROTOCOL_VERSION_V02 = "gm-generation-v0.2"
+BASELINES_V02 = (
+    "isolated_direct_effect",
+    "world_substrate",
+    "matched_direct_outcome",
+)
+V02_ENVELOPE_FIELDS = frozenset({
+    "protocol_version", "sample_id", "sample_nonce", "baseline", "target_band",
+    "source_kind", "provenance", "response",
+})
+
+CHANNEL_SEMANTICS = {
+    "temperature": "normalized local thermal intensity; larger means hotter",
+    "wetness": "normalized surface saturation; larger means wetter",
+    "electric_field": "normalized ambient electrical potential",
+    "fire_intensity": "normalized active combustion intensity",
+    "sound_level": "normalized acoustic energy",
+    "ground_stability": "normalized structural ground integrity",
+    "water_level": "normalized standing-water depth",
+    "visibility": "normalized visual clarity",
+}
+
+
+def _world_law_path() -> Path:
+    return Path(__file__).with_name("substrate") / "world_laws.json"
+
+
+def _walk(value: Any) -> Iterable[Any]:
+    yield value
+    if isinstance(value, dict):
+        for item in value.values():
+            yield from _walk(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _walk(item)
+
+
+def public_rule_summary() -> dict[str, Any]:
+    """Derive a compact public-channel graph without exposing world instances.
+
+    Entity material/process predicates and all environment initial values are
+    intentionally omitted. The source digest lets an authoritative scorer prove
+    which frozen generic-law set produced the disclosure.
+    """
+    source = _world_law_path().read_bytes()
+    laws = json.loads(source)["laws"]
+    summaries: list[dict[str, Any]] = []
+    for index, law in enumerate(laws):
+        reads: set[str] = set()
+        writes: set[str] = set()
+        event_types: set[str] = set()
+        predicates: list[dict[str, Any]] = []
+        mutations: list[dict[str, Any]] = []
+        has_private_guards = False
+        for node in _walk(law.get("when", {})):
+            if isinstance(node, str) and node.startswith("$zone.fields."):
+                field = node.removeprefix("$zone.fields.")
+                if field in CHANNELS:
+                    reads.add(field)
+            elif isinstance(node, str) and node.startswith("$zone."):
+                has_private_guards = True
+            if isinstance(node, dict) and "event.type" in node:
+                condition = node["event.type"]
+                if isinstance(condition, dict) and isinstance(condition.get("eq"), str):
+                    event_types.add(condition["eq"])
+            if isinstance(node, dict) and isinstance(node.get("ref"), str):
+                ref = node["ref"]
+                if ref.startswith("$zone.fields."):
+                    field = ref.removeprefix("$zone.fields.")
+                    for operator in ("eq", "neq", "gt", "gte", "lt", "lte"):
+                        if operator in node and isinstance(node[operator], (int, float)):
+                            predicates.append({"field": field, "op": operator, "value": node[operator]})
+        for effect in law.get("effects", []):
+            target = effect.get("target", "")
+            if isinstance(target, str) and target.startswith("$zone.fields."):
+                field = target.removeprefix("$zone.fields.")
+                if field in CHANNELS:
+                    writes.add(field)
+                    value = effect.get("value")
+                    if isinstance(value, (int, float)) and not isinstance(value, bool):
+                        mutations.append({"field": field, "op": effect.get("op"), "value": value})
+        # Rules with no public channel edge add no useful generator information.
+        if reads or writes:
+            summaries.append({
+                "rule": index + 1,
+                "events": sorted(event_types),
+                "reads": sorted(reads),
+                "writes": sorted(writes),
+                "public_predicates": sorted(predicates, key=lambda row: (row["field"], row["op"], row["value"])),
+                "public_mutations": sorted(mutations, key=lambda row: (row["field"], str(row["op"]), row["value"])),
+                "has_undisclosed_guards": has_private_guards,
+            })
+    return {
+        "schema": "gm-public-rule-summary-v0.1",
+        "source_sha256": hashlib.sha256(source).hexdigest(),
+        "rules": summaries,
+    }
+
+
+def calibration_examples_v02() -> tuple[dict[str, Any], ...]:
+    """Return scored seed examples sourced exclusively from calibration.
+
+    Scores are frozen artifacts of ``evaluate_power`` over all six calibration
+    scenarios. A regression test rebuilds them through the authoritative scorer.
+    """
+    selected = {
+        "Low": (("bedrock_memory", 22.621255584726), ("mud_anchor", 26.734121491106134)),
+        "Mid": (("floodgate", 46.38383359857627), ("flash_flood", 49.1890896022264)),
+        "High": (("kindling_arc", 67.35574800081066), ("ash_bloom", 68.95506862139733)),
+    }
+    skill_root = Path(__file__).with_name("skills")
+    rows: list[dict[str, Any]] = []
+    for band in POWER_BANDS:
+        for example_index, (skill_id, realized_score) in enumerate(selected[band]):
+            mechanic = json.loads((skill_root / f"{skill_id}.json").read_text(encoding="utf-8"))
+            rows.append({
+                "example_version": "gm-calibration-example-v0.1",
+                "example_id": f"calibration.{band.lower()}.{example_index + 1}",
+                "target_band": band,
+                "mechanic": mechanic,
+                "realized_score": realized_score,
+                "provenance": {
+                    "split": "calibration",
+                    "scenario_id": "calibration/all-six",
+                    "scorer_interface": "gm-authoritative-scorer-v0.1",
+                    "score_rebuild_key": f"calibration/all-six::{skill_id}::gm-power-scale-v0.2",
+                },
+            })
+    return tuple(rows)
+
+
+def _v02_mechanic_contract(baseline: str) -> dict[str, Any]:
+    common = {
+        "id": "lowercase local identifier [a-z][a-z0-9_]{1,47}",
+        "name": "non-empty string, at most 80 characters",
+        "resource_cost": [0.0, 100.0], "charges": "integer [1,99]", "slot_cost": [1, 2],
+    }
+    if baseline == "isolated_direct_effect":
+        return {
+            **common, "strict_fields": sorted(DIRECT_FIELDS),
+            "effect_kind": list(DIRECT_KINDS), "magnitude": [0.01, 1.0], "duration": [0.0, 300.0],
+        }
+    effect_fields = list(CHANNELS) if baseline == "world_substrate" else ["damage", "heal", "buff", "debuff"]
+    return {
+        **common,
+        "strict_fields": [
+            "id", "name", "target_scope", "effects", "duration", "periodic",
+            "trigger_conditions", "resource_cost", "charges", "slot_cost",
+        ],
+        "target_scope": "zone",
+        "effects": {"min_items": 1, "unique_field": True, "item": {"field": effect_fields, "delta": [-1.0, 1.0]}},
+        "duration": [0.0, 300.0],
+        "periodic": "null or {interval: positive finite <=300, repeats: integer [1,12]}; exclusive with duration",
+        "trigger_conditions": {"item": {"field": list(CHANNELS), "op": ["eq", "neq", "gt", "gte", "lt", "lte"], "value": [0.0, 1.0]}},
+        "write_surface": "public_channels" if baseline == "world_substrate" else "direct_outcome_only",
+    }
+
+
+def derive_sample_identity(
+    master_seed: int, baseline: str, target_band: str, sample_index: int,
+) -> tuple[str, int, str]:
+    if baseline not in BASELINES_V02 or target_band not in POWER_BANDS or sample_index < 0:
+        raise GenerationContractError("invalid v0.2 sample coordinates")
+    coordinates = f"{PROTOCOL_VERSION_V02}|{master_seed}|{baseline}|{target_band}|{sample_index}"
+    digest = hashlib.sha256(coordinates.encode("ascii")).hexdigest()
+    sample_id = f"{baseline}.{target_band.lower()}.{sample_index:04d}.{digest[:10]}"
+    derived_seed = int(digest[10:26], 16) & ((1 << 63) - 1)
+    sample_nonce = digest[26:58]
+    return sample_id, derived_seed, sample_nonce
+
+
+def prompt_request_v02(
+    baseline: str,
+    target_band: str,
+    derived_seed: int,
+    sample_id: str,
+    sample_nonce: str,
+) -> dict[str, Any]:
+    if baseline not in BASELINES_V02 or target_band not in POWER_BANDS:
+        raise GenerationContractError("unknown v0.2 baseline or target band")
+    if not sample_id or not sample_nonce:
+        raise GenerationContractError("sample_id and sample_nonce must be non-empty")
+    return {
+        "protocol_version": PROTOCOL_VERSION_V02,
+        "sample_id": sample_id,
+        "sample_nonce": sample_nonce,
+        "derived_seed": derived_seed,
+        "baseline": baseline,
+        "target_band": {"name": target_band, "range": list(POWER_BANDS[target_band])},
+        "public_world_model": {
+            "channel_semantics": CHANNEL_SEMANTICS,
+            "generic_rule_summary": public_rule_summary(),
+        },
+        "calibration_examples": list(calibration_examples_v02()),
+        "response_contract": {
+            "strict_fields": ["mechanic", "declared_power"],
+            "declared_power": "finite number or null",
+            "mechanic": _v02_mechanic_contract(baseline),
+        },
+        "constraints": {
+            "json_only": True,
+            "pmw_laws_allowed": False,
+            "private_world_instances_disclosed": False,
+        },
+    }
+
+
+def prompt_hash_v02(request: dict[str, Any]) -> str:
+    return hashlib.sha256(render_prompt(request).encode("utf-8")).hexdigest()
+
+
+def build_request_rows_v02(master_seed: int = 2602, per_cell: int = 40) -> tuple[dict[str, Any], ...]:
+    if isinstance(per_cell, bool) or not isinstance(per_cell, int) or per_cell < 1:
+        raise GenerationContractError("per_cell must be a positive integer")
+    rows: list[dict[str, Any]] = []
+    for baseline in BASELINES_V02:
+        for band in POWER_BANDS:
+            for index in range(per_cell):
+                sample_id, seed, nonce = derive_sample_identity(master_seed, baseline, band, index)
+                request = prompt_request_v02(baseline, band, seed, sample_id, nonce)
+                rows.append({
+                    "protocol_version": PROTOCOL_VERSION_V02,
+                    "sample_id": sample_id,
+                    "sample_nonce": nonce,
+                    "baseline": baseline,
+                    "target_band": band,
+                    "seed": seed,
+                    "prompt": render_prompt(request),
+                    "prompt_sha256": prompt_hash_v02(request),
+                })
+    return tuple(rows)
+
+
+def write_request_jsonl_v02(
+    path: str | Path, master_seed: int = 2602, per_cell: int = 40,
+) -> str:
+    rows = build_request_rows_v02(master_seed, per_cell)
+    content = "".join(canonical_json(row) + "\n" for row in rows)
+    output = Path(path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(content, encoding="utf-8")
+    return hashlib.sha256(content.encode("utf-8")).hexdigest()
+
+
+def validate_envelope_v02(raw: Any) -> GeneratedSample:
+    from .baseline_v02 import validate_matched_direct_outcome
+
+    data = _strict(raw, V02_ENVELOPE_FIELDS, "$")
+    if data["protocol_version"] != PROTOCOL_VERSION_V02:
+        raise GenerationContractError("protocol_version: expected gm-generation-v0.2")
+    if data["baseline"] not in BASELINES_V02 or data["target_band"] not in POWER_BANDS:
+        raise GenerationContractError("unknown v0.2 baseline or target band")
+    if data["source_kind"] not in SOURCE_KINDS:
+        raise GenerationContractError("source_kind: unknown source kind")
+    if not isinstance(data["sample_id"], str) or not data["sample_id"]:
+        raise GenerationContractError("sample_id: must be a non-empty string")
+    if not isinstance(data["sample_nonce"], str) or not data["sample_nonce"]:
+        raise GenerationContractError("sample_nonce: must be a non-empty string")
+    prov = _strict(data["provenance"], PROVENANCE_FIELDS, "provenance")
+    if not all(isinstance(prov[key], str) and prov[key] for key in ("provider", "model", "prompt_sha256", "raw_id")):
+        raise GenerationContractError("provenance: string fields must be non-empty")
+    if isinstance(prov["seed"], bool) or not isinstance(prov["seed"], int):
+        raise GenerationContractError("provenance.seed: must be an integer")
+    request = prompt_request_v02(
+        data["baseline"], data["target_band"], prov["seed"], data["sample_id"], data["sample_nonce"],
+    )
+    if prov["prompt_sha256"] != prompt_hash_v02(request):
+        raise GenerationContractError("provenance.prompt_sha256: does not match the canonical v0.2 request")
+    response = _strict(data["response"], RESPONSE_FIELDS, "response")
+    declared = response["declared_power"]
+    if declared is not None:
+        declared = _finite(declared, "response.declared_power", -10000, 10000)
+    try:
+        if data["baseline"] == "isolated_direct_effect":
+            mechanic = validate_direct_effect(response["mechanic"])
+        elif data["baseline"] == "world_substrate":
+            mechanic = validate_skill(response["mechanic"])
+        else:
+            mechanic = validate_matched_direct_outcome(response["mechanic"])
+    except SkillSpecError as exc:
+        raise GenerationContractError(str(exc)) from exc
+    return GeneratedSample(
+        data["sample_id"], data["baseline"], data["target_band"], data["source_kind"],
+        Provenance(**prov), mechanic, response["mechanic"], declared,
+    )
+
+
 def _strict(value: Any, fields: frozenset[str], path: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise GenerationContractError(f"{path}: must be an object")
@@ -276,6 +565,8 @@ def prompt_hash(request: dict[str, Any]) -> str:
 
 
 def validate_envelope(raw: Any) -> GeneratedSample:
+    if isinstance(raw, dict) and raw.get("protocol_version") == PROTOCOL_VERSION_V02:
+        return validate_envelope_v02(raw)
     data = _strict(raw, ENVELOPE_FIELDS, "$")
     if data["protocol_version"] != PROTOCOL_VERSION:
         raise GenerationContractError("protocol_version: unsupported version")
@@ -319,6 +610,9 @@ def ingest_jsonl(lines: Iterable[str]) -> IngestionResult:
     samples: list[GeneratedSample] = []
     errors: list[IngestionError] = []
     seen: set[str] = set()
+    v02_identity: dict[str, set[Any]] = {
+        "sample_nonce": set(), "seed": set(), "prompt_sha256": set(),
+    }
     for line_number, line in enumerate(lines, 1):
         sample_id = None
         try:
@@ -327,6 +621,20 @@ def ingest_jsonl(lines: Iterable[str]) -> IngestionResult:
             sample = validate_envelope(raw)
             if sample.sample_id in seen:
                 raise GenerationContractError("sample_id: duplicate")
+            if raw.get("protocol_version") == PROTOCOL_VERSION_V02:
+                identities = {
+                    "sample_nonce": raw["sample_nonce"],
+                    "seed": raw["provenance"]["seed"],
+                    "prompt_sha256": raw["provenance"]["prompt_sha256"],
+                }
+                duplicate = next(
+                    (name for name, value in identities.items() if value in v02_identity[name]),
+                    None,
+                )
+                if duplicate:
+                    raise GenerationContractError(f"{duplicate}: duplicate v0.2 request identity")
+                for name, value in identities.items():
+                    v02_identity[name].add(value)
             seen.add(sample.sample_id)
             samples.append(sample)
         except (json.JSONDecodeError, GenerationContractError) as exc:

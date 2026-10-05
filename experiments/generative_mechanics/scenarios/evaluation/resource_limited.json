@@ -1,9 +1,11 @@
 {
-  "id": "held_out_resource_limited",
-  "split": "held_out",
+  "id": "evaluation_resource_limited",
+  "split": "evaluation",
   "category": "resource_limited",
   "target_count": 1,
   "environment": "fragile_bridge",
+  "environment_variant": "dry",
+  "initial_fields": {"electric_field": 0.2},
   "build": {
     "backpack": ["spark_tax", "quake_engine", "cold_sink", "static_grave", "kindling_arc", "storm_coil", "mud_anchor", "grounding_rod", "stability_charge", "firebreak"],
     "active": ["spark_tax", "quake_engine", "cold_sink", "static_grave", "kindling_arc", "storm_coil"]
@@ -15,5 +17,6 @@
     {"op": "step", "repeats": 3}
   ],
   "horizons": {"combat_end": 0, "short": 14, "medium": 56},
+  "horizon_weights": {"combat_end": 0.45, "short": 0.35, "medium": 0.2},
   "weights": {"combat": 0.15, "survival": 0.35, "control": 0.2, "utility": 0.2, "exploration_world_impact": 0.1}
 }
