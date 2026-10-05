@@ -1,0 +1,19 @@
+{
+  "id": "held_out_environmental_hazard",
+  "split": "held_out",
+  "category": "environmental_hazard",
+  "target_count": 1,
+  "environment": "mine",
+  "build": {
+    "backpack": ["mud_anchor", "bedrock_memory", "stability_charge", "clear_sky", "firebreak", "grounding_rod", "drying_wind", "cold_sink", "reservoir_echo", "spark_tax"],
+    "active": ["mud_anchor", "bedrock_memory", "stability_charge", "clear_sky", "firebreak", "grounding_rod"]
+  },
+  "program": [
+    {"op": "cast", "skill": "each_active", "target": "zone"},
+    {"op": "step", "repeats": 2},
+    {"op": "advance", "to": 6},
+    {"op": "step", "repeats": 2}
+  ],
+  "horizons": {"combat_end": 6, "short": 24, "medium": 84},
+  "weights": {"combat": 0.05, "survival": 0.3, "control": 0.2, "utility": 0.25, "exploration_world_impact": 0.2}
+}

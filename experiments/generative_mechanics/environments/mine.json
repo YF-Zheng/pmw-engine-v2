@@ -1,0 +1,72 @@
+{
+  "entities": [
+    {
+      "archetype": "actor",
+      "components": {
+        "resource": {
+          "energy": 100.0
+        }
+      },
+      "id": "actor:researcher",
+      "tags": []
+    },
+    {
+      "archetype": "zone",
+      "components": {
+        "fields": {
+          "electric_field": 0.05,
+          "fire_intensity": 0.05,
+          "ground_stability": 0.85,
+          "sound_level": 0.1,
+          "temperature": 0.3,
+          "visibility": 0.45,
+          "water_level": 0.05,
+          "wetness": 0.2
+        },
+        "material": {
+          "exposed_iron": 1.0,
+          "fragility": 0.25,
+          "fuel": 0.65
+        },
+        "outcome": {
+          "charged_ore": 0.0,
+          "discharges": 0.0
+        },
+        "process": {
+          "alert": 0.0,
+          "steam": 0.0
+        },
+        "zone": {
+          "kind": "mine"
+        }
+      },
+      "id": "zone:mine",
+      "tags": [
+        "mine"
+      ]
+    },
+    {
+      "archetype": "skill_instance",
+      "components": {
+        "skill": {
+          "charges": 99,
+          "owner": "actor:researcher",
+          "spec_id": "static_grave"
+        }
+      },
+      "id": "skill:equipped",
+      "tags": []
+    }
+  ],
+  "relations": [],
+  "rng": {
+    "seed": 20261004
+  },
+  "scheduled_events": [],
+  "schema_version": "2.0",
+  "time": {
+    "sim_time": 0.0,
+    "tick": 0
+  },
+  "world_id": "gm_mine"
+}

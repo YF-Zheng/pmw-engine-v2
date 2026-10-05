@@ -1,0 +1,17 @@
+{
+  "id": "calibration_short_combat",
+  "split": "calibration",
+  "category": "short_combat",
+  "target_count": 1,
+  "environment": "industrial_yard",
+  "build": {
+    "backpack": ["static_grave", "kindling_arc", "thermal_lance", "bedrock_memory", "cold_sink", "storm_coil", "firebreak", "mud_anchor", "clear_sky", "whiteout_veil"],
+    "active": ["static_grave", "kindling_arc", "thermal_lance", "bedrock_memory", "cold_sink", "storm_coil"]
+  },
+  "program": [
+    {"op": "cast", "skill": "each_active", "target": "zone"},
+    {"op": "step", "repeats": 2}
+  ],
+  "horizons": {"combat_end": 0, "short": 10, "medium": 40},
+  "weights": {"combat": 0.45, "survival": 0.1, "control": 0.15, "utility": 0.1, "exploration_world_impact": 0.2}
+}

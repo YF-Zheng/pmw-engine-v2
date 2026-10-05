@@ -1,0 +1,72 @@
+{
+  "entities": [
+    {
+      "archetype": "actor",
+      "components": {
+        "resource": {
+          "energy": 100.0
+        }
+      },
+      "id": "actor:researcher",
+      "tags": []
+    },
+    {
+      "archetype": "zone",
+      "components": {
+        "fields": {
+          "electric_field": 0.05,
+          "fire_intensity": 0.0,
+          "ground_stability": 0.4,
+          "sound_level": 0.15,
+          "temperature": 0.35,
+          "visibility": 0.9,
+          "water_level": 0.3,
+          "wetness": 0.4
+        },
+        "material": {
+          "exposed_iron": 0.5,
+          "fragility": 0.95,
+          "fuel": 0.55
+        },
+        "outcome": {
+          "charged_ore": 0.0,
+          "discharges": 0.0
+        },
+        "process": {
+          "alert": 0.0,
+          "steam": 0.0
+        },
+        "zone": {
+          "kind": "fragile_bridge"
+        }
+      },
+      "id": "zone:fragile_bridge",
+      "tags": [
+        "fragile_bridge"
+      ]
+    },
+    {
+      "archetype": "skill_instance",
+      "components": {
+        "skill": {
+          "charges": 99,
+          "owner": "actor:researcher",
+          "spec_id": "static_grave"
+        }
+      },
+      "id": "skill:equipped",
+      "tags": []
+    }
+  ],
+  "relations": [],
+  "rng": {
+    "seed": 20261004
+  },
+  "scheduled_events": [],
+  "schema_version": "2.0",
+  "time": {
+    "sim_time": 0.0,
+    "tick": 0
+  },
+  "world_id": "gm_fragile_bridge"
+}

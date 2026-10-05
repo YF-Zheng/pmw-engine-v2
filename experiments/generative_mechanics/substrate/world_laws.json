@@ -1,0 +1,977 @@
+{
+  "laws": [
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.wetness",
+          "value": 0.1
+        }
+      ],
+      "id": "gm.world.01.rain_wets",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.6,
+            "ref": "$zone.fields.water_level"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.wetness",
+          "value": 0.08
+        }
+      ],
+      "id": "gm.world.02.water_saturates",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.8,
+            "ref": "$zone.fields.water_level"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.outcome.discharges",
+          "value": 1
+        },
+        {
+          "op": "delta",
+          "target": "$zone.fields.electric_field",
+          "value": -0.2
+        },
+        {
+          "op": "delta",
+          "target": "$zone.fields.sound_level",
+          "value": 0.12
+        }
+      ],
+      "id": "gm.world.03.wet_discharge",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.55,
+            "ref": "$zone.fields.wetness"
+          },
+          {
+            "gt": 0.45,
+            "ref": "$zone.fields.electric_field"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.process.steam",
+          "value": 0.2
+        },
+        {
+          "op": "delta",
+          "target": "$zone.fields.wetness",
+          "value": -0.08
+        }
+      ],
+      "id": "gm.world.04.heat_makes_steam",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.6,
+            "ref": "$zone.fields.temperature"
+          },
+          {
+            "gt": 0.45,
+            "ref": "$zone.fields.wetness"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.visibility",
+          "value": -0.16
+        }
+      ],
+      "id": "gm.world.05.steam_obscures",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.1,
+            "ref": "$zone.process.steam"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.temperature",
+          "value": 0.12
+        }
+      ],
+      "id": "gm.world.06.fire_heats",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.1,
+            "ref": "$zone.fields.fire_intensity"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.material.fuel",
+          "value": -0.08
+        }
+      ],
+      "id": "gm.world.07.fire_consumes_fuel",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.1,
+            "ref": "$zone.fields.fire_intensity"
+          },
+          {
+            "gt": 0.05,
+            "ref": "$zone.material.fuel"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.fire_intensity",
+          "value": -0.12
+        }
+      ],
+      "id": "gm.world.08.low_fuel_dims_fire",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "lt": 0.15,
+            "ref": "$zone.material.fuel"
+          },
+          {
+            "gt": 0.05,
+            "ref": "$zone.fields.fire_intensity"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.ground_stability",
+          "value": -0.1
+        }
+      ],
+      "id": "gm.world.09.water_weakens_ground",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.55,
+            "ref": "$zone.fields.water_level"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.ground_stability",
+          "value": -0.14
+        }
+      ],
+      "id": "gm.world.10.wetness_weakens_fragile",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.55,
+            "ref": "$zone.fields.wetness"
+          },
+          {
+            "gt": 0.7,
+            "ref": "$zone.material.fragility"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.process.alert",
+          "value": 0.2
+        }
+      ],
+      "id": "gm.world.11.sound_alerts",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.45,
+            "ref": "$zone.fields.sound_level"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.process.alert",
+          "value": -0.08
+        }
+      ],
+      "id": "gm.world.12.silence_settles_alert",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "lt": 0.2,
+            "ref": "$zone.fields.sound_level"
+          },
+          {
+            "gt": 0,
+            "ref": "$zone.process.alert"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.outcome.charged_ore",
+          "value": 0.25
+        }
+      ],
+      "id": "gm.world.13.iron_charges",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.5,
+            "ref": "$zone.fields.electric_field"
+          },
+          {
+            "gt": 0.5,
+            "ref": "$zone.material.exposed_iron"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.sound_level",
+          "value": 0.08
+        }
+      ],
+      "id": "gm.world.14.charged_ore_hums",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.2,
+            "ref": "$zone.outcome.charged_ore"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.wetness",
+          "value": -0.1
+        }
+      ],
+      "id": "gm.world.15.fire_dries",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.3,
+            "ref": "$zone.fields.fire_intensity"
+          },
+          {
+            "gt": 0.1,
+            "ref": "$zone.fields.wetness"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.fire_intensity",
+          "value": -0.16
+        }
+      ],
+      "id": "gm.world.16.water_suppresses_fire",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.6,
+            "ref": "$zone.fields.water_level"
+          },
+          {
+            "gt": 0.05,
+            "ref": "$zone.fields.fire_intensity"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.fire_intensity",
+          "value": 0.14
+        }
+      ],
+      "id": "gm.world.17.electric_ignites_fuel",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.7,
+            "ref": "$zone.fields.electric_field"
+          },
+          {
+            "gt": 0.6,
+            "ref": "$zone.material.fuel"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.sound_level",
+          "value": 0.1
+        }
+      ],
+      "id": "gm.world.18.unstable_ground_rumbles",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "lt": 0.35,
+            "ref": "$zone.fields.ground_stability"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.visibility",
+          "value": 0.08
+        }
+      ],
+      "id": "gm.world.19.fire_glow",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.25,
+            "ref": "$zone.fields.fire_intensity"
+          },
+          {
+            "lt": 0.9,
+            "ref": "$zone.fields.visibility"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.temperature",
+          "value": -0.08
+        }
+      ],
+      "id": "gm.world.20.rain_cools",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.65,
+            "ref": "$zone.fields.water_level"
+          },
+          {
+            "gt": 0.2,
+            "ref": "$zone.fields.temperature"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.process.steam",
+          "value": -0.12
+        },
+        {
+          "op": "delta",
+          "target": "$zone.fields.wetness",
+          "value": 0.06
+        }
+      ],
+      "id": "gm.world.21.steam_condenses",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "gt": 0.35,
+            "ref": "$zone.process.steam"
+          },
+          {
+            "lt": 0.45,
+            "ref": "$zone.fields.temperature"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.sound_level",
+          "value": 0.12
+        }
+      ],
+      "id": "gm.world.22.yard_resonance",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "eq": "industrial_yard",
+            "ref": "$zone.zone.kind"
+          },
+          {
+            "gt": 0.55,
+            "ref": "$zone.fields.electric_field"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.process.alert",
+          "value": 0.12
+        }
+      ],
+      "id": "gm.world.23.mine_echo",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "eq": "mine",
+            "ref": "$zone.zone.kind"
+          },
+          {
+            "gt": 0.2,
+            "ref": "$zone.fields.sound_level"
+          }
+        ]
+      }
+    },
+    {
+      "bindings": {
+        "zone": {
+          "kind": "entity",
+          "requires": [
+            "fields",
+            "zone",
+            "process",
+            "material",
+            "outcome"
+          ]
+        }
+      },
+      "effects": [
+        {
+          "op": "delta",
+          "target": "$zone.fields.sound_level",
+          "value": 0.15
+        }
+      ],
+      "id": "gm.world.24.bridge_strain",
+      "mode": "event",
+      "priority": 0,
+      "when": {
+        "all": [
+          {
+            "event.type": {
+              "eq": "lab.step"
+            }
+          },
+          {
+            "eq": "fragile_bridge",
+            "ref": "$zone.zone.kind"
+          },
+          {
+            "lt": 0.5,
+            "ref": "$zone.fields.ground_stability"
+          }
+        ]
+      }
+    }
+  ],
+  "schema_version": "2.0"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "held_out_long_combat",
+  "split": "held_out",
+  "category": "long_combat",
+  "target_count": 1,
+  "environment": "industrial_yard",
+  "build": {
+    "backpack": ["flash_fire", "firebreak", "thermal_lance", "static_grave", "bedrock_memory", "mud_anchor", "cold_sink", "storm_coil", "clear_sky", "drying_wind"],
+    "active": ["flash_fire", "firebreak", "thermal_lance", "static_grave", "bedrock_memory", "mud_anchor"]
+  },
+  "program": [
+    {"op": "cast", "skill": "each_active", "target": "zone"},
+    {"op": "step", "repeats": 3},
+    {"op": "advance", "to": 8},
+    {"op": "step", "repeats": 4},
+    {"op": "advance", "to": 24}
+  ],
+  "horizons": {"combat_end": 24, "short": 40, "medium": 100},
+  "weights": {"combat": 0.35, "survival": 0.25, "control": 0.15, "utility": 0.1, "exploration_world_impact": 0.15}
+}

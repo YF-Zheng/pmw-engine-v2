@@ -1,0 +1,17 @@
+{
+  "id": "held_out_short_combat",
+  "split": "held_out",
+  "category": "short_combat",
+  "target_count": 1,
+  "environment": "mine",
+  "build": {
+    "backpack": ["flash_fire", "thunderclap", "static_grave", "thermal_lance", "kindling_arc", "storm_coil", "grounding_rod", "firebreak", "mud_anchor", "clear_sky"],
+    "active": ["flash_fire", "thunderclap", "static_grave", "thermal_lance", "kindling_arc", "storm_coil"]
+  },
+  "program": [
+    {"op": "cast", "skill": "each_active", "target": "zone"},
+    {"op": "step", "repeats": 2}
+  ],
+  "horizons": {"combat_end": 0, "short": 8, "medium": 36},
+  "weights": {"combat": 0.5, "survival": 0.1, "control": 0.15, "utility": 0.1, "exploration_world_impact": 0.15}
+}

@@ -1,0 +1,330 @@
+{
+  "build_enumeration_count": 848,
+  "candidate_evaluation": {
+    "PowerProfile": {
+      "CeilingPower": 43.835499999999996,
+      "ExploitRisk": "MEDIUM",
+      "InteractionSurface": 6.333333333333333,
+      "P90Power": 43.835499999999996,
+      "PersistentWorldImpact": 11.333333333333334,
+      "PersonalizedBuildDelta": 10.724999999999996,
+      "SynergyAmplification": -4.773166666666668,
+      "TypicalPower": 19.668499999999998,
+      "capability_vector": {
+        "Combat": 20.474999999999998,
+        "Control": 6.8933333333333335,
+        "ExplorationWorldImpact": 56.666666666666664,
+        "Survival": 0.9800000000000005,
+        "Utility": 3.44
+      },
+      "scenario_scores": [
+        {
+          "capabilities": {
+            "Combat": 12.85,
+            "Control": 6.880000000000001,
+            "ExplorationWorldImpact": 45.0,
+            "Survival": -0.6799999999999993,
+            "Utility": 3.08
+          },
+          "scenario_id": "held_out_aftermath",
+          "value": 26.818500000000004
+        },
+        {
+          "capabilities": {
+            "Combat": 13.75,
+            "Control": 5.68,
+            "ExplorationWorldImpact": 45.0,
+            "Survival": 1.4800000000000004,
+            "Utility": 3.12
+          },
+          "scenario_id": "held_out_environmental_hazard",
+          "value": 12.0475
+        },
+        {
+          "capabilities": {
+            "Combat": 24.85,
+            "Control": 10.080000000000002,
+            "ExplorationWorldImpact": 45.0,
+            "Survival": -0.6799999999999993,
+            "Utility": 6.120000000000001
+          },
+          "scenario_id": "held_out_long_combat",
+          "value": 17.4015
+        },
+        {
+          "capabilities": {
+            "Combat": 60.15,
+            "Control": 4.08,
+            "ExplorationWorldImpact": 135.0,
+            "Survival": 2.2800000000000002,
+            "Utility": 2.32
+          },
+          "scenario_id": "held_out_multi_target",
+          "value": 43.835499999999996
+        },
+        {
+          "capabilities": {
+            "Combat": 3.5,
+            "Control": 9.600000000000001,
+            "ExplorationWorldImpact": 30.0,
+            "Survival": 2.000000000000001,
+            "Utility": 3.8400000000000007
+          },
+          "scenario_id": "held_out_resource_limited",
+          "value": 6.913
+        },
+        {
+          "capabilities": {
+            "Combat": 7.75,
+            "Control": 5.04,
+            "ExplorationWorldImpact": 40.0,
+            "Survival": 1.4800000000000004,
+            "Utility": 2.16
+          },
+          "scenario_id": "held_out_short_combat",
+          "value": 10.995000000000001
+        }
+      ],
+      "split": "held_out"
+    },
+    "best_after": [
+      "clear_sky",
+      "kindling_arc",
+      "static_grave"
+    ],
+    "best_before": [
+      "clear_sky",
+      "kindling_arc"
+    ],
+    "candidate_skill": "static_grave"
+  },
+  "cross_environment": {
+    "environments": {
+      "fragile_bridge": {
+        "activation_laws": [
+          "gm.skill.static_grave.activate"
+        ],
+        "charges": 2,
+        "energy": 94.0,
+        "fields": {
+          "electric_field": 0.65,
+          "fire_intensity": 0.0,
+          "ground_stability": 0.4,
+          "sound_level": 0.3,
+          "temperature": 0.35,
+          "visibility": 0.9,
+          "water_level": 0.3,
+          "wetness": 0.4
+        },
+        "outcome": {
+          "charged_ore": 0.0,
+          "discharges": 0.0
+        },
+        "process": {
+          "alert": 0.0,
+          "steam": 0.0
+        },
+        "step_laws": [
+          "gm.world.24.bridge_strain"
+        ]
+      },
+      "industrial_yard": {
+        "activation_laws": [
+          "gm.skill.static_grave.activate"
+        ],
+        "charges": 2,
+        "energy": 94.0,
+        "fields": {
+          "electric_field": 1.0,
+          "fire_intensity": 0.24000000000000002,
+          "ground_stability": 0.9,
+          "sound_level": 0.5700000000000001,
+          "temperature": 0.5,
+          "visibility": 0.8,
+          "water_level": 0.1,
+          "wetness": 0.25
+        },
+        "outcome": {
+          "charged_ore": 0.25,
+          "discharges": 0.0
+        },
+        "process": {
+          "alert": 0.0,
+          "steam": 0.0
+        },
+        "step_laws": [
+          "gm.world.13.iron_charges",
+          "gm.world.17.electric_ignites_fuel",
+          "gm.world.22.yard_resonance"
+        ]
+      },
+      "mine": {
+        "activation_laws": [
+          "gm.skill.static_grave.activate"
+        ],
+        "charges": 2,
+        "energy": 94.0,
+        "fields": {
+          "electric_field": 0.65,
+          "fire_intensity": 0.05,
+          "ground_stability": 0.85,
+          "sound_level": 0.1,
+          "temperature": 0.3,
+          "visibility": 0.45,
+          "water_level": 0.05,
+          "wetness": 0.2
+        },
+        "outcome": {
+          "charged_ore": 0.25,
+          "discharges": 0.0
+        },
+        "process": {
+          "alert": 0.0,
+          "steam": 0.0
+        },
+        "step_laws": [
+          "gm.world.13.iron_charges"
+        ]
+      },
+      "wetland": {
+        "activation_laws": [
+          "gm.skill.static_grave.activate"
+        ],
+        "charges": 2,
+        "energy": 94.0,
+        "fields": {
+          "electric_field": 0.45,
+          "fire_intensity": 0.0,
+          "ground_stability": 0.24999999999999997,
+          "sound_level": 0.32,
+          "temperature": 0.37,
+          "visibility": 0.65,
+          "water_level": 0.9,
+          "wetness": 1.08
+        },
+        "outcome": {
+          "charged_ore": 0.0,
+          "discharges": 1.0
+        },
+        "process": {
+          "alert": 0.0,
+          "steam": 0.0
+        },
+        "step_laws": [
+          "gm.world.01.rain_wets",
+          "gm.world.02.water_saturates",
+          "gm.world.03.wet_discharge",
+          "gm.world.09.water_weakens_ground",
+          "gm.world.20.rain_cools"
+        ]
+      }
+    },
+    "skill": "static_grave"
+  },
+  "emergent_reach": {
+    "affected_subsystem_count": 3,
+    "candidate_skill": "static_grave",
+    "causal_depth": 2,
+    "direct_law_count": 3,
+    "downstream_law_count": 2,
+    "downstream_laws": [
+      "gm.world.03.wet_discharge",
+      "gm.world.11.sound_alerts"
+    ],
+    "persistent_consequence_count": 12
+  },
+  "exploit_report": {
+    "findings": [],
+    "severity": "LOW"
+  },
+  "power_profile": {
+    "CeilingPower": 27.664,
+    "ExploitRisk": "LOW",
+    "InteractionSurface": 4.166666666666667,
+    "P90Power": 27.664,
+    "PersistentWorldImpact": 6.333333333333333,
+    "PersonalizedBuildDelta": null,
+    "SynergyAmplification": 0.0,
+    "TypicalPower": 13.829166666666666,
+    "capability_vector": {
+      "Combat": 18.816666666666666,
+      "Control": 4.546666666666666,
+      "ExplorationWorldImpact": 31.666666666666668,
+      "Survival": -0.41333333333333355,
+      "Utility": 1.2400000000000002
+    },
+    "scenario_scores": [
+      {
+        "capabilities": {
+          "Combat": 11.1,
+          "Control": 5.199999999999999,
+          "ExplorationWorldImpact": 45.0,
+          "Survival": -1.2000000000000004,
+          "Utility": 1.7599999999999998
+        },
+        "scenario_id": "held_out_aftermath",
+        "value": 26.229000000000003
+      },
+      {
+        "capabilities": {
+          "Combat": 12.0,
+          "Control": 3.36,
+          "ExplorationWorldImpact": 20.0,
+          "Survival": 0.0,
+          "Utility": 0.24
+        },
+        "scenario_id": "held_out_environmental_hazard",
+        "value": 5.332000000000001
+      },
+      {
+        "capabilities": {
+          "Combat": 23.8,
+          "Control": 9.120000000000001,
+          "ExplorationWorldImpact": 45.0,
+          "Survival": -1.2800000000000007,
+          "Utility": 5.040000000000001
+        },
+        "scenario_id": "held_out_long_combat",
+        "value": 16.631999999999998
+      },
+      {
+        "capabilities": {
+          "Combat": 60.0,
+          "Control": 2.08,
+          "ExplorationWorldImpact": 60.0,
+          "Survival": 0.0,
+          "Utility": 0.4000000000000001
+        },
+        "scenario_id": "held_out_multi_target",
+        "value": 27.664
+      },
+      {
+        "capabilities": {
+          "Combat": 0.0,
+          "Control": 4.8,
+          "ExplorationWorldImpact": 5.0,
+          "Survival": 0.0,
+          "Utility": 0.0
+        },
+        "scenario_id": "held_out_resource_limited",
+        "value": 1.46
+      },
+      {
+        "capabilities": {
+          "Combat": 6.0,
+          "Control": 2.7199999999999998,
+          "ExplorationWorldImpact": 15.0,
+          "Survival": 0.0,
+          "Utility": 0.0
+        },
+        "scenario_id": "held_out_short_combat",
+        "value": 5.6579999999999995
+      }
+    ],
+    "split": "held_out"
+  },
+  "scenario_split": {
+    "calibration": 6,
+    "held_out": 6
+  }
+}

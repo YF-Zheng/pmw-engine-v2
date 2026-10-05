@@ -1,0 +1,17 @@
+{
+  "charges": 3,
+  "duration": 0.0,
+  "effects": [
+    {
+      "delta": 0.28,
+      "field": "ground_stability"
+    }
+  ],
+  "id": "mud_anchor",
+  "name": "Mud Anchor",
+  "periodic": null,
+  "resource_cost": 9.0,
+  "slot_cost": 1,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}

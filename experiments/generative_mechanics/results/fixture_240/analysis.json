@@ -1,0 +1,78 @@
+{
+  "cross_environment_aggregate": {
+    "aftermath": {
+      "combat_end": 1.34375,
+      "medium": 1.153125,
+      "short": 1.34375
+    },
+    "difference_rate": 0.2833333333333333,
+    "mean_downstream": 1.525,
+    "n": 240
+  },
+  "evaluator_comparison": {
+    "available": false,
+    "evaluators": {
+      "pmw_contextual_search": {
+        "correlation": null,
+        "mae": null
+      },
+      "pmw_standard_simulation": {
+        "correlation": null,
+        "mae": null
+      },
+      "self_rating": {
+        "correlation": null,
+        "mae": null
+      },
+      "static_heuristic": {
+        "correlation": null,
+        "mae": null
+      }
+    },
+    "reason": "ground truth was not supplied; no correlation or error was fabricated"
+  },
+  "fixture_disclaimer": "Deterministic fixtures validate the pipeline; they are not model findings.",
+  "kill_criteria": {
+    "checks": {
+      "contextual_evaluator_no_gain": {
+        "reason": "independent ground truth was not supplied",
+        "status": "UNAVAILABLE",
+        "threshold": 0.0,
+        "value": null
+      },
+      "direct_collapse": {
+        "status": "WARN",
+        "threshold": 0.35,
+        "value": 0.4
+      },
+      "downstream_scarcity": {
+        "status": "PASS",
+        "threshold": 0.25,
+        "value": 3.05
+      },
+      "environment_sameness": {
+        "status": "PASS",
+        "threshold": 0.2,
+        "value": 0.5666666666666667
+      },
+      "validity_bottleneck": {
+        "status": "PASS",
+        "threshold": 0.9,
+        "value": 1.0
+      }
+    },
+    "fixture_disclaimer": "Fixture diagnostics only; PASS/WARN/FAIL is not a paper conclusion.",
+    "overall": "INCOMPLETE",
+    "thresholds": {
+      "contextual_gain_min": 0.0,
+      "direct_collapse_max": 0.35,
+      "environment_difference_min": 0.2,
+      "mean_downstream_min": 0.25,
+      "validity_min": 0.9,
+      "version": "kill-criteria-v0.1",
+      "warning_margin": 0.1
+    },
+    "version": "kill-criteria-v0.1"
+  },
+  "schema_version": "gm-analysis-v0.1"
+}

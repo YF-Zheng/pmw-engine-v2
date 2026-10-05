@@ -1,0 +1,17 @@
+{
+  "charges": 1,
+  "duration": 0.0,
+  "effects": [
+    {
+      "delta": 0.22,
+      "field": "fire_intensity"
+    }
+  ],
+  "id": "ember_pulse",
+  "name": "Ember Pulse",
+  "periodic": null,
+  "resource_cost": 14.0,
+  "slot_cost": 1,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}

@@ -1,0 +1,17 @@
+{
+  "id": "held_out_aftermath",
+  "split": "held_out",
+  "category": "aftermath",
+  "target_count": 1,
+  "environment": "industrial_yard",
+  "build": {
+    "backpack": ["flash_fire", "static_grave", "flash_flood", "thermal_lance", "thunderclap", "bedrock_memory", "firebreak", "grounding_rod", "drying_wind", "mud_anchor"],
+    "active": ["flash_fire", "static_grave", "flash_flood", "thermal_lance", "thunderclap", "bedrock_memory"]
+  },
+  "program": [
+    {"op": "cast", "skill": "each_active", "target": "zone"},
+    {"op": "step", "repeats": 3}
+  ],
+  "horizons": {"combat_end": 0, "short": 15, "medium": 75},
+  "weights": {"combat": 0.05, "survival": 0.1, "control": 0.15, "utility": 0.15, "exploration_world_impact": 0.55}
+}

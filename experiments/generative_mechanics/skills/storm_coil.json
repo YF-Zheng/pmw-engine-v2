@@ -1,0 +1,17 @@
+{
+  "charges": 3,
+  "duration": 0.0,
+  "effects": [
+    {
+      "delta": 0.38,
+      "field": "electric_field"
+    }
+  ],
+  "id": "storm_coil",
+  "name": "Storm Coil",
+  "periodic": null,
+  "resource_cost": 7.0,
+  "slot_cost": 1,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}

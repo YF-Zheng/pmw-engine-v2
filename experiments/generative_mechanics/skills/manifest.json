@@ -1,0 +1,184 @@
+{
+  "skills": [
+    {
+      "category": "Starter",
+      "id": "static_grave",
+      "path": "skills/static_grave.json"
+    },
+    {
+      "category": "Setup",
+      "id": "kindling_arc",
+      "path": "skills/kindling_arc.json"
+    },
+    {
+      "category": "Payoff",
+      "id": "monsoon_seed",
+      "path": "skills/monsoon_seed.json"
+    },
+    {
+      "category": "Converter",
+      "id": "thermal_lance",
+      "path": "skills/thermal_lance.json"
+    },
+    {
+      "category": "Amplifier",
+      "id": "muffling_fold",
+      "path": "skills/muffling_fold.json"
+    },
+    {
+      "category": "Control",
+      "id": "bedrock_memory",
+      "path": "skills/bedrock_memory.json"
+    },
+    {
+      "category": "Utility",
+      "id": "whiteout_veil",
+      "path": "skills/whiteout_veil.json"
+    },
+    {
+      "category": "Engine",
+      "id": "dew_circuit",
+      "path": "skills/dew_circuit.json"
+    },
+    {
+      "category": "Consumable",
+      "id": "ember_pulse",
+      "path": "skills/ember_pulse.json"
+    },
+    {
+      "category": "Starter",
+      "id": "cold_sink",
+      "path": "skills/cold_sink.json"
+    },
+    {
+      "category": "Setup",
+      "id": "storm_coil",
+      "path": "skills/storm_coil.json"
+    },
+    {
+      "category": "Payoff",
+      "id": "floodgate",
+      "path": "skills/floodgate.json"
+    },
+    {
+      "category": "Converter",
+      "id": "clear_sky",
+      "path": "skills/clear_sky.json"
+    },
+    {
+      "category": "Amplifier",
+      "id": "quiet_geometry",
+      "path": "skills/quiet_geometry.json"
+    },
+    {
+      "category": "Control",
+      "id": "fault_whisper",
+      "path": "skills/fault_whisper.json"
+    },
+    {
+      "category": "Utility",
+      "id": "drying_wind",
+      "path": "skills/drying_wind.json"
+    },
+    {
+      "category": "Engine",
+      "id": "flare_mark",
+      "path": "skills/flare_mark.json"
+    },
+    {
+      "category": "Consumable",
+      "id": "boiler_field",
+      "path": "skills/boiler_field.json"
+    },
+    {
+      "category": "Starter",
+      "id": "spark_tax",
+      "path": "skills/spark_tax.json"
+    },
+    {
+      "category": "Setup",
+      "id": "ash_bloom",
+      "path": "skills/ash_bloom.json"
+    },
+    {
+      "category": "Payoff",
+      "id": "reservoir_echo",
+      "path": "skills/reservoir_echo.json"
+    },
+    {
+      "category": "Converter",
+      "id": "mud_anchor",
+      "path": "skills/mud_anchor.json"
+    },
+    {
+      "category": "Amplifier",
+      "id": "signal_bell",
+      "path": "skills/signal_bell.json"
+    },
+    {
+      "category": "Control",
+      "id": "fog_lattice",
+      "path": "skills/fog_lattice.json"
+    },
+    {
+      "category": "Utility",
+      "id": "static_engine",
+      "path": "skills/static_engine.json"
+    },
+    {
+      "category": "Engine",
+      "id": "heat_engine",
+      "path": "skills/heat_engine.json"
+    },
+    {
+      "category": "Consumable",
+      "id": "rain_engine",
+      "path": "skills/rain_engine.json"
+    },
+    {
+      "category": "Starter",
+      "id": "quake_engine",
+      "path": "skills/quake_engine.json"
+    },
+    {
+      "category": "Setup",
+      "id": "flash_flood",
+      "path": "skills/flash_flood.json"
+    },
+    {
+      "category": "Payoff",
+      "id": "flash_fire",
+      "path": "skills/flash_fire.json"
+    },
+    {
+      "category": "Converter",
+      "id": "thunderclap",
+      "path": "skills/thunderclap.json"
+    },
+    {
+      "category": "Amplifier",
+      "id": "blackout",
+      "path": "skills/blackout.json"
+    },
+    {
+      "category": "Control",
+      "id": "grounding_rod",
+      "path": "skills/grounding_rod.json"
+    },
+    {
+      "category": "Utility",
+      "id": "firebreak",
+      "path": "skills/firebreak.json"
+    },
+    {
+      "category": "Engine",
+      "id": "drainage_cut",
+      "path": "skills/drainage_cut.json"
+    },
+    {
+      "category": "Consumable",
+      "id": "stability_charge",
+      "path": "skills/stability_charge.json"
+    }
+  ]
+}

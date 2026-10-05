@@ -1,0 +1,20 @@
+{
+  "charges": 3,
+  "duration": 0.0,
+  "effects": [
+    {
+      "delta": 0.5,
+      "field": "wetness"
+    }
+  ],
+  "id": "dew_circuit",
+  "name": "Dew Circuit",
+  "periodic": {
+    "interval": 2.0,
+    "repeats": 3
+  },
+  "resource_cost": 13.0,
+  "slot_cost": 2,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}

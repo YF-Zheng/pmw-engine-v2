@@ -1,0 +1,17 @@
+{
+  "charges": 3,
+  "duration": 6.0,
+  "effects": [
+    {
+      "delta": -0.55,
+      "field": "electric_field"
+    }
+  ],
+  "id": "grounding_rod",
+  "name": "Grounding Rod",
+  "periodic": null,
+  "resource_cost": 11.0,
+  "slot_cost": 1,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}

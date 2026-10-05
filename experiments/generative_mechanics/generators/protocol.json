@@ -1,0 +1,43 @@
+{
+  "baselines": {
+    "direct_effect": {
+      "schema": "DirectEffectSpec v0.1",
+      "surface": "isolated direct_outcome",
+      "world_laws_may_read_surface": false
+    },
+    "world_substrate": {
+      "channels": [
+        "temperature",
+        "wetness",
+        "electric_field",
+        "fire_intensity",
+        "sound_level",
+        "ground_stability",
+        "water_level",
+        "visibility"
+      ],
+      "schema": "SkillSpec v0.1"
+    }
+  },
+  "envelope": {
+    "encoding": "UTF-8 JSON Lines",
+    "fields": [
+      "protocol_version",
+      "sample_id",
+      "baseline",
+      "target_band",
+      "source_kind",
+      "provenance",
+      "response"
+    ],
+    "strict": true
+  },
+  "network_allowed": false,
+  "pmw_laws_allowed": false,
+  "power_bands": {
+    "High": [60, 70],
+    "Low": [20, 30],
+    "Mid": [40, 50]
+  },
+  "protocol_version": "gm-generation-v0.1"
+}

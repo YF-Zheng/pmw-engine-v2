@@ -1,0 +1,17 @@
+{
+  "charges": 3,
+  "duration": 6.0,
+  "effects": [
+    {
+      "delta": -0.4,
+      "field": "sound_level"
+    }
+  ],
+  "id": "muffling_fold",
+  "name": "Muffling Fold",
+  "periodic": null,
+  "resource_cost": 10.0,
+  "slot_cost": 2,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}

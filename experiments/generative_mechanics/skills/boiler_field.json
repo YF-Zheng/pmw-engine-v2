@@ -1,0 +1,17 @@
+{
+  "charges": 1,
+  "duration": 0.0,
+  "effects": [
+    {
+      "delta": 0.3,
+      "field": "temperature"
+    }
+  ],
+  "id": "boiler_field",
+  "name": "Boiler Field",
+  "periodic": null,
+  "resource_cost": 14.0,
+  "slot_cost": 1,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}

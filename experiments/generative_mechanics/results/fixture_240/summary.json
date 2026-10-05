@@ -1,0 +1,55 @@
+{
+  "by_baseline": {
+    "direct_effect": {
+      "mean_interaction_surface": 0.0,
+      "mean_power": 45.777777777777786,
+      "n": 120,
+      "self_containment_rate": 1.0
+    },
+    "world_substrate": {
+      "mean_interaction_surface": 1.1569444444444439,
+      "mean_power": 36.58396666666666,
+      "n": 120,
+      "self_containment_rate": 0.4
+    }
+  },
+  "by_target_band": {
+    "High": {
+      "guided_hit_rate": 0.1,
+      "n": 80,
+      "one_shot_hit_rate": 0.05
+    },
+    "Low": {
+      "guided_hit_rate": 0.175,
+      "n": 80,
+      "one_shot_hit_rate": 0.15
+    },
+    "Mid": {
+      "guided_hit_rate": 0.0625,
+      "n": 80,
+      "one_shot_hit_rate": 0.0125
+    }
+  },
+  "compile_rate": 1.0,
+  "errors": [],
+  "execution_validity": 1.0,
+  "failed": 0,
+  "fixture_disclaimer": "Deterministic fixture pipeline result; not an LLM or paper conclusion.",
+  "guided_hit_rate": 0.1125,
+  "ingestion_errors": [],
+  "ingestion_failed": 0,
+  "mean_interaction_surface": 0.5784722222222219,
+  "mean_persistent_world_impact": 1.645833333333333,
+  "mean_self_containment": 0.7,
+  "mechanic_diversity": 0.8,
+  "one_shot_hit_rate": 0.07083333333333333,
+  "power_distribution": {
+    "max": 227.66666666666666,
+    "mean": 41.180872222222234,
+    "min": 0.0
+  },
+  "schema_validity": 1.0,
+  "schema_version": "gm-batch-v0.1",
+  "succeeded": 240,
+  "total": 240
+}

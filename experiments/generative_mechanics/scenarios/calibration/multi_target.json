@@ -1,0 +1,17 @@
+{
+  "id": "calibration_multi_target",
+  "split": "calibration",
+  "category": "multi_target",
+  "target_count": 3,
+  "environment": "industrial_yard",
+  "build": {
+    "backpack": ["thunderclap", "flash_fire", "flash_flood", "static_grave", "monsoon_seed", "fault_whisper", "grounding_rod", "firebreak", "clear_sky", "mud_anchor"],
+    "active": ["thunderclap", "flash_fire", "flash_flood", "static_grave", "monsoon_seed", "fault_whisper"]
+  },
+  "program": [
+    {"op": "cast", "skill": "each_active", "target": "zone"},
+    {"op": "step", "repeats": 3}
+  ],
+  "horizons": {"combat_end": 0, "short": 15, "medium": 60},
+  "weights": {"combat": 0.3, "survival": 0.1, "control": 0.25, "utility": 0.1, "exploration_world_impact": 0.25}
+}

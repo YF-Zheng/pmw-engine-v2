@@ -1,0 +1,23 @@
+{
+  "config": {
+    "contextual_pool": [
+      "static_grave",
+      "kindling_arc"
+    ],
+    "profile": "full_fixture_240",
+    "revision_enabled": true,
+    "sample_limit": null,
+    "scenario_limit": 6,
+    "schema_version": "gm-batch-v0.1",
+    "split": "held_out"
+  },
+  "config_hash": "61c1ddac29baf067b4d4fc205367ecacc13fad925765a4d9b4abb99d21d06c88",
+  "ingestion_error_count": 0,
+  "paper_conclusion": false,
+  "record_count": 240,
+  "records_sha256": "85f41684452a69424b6db7f932a22041fcd71c3ffd642119c023076307385d00",
+  "schema_version": "gm-batch-v0.1",
+  "source_kind": [
+    "deterministic_fixture"
+  ]
+}

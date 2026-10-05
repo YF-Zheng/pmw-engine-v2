@@ -1,0 +1,17 @@
+{
+  "charges": 3,
+  "duration": 0.0,
+  "effects": [
+    {
+      "delta": 0.6,
+      "field": "electric_field"
+    }
+  ],
+  "id": "static_grave",
+  "name": "Static Grave",
+  "periodic": null,
+  "resource_cost": 6.0,
+  "slot_cost": 1,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}

@@ -1,0 +1,19 @@
+{
+  "id": "held_out_resource_limited",
+  "split": "held_out",
+  "category": "resource_limited",
+  "target_count": 1,
+  "environment": "fragile_bridge",
+  "build": {
+    "backpack": ["spark_tax", "quake_engine", "cold_sink", "static_grave", "kindling_arc", "storm_coil", "mud_anchor", "grounding_rod", "stability_charge", "firebreak"],
+    "active": ["spark_tax", "quake_engine", "cold_sink", "static_grave", "kindling_arc", "storm_coil"]
+  },
+  "program": [
+    {"op": "cast", "skill": "each_active", "target": "zone"},
+    {"op": "step", "repeats": 1},
+    {"op": "cast", "skill": "each_active", "target": "zone"},
+    {"op": "step", "repeats": 3}
+  ],
+  "horizons": {"combat_end": 0, "short": 14, "medium": 56},
+  "weights": {"combat": 0.15, "survival": 0.35, "control": 0.2, "utility": 0.2, "exploration_world_impact": 0.1}
+}

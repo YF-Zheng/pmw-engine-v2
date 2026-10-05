@@ -1,0 +1,72 @@
+{
+  "entities": [
+    {
+      "archetype": "actor",
+      "components": {
+        "resource": {
+          "energy": 100.0
+        }
+      },
+      "id": "actor:researcher",
+      "tags": []
+    },
+    {
+      "archetype": "zone",
+      "components": {
+        "fields": {
+          "electric_field": 0.4,
+          "fire_intensity": 0.1,
+          "ground_stability": 0.9,
+          "sound_level": 0.45,
+          "temperature": 0.5,
+          "visibility": 0.8,
+          "water_level": 0.1,
+          "wetness": 0.25
+        },
+        "material": {
+          "exposed_iron": 0.9,
+          "fragility": 0.1,
+          "fuel": 0.8
+        },
+        "outcome": {
+          "charged_ore": 0.0,
+          "discharges": 0.0
+        },
+        "process": {
+          "alert": 0.0,
+          "steam": 0.0
+        },
+        "zone": {
+          "kind": "industrial_yard"
+        }
+      },
+      "id": "zone:industrial_yard",
+      "tags": [
+        "industrial_yard"
+      ]
+    },
+    {
+      "archetype": "skill_instance",
+      "components": {
+        "skill": {
+          "charges": 99,
+          "owner": "actor:researcher",
+          "spec_id": "static_grave"
+        }
+      },
+      "id": "skill:equipped",
+      "tags": []
+    }
+  ],
+  "relations": [],
+  "rng": {
+    "seed": 20261004
+  },
+  "scheduled_events": [],
+  "schema_version": "2.0",
+  "time": {
+    "sim_time": 0.0,
+    "tick": 0
+  },
+  "world_id": "gm_industrial_yard"
+}

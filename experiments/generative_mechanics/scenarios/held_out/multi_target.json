@@ -1,0 +1,17 @@
+{
+  "id": "held_out_multi_target",
+  "split": "held_out",
+  "category": "multi_target",
+  "target_count": 3,
+  "environment": "wetland",
+  "build": {
+    "backpack": ["thunderclap", "flash_flood", "monsoon_seed", "floodgate", "static_grave", "fault_whisper", "grounding_rod", "drying_wind", "clear_sky", "mud_anchor"],
+    "active": ["thunderclap", "flash_flood", "monsoon_seed", "floodgate", "static_grave", "fault_whisper"]
+  },
+  "program": [
+    {"op": "cast", "skill": "each_active", "target": "zone"},
+    {"op": "step", "repeats": 4}
+  ],
+  "horizons": {"combat_end": 0, "short": 16, "medium": 64},
+  "weights": {"combat": 0.25, "survival": 0.15, "control": 0.3, "utility": 0.1, "exploration_world_impact": 0.2}
+}

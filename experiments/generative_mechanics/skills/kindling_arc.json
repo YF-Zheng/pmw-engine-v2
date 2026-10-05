@@ -1,0 +1,17 @@
+{
+  "charges": 3,
+  "duration": 0.0,
+  "effects": [
+    {
+      "delta": 0.35,
+      "field": "fire_intensity"
+    }
+  ],
+  "id": "kindling_arc",
+  "name": "Kindling Arc",
+  "periodic": null,
+  "resource_cost": 7.0,
+  "slot_cost": 1,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}

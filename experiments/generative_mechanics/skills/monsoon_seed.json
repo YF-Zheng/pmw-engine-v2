@@ -1,0 +1,17 @@
+{
+  "charges": 3,
+  "duration": 0.0,
+  "effects": [
+    {
+      "delta": 0.45,
+      "field": "water_level"
+    }
+  ],
+  "id": "monsoon_seed",
+  "name": "Monsoon Seed",
+  "periodic": null,
+  "resource_cost": 8.0,
+  "slot_cost": 1,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}

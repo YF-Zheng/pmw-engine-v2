@@ -1,0 +1,17 @@
+{
+  "charges": 3,
+  "duration": 6.0,
+  "effects": [
+    {
+      "delta": -0.3,
+      "field": "sound_level"
+    }
+  ],
+  "id": "quiet_geometry",
+  "name": "Quiet Geometry",
+  "periodic": null,
+  "resource_cost": 10.0,
+  "slot_cost": 2,
+  "target_scope": "zone",
+  "trigger_conditions": []
+}
