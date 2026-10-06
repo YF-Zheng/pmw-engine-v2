@@ -1,0 +1,32 @@
+{
+  "collection_status": "NOT_STARTED",
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "evaluation_protocol": "gm-free-evaluation-v0.5",
+  "formal_dataset_ingestion_allowed": false,
+  "formal_experiment_status": "NOT_STARTED",
+  "freeze_commit": "89e0c6ad24f62c68f4e326b361e0f3c5f807c756",
+  "generation_protocol": "gm-free-invention-v0.3",
+  "models": [
+    {
+      "exact_model_identifier": "gpt-5.6-luna",
+      "reasoning_effort": "high"
+    },
+    {
+      "exact_model_identifier": "gpt-5.6-terra",
+      "reasoning_effort": "high"
+    }
+  ],
+  "provider": "OpenAI Codex CLI",
+  "provider_seed_enforced": false,
+  "provider_seed_unavailable_reason": "OpenAI Codex CLI does not expose a provider-enforced sampling seed for this collection path",
+  "request_batch_id": "free-v05-dev-pilot-batch-001",
+  "requests_per_model": 15,
+  "sampling_parameters": {
+    "max_output_tokens": null,
+    "temperature": null,
+    "top_p": null,
+    "unavailable_reason": "OpenAI Codex CLI does not expose this sampling control for this collection path"
+  },
+  "total_requests": 30
+}

@@ -1,0 +1,46 @@
+{
+  "artifacts": [
+    {
+      "path": "COLLECTION.md",
+      "sha256": "337a2d338807976c73de85efbbe7b392640b3b1c8559e5d15a13bb81f1bf8ff3"
+    },
+    {
+      "path": "README.md",
+      "sha256": "3edcf71f97cd78aada0f4bdbfe11e8e416ece64ba5ea8e29860d9f66cd3f0066"
+    },
+    {
+      "path": "analysis/PILOT_REPORT.md",
+      "sha256": "bb1b42914ead82ab1ac2814b74887f9f53d1d34976a9941b4d460520a0fff347"
+    },
+    {
+      "path": "ingested/README.md",
+      "sha256": "7d54b44e294faa56098dcc68a2b7edb24dc3f39fbe66c1648b86b4fb31a6bed3"
+    },
+    {
+      "path": "manual_audit/README.md",
+      "sha256": "fce0e88193929a83513cc273683106a0d1b85d51651eaa3882782129e0cbc35e"
+    },
+    {
+      "path": "manifest/preregistration.json",
+      "sha256": "5221e448fcad05f2d389027d2f77201218264b0242e668a71b2652945ee38c88"
+    },
+    {
+      "path": "profiles/README.md",
+      "sha256": "4593e562b7a1c93835b361d41fdd3b904ef40a087938bc48af637a61b8e59324"
+    },
+    {
+      "path": "raw_provider_responses/README.md",
+      "sha256": "7d674bcdad156ced903ad5980469f4c1bd904992515f96671c5a0b60ec5a7375"
+    },
+    {
+      "path": "requests/canonical_requests.jsonl",
+      "sha256": "5ac7aca8b20ab3603041c65640a0dad4471ffd80189d3b71c2f93bf605a5608e"
+    }
+  ],
+  "collection_status": "NOT_STARTED",
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "formal_dataset_ingestion_allowed": false,
+  "freeze_commit": "89e0c6ad24f62c68f4e326b361e0f3c5f807c756",
+  "v05_semantic_contract_digest": "de843327762164af55c7ba342345a4861da2aab3d2082ecdd1392d4558e3b28f"
+}
