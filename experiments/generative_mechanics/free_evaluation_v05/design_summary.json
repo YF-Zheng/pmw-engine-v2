@@ -1,5 +1,5 @@
 {
-  "protocol_version": "gm-free-evaluation-v0.5-candidate",
+  "protocol_version": "gm-free-evaluation-v0.5",
   "generation_semantics_changed": false,
   "profile_policy": "no aggregate score and no ranking",
   "constructs": {

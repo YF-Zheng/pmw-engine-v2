@@ -1,5 +1,5 @@
 {
-  "protocol_version": "gm-free-evaluation-v0.5-candidate",
+  "protocol_version": "gm-free-evaluation-v0.5",
   "mappings": [
     {
       "v0.4": "downstream_causal_depth.depth",

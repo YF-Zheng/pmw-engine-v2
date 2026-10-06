@@ -10,6 +10,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = Path(__file__).with_name("semantic_contract.json")
+PROTOCOL_VERSION = "gm-free-evaluation-v0.5"
 
 
 def _sha(path: Path) -> str:
@@ -24,7 +25,7 @@ def current_projection(*, manifest_path: Path = MANIFEST, root: Path = ROOT) -> 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     paths = manifest["registered_paths"]
     return {
-        "protocol_version": "gm-free-evaluation-v0.5-candidate",
+        "protocol_version": PROTOCOL_VERSION,
         "files": {relative: _sha(root / relative) for relative in paths},
     }
 
@@ -35,7 +36,7 @@ def projection_digest(projection: dict[str, Any]) -> str:
 
 def validate_semantic_contract(*, manifest_path: Path = MANIFEST, root: Path = ROOT) -> dict[str, Any]:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    if manifest.get("protocol_version") != "gm-free-evaluation-v0.5-candidate":
+    if manifest.get("protocol_version") != PROTOCOL_VERSION:
         raise ValueError("v0.5 semantic contract protocol mismatch")
     projection = current_projection(manifest_path=manifest_path, root=root)
     if projection != manifest.get("canonical_projection"):

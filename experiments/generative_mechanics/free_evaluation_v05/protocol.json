@@ -1,6 +1,6 @@
 {
-  "protocol_version": "gm-free-evaluation-v0.5-candidate",
-  "status": "preregistered_candidate_not_frozen",
+  "protocol_version": "gm-free-evaluation-v0.5",
+  "status": "frozen",
   "generation_protocol": "gm-free-invention-v0.3",
   "aggregation": {
     "capability_profile_only": true,

@@ -14,14 +14,14 @@
       "environments/mine.json": "d6ea27bd1d16e864a17729cb0804c37c9a5cea225bcf8dc22bb0714d233985fd",
       "environments/wetland.json": "cbd7f602f23573e5bbb092fc58b3533733d8bf0b159ae559d73b991583dabae7",
       "execution.py": "80f5a331e04c490be4db4b933f8c318ef41ed0f4cb18bde47d16fe7c09a84106",
-      "free_evaluation_v05/__init__.py": "9baeb2ab779fdcdb0df500434e4fc63b61dce53b5602f9c0eeba7e0248b26875",
+      "free_evaluation_v05/__init__.py": "cc0718e5fcb1768c89a152b436524653624887ed651b17b61af870b7a6f0e23f",
       "free_evaluation_v05/causal.py": "59f60ab40a9eff77f640a3e95014e601a58278cf96174693cd813f08a8d5ab54",
-      "free_evaluation_v05/design_summary.json": "a0625af028f59eb02056d301f0270d5650eb6b422b8661870606e260152ce36f",
+      "free_evaluation_v05/design_summary.json": "97e94b992778a9da0179692fa6f3d7d1d859b58d2d84da837551e6777ade3b1f",
       "free_evaluation_v05/environment.py": "a6099184c569270b998f43c719689a45906d1c56184fc78e84c6d4afdcee950e",
-      "free_evaluation_v05/metric_mapping.json": "b42f3091986cfeb9635983ff4e7a9a254d16994b20a2416530fd84f924ff03f8",
-      "free_evaluation_v05/profile.py": "28b2d216bbd5a2b3f70a939d395ae2569d0bf7d3da64b098bc3f27f9fa829ec1",
-      "free_evaluation_v05/protocol.json": "218a5f4372db45dc2b93f26548969b3482c3a4eb3babea6ee7f7885a5021a13c",
-      "free_evaluation_v05/semantic_contract.py": "0cbfd9ea4bd816492292104c218cb4b0f41444669ae862c8803a29c56ce6335a",
+      "free_evaluation_v05/metric_mapping.json": "51df4ab09c7900a3abd1467a634cf2b0ade4633986bd8106363f8448dfd82292",
+      "free_evaluation_v05/profile.py": "2a18f0e797431fbcbc95381aeaed6674c2084b313e1b84eb19ba7c62f7155251",
+      "free_evaluation_v05/protocol.json": "e651fae542512b2e75e5142fca35618cd988798d4e47d98044471763d62eadb9",
+      "free_evaluation_v05/semantic_contract.py": "028d2d0582f2aee5d0118b6fe7d70ee9105b6480b042ab2323eb9d6178f41f50",
       "free_evaluation_v05/structure.py": "804d31745a7bb28044cac7dab195539b4141fd34dba898cc6738869bc750b905",
       "free_invention.py": "890fafe0e59958db88a9b2e2ccefc38bada63c6ec2ba1b8823e568219d6547a4",
       "generation.py": "dcace30d8e5556b9674a625f3acdfe67e72a22f08a1dfef9fd4aa804dca4cc26",
@@ -82,9 +82,9 @@
       "substrate.py": "d3bfdf0f5dd7ae5262f7bdd532102f0c050cabf22ee79bc759f23fa827b06df7",
       "substrate/world_laws.json": "bac6ed0eaede6340c6a5f6a89cc3e5b240d8e4aa750f9ce85dfc5f21e143ea0c"
     },
-    "protocol_version": "gm-free-evaluation-v0.5-candidate"
+    "protocol_version": "gm-free-evaluation-v0.5"
   },
-  "protocol_version": "gm-free-evaluation-v0.5-candidate",
+  "protocol_version": "gm-free-evaluation-v0.5",
   "registered_paths": [
     "adversarial_measurement/v05_preregistered_cases.jsonl",
     "adversarial_measurement/v05_preregistration.json",
@@ -168,5 +168,5 @@
     "substrate/world_laws.json"
   ],
   "scope": "whole_evaluator_environment_world_system_context_reference_and_shared_sources",
-  "semantic_contract_digest": "01635c9e500c22250bb8fe3309c54a213bcd9a0638a8429b730f07e8121851d2"
+  "semantic_contract_digest": "de843327762164af55c7ba342345a4861da2aab3d2082ecdd1392d4558e3b28f"
 }

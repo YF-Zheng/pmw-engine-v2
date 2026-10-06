@@ -53,12 +53,12 @@ def build() -> dict[str, object]:
     ]
     paths = sorted(set(fixed + assets))
     projection = {
-        "protocol_version": "gm-free-evaluation-v0.5-candidate",
+        "protocol_version": "gm-free-evaluation-v0.5",
         "files": {path: _sha(ROOT / path) for path in paths},
     }
     canonical = json.dumps(projection, sort_keys=True, separators=(",", ":"))
     manifest = {
-        "protocol_version": "gm-free-evaluation-v0.5-candidate",
+        "protocol_version": "gm-free-evaluation-v0.5",
         "scope": "whole_evaluator_environment_world_system_context_reference_and_shared_sources",
         "registered_paths": paths,
         "canonical_projection": projection,

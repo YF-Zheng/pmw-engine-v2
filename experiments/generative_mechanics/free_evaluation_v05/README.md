@@ -1,7 +1,15 @@
 # Free-Invention Dynamic Evaluation v0.5
 
-This directory is the preregistered v0.5 measurement candidate. It does not
-change the frozen v0.3 generation request and does not overwrite v0.4 results.
+This directory is the frozen v0.5 evaluator contract. It does not change the
+frozen v0.3 generation request and does not overwrite v0.4 results. The freeze
+does not mean that a real-model experiment has been completed: the formal paper
+experiment and DEV pilot are both `NOT STARTED` at freeze time.
+
+`FREEZE_MANIFEST.json` is the machine-readable freeze record and
+`FREEZE_MANIFEST.md` is its deterministic human-readable rendering. The
+semantic contract locks evaluator sources and registered assets; the freeze
+manifest then binds that semantic digest and the remaining administrative
+provenance in an acyclic, fail-closed chain.
 
 The evaluator emits a capability profile, never a creativity total or rank.
 Its primary constructs are realized dependency depth, necessity-backed depth,

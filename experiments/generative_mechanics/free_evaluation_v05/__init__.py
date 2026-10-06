@@ -1,4 +1,4 @@
-"""Free-Invention Dynamic Evaluation v0.5 candidate."""
+"""Frozen Free-Invention Dynamic Evaluation v0.5."""
 
 from .profile import evaluate_free_invention_profile_v05
 

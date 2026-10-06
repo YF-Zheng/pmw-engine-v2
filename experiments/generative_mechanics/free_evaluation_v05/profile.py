@@ -13,7 +13,7 @@ from .semantic_contract import validate_semantic_contract
 from .structure import evaluate_structural_evidence
 
 
-PROTOCOL_VERSION = "gm-free-evaluation-v0.5-candidate"
+PROTOCOL_VERSION = "gm-free-evaluation-v0.5"
 
 
 def _dynamic_reach(sample: FreeInventionSample) -> dict[str, Any]:

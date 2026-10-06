@@ -26,6 +26,7 @@ from experiments.generative_mechanics.free_evaluation_v05.causal import dependen
 from experiments.generative_mechanics.free_evaluation_v05.environment import summarize_environment_rows
 from experiments.generative_mechanics.free_evaluation_v05.environment import normalized_path_signature
 from experiments.generative_mechanics.free_evaluation_v05.semantic_contract import validate_semantic_contract
+from experiments.generative_mechanics.free_evaluation_v05.freeze_manifest import validate_freeze_manifest
 from experiments.generative_mechanics.free_evaluation_v05.structure import evaluate_structural_evidence
 from experiments.generative_mechanics.free_evaluation_v05.profile import evaluate_free_invention_profile_v05
 from experiments.generative_mechanics.free_invention import build_request_rows
@@ -236,6 +237,47 @@ class StructuralV05Tests(unittest.TestCase):
 
 
 class ContractAndCliV05Tests(unittest.TestCase):
+    def test_v05_protocol_is_administratively_frozen(self):
+        root = Path(__file__).parents[1] / "free_evaluation_v05"
+        protocol = json.loads((root / "protocol.json").read_text(encoding="utf-8"))
+        self.assertEqual(protocol["protocol_version"], "gm-free-evaluation-v0.5")
+        self.assertEqual(protocol["status"], "frozen")
+
+    def test_freeze_manifest_validates_and_experiments_are_not_started(self):
+        manifest = validate_freeze_manifest()
+        self.assertEqual(manifest["status"]["formal_paper_experiment"], "NOT STARTED")
+        self.assertEqual(manifest["status"]["dev_pilot"], "NOT STARTED")
+        self.assertEqual(manifest["git_commit"]["base_commit"], "fdb5c845dea48db41255b9c38aee830c77e8d87a")
+        self.assertIn("only freezes the evaluator contract", manifest["freeze_statement"])
+        transition = manifest["administrative_transition"]
+        self.assertEqual(transition["from_protocol"], "gm-free-evaluation-v0.5-candidate")
+        self.assertEqual(transition["to_protocol"], "gm-free-evaluation-v0.5")
+        self.assertEqual(
+            transition["pre_freeze_reviewed_semantic_contract_digest"],
+            "01635c9e500c22250bb8fe3309c54a213bcd9a0638a8429b730f07e8121851d2",
+        )
+
+    def test_administrative_freeze_source_is_outside_evaluator_projection(self):
+        contract = validate_semantic_contract()
+        self.assertNotIn("free_evaluation_v05/freeze_manifest.py", contract["registered_paths"])
+        manifest = validate_freeze_manifest()
+        self.assertIn(
+            "experiments/generative_mechanics/free_evaluation_v05/freeze_manifest.py",
+            manifest["administrative_source_hashes"],
+        )
+
+    def test_freeze_manifest_fails_closed_on_manifest_tamper(self):
+        root = Path(__file__).parents[1] / "free_evaluation_v05"
+        with tempfile.TemporaryDirectory() as directory:
+            manifest_path = Path(directory) / "FREEZE_MANIFEST.json"
+            markdown_path = Path(directory) / "FREEZE_MANIFEST.md"
+            manifest = json.loads((root / "FREEZE_MANIFEST.json").read_text(encoding="utf-8"))
+            manifest["status"]["dev_pilot"] = "STARTED"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            shutil.copyfile(root / "FREEZE_MANIFEST.md", markdown_path)
+            with self.assertRaisesRegex(ValueError, "freeze manifest mismatch"):
+                validate_freeze_manifest(manifest_path=manifest_path, markdown_path=markdown_path)
+
     def test_whole_semantic_contract_validates(self):
         contract = validate_semantic_contract()
         self.assertGreaterEqual(len(contract["registered_paths"]), 70)
@@ -282,6 +324,7 @@ class ContractAndCliV05Tests(unittest.TestCase):
 
     def test_integrated_profile_keeps_constructs_separate(self):
         profile = evaluate_free_invention_profile_v05(_sample("world_substrate"))
+        self.assertEqual(profile["protocol_version"], "gm-free-evaluation-v0.5")
         self.assertEqual(profile["aggregation_policy"], "capability_profile_only_no_score_no_rank")
         dynamic = profile["dynamic_reach"]["conditional_on_activation"]
         self.assertIn("realized_dependency_depth_distribution", dynamic)
