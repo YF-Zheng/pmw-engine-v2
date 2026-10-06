@@ -199,6 +199,29 @@ Interaction surface, combinatorial potential, and self-containment remain
 deferred. The v0.4 evaluator remains a candidate until an external measurement
 review and genuine-model pilot are complete.
 
+### Free-Invention dynamic evaluation v0.5
+
+v0.5 is an independent evaluator and does not rewrite v0.4 evidence or the
+frozen v0.3 generation request. “Causal depth” is only an umbrella label.
+Formal results are realized dependency depth, derived from ordered committed
+write/read execution structure, and necessity-backed depth, a single-law
+ablation lower bound. Their gap is diagnostic evidence compatible with
+redundancy or overdetermination, not proof and not a general-causality solver.
+
+Outcome differentiation is a difference-in-differences over paired observed
+state. Causal-path differentiation compares background-subtracted normalized
+node/edge multisets. Event, command, proposal, and absolute-time identities are
+excluded; occurrence multiplicity and binding identity remain semantic. The
+two dimensions are never folded into one headline boolean.
+
+Structural evidence is layered. Exact non-match against 36 references is weak
+registry evidence. Explicit one-point edits identify near copies. Conservative
+two-reference union coverage supplies positive recombination evidence, while a
+negative result proves nothing. Semantic structure retains field names;
+abstract topology canonically renames fields while retaining read/write roles,
+operators, polarity, temporal shape, scope, and cardinality. Static structure,
+activation, and paired behavioral inertness remain separately reportable.
+
 ## Batch and targeted revision
 
 Batch execution is fault-isolated and resumable under a versioned config hash. Rates use staged denominators:

@@ -1,0 +1,74 @@
+{
+  "protocol_version": "gm-free-evaluation-v0.5-candidate",
+  "status": "preregistered_candidate_not_frozen",
+  "generation_protocol": "gm-free-invention-v0.3",
+  "aggregation": {
+    "capability_profile_only": true,
+    "composite_score": false,
+    "ranking": false
+  },
+  "binding_semantics": {
+    "default": "identity_equality",
+    "observational_equivalence_classes": [],
+    "policy": "bindings are distinct unless an explicit registered equivalence class says otherwise"
+  },
+  "activation": {
+    "definition": "a candidate law produces at least one effective committed write in a registered arm",
+    "separate_from_behavioral_inertness": true
+  },
+  "behavioral_inertness": {
+    "definition": "paired candidate-present minus candidate-absent execution has neither a committed observed-state difference nor additional normalized world-law activity",
+    "structural_evidence_remains_reportable": true
+  },
+  "dynamic_reach": {
+    "realized_dependency_depth": {
+      "definition": "longest candidate-rooted path through additional world-law occurrences connected by ordered last-effective committed-write/read dependencies",
+      "necessity_required": false,
+      "candidate_root_counted": false,
+      "repeated_same_structure_inflates_depth": false,
+      "binding_identity_matters": true
+    },
+    "necessity_backed_depth": {
+      "definition": "longest realized dependency path retaining world-to-world edges only when single-law ablation reduces the downstream normalized semantic occurrence count",
+      "interpretation": "conservative lower bound, not general actual causality"
+    },
+    "depth_gap": {
+      "definition": "realized_dependency_depth minus necessity_backed_depth",
+      "interpretation": "diagnostic compatible with redundancy, overdetermination, or another non-necessary realized dependency; not proof of redundant causation"
+    }
+  },
+  "environmental_behavior": {
+    "outcome_differentiation": {
+      "definition": "inequality among environment-specific paired net observed-state effects",
+      "design": "candidate-present minus candidate-absent, then compare environments"
+    },
+    "causal_path_differentiation": {
+      "definition": "inequality among environment-specific multisets of normalized candidate-induced world-law path signatures",
+      "background_subtracted": true,
+      "identity_exclusions": ["event_id", "command_id", "proposal_id", "absolute_timestamp"],
+      "occurrence_multiplicity_preserved": true
+    },
+    "deprecated": {
+      "environmentally_differentiated": "v0.4 compatibility only; forbidden as a v0.5 headline"
+    }
+  },
+  "structural_evidence": {
+    "exact_match": "fingerprint identity against one or more of the 36 registered references; exact non-match is weak evidence only",
+    "near_copy": "explicit unweighted one-point edit profile against the nearest registered reference",
+    "recombination": "conservative evidence that candidate structural terms are covered by the union of at most two registered references; false is not proof of non-recombination",
+    "semantic_structure": "field identity participates in read/write structure",
+    "abstract_topology": "canonical field renaming removes field identity while preserving read/write relation, operators, polarity, temporal form, scope, cardinality, and dependency topology"
+  },
+  "old_to_new_field_mapping": {
+    "downstream_causal_depth.depth": ["dynamic_reach.realized_dependency_depth", "dynamic_reach.necessity_backed_depth"],
+    "cross_environment_differentiation.environmentally_differentiated": ["environmental_behavior.outcome_differentiated", "environmental_behavior.causal_path_differentiated"],
+    "structural_novelty.exact_novel_against_registry": ["structural_evidence.exact_match", "structural_evidence.near_copy", "structural_evidence.recombination_detected", "structural_evidence.semantic_structure", "structural_evidence.abstract_topology"],
+    "candidate_activated": ["activation.activated", "behavioral_inertness.behaviorally_inert"]
+  },
+  "limitations": {
+    "general_causality": "not solved; single-law necessity ablation is intentionally a lower bound",
+    "recombination": "only conservative exact structural-term coverage by at most two references",
+    "equivalent_bindings": "no inferred equivalence; only explicit future registration",
+    "dead_code": "only registered static boundary guards plus paired runtime behavior; no general SAT or symbolic execution"
+  }
+}

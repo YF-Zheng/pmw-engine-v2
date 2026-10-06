@@ -26,6 +26,13 @@ implemented profile currently covers structural novelty, downstream causal
 depth, and cross-environment differentiation; it never combines them into a
 creativity score. The remaining dimensions are deferred.
 
+The v0.5 candidate refines those umbrella labels. Reports name realized
+dependency depth versus necessity-backed depth, outcome differentiation versus
+causal-path differentiation, and semantic structure versus abstract topology.
+Exact match, near-copy, and conservative recombination remain distinct
+evidence. The interface and model-invention studies stay separate, and neither
+has a composite creativity score or model rank.
+
 ### Controlled Invention
 
 Question: can a model invent a mechanism whose formally realized utility falls

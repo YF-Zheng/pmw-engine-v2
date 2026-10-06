@@ -1,0 +1,41 @@
+{
+  "protocol_version": "gm-free-evaluation-v0.5-candidate",
+  "mappings": [
+    {
+      "v0.4": "downstream_causal_depth.depth",
+      "v0.5": [
+        "dynamic_reach.realized_dependency_depth",
+        "dynamic_reach.necessity_backed_depth",
+        "dynamic_reach.depth_gap"
+      ],
+      "compatibility": "semantic split; values are not interchangeable"
+    },
+    {
+      "v0.4": "cross_environment_differentiation.environmentally_differentiated",
+      "v0.5": [
+        "environmental_behavior.outcome_differentiated",
+        "environmental_behavior.causal_path_differentiated"
+      ],
+      "compatibility": "old union boolean is deprecated"
+    },
+    {
+      "v0.4": "structural_novelty.exact_novel_against_registry",
+      "v0.5": [
+        "structural_evidence.exact_match",
+        "structural_evidence.near_copy",
+        "structural_evidence.recombination",
+        "structural_evidence.semantic_structure",
+        "structural_evidence.abstract_topology"
+      ],
+      "compatibility": "exact non-match remains weak evidence only"
+    },
+    {
+      "v0.4": "candidate_activated",
+      "v0.5": [
+        "activation.activated",
+        "behavioral_inertness.behaviorally_inert"
+      ],
+      "compatibility": "independent runtime facts"
+    }
+  ]
+}

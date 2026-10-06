@@ -31,9 +31,11 @@ from .free_invention import (
     write_request_jsonl as write_free_invention_request_jsonl,
 )
 from .free_evaluation_v04 import (
-    PROTOCOL_VERSION as FREE_EVALUATION_PROTOCOL_VERSION,
-    evaluate_free_invention_profile,
+    PROTOCOL_VERSION as FREE_EVALUATION_V04_PROTOCOL_VERSION,
+    evaluate_free_invention_profile as evaluate_free_invention_profile_v04,
 )
+from .free_evaluation_v05 import evaluate_free_invention_profile_v05
+from .free_evaluation_v05.profile import PROTOCOL_VERSION as FREE_EVALUATION_V05_PROTOCOL_VERSION
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -79,10 +81,14 @@ def _parser() -> argparse.ArgumentParser:
     free_ingest.add_argument("input", type=Path)
     free_evaluate = commands.add_parser(
         "evaluate-free-invention",
-        help="evaluate v0.3 responses with the v0.4 capability-profile candidate",
+        help="evaluate v0.3 responses with an explicitly versioned capability profile",
     )
     free_evaluate.add_argument("input", type=Path)
     free_evaluate.add_argument("output", type=Path)
+    free_evaluate.add_argument(
+        "--evaluation-version", choices=("v0.5", "v0.4"), default="v0.5",
+        help="v0.5 is the default; v0.4 remains reproducible without changed semantics",
+    )
     batch = commands.add_parser("run-batch", help="run a fault-isolated generated-mechanic batch")
     batch.add_argument("input", type=Path); batch.add_argument("output", type=Path)
     batch.add_argument("--profile", choices=("ci", "full"), default="ci")
@@ -204,11 +210,17 @@ def main(argv: list[str] | None = None) -> int:
             return 0 if not result.errors else 2
         elif args.command == "evaluate-free-invention":
             ingestion = ingest_free_invention_path(args.input)
+            if args.evaluation_version == "v0.4":
+                evaluator = evaluate_free_invention_profile_v04
+                evaluation_protocol = FREE_EVALUATION_V04_PROTOCOL_VERSION
+            else:
+                evaluator = evaluate_free_invention_profile_v05
+                evaluation_protocol = FREE_EVALUATION_V05_PROTOCOL_VERSION
             profiles = []
             evaluation_errors = []
             for sample in ingestion.samples:
                 try:
-                    profiles.append(evaluate_free_invention_profile(sample))
+                    profiles.append(evaluator(sample))
                 except Exception as exc:  # Per-sample isolation is part of the batch contract.
                     evaluation_errors.append({
                         "sample_id": sample.sample_id,
@@ -216,7 +228,7 @@ def main(argv: list[str] | None = None) -> int:
                         "message": str(exc),
                     })
             payload = {
-                "protocol_version": FREE_EVALUATION_PROTOCOL_VERSION,
+                "protocol_version": evaluation_protocol,
                 "profiles": profiles,
                 "ingestion_errors": [item.to_dict() for item in ingestion.errors],
                 "evaluation_errors": evaluation_errors,
@@ -224,7 +236,7 @@ def main(argv: list[str] | None = None) -> int:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(canonical_json(payload) + "\n", encoding="utf-8")
             print(canonical_json({
-                "protocol": FREE_EVALUATION_PROTOCOL_VERSION,
+                "protocol": evaluation_protocol,
                 "output": str(args.output),
                 "profiles": len(profiles),
                 "ingestion_errors": len(ingestion.errors),

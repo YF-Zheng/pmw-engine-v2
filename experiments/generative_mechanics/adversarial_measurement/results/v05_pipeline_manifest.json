@@ -1,0 +1,18 @@
+{
+  "audit_bound_production_sha256": "acb45ff155d32d3a5c6283a5281981c46e029eb64428fd0abaeb8f47018efd16",
+  "audit_results_sha256": "45dab8f75c7fabe9f77f426a1366ff2d74d66646e9675b7987541ed0de44421d",
+  "audit_summary_sha256": "127ee5ab9bd2bd2be7e746f65f28988caf946118725bf0c426ad674f14c0f4fe",
+  "preregistration_digest": "0a4658766b0166602c7410b65bc1dabb313711d6ce6b4b95ad2f43ef19ee44ce",
+  "production_run_sha256": [
+    "acb45ff155d32d3a5c6283a5281981c46e029eb64428fd0abaeb8f47018efd16",
+    "acb45ff155d32d3a5c6283a5281981c46e029eb64428fd0abaeb8f47018efd16"
+  ],
+  "production_runs_byte_identical": true,
+  "protocol_version": "gm-free-evaluation-v0.5-candidate",
+  "required_order": [
+    "production_run_1",
+    "production_run_2",
+    "audit"
+  ],
+  "semantic_contract_digest": "01635c9e500c22250bb8fe3309c54a213bcd9a0638a8429b730f07e8121851d2"
+}

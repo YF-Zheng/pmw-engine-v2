@@ -1,0 +1,18 @@
+{
+  "base_commit": "b1bdb5bb580ce85a9992bb679eb445be849c8b1b",
+  "cases_sha256": "6ec4cc6cfe1bed5e11867e9930be2919f9c9484f6e1da128617d6d9e2aa4aa19",
+  "execution_status": "not_run",
+  "expectations_written_before_execution": true,
+  "new_v05_case_count": 22,
+  "preregistration_digest": "0a4658766b0166602c7410b65bc1dabb313711d6ce6b4b95ad2f43ef19ee44ce",
+  "protocol_sha256": "218a5f4372db45dc2b93f26548969b3482c3a4eb3babea6ee7f7885a5021a13c",
+  "protocol_version": "gm-free-evaluation-v0.5-candidate",
+  "retained_v04_case_count": 48,
+  "total_case_count": 70,
+  "v04_suspect_resolution_counts": {
+    "KNOWN_LIMITATION": 1,
+    "RESOLVED_BY_DEFINITION": 1,
+    "RESOLVED_BY_SPLIT": 7,
+    "UNCHANGED_EXPECTATION": 39
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "protocol_version": "gm-free-evaluation-v0.5-candidate",
+  "generation_semantics_changed": false,
+  "profile_policy": "no aggregate score and no ranking",
+  "constructs": {
+    "activation": "effective candidate committed write",
+    "behavioral_inertness": "no paired observed-state difference and no candidate-induced world-law path activity",
+    "dynamic_reach": [
+      "realized_dependency_depth",
+      "necessity_backed_depth",
+      "depth_gap"
+    ],
+    "environmental_behavior": [
+      "outcome_differentiation",
+      "causal_path_differentiation"
+    ],
+    "structural_evidence": [
+      "exact_match",
+      "near_copy",
+      "conservative_recombination",
+      "semantic_structure",
+      "abstract_topology"
+    ]
+  },
+  "binding_default": "identity_equality",
+  "registered_observational_equivalence_classes": [],
+  "necessity_claim": "conservative lower bound",
+  "recombination_negative_claim": "none",
+  "exact_non_match_claim": "weak registry evidence only"
+}

@@ -1,0 +1,81 @@
+{
+  "freeze_rationale": "no implementation FAIL; the one retained language ceiling is explicitly named KNOWN_LIMITATION",
+  "freeze_recommendation": "FREEZE_READY",
+  "judgement_counts": {
+    "KNOWN_LIMITATION": 1,
+    "PASS": 69
+  },
+  "new_v05_case_count": 22,
+  "old_suspect_dispositions": [
+    {
+      "case_id": "CD-08",
+      "disposition": "RESOLVED_BY_SPLIT",
+      "expected_v05_semantics": "realized depth retains the redundant dependency while necessity-backed depth may omit it; the gap is diagnostic only"
+    },
+    {
+      "case_id": "CD-11",
+      "disposition": "RESOLVED_BY_DEFINITION",
+      "expected_v05_semantics": "binding identity is semantic by default; a changed binding is not silently paired without a registered equivalence class"
+    },
+    {
+      "case_id": "CE-05",
+      "disposition": "RESOLVED_BY_SPLIT",
+      "expected_v05_semantics": "equal net outcomes and unequal normalized paths are reported on separate axes"
+    },
+    {
+      "case_id": "CE-15",
+      "disposition": "RESOLVED_BY_SPLIT",
+      "expected_v05_semantics": "multiplicity-sensitive path differentiation is separate from outcome differentiation"
+    },
+    {
+      "case_id": "SN-06",
+      "disposition": "RESOLVED_BY_SPLIT",
+      "expected_v05_semantics": "semantic structure differs while canonical abstract topology may match"
+    },
+    {
+      "case_id": "SN-10",
+      "disposition": "RESOLVED_BY_SPLIT",
+      "expected_v05_semantics": "exact non-match is weak evidence and conservative two-reference union coverage is reported separately"
+    },
+    {
+      "case_id": "SN-11",
+      "disposition": "RESOLVED_BY_SPLIT",
+      "expected_v05_semantics": "one-trigger edit is explicitly reported as near-copy evidence"
+    },
+    {
+      "case_id": "SN-12",
+      "disposition": "RESOLVED_BY_SPLIT",
+      "expected_v05_semantics": "one-effect edit is explicitly reported as near-copy evidence"
+    },
+    {
+      "case_id": "SN-15",
+      "disposition": "KNOWN_LIMITATION",
+      "expected_v05_semantics": "duplicate-field cancellation is outside frozen SkillSpec and remains a construct-language ceiling"
+    }
+  ],
+  "post_implementation_results_sha256": "45dab8f75c7fabe9f77f426a1366ff2d74d66646e9675b7987541ed0de44421d",
+  "pre_revision_baseline_sha256": "f9ad5487e9156675eb1d39d330a13b0b8ec70d9cb2444d74c540879ea1e1c2a1",
+  "preregistration_digest": "0a4658766b0166602c7410b65bc1dabb313711d6ce6b4b95ad2f43ef19ee44ce",
+  "production_validation": {
+    "construct_checks": {
+      "dependency_depth_exceeds_necessity_depth": true,
+      "different_outcome_same_path": true,
+      "exact_match_and_realized_depth_at_least_two": true,
+      "one_effect_near_copy": true,
+      "one_trigger_near_copy": true,
+      "same_outcome_different_path": true,
+      "semantic_different_abstract_same": true,
+      "simple_union_recombination": true,
+      "structurally_nonmatching_and_behaviorally_inert": true
+    },
+    "full_production_stack_count": 18,
+    "sha256": "acb45ff155d32d3a5c6283a5281981c46e029eb64428fd0abaeb8f47018efd16",
+    "synthetic_only_count": 2,
+    "validation_count": 20
+  },
+  "protocol_version": "gm-free-evaluation-v0.5-candidate",
+  "retained_v04_case_count": 48,
+  "semantic_contract_digest": "01635c9e500c22250bb8fe3309c54a213bcd9a0638a8429b730f07e8121851d2",
+  "semantic_contract_registered_path_count": 80,
+  "total_case_count": 70
+}

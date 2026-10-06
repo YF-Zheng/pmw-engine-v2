@@ -45,6 +45,7 @@ free_evaluation_v04.py   v0.4 candidate capability-profile integration
 causal_depth_v04.py      paired, activation-aware, ablation-checked downstream depth
 cross_environment_v04.py registered 6 x 4 matched-context panel
 structural_novelty.py    versioned multi-resolution novelty evidence
+free_evaluation_v05/     v0.5 split-construct evaluator and semantic lock
 baseline_v02.py         expression-matched direct-outcome control
 power_v02.py            authoritative scale and the two power estimands
 scenario.py             calibration/evaluation/oracle scenario contract
@@ -74,8 +75,9 @@ PYTHONPATH=src:. python3 -m experiments.generative_mechanics generate-requests /
 PYTHONPATH=src:. python3 -m experiments.generative_mechanics generate-free-invention-requests /tmp/gml-free-requests.jsonl --per-baseline 15
 PYTHONPATH=src:. python3 -m experiments.generative_mechanics ingest-free-invention-responses responses.jsonl
 
-# v0.4 candidate: auditable profile, never a creativity total
+# v0.5 candidate is default; v0.4 remains explicitly replayable
 PYTHONPATH=src:. python3 -m experiments.generative_mechanics evaluate-free-invention responses.jsonl results/free-profiles.json
+PYTHONPATH=src:. python3 -m experiments.generative_mechanics evaluate-free-invention responses.jsonl results/free-profiles-v04.json --evaluation-version v0.4
 
 # CI defers exact contextual search; real/final runs must request it explicitly
 PYTHONPATH=src:. python3 -m experiments.generative_mechanics run-batch responses.jsonl results/pilot --profile full --contextual exact
@@ -110,6 +112,16 @@ and multi-resolution structural novelty against a digest-bound 36-mechanic
 reference catalog. It emits a capability profile and no creativity total.
 Interaction surface, combinatorial potential, and self-containment remain
 deferred; no genuine-model Free study has been run.
+
+Dynamic Evaluation v0.5 leaves generation v0.3 unchanged and splits the v0.4
+headlines into narrower constructs: realized dependency depth versus
+necessity-backed depth; outcome differentiation versus causal-path
+differentiation; and exact-match, near-copy, conservative recombination,
+semantic-structure, and abstract-topology evidence. Activation and behavioral
+inertness are independent. Binding identity is semantic unless an explicit
+observational-equivalence class is registered. No creativity score, invention
+score, total novelty score, or model ranking is produced. The default CLI is
+v0.5; `--evaluation-version v0.4` preserves historical evaluation behavior.
 
 Oracle targets are realized utility under the declared executable scoring
 function and preregistered world-state distribution. They are machine-verifiable
