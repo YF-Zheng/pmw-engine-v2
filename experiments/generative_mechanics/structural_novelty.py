@@ -18,7 +18,7 @@ from typing import Any, Iterable, Mapping
 from .compiler import canonical_json
 
 
-ALGORITHM_VERSION = "gm-structural-novelty-v0.4"
+ALGORITHM_VERSION = "gm-structural-novelty-v0.4.1-adversarial-fix"
 REFERENCE_REGISTRY = Path(__file__).with_name("structural_novelty") / "reference_registry_v0.4.json"
 _REGISTRY_FIELDS = frozenset({
     "protocol_version", "algorithm_version", "source_manifest",
@@ -112,6 +112,23 @@ def _effect_polarity(value: Any) -> str:
     if value > 0:
         return "positive"
     return "zero"
+
+
+def _statically_unreachable_triggers(mechanic: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Return only triggers impossible over a normalized public channel.
+
+    This is intentionally not a general satisfiability solver. It catches the
+    boundary contradictions that are provable from SkillSpec's closed [0, 1]
+    field domain, leaving cross-trigger reasoning to behavioral evaluation.
+    """
+    unreachable: list[dict[str, Any]] = []
+    for item in mechanic.get("trigger_conditions", []):
+        op = item.get("op")
+        value = item.get("value")
+        if not isinstance(value, bool) and isinstance(value, (int, float)):
+            if (op == "gt" and value >= 1.0) or (op == "lt" and value <= 0.0):
+                unreachable.append({"field": str(item.get("field")), "op": str(op), "value": float(value)})
+    return unreachable
 
 
 def _counter_delta(left: Iterable[Any], right: Iterable[Any]) -> tuple[list[Any], list[Any]]:
@@ -243,8 +260,14 @@ def evaluate_structural_novelty(
         "has_zero_effect": bool(zero_effect_fields),
         "zero_effect_fields": zero_effect_fields,
         "zero_writes_excluded_from_topology": True,
+        "statically_unreachable_triggers": _statically_unreachable_triggers(mechanic),
     }
-    if not projection["write_terms"]:
+    if not projection["write_terms"] or no_op_evidence["statically_unreachable_triggers"]:
+        reason = (
+            "one or more trigger conditions are provably unreachable over normalized [0, 1] public fields"
+            if no_op_evidence["statically_unreachable_triggers"]
+            else "all declared effects are zero; no effective write topology exists"
+        )
         return {
             "available": False,
             "algorithm_version": ALGORITHM_VERSION,
@@ -255,7 +278,7 @@ def evaluate_structural_novelty(
             "structural_fingerprint": fingerprint,
             "no_op_evidence": no_op_evidence,
             "excluded_from_novelty_rate": True,
-            "reason": "all declared effects are zero; no effective write topology exists",
+            "reason": reason,
         }
     exact_matches = sorted(
         reference.reference_id for reference in references if reference.fingerprint == fingerprint

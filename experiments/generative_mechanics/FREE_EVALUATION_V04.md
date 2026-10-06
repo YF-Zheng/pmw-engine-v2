@@ -58,7 +58,10 @@ relative to the paired candidate-absent run and is reachable through committed
 write-to-read dependencies from the candidate or another retained world law.
 For each world-to-world edge, the source must be the last effective committed
 writer of an address read by the target, and ablating the source law must reduce
-the target occurrence count. Candidate-to-world edges use the primary
+the target semantic-occurrence multiplicity. A semantic occurrence is matched
+by law, binding, event type/phase, canonical reads/writes, and committed
+old/new result; generated command/event ids and absolute timestamps are not
+identity. Candidate-to-world edges use the primary
 candidate-absent arm as their intervention. The evidence records every retained
 edge's excluded law and present-versus-ablated occurrence counts.
 
@@ -117,6 +120,12 @@ is zero has no effective write topology: structural novelty is unavailable and
 the sample is explicitly excluded from the novelty-rate denominator. In a
 mixed mechanism, zero writes remain visible as no-op evidence but cannot make
 an otherwise known effective topology novel.
+
+The same fail-closed treatment applies to the narrow class of dead triggers
+provably unreachable from the public field domain: `field > 1` and `field < 0`
+at the normalized boundaries. This is a boundary check, not a general-purpose
+constraint solver; more complex behavioral inertness remains visible only to
+dynamic evaluation and is a stated construct limitation.
 
 The profile reports:
 

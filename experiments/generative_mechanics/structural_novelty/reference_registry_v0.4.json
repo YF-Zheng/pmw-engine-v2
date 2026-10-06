@@ -1,5 +1,5 @@
 {
-  "algorithm_version": "gm-structural-novelty-v0.4",
+  "algorithm_version": "gm-structural-novelty-v0.4.1-adversarial-fix",
   "protocol_version": "gm-free-evaluation-v0.4-candidate",
   "reference_count": 36,
   "reference_projection_sha256": "bffb8ff4bbaaf678bcacd81af867c77b31147fe5c6c44ee2f51a0f95e77383cc",

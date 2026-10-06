@@ -1,0 +1,22 @@
+{
+  "adversarial_cases_sha256": "4330f15b294c8b5ee255b95c70476eec0b37c3d8543384cea63970274927088f",
+  "base_commit": "de5451ceaeb020b2ceac1ce6b87752ade0988244",
+  "by_metric": {
+    "cross_environment_differentiation": 16,
+    "downstream_causal_depth": 16,
+    "structural_novelty": 16
+  },
+  "case_count": 48,
+  "cross_metric_case_ids": [
+    "CD-06",
+    "CD-14",
+    "CE-12",
+    "CE-14",
+    "CE-16",
+    "SN-07",
+    "SN-10",
+    "SN-16"
+  ],
+  "execution_status": "executed_once",
+  "raw_results_sha256": "ac6935e6caf072bf5e373a1f3c432f921e1c78fa8bf4169fe50f55f9950b7b47"
+}

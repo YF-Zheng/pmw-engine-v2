@@ -188,6 +188,53 @@ class CausalDepthV04Tests(unittest.TestCase):
         right = self.evaluate(roots, ablations=ablations)
         self.assertEqual(left.to_dict(), right.to_dict())
 
+    def test_ablation_matching_ignores_generated_event_identity_and_absolute_time(self):
+        present = (
+            root(0, (DIRECT,)),
+            root(1, (WORLD_A,)),
+            root(2, (WORLD_B,), event_id="original", time=2),
+        )
+        semantically_preserved = run(
+            root(0, (DIRECT,)),
+            root(2, (WORLD_B,), event_id="replacement", time=20),
+        )
+        result = self.evaluate(
+            present,
+            ablations={"gm.world.a": semantically_preserved},
+        )
+        self.assertEqual(result.depth, 1)
+        self.assertFalse(any(
+            edge.attribution == "world_law_ablation"
+            and edge.ablation["excluded"] == "gm.world.a"
+            for edge in result.edges
+        ))
+
+    def test_semantic_occurrence_matching_preserves_counter_multiplicity(self):
+        result = self.evaluate(
+            (
+                root(0, (DIRECT,)),
+                root(1, (WORLD_A,), event_id="first"),
+                root(2, (WORLD_A,), event_id="second"),
+            ),
+            (root(9, (WORLD_A,), event_id="background-copy"),),
+        )
+        self.assertEqual(result.depth, 1)
+        retained = [node for node in result.nodes if node.law_id == "gm.world.a"]
+        self.assertEqual(len(retained), 1)
+
+    def test_semantic_occurrence_matching_keeps_distinct_committed_results(self):
+        background = root(9, (WORLD_A,), event_id="background-copy")
+        background.trace["events"][0]["commits"][0]["state_deltas"][0]["new"] = 2
+        result = self.evaluate(
+            (root(0, (DIRECT,)), root(1, (WORLD_A,), event_id="candidate-result")),
+            (background,),
+        )
+        self.assertEqual(result.depth, 1)
+        self.assertEqual(
+            [node.law_id for node in result.nodes].count("gm.world.a"),
+            1,
+        )
+
     def test_real_runner_ablation_removes_law_and_emits_edge_evidence(self):
         base = Path(__file__).resolve().parents[1]
         scenario = load_scenario(base / "scenarios" / "evaluation" / "environmental_hazard.json")

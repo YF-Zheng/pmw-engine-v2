@@ -196,7 +196,7 @@
         "candidate_skill_laws",
         "background_laws"
       ],
-      "edge_attribution": "last-effective committed writer plus source-law ablation",
+      "edge_attribution": "last-effective committed writer plus source-law ablation over semantic occurrence signatures; generated ids and absolute timestamps excluded",
       "measure": "longest counterfactual trace-constrained write-to-read path"
     },
     "structural_novelty": {
@@ -207,7 +207,7 @@
         "exact_numeric_values",
         "list_order"
       ],
-      "no_op_policy": "zero writes are evidence but excluded from topology; all-zero mechanics are unavailable and excluded from novelty-rate denominators",
+      "no_op_policy": "zero writes are evidence but excluded from topology; all-zero mechanics and triggers provably unreachable over normalized [0,1] public fields are unavailable and excluded from novelty-rate denominators",
       "reported": [
         "topology_fingerprint",
         "exact_reference_match",

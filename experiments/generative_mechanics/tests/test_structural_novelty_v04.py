@@ -166,6 +166,27 @@ class StructuralNoveltyProfileTests(unittest.TestCase):
             with self.assertRaisesRegex(StructuralNoveltyError, "projection digest mismatch"):
                 evaluate_structural_novelty(mechanic(), registry_path=path)
 
+    def test_provably_unreachable_normalized_trigger_is_excluded(self):
+        dead = copy.deepcopy(mechanic())
+        dead["trigger_conditions"] = [
+            {"field": "temperature", "op": "gt", "value": 1.0},
+        ]
+        report = evaluate_structural_novelty(dead)
+        self.assertFalse(report["available"])
+        self.assertTrue(report["excluded_from_novelty_rate"])
+        self.assertEqual(report["no_op_evidence"]["statically_unreachable_triggers"], [
+            {"field": "temperature", "op": "gt", "value": 1.0},
+        ])
+
+    def test_reachable_boundary_trigger_remains_available(self):
+        reachable = copy.deepcopy(mechanic())
+        reachable["trigger_conditions"] = [
+            {"field": "temperature", "op": "gte", "value": 1.0},
+        ]
+        report = evaluate_structural_novelty(reachable)
+        self.assertTrue(report["available"])
+        self.assertEqual(report["no_op_evidence"]["statically_unreachable_triggers"], [])
+
     def test_duplicate_mechanics_are_grouped_despite_renaming_and_tuning(self):
         duplicate = copy.deepcopy(mechanic())
         duplicate["id"] = "other_identity"

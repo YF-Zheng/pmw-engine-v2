@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+import json
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
@@ -113,15 +114,20 @@ class _Occurrence:
     bindings: tuple[tuple[str, str], ...]
     reads: tuple[str, ...]
     writes: tuple[str, ...]
+    results: tuple[tuple[str, str, str], ...]
     ordinal: int
 
     @property
     def pair_key(self) -> tuple[Any, ...]:
-        # Root/event identity and bindings distinguish repeated matches while the
-        # local ordinal handles exact duplicate matches deterministically.
+        # Pair counterfactual occurrences by semantic execution signature, not
+        # generated command/event identity or absolute time. Multiplicity is
+        # preserved by the surrounding Counter, while bindings, read/write
+        # addresses, canonical committed results, event type, and phase keep
+        # genuinely different executions distinct. Absolute time is excluded
+        # because v0.4 explicitly excludes elapsed time from the estimand.
         return (
-            self.command_id, self.event_id, self.event_type, self.event_time,
-            self.phase, self.law_id, self.bindings, self.ordinal,
+            self.event_type, self.phase, self.law_id, self.bindings,
+            self.reads, self.writes, self.results,
         )
 
 
@@ -174,12 +180,18 @@ def _extract_occurrences(run: ScenarioRun, laws: Mapping[str, Any]) -> tuple[_Oc
             event = event_trace["event"]
             proposal_commit: dict[str, tuple[int, str]] = {}
             proposal_writes: defaultdict[str, set[str]] = defaultdict(set)
+            proposal_results: defaultdict[str, set[tuple[str, str, str]]] = defaultdict(set)
             for commit_index, commit in enumerate(event_trace.get("commits", [])):
                 for proposal_id in commit.get("accepted_proposal_ids", []):
                     proposal_commit[proposal_id] = (commit_index, commit["phase"])
                 for delta in commit.get("state_deltas", []):
                     for proposal_id in delta.get("proposal_ids", []):
                         proposal_writes[proposal_id].add(delta["address"])
+                        proposal_results[proposal_id].add((
+                            delta["address"],
+                            json.dumps(delta.get("old"), sort_keys=True, separators=(",", ":")),
+                            json.dumps(delta.get("new"), sort_keys=True, separators=(",", ":")),
+                        ))
             matches = (*event_trace.get("event_law_matches", []), *event_trace.get("state_law_matches", []))
             for match in matches:
                 law_id = match["law_id"]
@@ -204,7 +216,9 @@ def _extract_occurrences(run: ScenarioRun, laws: Mapping[str, Any]) -> tuple[_Oc
                     result.append(_Occurrence(
                         node_id, law_id, root.command_id, event["id"], event["type"],
                         float(event["time"]), phase, (root_index, event_index, commit_index),
-                        bindings, _law_reads(laws[law_id], dict(bindings)), commit_writes, ordinal,
+                        bindings, _law_reads(laws[law_id], dict(bindings)), commit_writes,
+                        tuple(sorted({entry for pid in commit_ids for entry in proposal_results.get(pid, ())})),
+                        ordinal,
                     ))
     return tuple(result)
 
