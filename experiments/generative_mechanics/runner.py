@@ -88,6 +88,7 @@ def run_scenario(
     *, catalog: dict[str, Any] | None = None,
     compile_mechanic: Callable[[Any], dict[str, Any]] = compile_skill,
     world_setup: Callable[[Any], None] | None = None,
+    excluded_world_law_ids: Iterable[str] = (),
 ) -> ScenarioRun:
     """Execute one scenario from a newly loaded world; no Runtime is reusable."""
     catalog = catalog or load_skill_catalog()
@@ -127,7 +128,13 @@ def run_scenario(
         instance_id = f"skill:{skill_id}"
         world.entities[instance_id] = Entity(instance_id, archetype="skill_instance", components={"skill": {"spec_id": skill_id, "owner": ACTOR_ID, "charges": spec.charges}})
 
-    laws = load_laws(ROOT / "substrate" / "world_laws.json") + system_laws()
+    excluded = frozenset(excluded_world_law_ids)
+    world_laws = load_laws(ROOT / "substrate" / "world_laws.json")
+    known_world_law_ids = {law.law_id for law in world_laws}
+    unknown_exclusions = excluded - known_world_law_ids
+    if unknown_exclusions:
+        raise ScenarioExecutionError(f"unknown excluded world laws: {sorted(unknown_exclusions)}")
+    laws = [law for law in world_laws if law.law_id not in excluded] + system_laws()
     laws += [parse_law(raw) for skill_id in selected for raw in compile_mechanic(catalog[skill_id])["laws"]]
     runtime = Engine(laws).attach(world)
     initial = runtime.state.to_dict()

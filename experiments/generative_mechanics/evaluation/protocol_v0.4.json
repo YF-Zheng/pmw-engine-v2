@@ -1,0 +1,222 @@
+{
+  "aggregation": {
+    "composite_score": false,
+    "independent_unit": "issued_request",
+    "invalid_dynamic_value": "unavailable",
+    "profile_only": true
+  },
+  "engine_changes_allowed": false,
+  "experiments": {
+    "interface": {
+      "baselines": [
+        "isolated_direct_effect",
+        "matched_direct_outcome",
+        "world_substrate"
+      ],
+      "claim": "effect of representational affordance on systemic consequences"
+    },
+    "model_invention": {
+      "baseline": "world_substrate",
+      "claim": "generator differences under an identical mechanic interface"
+    }
+  },
+  "generation_protocol": "gm-free-invention-v0.3",
+  "metrics": {
+    "cross_environment_differentiation": {
+      "attribution": "candidate-present minus candidate-absent",
+      "context_panel": {
+        "contexts": [
+          {
+            "id": "all_high",
+            "public_initial_fields": {
+              "electric_field": 0.85,
+              "fire_intensity": 0.85,
+              "ground_stability": 0.85,
+              "sound_level": 0.85,
+              "temperature": 0.85,
+              "visibility": 0.85,
+              "water_level": 0.85,
+              "wetness": 0.85
+            }
+          },
+          {
+            "id": "all_low",
+            "public_initial_fields": {
+              "electric_field": 0.15,
+              "fire_intensity": 0.15,
+              "ground_stability": 0.15,
+              "sound_level": 0.15,
+              "temperature": 0.15,
+              "visibility": 0.15,
+              "water_level": 0.15,
+              "wetness": 0.15
+            }
+          },
+          {
+            "id": "alternating_a",
+            "public_initial_fields": {
+              "electric_field": 0.15,
+              "fire_intensity": 0.85,
+              "ground_stability": 0.85,
+              "sound_level": 0.15,
+              "temperature": 0.15,
+              "visibility": 0.85,
+              "water_level": 0.15,
+              "wetness": 0.85
+            }
+          },
+          {
+            "id": "alternating_b",
+            "public_initial_fields": {
+              "electric_field": 0.85,
+              "fire_intensity": 0.15,
+              "ground_stability": 0.15,
+              "sound_level": 0.85,
+              "temperature": 0.85,
+              "visibility": 0.15,
+              "water_level": 0.85,
+              "wetness": 0.15
+            }
+          },
+          {
+            "id": "gradient",
+            "public_initial_fields": {
+              "electric_field": 0.85,
+              "fire_intensity": 0.15,
+              "ground_stability": 0.85,
+              "sound_level": 0.5,
+              "temperature": 0.15,
+              "visibility": 0.5,
+              "water_level": 0.15,
+              "wetness": 0.5
+            }
+          },
+          {
+            "id": "neutral",
+            "public_initial_fields": {
+              "electric_field": 0.5,
+              "fire_intensity": 0.5,
+              "ground_stability": 0.5,
+              "sound_level": 0.5,
+              "temperature": 0.5,
+              "visibility": 0.5,
+              "water_level": 0.5,
+              "wetness": 0.5
+            }
+          }
+        ],
+        "selection": "registered-stratified-public-fields-v1",
+        "semantic_contract": {
+          "canonical_projection": {
+            "active_build_policy": "candidate-only-present; empty-candidate-absent",
+            "context_panel_sha256": "36229aa2c7feddb81cf9dfcd2b9eee7f408af71e79b9c35bbab3c01382736ada",
+            "environment_asset_sha256": {
+              "fragile_bridge": "b3332b7190aefcd160df7055103aa2a6463de0a77dc2a5b4d233572b635ec0e6",
+              "industrial_yard": "0f45ed4fb1e68a5627e0dbadca58f1155bc2eae245d2fa59571c9bfdb6937ed3",
+              "mine": "d6ea27bd1d16e864a17729cb0804c37c9a5cea225bcf8dc22bb0714d233985fd",
+              "wetland": "cbd7f602f23573e5bbb092fc58b3533733d8bf0b159ae559d73b991583dabae7"
+            },
+            "environment_variant": "standard",
+            "environments": [
+              "fragile_bridge",
+              "industrial_yard",
+              "mine",
+              "wetland"
+            ],
+            "experiment_source_sha256": {
+              "baseline_v02.py": "ed888c025e9819d2ad69761b93b50d6c80fede5f83c94f14df730853eed63ce5",
+              "compiler.py": "abee3ff763d4bcf9a1449ed98e584600bbc5e137a28c7cff87e0ef4e700d527c",
+              "cross_environment_v04.py": "a1b85ae0c11282c2aee4043823fedcccb1537f9a9b66be4eb71dac06135b4b9f",
+              "generation.py": "dcace30d8e5556b9674a625f3acdfe67e72a22f08a1dfef9fd4aa804dca4cc26",
+              "runner.py": "e5ec01da93f4c9b82947ef6f9d014b30ea8e59ea40b1092650ca8110a1f51fa9",
+              "substrate.py": "d3bfdf0f5dd7ae5262f7bdd532102f0c050cabf22ee79bc759f23fa827b06df7"
+            },
+            "horizons": {
+              "combat_end": 0.0,
+              "medium": 48.0,
+              "short": 12.0
+            },
+            "observed_components": [
+              "direct_outcome",
+              "fields",
+              "material",
+              "outcome",
+              "process"
+            ],
+            "program": [
+              {
+                "op": "cast",
+                "skill": "candidate",
+                "target": "zone"
+              },
+              {
+                "op": "step",
+                "repeats": 10
+              }
+            ],
+            "substrate_system_laws_sha256": "35d96c02b164f606cb9317376107d2cc58cee4aa2825aea9f54a14665cb8c899",
+            "target_count": 1,
+            "world_laws_sha256": "bac6ed0eaede6340c6a5f6a89cc3e5b240d8e4aa750f9ce85dfc5f21e143ea0c"
+          },
+          "sha256": "d36d2e9c46b806de9fee3cc82e2e2486f57297ca6ad989ce1600141d270e83cb"
+        },
+        "sha256": "36229aa2c7feddb81cf9dfcd2b9eee7f408af71e79b9c35bbab3c01382736ada"
+      },
+      "environments": [
+        "mine",
+        "wetland",
+        "industrial_yard",
+        "fragile_bridge"
+      ],
+      "matched_fields": [
+        "mechanic",
+        "public_initial_fields",
+        "environment_variant",
+        "program",
+        "horizons",
+        "target_count",
+        "active_build"
+      ]
+    },
+    "downstream_causal_depth": {
+      "activation_reporting": {
+        "aggregate": "conditional_on_activation",
+        "depth_zero": "candidate committed but no attributable downstream world law",
+        "not_activated": "unavailable, never coerced to zero",
+        "reported_counts": [
+          "total_arm_count",
+          "activated_arm_count",
+          "activation_rate"
+        ]
+      },
+      "counted_nodes": "counterfactual-additional reachable gm.world laws",
+      "excluded": [
+        "elapsed_time",
+        "step_count",
+        "candidate_skill_laws",
+        "background_laws"
+      ],
+      "edge_attribution": "last-effective committed writer plus source-law ablation",
+      "measure": "longest counterfactual trace-constrained write-to-read path"
+    },
+    "structural_novelty": {
+      "composite_distance": false,
+      "ignored": [
+        "id",
+        "name",
+        "exact_numeric_values",
+        "list_order"
+      ],
+      "no_op_policy": "zero writes are evidence but excluded from topology; all-zero mechanics are unavailable and excluded from novelty-rate denominators",
+      "reported": [
+        "topology_fingerprint",
+        "exact_reference_match",
+        "pareto_reference_frontier_and_source_catalog_category",
+        "unweighted_difference_components",
+        "reference_catalog_digest"
+      ]
+    }
+  },
+  "protocol_version": "gm-free-evaluation-v0.4-candidate",
+  "status": "implementation_candidate"
+}

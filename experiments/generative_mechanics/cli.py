@@ -30,6 +30,10 @@ from .free_invention import (
     ingest_path as ingest_free_invention_path,
     write_request_jsonl as write_free_invention_request_jsonl,
 )
+from .free_evaluation_v04 import (
+    PROTOCOL_VERSION as FREE_EVALUATION_PROTOCOL_VERSION,
+    evaluate_free_invention_profile,
+)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -73,6 +77,12 @@ def _parser() -> argparse.ArgumentParser:
         help="strictly ingest Protocol v0.3 free-invention response JSONL",
     )
     free_ingest.add_argument("input", type=Path)
+    free_evaluate = commands.add_parser(
+        "evaluate-free-invention",
+        help="evaluate v0.3 responses with the v0.4 capability-profile candidate",
+    )
+    free_evaluate.add_argument("input", type=Path)
+    free_evaluate.add_argument("output", type=Path)
     batch = commands.add_parser("run-batch", help="run a fault-isolated generated-mechanic batch")
     batch.add_argument("input", type=Path); batch.add_argument("output", type=Path)
     batch.add_argument("--profile", choices=("ci", "full"), default="ci")
@@ -192,6 +202,35 @@ def main(argv: list[str] | None = None) -> int:
                 "errors": [item.to_dict() for item in result.errors],
             }))
             return 0 if not result.errors else 2
+        elif args.command == "evaluate-free-invention":
+            ingestion = ingest_free_invention_path(args.input)
+            profiles = []
+            evaluation_errors = []
+            for sample in ingestion.samples:
+                try:
+                    profiles.append(evaluate_free_invention_profile(sample))
+                except Exception as exc:  # Per-sample isolation is part of the batch contract.
+                    evaluation_errors.append({
+                        "sample_id": sample.sample_id,
+                        "error_type": type(exc).__name__,
+                        "message": str(exc),
+                    })
+            payload = {
+                "protocol_version": FREE_EVALUATION_PROTOCOL_VERSION,
+                "profiles": profiles,
+                "ingestion_errors": [item.to_dict() for item in ingestion.errors],
+                "evaluation_errors": evaluation_errors,
+            }
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(canonical_json(payload) + "\n", encoding="utf-8")
+            print(canonical_json({
+                "protocol": FREE_EVALUATION_PROTOCOL_VERSION,
+                "output": str(args.output),
+                "profiles": len(profiles),
+                "ingestion_errors": len(ingestion.errors),
+                "evaluation_errors": len(evaluation_errors),
+            }))
+            return 0 if not ingestion.errors and not evaluation_errors else 2
         elif args.command == "run-batch":
             ingestion = ingest_path(args.input)
             config = BatchConfig.full_fixture() if args.profile == "full" else BatchConfig()

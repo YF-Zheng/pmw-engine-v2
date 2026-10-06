@@ -19,6 +19,13 @@ properties including structural novelty, interaction surface, causal depth,
 cross-environment differentiation, downstream consequences, combinatorial
 potential, and self-containment.
 
+The v0.4 candidate keeps two Free studies separate. The three-baseline interface
+study measures representational affordance. Comparative model-invention claims
+use only `world_substrate`, holding the interface fixed across generators. The
+implemented profile currently covers structural novelty, downstream causal
+depth, and cross-environment differentiation; it never combines them into a
+creativity score. The remaining dimensions are deferred.
+
 ### Controlled Invention
 
 Question: can a model invent a mechanism whose formally realized utility falls

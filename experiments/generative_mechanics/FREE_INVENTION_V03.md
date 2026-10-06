@@ -48,13 +48,18 @@ prompt:
 - combinatorial potential
 - self-containment
 
-The current implementation is a generation plus static-evaluation scaffold,
-not a complete Free-Invention benchmark. It computes structural novelty against
-the compatible checked-in seed catalog. The other six dimensions require
-scenarios, paired traces, or exact build search and remain unimplemented;
-they are marked `available=false` with a reason. Missing evidence is never
-encoded as a zero score, and no complete benchmark claim should be made until
-all six dynamic evaluators and their tests exist.
+The v0.3 generation contract is frozen independently of evaluation. Its legacy
+static helper remains a collection-time diagnostic and is not the paper
+measurement protocol.
+
+`gm-free-evaluation-v0.4-candidate` now implements the first three primary
+measurements: downstream causal depth with last-writer and law-ablation
+evidence, cross-environment differentiation over a preregistered six-context by
+four-environment matched panel, and multi-resolution structural novelty with
+effect polarity and explicit no-op evidence. The evaluator reports a capability
+profile without a total score. Interaction surface, combinatorial potential,
+and self-containment remain unimplemented. Missing evidence is never encoded as
+zero.
 
 ## CLI
 
@@ -64,6 +69,9 @@ PYTHONPATH=src:. python3 -m experiments.generative_mechanics \
 
 PYTHONPATH=src:. python3 -m experiments.generative_mechanics \
   ingest-free-invention-responses responses.jsonl
+
+PYTHONPATH=src:. python3 -m experiments.generative_mechanics \
+  evaluate-free-invention responses.jsonl free-profiles.json
 ```
 
 The first command emits 120 balanced requests. Provider execution remains

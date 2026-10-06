@@ -168,16 +168,36 @@ with 15 samples in each of nine cells contains 135 genuine provider requests.
 Fixture rows have `source_kind=deterministic_fixture`; they are never model
 findings.
 
-## Free Invention scaffold
+## Free Invention generation and evaluation candidate
 
 `gm-free-invention-v0.3` removes power bands, scored examples, declared power,
 and revision policy. The implemented scaffold freezes coordinate-bound request
 identity, a public-only prompt, strict response ingestion, trusted compilation,
-and static contract evidence. It declares the intended invention dimensions,
-but dynamic interaction surface, causal depth, cross-environment
-differentiation, downstream consequences, combinatorial potential, and
-self-containment remain unavailable until paired execution evaluators and their
-reporting protocol are frozen. No dynamic Free benchmark result is claimed.
+and static contract evidence. This generation contract is frozen independently
+of its evaluator.
+
+`gm-free-evaluation-v0.4-candidate` separates two studies. The interface study
+uses all three baselines and estimates the consequences of representational
+affordance. The model-invention study admits only `world_substrate`, so every
+generator receives the same causal interface. Direct-outcome zeroes are
+interface manipulation checks, not model failures, and the two studies are not
+pooled.
+
+The candidate implements three evidence profiles. Downstream causal depth uses
+candidate-present/absent pairing, committed last-writer dependencies, and
+world-law ablations for every retained world-to-world edge. Cross-environment
+differentiation uses six digest-bound public-field contexts, each cloned into a
+matched four-environment quartet, and compares candidate-present minus
+candidate-absent net effects. Structural novelty removes names and exact
+magnitudes while retaining read/write topology, comparator form, temporal
+shape, and effect polarity; it reports exact registry matches and an unweighted
+non-dominated reference frontier against 36 registered seeds without claiming a
+subjective nearest-family distance.
+
+There is no creativity total, weighted distance, or model ranking scalar.
+Interaction surface, combinatorial potential, and self-containment remain
+deferred. The v0.4 evaluator remains a candidate until an external measurement
+review and genuine-model pilot are complete.
 
 ## Batch and targeted revision
 
@@ -213,8 +233,8 @@ Figures 1-5 are rendered from result tables as PDF, SVG, and 300 dpi PNG. Figure
 
 ## Deferred external work
 
-Provider execution, the 135-response genuine-model pilot, statistical tests,
-dynamic Free Invention evaluation, and paper claims remain external experiment
+Provider execution, the 135-response genuine-model pilot, Free-Invention model
+collection, statistical tests, and paper claims remain external experiment
 runs. Hidden Oracle execution is formal machine ground truth under the declared
 utility function rather than human scalar annotation. The repository stays
 provider-neutral and does not contain credentials or an implicit network call.

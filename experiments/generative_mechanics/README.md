@@ -40,7 +40,11 @@ evaluation. Exact Oracle personalized search is intentionally expensive.
 
 ```text
 generation.py           v0.1 replay plus v0.2 request/envelope contracts
-free_invention.py        v0.3 request/ingestion/static-evidence scaffold
+free_invention.py        frozen v0.3 request and ingestion contract
+free_evaluation_v04.py   v0.4 candidate capability-profile integration
+causal_depth_v04.py      paired, activation-aware, ablation-checked downstream depth
+cross_environment_v04.py registered 6 x 4 matched-context panel
+structural_novelty.py    versioned multi-resolution novelty evidence
 baseline_v02.py         expression-matched direct-outcome control
 power_v02.py            authoritative scale and the two power estimands
 scenario.py             calibration/evaluation/oracle scenario contract
@@ -68,6 +72,10 @@ PYTHONPATH=src:. python3 -m experiments.generative_mechanics generate-requests /
 
 # v0.3-Free-Invention scaffold: request generation and strict ingestion
 PYTHONPATH=src:. python3 -m experiments.generative_mechanics generate-free-invention-requests /tmp/gml-free-requests.jsonl --per-baseline 15
+PYTHONPATH=src:. python3 -m experiments.generative_mechanics ingest-free-invention-responses responses.jsonl
+
+# v0.4 candidate: auditable profile, never a creativity total
+PYTHONPATH=src:. python3 -m experiments.generative_mechanics evaluate-free-invention responses.jsonl results/free-profiles.json
 
 # CI defers exact contextual search; real/final runs must request it explicitly
 PYTHONPATH=src:. python3 -m experiments.generative_mechanics run-batch responses.jsonl results/pilot --profile full --contextual exact
@@ -94,11 +102,14 @@ two-baseline fixture protocol. New controlled collection uses
 verifiable through their original shared-six-example canonical prompt; their
 prompt hashes are never checked against the Controlled prompt.
 
-Protocol v0.3-Free-Invention currently freezes request identity, prompt,
-envelope validation, trusted compilation, and static evidence. Its dynamic
-interaction, causal-depth, cross-environment, downstream, build-combination,
-and self-containment evaluators remain explicitly unavailable. This scaffold is
-not evidence that the Free Invention benchmark or a model study has completed.
+Protocol v0.3-Free-Invention freezes request identity, prompt, envelope
+validation, and trusted compilation. The separate v0.4 candidate now implements
+three primary measurements: ablation-checked downstream causal depth, matched
+cross-environment differentiation over six preregistered public-state contexts,
+and multi-resolution structural novelty against a digest-bound 36-mechanic
+reference catalog. It emits a capability profile and no creativity total.
+Interaction surface, combinatorial potential, and self-containment remain
+deferred; no genuine-model Free study has been run.
 
 Oracle targets are realized utility under the declared executable scoring
 function and preregistered world-state distribution. They are machine-verifiable

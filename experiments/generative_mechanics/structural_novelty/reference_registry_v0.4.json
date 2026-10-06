@@ -1,0 +1,8 @@
+{
+  "algorithm_version": "gm-structural-novelty-v0.4",
+  "protocol_version": "gm-free-evaluation-v0.4-candidate",
+  "reference_count": 36,
+  "reference_projection_sha256": "bffb8ff4bbaaf678bcacd81af867c77b31147fe5c6c44ee2f51a0f95e77383cc",
+  "source_manifest": "skills/manifest.json",
+  "source_manifest_sha256": "7f3fe174c9c9820b2ad7572fd42a28113018cd614ff3bb3676a1bd59a1ce6d91"
+}
