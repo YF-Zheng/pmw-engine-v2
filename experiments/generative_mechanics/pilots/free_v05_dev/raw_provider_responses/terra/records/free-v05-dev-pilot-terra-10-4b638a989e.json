@@ -1,0 +1,80 @@
+{
+  "attempt": 1,
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "provider": "OpenAI Codex CLI",
+  "provider_request_id": null,
+  "provider_request_id_unavailable_reason": "Codex CLI JSONL events did not expose provider request id",
+  "provider_seed_enforced": false,
+  "provider_seed_unavailable_reason": "OpenAI Codex CLI does not expose a provider-enforced sampling seed for this collection path",
+  "provider_session_id": null,
+  "provider_session_id_unavailable_reason": "Codex CLI JSONL events did not expose session id",
+  "provider_success": true,
+  "provider_thread_id": "01a111e4-cac1-7672-afeb-50fa1ff085e2",
+  "provider_thread_id_unavailable_reason": null,
+  "raw_provider_response": {
+    "command": [
+      "codex",
+      "exec",
+      "--ephemeral",
+      "--ignore-rules",
+      "--sandbox",
+      "read-only",
+      "--model",
+      "gpt-5.6-terra",
+      "--config",
+      "model_reasoning_effort=\"high\"",
+      "--json",
+      "--output-last-message",
+      "/ssd/zyf/pmw-engine-v2/experiments/generative_mechanics/pilots/free_v05_dev/raw_provider_responses/terra/last_messages/.free-v05-dev-pilot-terra-10-4b638a989e.txt.in_progress",
+      "-"
+    ],
+    "event_log_path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-10-4b638a989e.stdout.jsonl",
+    "exit_code": 0,
+    "last_message_path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-10-4b638a989e.txt",
+    "stderr": "2026-10-06T15:46:09.251081Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---\n",
+    "stdout_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a111e4-cac1-7672-afeb-50fa1ff085e2\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"mechanic\\\":{\\\"id\\\":\\\"resonant_drain\\\",\\\"name\\\":\\\"Resonant Drain\\\",\\\"target_scope\\\":\\\"zone\\\",\\\"effects\\\":[{\\\"field\\\":\\\"water_level\\\",\\\"delta\\\":-0.32},{\\\"field\\\":\\\"sound_level\\\",\\\"delta\\\":0.18},{\\\"field\\\":\\\"ground_stability\\\",\\\"delta\\\":0.12}],\\\"duration\\\":18.0,\\\"periodic\\\":null,\\\"trigger_conditions\\\":[{\\\"field\\\":\\\"water_level\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.55},{\\\"field\\\":\\\"ground_stability\\\",\\\"op\\\":\\\"lt\\\",\\\"value\\\":0.7}],\\\"resource_cost\\\":24.0,\\\"charges\\\":3,\\\"slot_cost\\\":1}}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14885,\"cached_input_tokens\":9984,\"output_tokens\":312,\"reasoning_output_tokens\":180}}\n",
+    "transport_attempts": [
+      {
+        "command": [
+          "codex",
+          "exec",
+          "--ephemeral",
+          "--ignore-rules",
+          "--sandbox",
+          "read-only",
+          "--model",
+          "gpt-5.6-terra",
+          "--config",
+          "model_reasoning_effort=\"high\"",
+          "--json",
+          "--output-last-message",
+          "/ssd/zyf/pmw-engine-v2/experiments/generative_mechanics/pilots/free_v05_dev/raw_provider_responses/terra/last_messages/.free-v05-dev-pilot-terra-10-4b638a989e.txt.in_progress",
+          "-"
+        ],
+        "event_log_paths": {
+          "stderr": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-10-4b638a989e.stderr.txt",
+          "stdout": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-10-4b638a989e.stdout.jsonl"
+        },
+        "exit_code": 0,
+        "last_message": "{\"mechanic\":{\"id\":\"resonant_drain\",\"name\":\"Resonant Drain\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"water_level\",\"delta\":-0.32},{\"field\":\"sound_level\",\"delta\":0.18},{\"field\":\"ground_stability\",\"delta\":0.12}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"water_level\",\"op\":\"gte\",\"value\":0.55},{\"field\":\"ground_stability\",\"op\":\"lt\",\"value\":0.7}],\"resource_cost\":24.0,\"charges\":3,\"slot_cost\":1}}",
+        "stderr": "2026-10-06T15:46:09.251081Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---\n",
+        "stdout_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a111e4-cac1-7672-afeb-50fa1ff085e2\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"mechanic\\\":{\\\"id\\\":\\\"resonant_drain\\\",\\\"name\\\":\\\"Resonant Drain\\\",\\\"target_scope\\\":\\\"zone\\\",\\\"effects\\\":[{\\\"field\\\":\\\"water_level\\\",\\\"delta\\\":-0.32},{\\\"field\\\":\\\"sound_level\\\",\\\"delta\\\":0.18},{\\\"field\\\":\\\"ground_stability\\\",\\\"delta\\\":0.12}],\\\"duration\\\":18.0,\\\"periodic\\\":null,\\\"trigger_conditions\\\":[{\\\"field\\\":\\\"water_level\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.55},{\\\"field\\\":\\\"ground_stability\\\",\\\"op\\\":\\\"lt\\\",\\\"value\\\":0.7}],\\\"resource_cost\\\":24.0,\\\"charges\\\":3,\\\"slot_cost\\\":1}}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14885,\"cached_input_tokens\":9984,\"output_tokens\":312,\"reasoning_output_tokens\":180}}\n",
+        "transport_attempt": 1
+      }
+    ]
+  },
+  "repair": false,
+  "request_batch_id": "free-v05-dev-pilot-batch-001",
+  "request_id": "free-v05-dev-pilot-terra-10-4b638a989e",
+  "requested_model_identifier": "gpt-5.6-terra",
+  "requested_reasoning_effort": "high",
+  "response_text": "{\"mechanic\":{\"id\":\"resonant_drain\",\"name\":\"Resonant Drain\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"water_level\",\"delta\":-0.32},{\"field\":\"sound_level\",\"delta\":0.18},{\"field\":\"ground_stability\",\"delta\":0.12}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"water_level\",\"op\":\"gte\",\"value\":0.55},{\"field\":\"ground_stability\",\"op\":\"lt\",\"value\":0.7}],\"resource_cost\":24.0,\"charges\":3,\"slot_cost\":1}}",
+  "returned_model_identifier": null,
+  "returned_model_identifier_unavailable_reason": "Codex CLI JSONL events did not expose returned model identifier",
+  "sample_id": "free-v05-dev-pilot-terra-10-4b638a989e",
+  "timestamp_utc": "2026-10-06T15:46:31.312907Z",
+  "transport_attempt_count": 1,
+  "transport_retry_limit": 0,
+  "transport_status": "success"
+}

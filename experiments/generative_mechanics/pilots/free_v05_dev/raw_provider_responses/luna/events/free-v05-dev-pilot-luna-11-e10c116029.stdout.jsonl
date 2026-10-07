@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e5-11c5-77c1-9620-343d026b0c79"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"stormglass_pulse\",\"name\":\"Stormglass Pulse\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.24},{\"field\":\"sound_level\",\"delta\":0.18},{\"field\":\"visibility\",\"delta\":-0.1}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.62},{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.55}],\"resource_cost\":18.0,\"charges\":4,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":13693,"cached_input_tokens":8960,"output_tokens":644,"reasoning_output_tokens":516}}

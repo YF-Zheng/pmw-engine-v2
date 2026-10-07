@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e5-9c34-7e13-9c63-0351460c6f19"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"stormglass_surge\",\"name\":\"Stormglass Surge\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":0.28},{\"field\":\"sound_level\",\"delta\":0.14},{\"field\":\"visibility\",\"delta\":-0.1}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.6},{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.4}],\"resource_cost\":12.0,\"charges\":3,\"slot_cost\":2}}"}}
+{"type":"turn.completed","usage":{"input_tokens":13690,"cached_input_tokens":8960,"output_tokens":643,"reasoning_output_tokens":516}}

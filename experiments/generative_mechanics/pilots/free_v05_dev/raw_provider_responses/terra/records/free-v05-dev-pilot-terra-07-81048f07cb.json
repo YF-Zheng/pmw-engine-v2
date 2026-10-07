@@ -1,0 +1,80 @@
+{
+  "attempt": 1,
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "provider": "OpenAI Codex CLI",
+  "provider_request_id": null,
+  "provider_request_id_unavailable_reason": "Codex CLI JSONL events did not expose provider request id",
+  "provider_seed_enforced": false,
+  "provider_seed_unavailable_reason": "OpenAI Codex CLI does not expose a provider-enforced sampling seed for this collection path",
+  "provider_session_id": null,
+  "provider_session_id_unavailable_reason": "Codex CLI JSONL events did not expose session id",
+  "provider_success": true,
+  "provider_thread_id": "01a111e4-161d-72d0-82c5-8b1c2b4a3dff",
+  "provider_thread_id_unavailable_reason": null,
+  "raw_provider_response": {
+    "command": [
+      "codex",
+      "exec",
+      "--ephemeral",
+      "--ignore-rules",
+      "--sandbox",
+      "read-only",
+      "--model",
+      "gpt-5.6-terra",
+      "--config",
+      "model_reasoning_effort=\"high\"",
+      "--json",
+      "--output-last-message",
+      "/ssd/zyf/pmw-engine-v2/experiments/generative_mechanics/pilots/free_v05_dev/raw_provider_responses/terra/last_messages/.free-v05-dev-pilot-terra-07-81048f07cb.txt.in_progress",
+      "-"
+    ],
+    "event_log_path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-07-81048f07cb.stdout.jsonl",
+    "exit_code": 0,
+    "last_message_path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-07-81048f07cb.txt",
+    "stderr": "2026-10-06T15:45:23.034451Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---\n2026-10-06T15:45:27.544269Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit\n",
+    "stdout_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a111e4-161d-72d0-82c5-8b1c2b4a3dff\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"mechanic\\\":{\\\"id\\\":\\\"thunder_sump\\\",\\\"name\\\":\\\"Thunder Sump\\\",\\\"target_scope\\\":\\\"zone\\\",\\\"effects\\\":[{\\\"field\\\":\\\"electric_field\\\",\\\"delta\\\":-0.42},{\\\"field\\\":\\\"water_level\\\",\\\"delta\\\":0.18},{\\\"field\\\":\\\"sound_level\\\",\\\"delta\\\":0.16}],\\\"duration\\\":0.0,\\\"periodic\\\":{\\\"interval\\\":4.0,\\\"repeats\\\":5},\\\"trigger_conditions\\\":[{\\\"field\\\":\\\"electric_field\\\",\\\"op\\\":\\\"gt\\\",\\\"value\\\":0.5},{\\\"field\\\":\\\"wetness\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.55}],\\\"resource_cost\\\":34.0,\\\"charges\\\":3,\\\"slot_cost\\\":2}}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14883,\"cached_input_tokens\":9984,\"output_tokens\":136,\"reasoning_output_tokens\":0}}\n",
+    "transport_attempts": [
+      {
+        "command": [
+          "codex",
+          "exec",
+          "--ephemeral",
+          "--ignore-rules",
+          "--sandbox",
+          "read-only",
+          "--model",
+          "gpt-5.6-terra",
+          "--config",
+          "model_reasoning_effort=\"high\"",
+          "--json",
+          "--output-last-message",
+          "/ssd/zyf/pmw-engine-v2/experiments/generative_mechanics/pilots/free_v05_dev/raw_provider_responses/terra/last_messages/.free-v05-dev-pilot-terra-07-81048f07cb.txt.in_progress",
+          "-"
+        ],
+        "event_log_paths": {
+          "stderr": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-07-81048f07cb.stderr.txt",
+          "stdout": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-07-81048f07cb.stdout.jsonl"
+        },
+        "exit_code": 0,
+        "last_message": "{\"mechanic\":{\"id\":\"thunder_sump\",\"name\":\"Thunder Sump\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.42},{\"field\":\"water_level\",\"delta\":0.18},{\"field\":\"sound_level\",\"delta\":0.16}],\"duration\":0.0,\"periodic\":{\"interval\":4.0,\"repeats\":5},\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.5},{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.55}],\"resource_cost\":34.0,\"charges\":3,\"slot_cost\":2}}",
+        "stderr": "2026-10-06T15:45:23.034451Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---\n2026-10-06T15:45:27.544269Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit\n",
+        "stdout_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a111e4-161d-72d0-82c5-8b1c2b4a3dff\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"mechanic\\\":{\\\"id\\\":\\\"thunder_sump\\\",\\\"name\\\":\\\"Thunder Sump\\\",\\\"target_scope\\\":\\\"zone\\\",\\\"effects\\\":[{\\\"field\\\":\\\"electric_field\\\",\\\"delta\\\":-0.42},{\\\"field\\\":\\\"water_level\\\",\\\"delta\\\":0.18},{\\\"field\\\":\\\"sound_level\\\",\\\"delta\\\":0.16}],\\\"duration\\\":0.0,\\\"periodic\\\":{\\\"interval\\\":4.0,\\\"repeats\\\":5},\\\"trigger_conditions\\\":[{\\\"field\\\":\\\"electric_field\\\",\\\"op\\\":\\\"gt\\\",\\\"value\\\":0.5},{\\\"field\\\":\\\"wetness\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.55}],\\\"resource_cost\\\":34.0,\\\"charges\\\":3,\\\"slot_cost\\\":2}}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14883,\"cached_input_tokens\":9984,\"output_tokens\":136,\"reasoning_output_tokens\":0}}\n",
+        "transport_attempt": 1
+      }
+    ]
+  },
+  "repair": false,
+  "request_batch_id": "free-v05-dev-pilot-batch-001",
+  "request_id": "free-v05-dev-pilot-terra-07-81048f07cb",
+  "requested_model_identifier": "gpt-5.6-terra",
+  "requested_reasoning_effort": "high",
+  "response_text": "{\"mechanic\":{\"id\":\"thunder_sump\",\"name\":\"Thunder Sump\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.42},{\"field\":\"water_level\",\"delta\":0.18},{\"field\":\"sound_level\",\"delta\":0.16}],\"duration\":0.0,\"periodic\":{\"interval\":4.0,\"repeats\":5},\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.5},{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.55}],\"resource_cost\":34.0,\"charges\":3,\"slot_cost\":2}}",
+  "returned_model_identifier": null,
+  "returned_model_identifier_unavailable_reason": "Codex CLI JSONL events did not expose returned model identifier",
+  "sample_id": "free-v05-dev-pilot-terra-07-81048f07cb",
+  "timestamp_utc": "2026-10-06T15:45:37.503248Z",
+  "transport_attempt_count": 1,
+  "transport_retry_limit": 0,
+  "transport_status": "success"
+}

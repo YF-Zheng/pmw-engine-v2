@@ -43,4 +43,10 @@ PYTHONPATH=src python3 -m experiments.generative_mechanics.pilots.free_v05_dev.p
 PYTHONPATH=src python3 -m experiments.generative_mechanics.pilots.free_v05_dev.provider_codex evaluate --model gpt-5.6-luna
 PYTHONPATH=src python3 -m experiments.generative_mechanics.pilots.free_v05_dev.provider_codex evaluate --model gpt-5.6-terra
 PYTHONPATH=src python3 -m experiments.generative_mechanics.pilots.free_v05_dev.provider_codex analyze
+PYTHONPATH=src python3 -m experiments.generative_mechanics.pilots.free_v05_dev.provider_codex finalize
 ```
+
+`finalize` is fail-closed. It writes the final recursive hash manifest only
+after all 30 provenance records, 30 ingested rows, every compile-valid profile,
+completed manual audit, final report/bias table, and analysis artifacts pass
+their cross-artifact checks.

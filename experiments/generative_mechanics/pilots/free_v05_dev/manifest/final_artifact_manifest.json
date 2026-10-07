@@ -1,0 +1,740 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2831,
+      "path": "COLLECTION.md",
+      "sha256": "7dab05529907aafeaefcb918b8950b138de81dfd25c97193161223b234f18b9c"
+    },
+    {
+      "bytes": 1881,
+      "path": "README.md",
+      "sha256": "3edcf71f97cd78aada0f4bdbfe11e8e416ece64ba5ea8e29860d9f66cd3f0066"
+    },
+    {
+      "bytes": 608,
+      "path": "__init__.py",
+      "sha256": "152468e9fe29bd146c8933e0d935e5cb1d6c8e9dafaaafd527f07566ced671f1"
+    },
+    {
+      "bytes": 6229,
+      "path": "analysis/PILOT_REPORT.md",
+      "sha256": "ba28bec5af54baf0aa92255c4f1601a528a0528a397f4591aac2f8dce8f817bf"
+    },
+    {
+      "bytes": 8403,
+      "path": "analysis/bias_audit.json",
+      "sha256": "53be20ba51ed5b7d11ccd710d97412f580b4cf71393de09e316b89c9bdbc0412"
+    },
+    {
+      "bytes": 2295,
+      "path": "analysis/metric_distributions.json",
+      "sha256": "8defacca23463c8e4e41d947570411b6df66b8075722e3f726098cb110e880ed"
+    },
+    {
+      "bytes": 3437,
+      "path": "analysis/summary.json",
+      "sha256": "ffa0c60edfbe4a6526da7ea38f915d14d183f9e811a57b27073955701fb34894"
+    },
+    {
+      "bytes": 168,
+      "path": "ingested/README.md",
+      "sha256": "7d54b44e294faa56098dcc68a2b7edb24dc3f39fbe66c1648b86b4fb31a6bed3"
+    },
+    {
+      "bytes": 25581,
+      "path": "ingested/luna.jsonl",
+      "sha256": "d4c66d758ede7731bb1094f8b689eae3a8a8bcf9d250b29c6972adfb8fced24b"
+    },
+    {
+      "bytes": 25419,
+      "path": "ingested/terra.jsonl",
+      "sha256": "f8f848c413a7a6d419df876e0e59e5edbc747b51ea17cb80ac5d6dd898e2889e"
+    },
+    {
+      "bytes": 1572,
+      "path": "manifest/artifact_manifest.json",
+      "sha256": "64836b2ea4912cfd9cf91e8d136bd84a83f96742454ba08ccf0dc11e4e527a03"
+    },
+    {
+      "bytes": 1103,
+      "path": "manifest/preregistration.json",
+      "sha256": "5221e448fcad05f2d389027d2f77201218264b0242e668a71b2652945ee38c88"
+    },
+    {
+      "bytes": 324,
+      "path": "manual_audit/README.md",
+      "sha256": "fce0e88193929a83513cc273683106a0d1b85d51651eaa3882782129e0cbc35e"
+    },
+    {
+      "bytes": 52478,
+      "path": "manual_audit/manual_audit.jsonl",
+      "sha256": "5e1a05191560cab5de87b5fb11d9b48c39aec419da40db8096b2eb2a92d70be5"
+    },
+    {
+      "bytes": 39554,
+      "path": "pilot.py",
+      "sha256": "2cc233a8ab490f0d36f6c120eb03b51eb65448dad36795611e5ec5cac7752b30"
+    },
+    {
+      "bytes": 158,
+      "path": "profiles/README.md",
+      "sha256": "4593e562b7a1c93835b361d41fdd3b904ef40a087938bc48af637a61b8e59324"
+    },
+    {
+      "bytes": 5937116,
+      "path": "profiles/luna.jsonl",
+      "sha256": "28da1634c133b4cb6a6b81ba9c38d582fa77c9d320f6d22904bd0684b9825e95"
+    },
+    {
+      "bytes": 5722953,
+      "path": "profiles/terra.jsonl",
+      "sha256": "3efe67ab4ac86db977505ce9887358d42742a83e7ffe921f249226eae16d4d26"
+    },
+    {
+      "bytes": 15101,
+      "path": "provider_codex.py",
+      "sha256": "e680d4ec0abb2f9129ac48e98f7adda17c508935973ea73499096e4a169566c5"
+    },
+    {
+      "bytes": 292,
+      "path": "raw_provider_responses/README.md",
+      "sha256": "7d674bcdad156ced903ad5980469f4c1bd904992515f96671c5a0b60ec5a7375"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-01-561593af92.stderr.txt",
+      "sha256": "6c088fa92b8036057d63fb4e17ef7db40e26fac77cce5c9a1d6f4359f2de5bff"
+    },
+    {
+      "bytes": 735,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-01-561593af92.stdout.jsonl",
+      "sha256": "70313e14f5f211d9a9708b60baff944034975b75cfb9071559ce519e3b91fd84"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-02-e9727f0cbd.stderr.txt",
+      "sha256": "3a30a0e28a53000283028e91dd33d678c4b1f9fc75839a4f4007171bbe00acc6"
+    },
+    {
+      "bytes": 773,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-02-e9727f0cbd.stdout.jsonl",
+      "sha256": "56a594417ea44572c4ec1eeab96037e51aa0cd74b4fb05fac0d3ae4aa784a265"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-03-280e26a67d.stderr.txt",
+      "sha256": "e6372afc97a27d0ce4b8c77a86df84a6d56e25ff114cb9e0050b88ba447a4c1d"
+    },
+    {
+      "bytes": 776,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-03-280e26a67d.stdout.jsonl",
+      "sha256": "95b3f4b77e985cbf3553256279f579b0bf331319fea17fcc0cb3354eccfbde74"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-04-4aa93e663c.stderr.txt",
+      "sha256": "e77db33bc4b69ddae49e5ec6de94e5c521b29f7b2a5ddbc0fe2fe2adedb74a1c"
+    },
+    {
+      "bytes": 715,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-04-4aa93e663c.stdout.jsonl",
+      "sha256": "84ac1578f3983df36616792dbd5e142811801a023d0f28b203ac82f6dec2389e"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-05-efc250ddd3.stderr.txt",
+      "sha256": "197b2944c3989a0cc8511234257823faaa0a2142854da6b407c844f0f08c7b21"
+    },
+    {
+      "bytes": 713,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-05-efc250ddd3.stdout.jsonl",
+      "sha256": "49feb3d4b4aa1fd1d2aedc3396ec92c3d2e7167ff2bd23e7e773b4275fe5e311"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-06-4dc65c93c2.stderr.txt",
+      "sha256": "4a7471b083d8295dc0141ace8f703c87d3160a5b49b9d8da726dbb86b6f526e4"
+    },
+    {
+      "bytes": 787,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-06-4dc65c93c2.stdout.jsonl",
+      "sha256": "8aac15307d05076e0f4a6b85082eda4baedb298f25daed9b2f93fe35d6fa939a"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-07-5b69e441ac.stderr.txt",
+      "sha256": "4b4b09e5e6b214e0252483d7b241a955fd8d9187d0f4a20a88475bd2c1c06c2a"
+    },
+    {
+      "bytes": 798,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-07-5b69e441ac.stdout.jsonl",
+      "sha256": "5e56df4442ee9969c1a64703c10ded0d7c052c2facd421b86a83874b531e0eb0"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-08-e581093c18.stderr.txt",
+      "sha256": "3cbb1147aa54ec6c9acc5502d39bad7944dff4895741099ef56ca7111ff23f37"
+    },
+    {
+      "bytes": 839,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-08-e581093c18.stdout.jsonl",
+      "sha256": "e222fdb58db8fab4f1d05e0835ed1660cc857ebb33983b2ca44b97c1590e8f26"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-09-f44ed37528.stderr.txt",
+      "sha256": "f45493435b27781b949690d4b0ea4cb3e3ef7c2fcf92ff7347412953bef548f8"
+    },
+    {
+      "bytes": 782,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-09-f44ed37528.stdout.jsonl",
+      "sha256": "4c1beb0903603ac1c7f3e6e0a1c7fc1842182064113f59b2793aa71e0f943439"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-10-dc3108501a.stderr.txt",
+      "sha256": "ba696790201e3f3611c5fde3a2272fdceba27612ff4f1b40fe3c0a44fd7072e5"
+    },
+    {
+      "bytes": 785,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-10-dc3108501a.stdout.jsonl",
+      "sha256": "4c955049a2f413de49ba535810569d7c0e57c55756c7b58cb848c3c898e8731b"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-11-e10c116029.stderr.txt",
+      "sha256": "d841555a26d0882e438624f98fdf337704f92fd6dcf994aadcb75cebbe35546b"
+    },
+    {
+      "bytes": 791,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-11-e10c116029.stdout.jsonl",
+      "sha256": "581cc07b54a0c04e1bebd806ec0379f53f88d15a7070401f422f8bc933d9d890"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-12-45d79ff568.stderr.txt",
+      "sha256": "369926be6bce4b32aa352fed8ea794961468aa3e72bd3e12625fbb2b70834ce1"
+    },
+    {
+      "bytes": 829,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-12-45d79ff568.stdout.jsonl",
+      "sha256": "8670d107e5f42e047db4516ba0ce1e4db8677e35f7e15eb131986f0c1a57a091"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-13-aa74283a87.stderr.txt",
+      "sha256": "c3787567e27429de1e447c59accf2a89a59152a6bd87cbf4fa6035650d859ae5"
+    },
+    {
+      "bytes": 789,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-13-aa74283a87.stdout.jsonl",
+      "sha256": "c1892c279e71e4c2ba40774dde8c03f101252775184f16bf2697575962f93d74"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-14-1192535b8b.stderr.txt",
+      "sha256": "98bb5cd1834e4f633f1c0c59de197664191b15e24be8544e8f29a41403629a45"
+    },
+    {
+      "bytes": 803,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-14-1192535b8b.stdout.jsonl",
+      "sha256": "836f474f99ba0f49cae5fd3c244330ff254236315aba8aed301e2677c5b2ab83"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-15-4c663fb996.stderr.txt",
+      "sha256": "5a9ebc588796602df06b071d5cbe0f553cc8a6c432ddb973eb41e8c53fce4c51"
+    },
+    {
+      "bytes": 797,
+      "path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-15-4c663fb996.stdout.jsonl",
+      "sha256": "a48b60c9d37d588bb6db50451b01672a1babf77b0cce5ddae6a1119c6409f4ca"
+    },
+    {
+      "bytes": 85852,
+      "path": "raw_provider_responses/luna/first_attempts.jsonl",
+      "sha256": "58a262e675d33251939bbbc8745f2bc818d2cbbd0d0abc9b0e2acef626e22e8b"
+    },
+    {
+      "bytes": 365,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-01-561593af92.txt",
+      "sha256": "233a6c36312653ae3c32b912a50f755828c761a6419f8f6ca8807e639dff1d30"
+    },
+    {
+      "bytes": 393,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-02-e9727f0cbd.txt",
+      "sha256": "2611004b703dd7360b180cf7af695322ab5dc345837190dbf54c3d212dd6f992"
+    },
+    {
+      "bytes": 396,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-03-280e26a67d.txt",
+      "sha256": "5a7f32932577efe4784cb5f074fe88cd5ed5d81aa1ba923d93c493174bf2f3d3"
+    },
+    {
+      "bytes": 344,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-04-4aa93e663c.txt",
+      "sha256": "3f2eda4b491ab0309569d8f7ed0bbf8b7b80a0807b54d87545e6a8bb64493212"
+    },
+    {
+      "bytes": 340,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-05-efc250ddd3.txt",
+      "sha256": "03eea4a08fba54ff7410d4a8165b541451070d4846f879dddf04d95fe9065b98"
+    },
+    {
+      "bytes": 407,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-06-4dc65c93c2.txt",
+      "sha256": "c9e32bc0a62f71b231e601ef50842368a09050c2bb7516015bc8544e079f59bd"
+    },
+    {
+      "bytes": 415,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-07-5b69e441ac.txt",
+      "sha256": "58f9318220f3f5f19e2b73cfc25bc7aa3ea50ad9f81e293108c3e863797ddb3a"
+    },
+    {
+      "bytes": 450,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-08-e581093c18.txt",
+      "sha256": "3d4798a83ae00fb599928fefe4aeda5e56a80cc24d45f728dd86a40119d5e4b8"
+    },
+    {
+      "bytes": 399,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-09-f44ed37528.txt",
+      "sha256": "41da6816f7bee82c77387ecf2ca289cbfac86cb98708a2325acc48e5b5100e4f"
+    },
+    {
+      "bytes": 402,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-10-dc3108501a.txt",
+      "sha256": "894329470ab4a8fcc292727fca50dfd13c2260fb1f9b45f646ed3f4fc896509d"
+    },
+    {
+      "bytes": 408,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-11-e10c116029.txt",
+      "sha256": "777fea05d79e516b01194562622973483ffa48c854d959d9f8d5658cd07d556e"
+    },
+    {
+      "bytes": 440,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-12-45d79ff568.txt",
+      "sha256": "a0bef2b2169ac96c2958f87a0822767f5a2129b10a7d2c2beb034294a52ffd07"
+    },
+    {
+      "bytes": 406,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-13-aa74283a87.txt",
+      "sha256": "c281d5ca78b6e7cf79e079ca987820bafc7bfc575dc6009f2ac8ad687422f136"
+    },
+    {
+      "bytes": 420,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-14-1192535b8b.txt",
+      "sha256": "d96edf529427a5480b782eb5fe0f83726a23c2e749f70aaac46a013fefd62ba9"
+    },
+    {
+      "bytes": 414,
+      "path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-15-4c663fb996.txt",
+      "sha256": "f138a892e012566d38fa656c1fe8cfc4dd45a403b35b1700b0ca4dda13d308c7"
+    },
+    {
+      "bytes": 6052,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-01-561593af92.json",
+      "sha256": "beeea39750bbcaad9bcdd07ff57e7cec9b238c44b8080b39c0e171e4e929d71a"
+    },
+    {
+      "bytes": 6244,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-02-e9727f0cbd.json",
+      "sha256": "6cffaa33377bac52842ac6a082b85b3e6d25a93532cd35db152d5a9ea92c3b55"
+    },
+    {
+      "bytes": 6256,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-03-280e26a67d.json",
+      "sha256": "2d42e71a95ca8a3b2bff42a801f09ffbf774f121173ee3abd67aea3fef999061"
+    },
+    {
+      "bytes": 5958,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-04-4aa93e663c.json",
+      "sha256": "1cdbc488ed08c2fd39cc6272449b5cf1faea256cd75fa745d946255bdb64094a"
+    },
+    {
+      "bytes": 5958,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-05-efc250ddd3.json",
+      "sha256": "823ff4d235a10bf1fb8a093dd4b542119add62a3e2131e9f55ae88f71507e1d1"
+    },
+    {
+      "bytes": 6300,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-06-4dc65c93c2.json",
+      "sha256": "9f7630847de2aa7712b8ebccaa20aa453375071d7e180ee1c3c5817ab1ddb5dc"
+    },
+    {
+      "bytes": 6338,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-07-5b69e441ac.json",
+      "sha256": "7cac2dcfe4c4fd9b95ceaa7be494a16e17644ce733093ca29d94ac81745c184b"
+    },
+    {
+      "bytes": 6526,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-08-e581093c18.json",
+      "sha256": "6e262564683fa6602b0be71364cb41068ee9c9599fcfe7b6479fd30b4e64274f"
+    },
+    {
+      "bytes": 6274,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-09-f44ed37528.json",
+      "sha256": "53c284bedc20cdeec64263320a4730a9f5a19c569449e04ed3ab57b771ff866b"
+    },
+    {
+      "bytes": 6286,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-10-dc3108501a.json",
+      "sha256": "556bea686601b0be94ceb2d60550c74fd884c033cd9f954b7a0d1d6397f2f27f"
+    },
+    {
+      "bytes": 6310,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-11-e10c116029.json",
+      "sha256": "23e997b5ed1bc95158f72e2ab4b7bbbd0646751335fcd193f63665ff46b6ebd4"
+    },
+    {
+      "bytes": 6486,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-12-45d79ff568.json",
+      "sha256": "d9e1ac02d1de0d7dcf90d8b7e22bc2909c1d9b3e3c68bd7651e06345ba0ab828"
+    },
+    {
+      "bytes": 6302,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-13-aa74283a87.json",
+      "sha256": "83f3c4890e7a46be277fddd42004c43515047cdd18dc7f7d1bf543dd5cd3aa41"
+    },
+    {
+      "bytes": 6358,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-14-1192535b8b.json",
+      "sha256": "8b731e8cf499d45d07612cb4a6c575168fdf50f327a7ac795bc10d5447345e77"
+    },
+    {
+      "bytes": 6334,
+      "path": "raw_provider_responses/luna/records/free-v05-dev-pilot-luna-15-4c663fb996.json",
+      "sha256": "3e84c3846ac87ea46c6074fac252c1f6d6f2f841d5649fd1207cb3b9fa211cc8"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-01-efa3ffbc4a.stderr.txt",
+      "sha256": "bcd34a72104d573827c5ecde336d605f8ae6f6aeaa280d5e9f1b85b35849fdfa"
+    },
+    {
+      "bytes": 783,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-01-efa3ffbc4a.stdout.jsonl",
+      "sha256": "bb47fc1241983ae753c2855e22b4780b83caba37ea81c53343d993f6ba3e66f3"
+    },
+    {
+      "bytes": 320,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-02-ab0fafe1c3.stderr.txt",
+      "sha256": "39acc13d80b10fce58499d08af7cac8d699188c81f1cee301beec6405eee12ad"
+    },
+    {
+      "bytes": 848,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-02-ab0fafe1c3.stdout.jsonl",
+      "sha256": "61ed2eb4ee0f5af024da4c611588207fd0e8865057bb74c46f32c6bd815f1288"
+    },
+    {
+      "bytes": 320,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-03-14c57aab71.stderr.txt",
+      "sha256": "7ac01b3d83f0b8b77fa98382217bfe76e7f9318e910283e9dd2bbf48ccffcae3"
+    },
+    {
+      "bytes": 782,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-03-14c57aab71.stdout.jsonl",
+      "sha256": "5f7824b1d60c3ca2b2caa3ce039a1625cf3ccdc4e88470e7d587ec15d2af6f9f"
+    },
+    {
+      "bytes": 320,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-04-3241ee6961.stderr.txt",
+      "sha256": "5af2662d40b8feac657eb53cd26b7e8fbd94cc6f4f1f21c1159783116931e25a"
+    },
+    {
+      "bytes": 796,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-04-3241ee6961.stdout.jsonl",
+      "sha256": "75ecd5cfec760a30d7e0a30436e3b80c9bfa0ccc7938e1f082b4d779034e7149"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-05-1b94e6b1b9.stderr.txt",
+      "sha256": "d8cba98f6e2e33716301edb8d64dc3cf323394808b94de9e810062a70298c21e"
+    },
+    {
+      "bytes": 746,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-05-1b94e6b1b9.stdout.jsonl",
+      "sha256": "3936aac9d0bd9300898204cd7fc5b4ac14f2bed3b705bae5271595cf1b79ebdf"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-06-c7c081196f.stderr.txt",
+      "sha256": "5ce77148974e1a3e08f09c1c621b69ab189b1c58880028a6b8a81e642c6af7b9"
+    },
+    {
+      "bytes": 833,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-06-c7c081196f.stdout.jsonl",
+      "sha256": "58abf9ee9847288d6dd81f513f1061e734de7a1ae1ae7466870c88d3522d6a94"
+    },
+    {
+      "bytes": 320,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-07-81048f07cb.stderr.txt",
+      "sha256": "5fd83946fcd42a4c6995ca00bb93f938264a9cfb6e68b5be2d0540cd6c633877"
+    },
+    {
+      "bytes": 808,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-07-81048f07cb.stdout.jsonl",
+      "sha256": "67937374765a1ef497e809c6add8a0479941bbb0abea334756aa5bafa9626cbb"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-08-eba65d52d7.stderr.txt",
+      "sha256": "285ace6d2f0db24104ee372d5377744e23d986d42961a8eae0dab2e5c9223043"
+    },
+    {
+      "bytes": 788,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-08-eba65d52d7.stdout.jsonl",
+      "sha256": "79c334b75712d311c00ab3a4e50de72c24dca646143061b3af70129dc7b45b19"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-09-4b7b8d68bc.stderr.txt",
+      "sha256": "f0614dedb3da32cdf4a2167105b9d02850cb3d54c492d2f29d48a15e0204f705"
+    },
+    {
+      "bytes": 782,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-09-4b7b8d68bc.stdout.jsonl",
+      "sha256": "b58b117d3fdaf7d68b3fbd9d096de94c75ede542d12bee0b9c58194388167a83"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-10-4b638a989e.stderr.txt",
+      "sha256": "12c5850ca582657e29ca2bf4a14d39f01eae28613ddcdc3a0ecbd69a417f1ee1"
+    },
+    {
+      "bytes": 795,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-10-4b638a989e.stdout.jsonl",
+      "sha256": "e6dfef63416cd316ffa9a9071406fe24691d3290cec312fa87f8f575a201b21c"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-11-7021e07d2d.stderr.txt",
+      "sha256": "744a9e74cf9ee867cdb34b0542996ad69435f298c452b1aa4e2f2fd8e3d3b268"
+    },
+    {
+      "bytes": 780,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-11-7021e07d2d.stdout.jsonl",
+      "sha256": "636987b4c4388e3258101c553152c9bb14fcdd66da2a42f68f403368b1e612bc"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-12-89b0535bd3.stderr.txt",
+      "sha256": "8ed7766956ae3c00e345b0f0eed2b318f188374ee995a92657c37c78f02f0d95"
+    },
+    {
+      "bytes": 794,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-12-89b0535bd3.stdout.jsonl",
+      "sha256": "823bd449fe63c8ba040c2d0967785c45610ba45a89fa83fc22dd4c6ea232477f"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-13-7a71fe48f6.stderr.txt",
+      "sha256": "033dcb2b45ce52d18ec609df1229078fda2f32b1c521c3aea2b4024c4ffbc2c9"
+    },
+    {
+      "bytes": 791,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-13-7a71fe48f6.stdout.jsonl",
+      "sha256": "33f4b71b995ef787128f2bdc430b609a66f125dadbbc6cdcc1356326a942ce56"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-14-82031366f6.stderr.txt",
+      "sha256": "a6cddd5cb307ea5af726ee4081788cb420deca9eef59363a8557e9c7f610679e"
+    },
+    {
+      "bytes": 821,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-14-82031366f6.stdout.jsonl",
+      "sha256": "41d6a22ed5f7a7470708f36fbac45ef98b7d4c6faf44a28c737c62129e31c3cb"
+    },
+    {
+      "bytes": 177,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-15-e59a57c107.stderr.txt",
+      "sha256": "157deec3e1c379a715b35b5e887cd0577fd0246fc119f102c8485b63b700b089"
+    },
+    {
+      "bytes": 815,
+      "path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-15-e59a57c107.stdout.jsonl",
+      "sha256": "89ec2b15d5ee28eccb141f9b17cfa72a3b012c9fd6bf9e3bc13c8bdd52437af7"
+    },
+    {
+      "bytes": 88423,
+      "path": "raw_provider_responses/terra/first_attempts.jsonl",
+      "sha256": "03812cba068c2a2f8ffb1a9b41c3927ee9ac28cda4f5dcd5d0a60c8c79db85e2"
+    },
+    {
+      "bytes": 400,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-01-efa3ffbc4a.txt",
+      "sha256": "129bbc56766de91572692be8436df6ff903bc0656895616fa53f3f6a67820cbd"
+    },
+    {
+      "bytes": 458,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-02-ab0fafe1c3.txt",
+      "sha256": "8cdc7687fbe6121d32bd85c3ba1f64af697cd23055f5e7cf3f783d09c7d9e17c"
+    },
+    {
+      "bytes": 402,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-03-14c57aab71.txt",
+      "sha256": "beff42aa5e86e4fe4d74160aa9fbb855f14a48393c65498ac340da1bf79b1f5b"
+    },
+    {
+      "bytes": 416,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-04-3241ee6961.txt",
+      "sha256": "a46e20aed973b986d9768c1fabcc52861c054519350d9b18afd5285163a018a5"
+    },
+    {
+      "bytes": 369,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-05-1b94e6b1b9.txt",
+      "sha256": "7225f5fb324bf5039136f9ee32d879b531e59f24a3ff8ca540b99f7d8a5cfcb9"
+    },
+    {
+      "bytes": 444,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-06-c7c081196f.txt",
+      "sha256": "a95300bb03549251cbe3ef40e4b3f4f106c282928e3e402cada68ae3ab8fb0a4"
+    },
+    {
+      "bytes": 423,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-07-81048f07cb.txt",
+      "sha256": "09e88fd47c84e5f3c4ec6153465f3674dcaa0741c2046f8d8df710ea80a9f051"
+    },
+    {
+      "bytes": 405,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-08-eba65d52d7.txt",
+      "sha256": "002f70abdfe4e93523d263bf42c1f3b3801b82c125904b5ab21dbe4c62a68abc"
+    },
+    {
+      "bytes": 400,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-09-4b7b8d68bc.txt",
+      "sha256": "466494abffc855195f46aff6dab033d76e162e38588d87ea1a1011f9c5219d1d"
+    },
+    {
+      "bytes": 412,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-10-4b638a989e.txt",
+      "sha256": "f022a403e0f5079b7d831aabbb232780034d0c8c1cf75cfba0b0afa4492459f6"
+    },
+    {
+      "bytes": 398,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-11-7021e07d2d.txt",
+      "sha256": "0a462ae1eda3ff0e42becca55fd8317d8adcff08094a20a563f45587e560c3ba"
+    },
+    {
+      "bytes": 413,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-12-89b0535bd3.txt",
+      "sha256": "0ac14a6d6445868e281b3c84413e8292daec0ee01da50b38e58a52d3d19003ed"
+    },
+    {
+      "bytes": 408,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-13-7a71fe48f6.txt",
+      "sha256": "259d40d2e8bcfc9c17165e87ad6b3288eeff5e5b10cac3c7d0cfccf91d3d4a64"
+    },
+    {
+      "bytes": 434,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-14-82031366f6.txt",
+      "sha256": "6d8312584c4292d4e13ce731de899e12794e83c8cdb3097765fe86d52e10568f"
+    },
+    {
+      "bytes": 429,
+      "path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-15-e59a57c107.txt",
+      "sha256": "0e4746368b3b93d7a78b1c85e1272785cebc20bcf9741451ff80143426b66db7"
+    },
+    {
+      "bytes": 6295,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-01-efa3ffbc4a.json",
+      "sha256": "3bd306ce942a38edc803e274f3969ffa2a8b71bdc732660f7110cbfdd46c9d0e"
+    },
+    {
+      "bytes": 6877,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-02-ab0fafe1c3.json",
+      "sha256": "3e898999c8b48e1f606807137ea32cfb7f7079fef27c18af344aabd9419ea745"
+    },
+    {
+      "bytes": 6585,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-03-14c57aab71.json",
+      "sha256": "e52ec8f7c2e604ab0df61f76723eba629fa57d6dab49b29217be0f1d17d45491"
+    },
+    {
+      "bytes": 6641,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-04-3241ee6961.json",
+      "sha256": "98823df2ed97cb03a89a8907aa822fc53291c949f6d4910954cecb1ddfdd1bf8"
+    },
+    {
+      "bytes": 6123,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-05-1b94e6b1b9.json",
+      "sha256": "76fcdf7ec2ec857901893805a66fc7cc50c37771a5de1fadc73c85601e506ca0"
+    },
+    {
+      "bytes": 6519,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-06-c7c081196f.json",
+      "sha256": "04d80faff8d0ca41799e3b8acea8302be12f6a2646794684c3d1b18a31ba3584"
+    },
+    {
+      "bytes": 6703,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-07-81048f07cb.json",
+      "sha256": "9fa4bb7a2202ff3f6004be960c19e7f0948de26e73d214f08f6db16ce110c0c1"
+    },
+    {
+      "bytes": 6315,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-08-eba65d52d7.json",
+      "sha256": "a8083e163e0ce7fe1bc33d3014005cf389e82abeb83441d8084c450ee15c774f"
+    },
+    {
+      "bytes": 6293,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-09-4b7b8d68bc.json",
+      "sha256": "9c544771c517c6c862de979ae787e5fc0265f346e907659043d41d3e66db04ed"
+    },
+    {
+      "bytes": 6343,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-10-4b638a989e.json",
+      "sha256": "5f0417b19c79856da5f90d6cd1be5f09d4e157184913d8b8d35a48f67a75c470"
+    },
+    {
+      "bytes": 6285,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-11-7021e07d2d.json",
+      "sha256": "7d133704ba4be6d68614f7ac59e36e85c0d1fc45659551e9140bd077db7fecec"
+    },
+    {
+      "bytes": 6343,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-12-89b0535bd3.json",
+      "sha256": "40d6bb3282713225a4f34b7f463c2dabfdcb3116f65e5b0b1bb9c43791325f06"
+    },
+    {
+      "bytes": 6327,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-13-7a71fe48f6.json",
+      "sha256": "a5732ceae79054c05f6fce36012859a53e6c9730738c7372e8ef9b882731e7b6"
+    },
+    {
+      "bytes": 6463,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-14-82031366f6.json",
+      "sha256": "42afb40bc1df05b63c8e1de7bd7c71ad5b7b020bd5447f361a1a6d45ddf99188"
+    },
+    {
+      "bytes": 6441,
+      "path": "raw_provider_responses/terra/records/free-v05-dev-pilot-terra-15-e59a57c107.json",
+      "sha256": "f4aa4774e3d765bb712484aee6248ccb93461394f4ec9ff3d0884e60cb6c4569"
+    },
+    {
+      "bytes": 326404,
+      "path": "requests/canonical_requests.jsonl",
+      "sha256": "5ac7aca8b20ab3603041c65640a0dad4471ffd80189d3b71c2f93bf605a5608e"
+    }
+  ],
+  "collection_status": "COMPLETE",
+  "compile_valid_count": 27,
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "evaluation_protocol": "gm-free-evaluation-v0.5",
+  "formal_dataset_ingestion_allowed": false,
+  "formal_experiment_status": "NOT STARTED",
+  "freeze_commit": "89e0c6ad24f62c68f4e326b361e0f3c5f807c756",
+  "freeze_manifest_sha256": "6cece74026913d1a83667dffd47fa873ef87910ce689c9b8af667643edf7c427",
+  "generation_protocol": "gm-free-invention-v0.3",
+  "genuine_provider_call_count": 30,
+  "ingested_count": 30,
+  "manifest_version": "free-v05-dev-final-artifacts-v1",
+  "manual_audit_row_count": 30,
+  "pilot_artifact_digest": "32d4200c9014beae198c148a31642ff916e81ad279eba723f7ec98447429c717",
+  "preregistration_commit": "b9a29bf868071ec8af63706f8e0ad848a4a703e8",
+  "profile_count": 27,
+  "raw_count": 30,
+  "readiness": "MINOR_MEASUREMENT_ISSUE",
+  "semantic_contract_digest": "de843327762164af55c7ba342345a4861da2aab3d2082ecdd1392d4558e3b28f",
+  "stage": "final"
+}

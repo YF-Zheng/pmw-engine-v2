@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e3-0a9a-74f0-a1ad-ce93c3aba55c"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"stormbell_ignition\",\"name\":\"Stormbell Ignition\",\"target_scope\":\"zone\",\"effects\":{\"item\":[{\"field\":\"fire_intensity\",\"delta\":0.4},{\"field\":\"sound_level\",\"delta\":0.2}]},\"duration\":12.0,\"periodic\":null,\"trigger_conditions\":{\"item\":{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.7}},\"resource_cost\":18.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":13694,"cached_input_tokens":8960,"output_tokens":624,"reasoning_output_tokens":516}}

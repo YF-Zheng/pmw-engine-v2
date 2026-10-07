@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e3-af2e-7701-846c-87dd8da0bbbd"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"static_dowsing\",\"name\":\"Static Dowsing Pulse\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.2},{\"field\":\"sound_level\",\"delta\":0.14},{\"field\":\"visibility\",\"delta\":-0.08}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.7},{\"field\":\"wetness\",\"op\":\"gt\",\"value\":0.5}],\"resource_cost\":12.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":13694,"cached_input_tokens":0,"output_tokens":646,"reasoning_output_tokens":516}}

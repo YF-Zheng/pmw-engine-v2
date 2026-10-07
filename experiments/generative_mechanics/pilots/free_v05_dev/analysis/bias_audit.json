@@ -1,0 +1,181 @@
+{
+  "audit_scope": {
+    "invalid_first_attempts": 3,
+    "scaffold_rows": 30,
+    "unique_samples": 23,
+    "valid_profiles_in_pilot": 27
+  },
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "formal_experiment_status": "NOT STARTED",
+  "metrics": [
+    {
+      "anomaly_found": false,
+      "blocks_formal_experiment": false,
+      "evidence": "All 27 valid profiles activated in 4-12 of 24 arms; rates span 1/6 to 1/2. Three schema-invalid outputs are correctly unavailable.",
+      "human_semantic_agreement": "yes",
+      "metric": "Activation",
+      "saturated": false,
+      "substantially_missing": false
+    },
+    {
+      "anomaly_found": false,
+      "blocks_formal_experiment": false,
+      "evidence": "All 27 valid profiles are non-inert, consistently supported by activation and paired committed-state/world-law evidence; no structurally non-matching inert case occurred.",
+      "human_semantic_agreement": "yes",
+      "metric": "Inertness",
+      "saturated": true,
+      "substantially_missing": false
+    },
+    {
+      "anomaly_found": false,
+      "blocks_formal_experiment": false,
+      "evidence": "0/27 exact reference matches. This has no empirical discrimination here, but is explicitly weak registry evidence rather than a novelty claim.",
+      "human_semantic_agreement": "yes",
+      "metric": "Exact match",
+      "saturated": true,
+      "substantially_missing": false
+    },
+    {
+      "anomaly_found": false,
+      "blocks_formal_experiment": false,
+      "evidence": "0/27 near-copies; all nearest-reference distances are 3-5 edits, so audited negatives agree with the frozen <=2 edit contract.",
+      "human_semantic_agreement": "yes",
+      "metric": "Near-copy",
+      "saturated": true,
+      "substantially_missing": false
+    },
+    {
+      "anomaly_found": false,
+      "blocks_formal_experiment": false,
+      "evidence": "0/27 exact two-reference unions. Partial coverage never satisfied exact union plus independent-contribution requirements; false is correctly not interpreted as proof of non-recombination.",
+      "human_semantic_agreement": "yes",
+      "metric": "Recombination",
+      "saturated": true,
+      "substantially_missing": false
+    },
+    {
+      "anomaly_found": false,
+      "blocks_formal_experiment": false,
+      "evidence": "24 distinct semantic fingerprints among 27 valid profiles; repeated fingerprints correspond to identical field/operator/polarity/shape projections.",
+      "human_semantic_agreement": "yes",
+      "metric": "Semantic structure",
+      "saturated": false,
+      "substantially_missing": false
+    },
+    {
+      "anomaly_found": false,
+      "blocks_formal_experiment": false,
+      "evidence": "22 distinct abstract fingerprints among 27 valid profiles; collisions correctly remove field identity while retaining operators, polarity, sharing, cardinality, scope, and timing.",
+      "human_semantic_agreement": "yes",
+      "metric": "Abstract topology",
+      "saturated": false,
+      "substantially_missing": false
+    },
+    {
+      "anomaly_found": false,
+      "blocks_formal_experiment": false,
+      "evidence": "Activated-arm depths span 1-7 with median 3; 0/176 activated arms have depth 0 and only 8/176 have depth 1, so there is no 0-1 collapse.",
+      "human_semantic_agreement": "yes",
+      "metric": "Dependency depth",
+      "saturated": false,
+      "substantially_missing": false
+    },
+    {
+      "anomaly_found": false,
+      "blocks_formal_experiment": false,
+      "evidence": "Necessity-backed depths span 1-5 with median 3. Positive gaps occur in 51/176 activated arms, matching edge ablations and redundant-causation interpretation.",
+      "human_semantic_agreement": "yes",
+      "metric": "Necessity depth",
+      "saturated": false,
+      "substantially_missing": false
+    },
+    {
+      "anomaly_found": true,
+      "blocks_formal_experiment": false,
+      "evidence": "44/162 evaluated contexts differentiate outcomes; paired observations and signature partitions agree. No outcome-different/path-same context occurred.",
+      "human_semantic_agreement": "yes",
+      "metric": "Outcome differentiation",
+      "saturated": false,
+      "substantially_missing": false
+    },
+    {
+      "anomaly_found": true,
+      "blocks_formal_experiment": false,
+      "evidence": "44/162 evaluated contexts differentiate paths; normalized trace signatures agree. No outcome-same/path-different context occurred.",
+      "human_semantic_agreement": "yes",
+      "metric": "Path differentiation",
+      "saturated": false,
+      "substantially_missing": false
+    }
+  ],
+  "ranking_prohibited": true,
+  "readiness": "MINOR_MEASUREMENT_ISSUE",
+  "readiness_reason": "No implementation failure or systematic semantic misclassification was found, but exact match, near-copy, and recombination were all-negative on 27 valid profiles and outcome/path differentiation had no off-diagonal contexts; these are non-blocking interpretation and coverage limitations for this DEV pilot.",
+  "required_questions": [
+    {
+      "answer": "OpenAI Codex CLI requested exact identifiers gpt-5.6-luna and gpt-5.6-terra, both reasoning effort high. Returned model identifiers were not exposed by CLI JSONL and that limitation is recorded per response.",
+      "number": 1
+    },
+    {
+      "answer": "Yes. All 30 requests have unique sample_id, sample_nonce, canonical_seed, prompt_sha256, and request_id; every raw response hash is linked in ingestion provenance.",
+      "number": 2
+    },
+    {
+      "answer": "No. Canonical seeds are identity coordinates; provider_seed_enforced=false because this CLI path exposes no provider-enforced seed.",
+      "number": 3
+    },
+    {
+      "answer": "Schema-invalid: 3 (luna 1, terra 2). Compile-invalid: 0. Execution-invalid: 0. Invalid first attempts were retained without content retry.",
+      "number": 4
+    },
+    {
+      "answer": "27/27 schema-valid mechanisms activated at least one registered arm (14 luna, 13 terra); 3 schema-invalid outputs were not evaluated.",
+      "number": 5
+    },
+    {
+      "answer": "0/27 valid mechanisms were behaviorally inert.",
+      "number": 6
+    },
+    {
+      "answer": "No empirical discrimination in this pilot: 0/27 exact matches. The result remains interpretable as weak reference-registry evidence only.",
+      "number": 7
+    },
+    {
+      "answer": "No empirical discrimination in this pilot: 0/27 near-copies. Human audit supports the negatives because every nearest distance is 3-5 edits.",
+      "number": 8
+    },
+    {
+      "answer": "No empirical discrimination in this pilot: 0/27 exact recombinations. Partial reference coverage varies, but none satisfies the strict exact-union contract.",
+      "number": 9
+    },
+    {
+      "answer": "Across valid profiles, semantic structure has 24/27 distinct fingerprints and abstract topology 22/27 (ratio 1.091). Per-model counts are 14 vs 12 for luna and 12 vs 12 for terra; this is diagnostic, not a ranking.",
+      "number": 10
+    },
+    {
+      "answer": "No. Realized depth spans 1-7, median 3; only 8/176 activated arms are depth 1 and none is depth 0.",
+      "number": 11
+    },
+    {
+      "answer": "Positive gaps occur in 51/176 activated arms (29.0%): 36/80 luna and 15/96 terra. The distributions retain both zero-gap and redundant-causation cases.",
+      "number": 12
+    },
+    {
+      "answer": "Across 162 evaluated contexts: outcome same/path same 118; outcome same/path different 0; outcome different/path same 0; outcome different/path different 44.",
+      "number": 13
+    },
+    {
+      "answer": "No case was found that v0.5 could not explain from its declared contract and evidence. Saturated reference relations and missing off-diagonal outcome/path cases limit empirical coverage, not semantic interpretability.",
+      "number": 14
+    },
+    {
+      "answer": "No systematic misclassification was found. All 30 scaffold rows (23 unique samples, category overlap disclosed) were judged semantically reasonable on all six requested checks; metric values were not modified.",
+      "number": 15
+    },
+    {
+      "answer": "MINOR_MEASUREMENT_ISSUE. Proceed only with explicit preregistered caveats that exact/near-copy/recombination and outcome/path separation lacked pilot discrimination; no frozen evaluator change is justified by this evidence.",
+      "number": 16
+    }
+  ]
+}

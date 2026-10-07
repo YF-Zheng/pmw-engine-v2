@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e4-aa5e-7d42-bb36-45a0fdc262be"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"storm_conduit\",\"name\":\"Storm Conduit\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.3},{\"field\":\"sound_level\",\"delta\":0.25},{\"field\":\"temperature\",\"delta\":0.12}],\"duration\":12.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.7},{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.55}],\"resource_cost\":18.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":13692,"cached_input_tokens":8960,"output_tokens":642,"reasoning_output_tokens":516}}

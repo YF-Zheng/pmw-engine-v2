@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e3-5e5f-7723-bf0e-a981b25a0e00"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"steamveil\",\"name\":\"Steam Veil\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"visibility\",\"delta\":-0.35},{\"field\":\"temperature\",\"delta\":0.18},{\"field\":\"wetness\",\"delta\":0.12}],\"duration\":45.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"water_level\",\"op\":\"gt\",\"value\":0.6}],\"resource_cost\":18.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":13691,"cached_input_tokens":8960,"output_tokens":532,"reasoning_output_tokens":423}}

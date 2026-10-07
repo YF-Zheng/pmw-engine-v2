@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e2-a237-7932-8607-dc63de22316f"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"steamglass\",\"name\":\"Steamglass Resonance\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"temperature\",\"delta\":0.18},{\"field\":\"wetness\",\"delta\":-0.1},{\"field\":\"visibility\",\"delta\":-0.12}],\"duration\":18.5,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"temperature\",\"op\":\"gte\",\"value\":0.7},{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.55}],\"resource_cost\":22.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":13694,"cached_input_tokens":0,"output_tokens":641,"reasoning_output_tokens":516}}

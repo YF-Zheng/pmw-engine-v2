@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e3-d0b3-7223-b57d-8eb710a0c540"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"thunder_mire\",\"name\":\"Thunder Mire\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.32},{\"field\":\"wetness\",\"delta\":0.18},{\"field\":\"sound_level\",\"delta\":0.22},{\"field\":\"ground_stability\",\"delta\":-0.16}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.55},{\"field\":\"water_level\",\"op\":\"gte\",\"value\":0.35}],\"resource_cost\":31.0,\"charges\":3,\"slot_cost\":2}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14882,"cached_input_tokens":9984,"output_tokens":272,"reasoning_output_tokens":132}}

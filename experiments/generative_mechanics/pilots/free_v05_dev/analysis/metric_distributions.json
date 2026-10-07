@@ -1,0 +1,105 @@
+{
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "evaluation_protocol": "gm-free-evaluation-v0.5",
+  "formal_experiment_status": "NOT STARTED",
+  "generation_protocol": "gm-free-invention-v0.3",
+  "models": [
+    {
+      "depth_gap": {
+        "count": 80,
+        "histogram": {
+          "0": 44,
+          "1": 25,
+          "2": 6,
+          "3": 4,
+          "4": 1
+        },
+        "max": 4,
+        "mean": 0.6625,
+        "median": 0.0,
+        "min": 0
+      },
+      "model_identifier": "gpt-5.6-luna",
+      "necessity_backed_depth": {
+        "count": 80,
+        "histogram": {
+          "1": 4,
+          "2": 34,
+          "3": 20,
+          "4": 9,
+          "5": 13
+        },
+        "max": 5,
+        "mean": 2.9125,
+        "median": 3.0,
+        "min": 1
+      },
+      "realized_dependency_depth": {
+        "count": 80,
+        "histogram": {
+          "1": 1,
+          "2": 24,
+          "3": 21,
+          "4": 8,
+          "5": 18,
+          "6": 4,
+          "7": 4
+        },
+        "max": 7,
+        "mean": 3.575,
+        "median": 3.0,
+        "min": 1
+      }
+    },
+    {
+      "depth_gap": {
+        "count": 96,
+        "histogram": {
+          "0": 81,
+          "1": 13,
+          "2": 1,
+          "4": 1
+        },
+        "max": 4,
+        "mean": 0.19791666666666666,
+        "median": 0.0,
+        "min": 0
+      },
+      "model_identifier": "gpt-5.6-terra",
+      "necessity_backed_depth": {
+        "count": 96,
+        "histogram": {
+          "1": 12,
+          "2": 27,
+          "3": 26,
+          "4": 27,
+          "5": 4
+        },
+        "max": 5,
+        "mean": 2.8333333333333335,
+        "median": 3.0,
+        "min": 1
+      },
+      "realized_dependency_depth": {
+        "count": 96,
+        "histogram": {
+          "1": 7,
+          "2": 26,
+          "3": 31,
+          "4": 21,
+          "5": 11
+        },
+        "max": 5,
+        "mean": 3.03125,
+        "median": 3.0,
+        "min": 1
+      }
+    }
+  ],
+  "provider": "OpenAI Codex CLI",
+  "provider_seed_enforced": false,
+  "provider_seed_unavailable_reason": "OpenAI Codex CLI does not expose a provider-enforced sampling seed for this collection path",
+  "ranking_prohibited": true,
+  "request_batch_id": "free-v05-dev-pilot-batch-001"
+}

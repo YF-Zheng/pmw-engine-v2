@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e5-25c3-7ff3-87f8-cce73a94a619"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"storm_siphon\",\"name\":\"Storm Siphon\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.32},{\"field\":\"wetness\",\"delta\":0.18},{\"field\":\"sound_level\",\"delta\":0.14}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.58},{\"field\":\"wetness\",\"op\":\"lte\",\"value\":0.72}],\"resource_cost\":34.0,\"charges\":3,\"slot_cost\":2}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14884,"cached_input_tokens":9984,"output_tokens":226,"reasoning_output_tokens":97}}

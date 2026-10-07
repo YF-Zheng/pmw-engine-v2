@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e3-deb3-7cb3-9381-55366fcc04a4"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"charged_mist_lantern\",\"name\":\"Charged Mist Lantern\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.22},{\"field\":\"visibility\",\"delta\":0.18},{\"field\":\"sound_level\",\"delta\":0.08}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.6},{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.4}],\"resource_cost\":24.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":13692,"cached_input_tokens":8960,"output_tokens":533,"reasoning_output_tokens":403}}

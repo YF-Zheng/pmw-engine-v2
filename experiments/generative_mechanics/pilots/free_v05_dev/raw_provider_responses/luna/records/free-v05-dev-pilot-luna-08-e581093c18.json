@@ -1,0 +1,80 @@
+{
+  "attempt": 1,
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "provider": "OpenAI Codex CLI",
+  "provider_request_id": null,
+  "provider_request_id_unavailable_reason": "Codex CLI JSONL events did not expose provider request id",
+  "provider_seed_enforced": false,
+  "provider_seed_unavailable_reason": "OpenAI Codex CLI does not expose a provider-enforced sampling seed for this collection path",
+  "provider_session_id": null,
+  "provider_session_id_unavailable_reason": "Codex CLI JSONL events did not expose session id",
+  "provider_success": true,
+  "provider_thread_id": "01a111e4-2c5d-7400-bf6c-c50e8b1862af",
+  "provider_thread_id_unavailable_reason": null,
+  "raw_provider_response": {
+    "command": [
+      "codex",
+      "exec",
+      "--ephemeral",
+      "--ignore-rules",
+      "--sandbox",
+      "read-only",
+      "--model",
+      "gpt-5.6-luna",
+      "--config",
+      "model_reasoning_effort=\"high\"",
+      "--json",
+      "--output-last-message",
+      "/ssd/zyf/pmw-engine-v2/experiments/generative_mechanics/pilots/free_v05_dev/raw_provider_responses/luna/last_messages/.free-v05-dev-pilot-luna-08-e581093c18.txt.in_progress",
+      "-"
+    ],
+    "event_log_path": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-08-e581093c18.stdout.jsonl",
+    "exit_code": 0,
+    "last_message_path": "raw_provider_responses/luna/last_messages/free-v05-dev-pilot-luna-08-e581093c18.txt",
+    "stderr": "2026-10-06T15:45:28.731162Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---\n",
+    "stdout_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a111e4-2c5d-7400-bf6c-c50e8b1862af\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"mechanic\\\":{\\\"id\\\":\\\"thermal_echo_bloom\\\",\\\"name\\\":\\\"Thermal Echo Bloom\\\",\\\"target_scope\\\":\\\"zone\\\",\\\"effects\\\":[{\\\"field\\\":\\\"temperature\\\",\\\"delta\\\":0.15},{\\\"field\\\":\\\"sound_level\\\",\\\"delta\\\":0.12},{\\\"field\\\":\\\"visibility\\\",\\\"delta\\\":0.08},{\\\"field\\\":\\\"water_level\\\",\\\"delta\\\":-0.1}],\\\"duration\\\":18.0,\\\"periodic\\\":null,\\\"trigger_conditions\\\":[{\\\"field\\\":\\\"fire_intensity\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.25},{\\\"field\\\":\\\"water_level\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.65}],\\\"resource_cost\\\":12.0,\\\"charges\\\":3,\\\"slot_cost\\\":1}}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":13691,\"cached_input_tokens\":8960,\"output_tokens\":343,\"reasoning_output_tokens\":204}}\n",
+    "transport_attempts": [
+      {
+        "command": [
+          "codex",
+          "exec",
+          "--ephemeral",
+          "--ignore-rules",
+          "--sandbox",
+          "read-only",
+          "--model",
+          "gpt-5.6-luna",
+          "--config",
+          "model_reasoning_effort=\"high\"",
+          "--json",
+          "--output-last-message",
+          "/ssd/zyf/pmw-engine-v2/experiments/generative_mechanics/pilots/free_v05_dev/raw_provider_responses/luna/last_messages/.free-v05-dev-pilot-luna-08-e581093c18.txt.in_progress",
+          "-"
+        ],
+        "event_log_paths": {
+          "stderr": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-08-e581093c18.stderr.txt",
+          "stdout": "raw_provider_responses/luna/events/free-v05-dev-pilot-luna-08-e581093c18.stdout.jsonl"
+        },
+        "exit_code": 0,
+        "last_message": "{\"mechanic\":{\"id\":\"thermal_echo_bloom\",\"name\":\"Thermal Echo Bloom\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"temperature\",\"delta\":0.15},{\"field\":\"sound_level\",\"delta\":0.12},{\"field\":\"visibility\",\"delta\":0.08},{\"field\":\"water_level\",\"delta\":-0.1}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"fire_intensity\",\"op\":\"gte\",\"value\":0.25},{\"field\":\"water_level\",\"op\":\"gte\",\"value\":0.65}],\"resource_cost\":12.0,\"charges\":3,\"slot_cost\":1}}",
+        "stderr": "2026-10-06T15:45:28.731162Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---\n",
+        "stdout_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a111e4-2c5d-7400-bf6c-c50e8b1862af\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"mechanic\\\":{\\\"id\\\":\\\"thermal_echo_bloom\\\",\\\"name\\\":\\\"Thermal Echo Bloom\\\",\\\"target_scope\\\":\\\"zone\\\",\\\"effects\\\":[{\\\"field\\\":\\\"temperature\\\",\\\"delta\\\":0.15},{\\\"field\\\":\\\"sound_level\\\",\\\"delta\\\":0.12},{\\\"field\\\":\\\"visibility\\\",\\\"delta\\\":0.08},{\\\"field\\\":\\\"water_level\\\",\\\"delta\\\":-0.1}],\\\"duration\\\":18.0,\\\"periodic\\\":null,\\\"trigger_conditions\\\":[{\\\"field\\\":\\\"fire_intensity\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.25},{\\\"field\\\":\\\"water_level\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.65}],\\\"resource_cost\\\":12.0,\\\"charges\\\":3,\\\"slot_cost\\\":1}}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":13691,\"cached_input_tokens\":8960,\"output_tokens\":343,\"reasoning_output_tokens\":204}}\n",
+        "transport_attempt": 1
+      }
+    ]
+  },
+  "repair": false,
+  "request_batch_id": "free-v05-dev-pilot-batch-001",
+  "request_id": "free-v05-dev-pilot-luna-08-e581093c18",
+  "requested_model_identifier": "gpt-5.6-luna",
+  "requested_reasoning_effort": "high",
+  "response_text": "{\"mechanic\":{\"id\":\"thermal_echo_bloom\",\"name\":\"Thermal Echo Bloom\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"temperature\",\"delta\":0.15},{\"field\":\"sound_level\",\"delta\":0.12},{\"field\":\"visibility\",\"delta\":0.08},{\"field\":\"water_level\",\"delta\":-0.1}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"fire_intensity\",\"op\":\"gte\",\"value\":0.25},{\"field\":\"water_level\",\"op\":\"gte\",\"value\":0.65}],\"resource_cost\":12.0,\"charges\":3,\"slot_cost\":1}}",
+  "returned_model_identifier": null,
+  "returned_model_identifier_unavailable_reason": "Codex CLI JSONL events did not expose returned model identifier",
+  "sample_id": "free-v05-dev-pilot-luna-08-e581093c18",
+  "timestamp_utc": "2026-10-06T15:45:39.135447Z",
+  "transport_attempt_count": 1,
+  "transport_retry_limit": 0,
+  "transport_status": "success"
+}

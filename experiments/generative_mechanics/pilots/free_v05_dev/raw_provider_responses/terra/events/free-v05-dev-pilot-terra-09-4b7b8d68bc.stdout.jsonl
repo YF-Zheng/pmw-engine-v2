@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e4-9ba9-7f90-93d0-126837d20b81"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"resonant_drain\",\"name\":\"Resonant Drain\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.38},{\"field\":\"sound_level\",\"delta\":0.22},{\"field\":\"wetness\",\"delta\":0.12}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.5},{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.2}],\"resource_cost\":34.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14889,"cached_input_tokens":9984,"output_tokens":212,"reasoning_output_tokens":82}}

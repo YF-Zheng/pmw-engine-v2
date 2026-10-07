@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e4-52e9-7cb1-89a9-66fee36442ea"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"stormglass_bell\",\"name\":\"Stormglass Bell\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.32},{\"field\":\"sound_level\",\"delta\":0.18},{\"field\":\"visibility\",\"delta\":-0.1}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.55},{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.5}],\"resource_cost\":21.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14885,"cached_input_tokens":9984,"output_tokens":382,"reasoning_output_tokens":254}}

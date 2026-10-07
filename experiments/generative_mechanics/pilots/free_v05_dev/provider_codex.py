@@ -25,6 +25,7 @@ from .pilot import (
     ROOT,
     PilotContractError,
     build_manual_audit_scaffold,
+    finalize_pilot_artifacts,
     ingest_raw_records,
     read_jsonl,
     run_frozen_profiles,
@@ -350,6 +351,7 @@ def _parser() -> argparse.ArgumentParser:
         command = sub.add_parser(name)
         command.add_argument("--model", choices=ALLOWED_MODELS, required=True)
     sub.add_parser("analyze")
+    sub.add_parser("finalize")
     return parser
 
 
@@ -361,8 +363,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         result = ingest_model(args.model)
     elif args.command == "evaluate":
         result = evaluate_model(args.model)
-    else:
+    elif args.command == "analyze":
         result = analyze()
+    else:
+        manifest = finalize_pilot_artifacts()
+        result = {
+            "status": "COMPLETE",
+            "pilot_artifact_digest": manifest["pilot_artifact_digest"],
+            "artifact_count": len(manifest["artifacts"]),
+        }
     print(canonical_json(result))
     return 0
 

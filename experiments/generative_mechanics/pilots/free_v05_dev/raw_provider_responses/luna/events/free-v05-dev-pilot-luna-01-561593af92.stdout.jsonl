@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e1-f0b3-7eb1-b2df-b34271ba92f3"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"grounding_pulse\",\"name\":\"Grounding Pulse\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.35},{\"field\":\"fire_intensity\",\"delta\":0.18},{\"field\":\"sound_level\",\"delta\":0.2}],\"duration\":12.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.7}],\"resource_cost\":18.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":13693,"cached_input_tokens":0,"output_tokens":630,"reasoning_output_tokens":516}}

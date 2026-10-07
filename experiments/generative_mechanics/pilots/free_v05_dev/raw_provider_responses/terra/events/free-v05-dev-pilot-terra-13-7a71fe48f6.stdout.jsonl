@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e5-ad2b-7f71-a671-6cd85ed322c2"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"thunderwick\",\"name\":\"Thunderwick Grounding Rod\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.34},{\"field\":\"sound_level\",\"delta\":0.18},{\"field\":\"wetness\",\"delta\":0.12}],\"duration\":24.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.58},{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.3}],\"resource_cost\":31.0,\"charges\":4,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14887,"cached_input_tokens":9984,"output_tokens":283,"reasoning_output_tokens":154}}

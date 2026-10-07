@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e2-5f31-7211-9da2-6721b2f2d05b"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"thunder_sluice\",\"name\":\"Thunder Sluice\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.32},{\"field\":\"sound_level\",\"delta\":0.18},{\"field\":\"wetness\",\"delta\":-0.14}],\"duration\":null,\"periodic\":{\"interval\":4.0,\"repeats\":4},\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.5},{\"field\":\"wetness\",\"op\":\"gt\",\"value\":0.55}],\"resource_cost\":38.0,\"charges\":3,\"slot_cost\":2,\"write_surface\":\"public_channels\"}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14886,"cached_input_tokens":9984,"output_tokens":215,"reasoning_output_tokens":70}}

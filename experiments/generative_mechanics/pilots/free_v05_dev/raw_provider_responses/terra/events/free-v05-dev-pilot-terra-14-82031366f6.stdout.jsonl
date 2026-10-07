@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e5-ee54-7000-976b-410affe8be26"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"arc_drainage\",\"name\":\"Arc Drainage\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.34},{\"field\":\"sound_level\",\"delta\":0.18},{\"field\":\"wetness\",\"delta\":-0.12}],\"duration\":16.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"water_level\",\"op\":\"gt\",\"value\":0.6},{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.45}],\"resource_cost\":31.0,\"charges\":4,\"slot_cost\":2,\"write_surface\":\"public_channels\"}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14882,"cached_input_tokens":9984,"output_tokens":264,"reasoning_output_tokens":129}}

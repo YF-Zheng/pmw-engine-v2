@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e5-645c-7753-aba5-6973e7483f25"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"stormbellows\",\"name\":\"Storm Bellows\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"fire_intensity\",\"delta\":0.18},{\"field\":\"sound_level\",\"delta\":0.16},{\"field\":\"electric_field\",\"delta\":-0.12},{\"field\":\"wetness\",\"delta\":-0.08}],\"duration\":24.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.55},{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.45}],\"resource_cost\":18.0,\"charges\":3,\"slot_cost\":2}}"}}
+{"type":"turn.completed","usage":{"input_tokens":13692,"cached_input_tokens":8960,"output_tokens":428,"reasoning_output_tokens":288}}

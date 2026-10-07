@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e2-e849-75a0-aff0-4c81a4d454e9"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"resonance_fog_beacon\",\"name\":\"Resonance Fog Beacon\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"sound_level\",\"delta\":0.18},{\"field\":\"visibility\",\"delta\":-0.24},{\"field\":\"electric_field\",\"delta\":-0.1}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"wetness\",\"op\":\"gte\",\"value\":0.5},{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.35}],\"resource_cost\":32.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14884,"cached_input_tokens":0,"output_tokens":256,"reasoning_output_tokens":123}}

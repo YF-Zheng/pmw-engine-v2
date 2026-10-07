@@ -1,0 +1,2 @@
+2026-10-06T15:45:23.034451Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---
+2026-10-06T15:45:27.544269Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit

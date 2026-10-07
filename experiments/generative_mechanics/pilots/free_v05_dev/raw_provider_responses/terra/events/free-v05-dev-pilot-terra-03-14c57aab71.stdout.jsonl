@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e2-99a1-7170-990b-888e1a182f8d"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"hush_siphon\",\"name\":\"Hush Siphon\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"sound_level\",\"delta\":-0.48},{\"field\":\"electric_field\",\"delta\":-0.18},{\"field\":\"visibility\",\"delta\":0.12}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"sound_level\",\"op\":\"gt\",\"value\":0.55},{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.4}],\"resource_cost\":22.0,\"charges\":4,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14883,"cached_input_tokens":0,"output_tokens":308,"reasoning_output_tokens":177}}

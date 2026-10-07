@@ -1,0 +1,80 @@
+{
+  "attempt": 1,
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "provider": "OpenAI Codex CLI",
+  "provider_request_id": null,
+  "provider_request_id_unavailable_reason": "Codex CLI JSONL events did not expose provider request id",
+  "provider_seed_enforced": false,
+  "provider_seed_unavailable_reason": "OpenAI Codex CLI does not expose a provider-enforced sampling seed for this collection path",
+  "provider_session_id": null,
+  "provider_session_id_unavailable_reason": "Codex CLI JSONL events did not expose session id",
+  "provider_success": true,
+  "provider_thread_id": "01a111e2-99a1-7170-990b-888e1a182f8d",
+  "provider_thread_id_unavailable_reason": null,
+  "raw_provider_response": {
+    "command": [
+      "codex",
+      "exec",
+      "--ephemeral",
+      "--ignore-rules",
+      "--sandbox",
+      "read-only",
+      "--model",
+      "gpt-5.6-terra",
+      "--config",
+      "model_reasoning_effort=\"high\"",
+      "--json",
+      "--output-last-message",
+      "/ssd/zyf/pmw-engine-v2/experiments/generative_mechanics/pilots/free_v05_dev/raw_provider_responses/terra/last_messages/.free-v05-dev-pilot-terra-03-14c57aab71.txt.in_progress",
+      "-"
+    ],
+    "event_log_path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-03-14c57aab71.stdout.jsonl",
+    "exit_code": 0,
+    "last_message_path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-03-14c57aab71.txt",
+    "stderr": "2026-10-06T15:43:45.653042Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---\n2026-10-06T15:43:50.310181Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit\n",
+    "stdout_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a111e2-99a1-7170-990b-888e1a182f8d\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"mechanic\\\":{\\\"id\\\":\\\"hush_siphon\\\",\\\"name\\\":\\\"Hush Siphon\\\",\\\"target_scope\\\":\\\"zone\\\",\\\"effects\\\":[{\\\"field\\\":\\\"sound_level\\\",\\\"delta\\\":-0.48},{\\\"field\\\":\\\"electric_field\\\",\\\"delta\\\":-0.18},{\\\"field\\\":\\\"visibility\\\",\\\"delta\\\":0.12}],\\\"duration\\\":18.0,\\\"periodic\\\":null,\\\"trigger_conditions\\\":[{\\\"field\\\":\\\"sound_level\\\",\\\"op\\\":\\\"gt\\\",\\\"value\\\":0.55},{\\\"field\\\":\\\"electric_field\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.4}],\\\"resource_cost\\\":22.0,\\\"charges\\\":4,\\\"slot_cost\\\":1}}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14883,\"cached_input_tokens\":0,\"output_tokens\":308,\"reasoning_output_tokens\":177}}\n",
+    "transport_attempts": [
+      {
+        "command": [
+          "codex",
+          "exec",
+          "--ephemeral",
+          "--ignore-rules",
+          "--sandbox",
+          "read-only",
+          "--model",
+          "gpt-5.6-terra",
+          "--config",
+          "model_reasoning_effort=\"high\"",
+          "--json",
+          "--output-last-message",
+          "/ssd/zyf/pmw-engine-v2/experiments/generative_mechanics/pilots/free_v05_dev/raw_provider_responses/terra/last_messages/.free-v05-dev-pilot-terra-03-14c57aab71.txt.in_progress",
+          "-"
+        ],
+        "event_log_paths": {
+          "stderr": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-03-14c57aab71.stderr.txt",
+          "stdout": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-03-14c57aab71.stdout.jsonl"
+        },
+        "exit_code": 0,
+        "last_message": "{\"mechanic\":{\"id\":\"hush_siphon\",\"name\":\"Hush Siphon\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"sound_level\",\"delta\":-0.48},{\"field\":\"electric_field\",\"delta\":-0.18},{\"field\":\"visibility\",\"delta\":0.12}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"sound_level\",\"op\":\"gt\",\"value\":0.55},{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.4}],\"resource_cost\":22.0,\"charges\":4,\"slot_cost\":1}}",
+        "stderr": "2026-10-06T15:43:45.653042Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---\n2026-10-06T15:43:50.310181Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit\n",
+        "stdout_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a111e2-99a1-7170-990b-888e1a182f8d\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"mechanic\\\":{\\\"id\\\":\\\"hush_siphon\\\",\\\"name\\\":\\\"Hush Siphon\\\",\\\"target_scope\\\":\\\"zone\\\",\\\"effects\\\":[{\\\"field\\\":\\\"sound_level\\\",\\\"delta\\\":-0.48},{\\\"field\\\":\\\"electric_field\\\",\\\"delta\\\":-0.18},{\\\"field\\\":\\\"visibility\\\",\\\"delta\\\":0.12}],\\\"duration\\\":18.0,\\\"periodic\\\":null,\\\"trigger_conditions\\\":[{\\\"field\\\":\\\"sound_level\\\",\\\"op\\\":\\\"gt\\\",\\\"value\\\":0.55},{\\\"field\\\":\\\"electric_field\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.4}],\\\"resource_cost\\\":22.0,\\\"charges\\\":4,\\\"slot_cost\\\":1}}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14883,\"cached_input_tokens\":0,\"output_tokens\":308,\"reasoning_output_tokens\":177}}\n",
+        "transport_attempt": 1
+      }
+    ]
+  },
+  "repair": false,
+  "request_batch_id": "free-v05-dev-pilot-batch-001",
+  "request_id": "free-v05-dev-pilot-terra-03-14c57aab71",
+  "requested_model_identifier": "gpt-5.6-terra",
+  "requested_reasoning_effort": "high",
+  "response_text": "{\"mechanic\":{\"id\":\"hush_siphon\",\"name\":\"Hush Siphon\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"sound_level\",\"delta\":-0.48},{\"field\":\"electric_field\",\"delta\":-0.18},{\"field\":\"visibility\",\"delta\":0.12}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"sound_level\",\"op\":\"gt\",\"value\":0.55},{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.4}],\"resource_cost\":22.0,\"charges\":4,\"slot_cost\":1}}",
+  "returned_model_identifier": null,
+  "returned_model_identifier_unavailable_reason": "Codex CLI JSONL events did not expose returned model identifier",
+  "sample_id": "free-v05-dev-pilot-terra-03-14c57aab71",
+  "timestamp_utc": "2026-10-06T15:44:04.528962Z",
+  "transport_attempt_count": 1,
+  "transport_retry_limit": 0,
+  "transport_status": "success"
+}

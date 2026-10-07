@@ -1,0 +1,96 @@
+{
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "evaluation_protocol": "gm-free-evaluation-v0.5",
+  "formal_experiment_status": "NOT STARTED",
+  "generation_protocol": "gm-free-invention-v0.3",
+  "models": [
+    {
+      "activation_rate_distribution": {
+        "count": 14,
+        "histogram": {
+          "0.16666666666666666": 9,
+          "0.3333333333333333": 4,
+          "0.5": 1
+        },
+        "max": 0.5,
+        "mean": 0.23809523809523808,
+        "median": 0.16666666666666666,
+        "min": 0.16666666666666666
+      },
+      "behaviorally_inert_count": 0,
+      "behaviorally_inert_rate": 0.0,
+      "causal_path_differentiated_context_rate": 0.23809523809523808,
+      "distinct_abstract_topology_count": 12,
+      "distinct_semantic_structure_count": 14,
+      "exact_match_rate": 0.0,
+      "interpretation_guard": "DEV evaluator-health evidence only; no model ranking or formal conclusion",
+      "model_identifier": "gpt-5.6-luna",
+      "n_compile_invalid": 0,
+      "n_compile_valid": 14,
+      "n_execution_invalid": 0,
+      "n_execution_valid": 14,
+      "n_provider_success": 15,
+      "n_requested": 15,
+      "n_schema_invalid": 1,
+      "n_schema_valid": 14,
+      "near_copy_rate": 0.0,
+      "outcome_differentiated_context_rate": 0.23809523809523808,
+      "outcome_path_quadrants": {
+        "outcome_different_path_different": 20,
+        "outcome_different_path_same": 0,
+        "outcome_same_path_different": 0,
+        "outcome_same_path_same": 64
+      },
+      "recombination_rate": 0.0,
+      "semantic_to_abstract_distinct_ratio": 1.1666666666666667,
+      "structurally_nonmatching_and_behaviorally_inert_count": 0
+    },
+    {
+      "activation_rate_distribution": {
+        "count": 13,
+        "histogram": {
+          "0.16666666666666666": 5,
+          "0.3333333333333333": 5,
+          "0.5": 3
+        },
+        "max": 0.5,
+        "mean": 0.3076923076923077,
+        "median": 0.3333333333333333,
+        "min": 0.16666666666666666
+      },
+      "behaviorally_inert_count": 0,
+      "behaviorally_inert_rate": 0.0,
+      "causal_path_differentiated_context_rate": 0.3076923076923077,
+      "distinct_abstract_topology_count": 12,
+      "distinct_semantic_structure_count": 12,
+      "exact_match_rate": 0.0,
+      "interpretation_guard": "DEV evaluator-health evidence only; no model ranking or formal conclusion",
+      "model_identifier": "gpt-5.6-terra",
+      "n_compile_invalid": 0,
+      "n_compile_valid": 13,
+      "n_execution_invalid": 0,
+      "n_execution_valid": 13,
+      "n_provider_success": 15,
+      "n_requested": 15,
+      "n_schema_invalid": 2,
+      "n_schema_valid": 13,
+      "near_copy_rate": 0.0,
+      "outcome_differentiated_context_rate": 0.3076923076923077,
+      "outcome_path_quadrants": {
+        "outcome_different_path_different": 24,
+        "outcome_different_path_same": 0,
+        "outcome_same_path_different": 0,
+        "outcome_same_path_same": 54
+      },
+      "recombination_rate": 0.0,
+      "semantic_to_abstract_distinct_ratio": 1.0,
+      "structurally_nonmatching_and_behaviorally_inert_count": 0
+    }
+  ],
+  "provider": "OpenAI Codex CLI",
+  "provider_seed_enforced": false,
+  "provider_seed_unavailable_reason": "OpenAI Codex CLI does not expose a provider-enforced sampling seed for this collection path",
+  "ranking_prohibited": true,
+  "request_batch_id": "free-v05-dev-pilot-batch-001"
+}

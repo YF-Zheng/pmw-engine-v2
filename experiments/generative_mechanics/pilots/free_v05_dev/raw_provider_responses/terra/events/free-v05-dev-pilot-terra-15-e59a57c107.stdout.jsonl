@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e6-26c4-72b3-8e3a-f72a9eb02899"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"thunder_siphon\",\"name\":\"Thunder Siphon\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.35},{\"field\":\"sound_level\",\"delta\":0.22},{\"field\":\"fire_intensity\",\"delta\":0.12}],\"duration\":0.0,\"periodic\":{\"interval\":4.0,\"repeats\":3},\"trigger_conditions\":[{\"field\":\"wetness\",\"op\":\"gt\",\"value\":0.55},{\"field\":\"electric_field\",\"op\":\"gt\",\"value\":0.5}],\"resource_cost\":34.0,\"charges\":3,\"slot_cost\":2}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14881,"cached_input_tokens":9984,"output_tokens":233,"reasoning_output_tokens":92}}

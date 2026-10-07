@@ -1,0 +1,80 @@
+{
+  "attempt": 1,
+  "dataset_kind": "dev_pilot",
+  "dataset_namespace": "free-v05-dev-pilot",
+  "provider": "OpenAI Codex CLI",
+  "provider_request_id": null,
+  "provider_request_id_unavailable_reason": "Codex CLI JSONL events did not expose provider request id",
+  "provider_seed_enforced": false,
+  "provider_seed_unavailable_reason": "OpenAI Codex CLI does not expose a provider-enforced sampling seed for this collection path",
+  "provider_session_id": null,
+  "provider_session_id_unavailable_reason": "Codex CLI JSONL events did not expose session id",
+  "provider_success": true,
+  "provider_thread_id": "01a111e5-25c3-7ff3-87f8-cce73a94a619",
+  "provider_thread_id_unavailable_reason": null,
+  "raw_provider_response": {
+    "command": [
+      "codex",
+      "exec",
+      "--ephemeral",
+      "--ignore-rules",
+      "--sandbox",
+      "read-only",
+      "--model",
+      "gpt-5.6-terra",
+      "--config",
+      "model_reasoning_effort=\"high\"",
+      "--json",
+      "--output-last-message",
+      "/ssd/zyf/pmw-engine-v2/experiments/generative_mechanics/pilots/free_v05_dev/raw_provider_responses/terra/last_messages/.free-v05-dev-pilot-terra-11-7021e07d2d.txt.in_progress",
+      "-"
+    ],
+    "event_log_path": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-11-7021e07d2d.stdout.jsonl",
+    "exit_code": 0,
+    "last_message_path": "raw_provider_responses/terra/last_messages/free-v05-dev-pilot-terra-11-7021e07d2d.txt",
+    "stderr": "2026-10-06T15:46:32.539475Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---\n",
+    "stdout_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a111e5-25c3-7ff3-87f8-cce73a94a619\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"mechanic\\\":{\\\"id\\\":\\\"storm_siphon\\\",\\\"name\\\":\\\"Storm Siphon\\\",\\\"target_scope\\\":\\\"zone\\\",\\\"effects\\\":[{\\\"field\\\":\\\"electric_field\\\",\\\"delta\\\":-0.32},{\\\"field\\\":\\\"wetness\\\",\\\"delta\\\":0.18},{\\\"field\\\":\\\"sound_level\\\",\\\"delta\\\":0.14}],\\\"duration\\\":18.0,\\\"periodic\\\":null,\\\"trigger_conditions\\\":[{\\\"field\\\":\\\"electric_field\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.58},{\\\"field\\\":\\\"wetness\\\",\\\"op\\\":\\\"lte\\\",\\\"value\\\":0.72}],\\\"resource_cost\\\":34.0,\\\"charges\\\":3,\\\"slot_cost\\\":2}}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14884,\"cached_input_tokens\":9984,\"output_tokens\":226,\"reasoning_output_tokens\":97}}\n",
+    "transport_attempts": [
+      {
+        "command": [
+          "codex",
+          "exec",
+          "--ephemeral",
+          "--ignore-rules",
+          "--sandbox",
+          "read-only",
+          "--model",
+          "gpt-5.6-terra",
+          "--config",
+          "model_reasoning_effort=\"high\"",
+          "--json",
+          "--output-last-message",
+          "/ssd/zyf/pmw-engine-v2/experiments/generative_mechanics/pilots/free_v05_dev/raw_provider_responses/terra/last_messages/.free-v05-dev-pilot-terra-11-7021e07d2d.txt.in_progress",
+          "-"
+        ],
+        "event_log_paths": {
+          "stderr": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-11-7021e07d2d.stderr.txt",
+          "stdout": "raw_provider_responses/terra/events/free-v05-dev-pilot-terra-11-7021e07d2d.stdout.jsonl"
+        },
+        "exit_code": 0,
+        "last_message": "{\"mechanic\":{\"id\":\"storm_siphon\",\"name\":\"Storm Siphon\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.32},{\"field\":\"wetness\",\"delta\":0.18},{\"field\":\"sound_level\",\"delta\":0.14}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.58},{\"field\":\"wetness\",\"op\":\"lte\",\"value\":0.72}],\"resource_cost\":34.0,\"charges\":3,\"slot_cost\":2}}",
+        "stderr": "2026-10-06T15:46:32.539475Z ERROR codex_core::session::session: failed to load skill /home/zyf/.codex/skills/karpathy-coding/SKILL.md: missing YAML frontmatter delimited by ---\n",
+        "stdout_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a111e5-25c3-7ff3-87f8-cce73a94a619\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"mechanic\\\":{\\\"id\\\":\\\"storm_siphon\\\",\\\"name\\\":\\\"Storm Siphon\\\",\\\"target_scope\\\":\\\"zone\\\",\\\"effects\\\":[{\\\"field\\\":\\\"electric_field\\\",\\\"delta\\\":-0.32},{\\\"field\\\":\\\"wetness\\\",\\\"delta\\\":0.18},{\\\"field\\\":\\\"sound_level\\\",\\\"delta\\\":0.14}],\\\"duration\\\":18.0,\\\"periodic\\\":null,\\\"trigger_conditions\\\":[{\\\"field\\\":\\\"electric_field\\\",\\\"op\\\":\\\"gte\\\",\\\"value\\\":0.58},{\\\"field\\\":\\\"wetness\\\",\\\"op\\\":\\\"lte\\\",\\\"value\\\":0.72}],\\\"resource_cost\\\":34.0,\\\"charges\\\":3,\\\"slot_cost\\\":2}}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14884,\"cached_input_tokens\":9984,\"output_tokens\":226,\"reasoning_output_tokens\":97}}\n",
+        "transport_attempt": 1
+      }
+    ]
+  },
+  "repair": false,
+  "request_batch_id": "free-v05-dev-pilot-batch-001",
+  "request_id": "free-v05-dev-pilot-terra-11-7021e07d2d",
+  "requested_model_identifier": "gpt-5.6-terra",
+  "requested_reasoning_effort": "high",
+  "response_text": "{\"mechanic\":{\"id\":\"storm_siphon\",\"name\":\"Storm Siphon\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"electric_field\",\"delta\":-0.32},{\"field\":\"wetness\",\"delta\":0.18},{\"field\":\"sound_level\",\"delta\":0.14}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"electric_field\",\"op\":\"gte\",\"value\":0.58},{\"field\":\"wetness\",\"op\":\"lte\",\"value\":0.72}],\"resource_cost\":34.0,\"charges\":3,\"slot_cost\":2}}",
+  "returned_model_identifier": null,
+  "returned_model_identifier_unavailable_reason": "Codex CLI JSONL events did not expose returned model identifier",
+  "sample_id": "free-v05-dev-pilot-terra-11-7021e07d2d",
+  "timestamp_utc": "2026-10-06T15:46:51.414368Z",
+  "transport_attempt_count": 1,
+  "transport_retry_limit": 0,
+  "transport_status": "success"
+}

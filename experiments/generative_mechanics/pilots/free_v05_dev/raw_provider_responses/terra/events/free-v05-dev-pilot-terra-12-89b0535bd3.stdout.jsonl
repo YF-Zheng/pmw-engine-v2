@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a111e5-7436-7510-a7a7-0828b090b526"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"mechanic\":{\"id\":\"resonant_sluice\",\"name\":\"Resonant Sluice\",\"target_scope\":\"zone\",\"effects\":[{\"field\":\"water_level\",\"delta\":-0.32},{\"field\":\"sound_level\",\"delta\":0.28},{\"field\":\"ground_stability\",\"delta\":0.16}],\"duration\":18.0,\"periodic\":null,\"trigger_conditions\":[{\"field\":\"water_level\",\"op\":\"gt\",\"value\":0.55},{\"field\":\"ground_stability\",\"op\":\"lt\",\"value\":0.7}],\"resource_cost\":24.0,\"charges\":3,\"slot_cost\":1}}"}}
+{"type":"turn.completed","usage":{"input_tokens":14885,"cached_input_tokens":9984,"output_tokens":133,"reasoning_output_tokens":0}}

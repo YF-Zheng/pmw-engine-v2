@@ -11,13 +11,16 @@ from experiments.generative_mechanics.free_invention import prompt_hash, prompt_
 from experiments.generative_mechanics.pilots.free_v05_dev.pilot import (
     DATASET_KIND,
     DATASET_NAMESPACE,
+    EVALUATION_PROTOCOL,
     MODELS,
     PROVIDER_SEED_UNAVAILABLE_REASON,
     PilotContractError,
     build_canonical_requests,
+    finalize_pilot_artifacts,
     ingest_raw_records,
     read_jsonl,
     validate_pilot_artifacts,
+    write_jsonl,
 )
 from experiments.generative_mechanics.pilots.free_v05_dev.provider_codex import (
     collect_model,
@@ -116,7 +119,7 @@ class RawIngestionTests(unittest.TestCase):
 
 class ArtifactValidationTests(unittest.TestCase):
     def test_checked_in_pilot_manifest_validates(self):
-        result = validate_pilot_artifacts()
+        result = validate_pilot_artifacts(stage="preregistration")
         self.assertEqual(result["status"], "VALID")
         self.assertEqual(result["canonical_request_count"], 30)
         self.assertFalse(result["formal_dataset_ingestion_allowed"])
@@ -136,14 +139,25 @@ class ArtifactValidationTests(unittest.TestCase):
             with self.assertRaises(PilotContractError):
                 validate_pilot_artifacts(copied)
 
+    def test_historical_preregistration_manifest_tamper_fails_closed(self):
+        source = Path(__file__).parents[1] / "pilots" / "free_v05_dev"
+        with tempfile.TemporaryDirectory() as directory:
+            copied = Path(directory) / "free_v05_dev"
+            import shutil
+            shutil.copytree(source, copied)
+            path = copied / "manifest" / "artifact_manifest.json"
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+            manifest["collection_status"] = "COMPLETE"
+            path.write_text(json.dumps(manifest), encoding="utf-8")
+            with self.assertRaisesRegex(PilotContractError, "historical preregistration manifest hash mismatch"):
+                validate_pilot_artifacts(copied, stage="preregistration")
+
 
 class CodexProviderDriverTests(unittest.TestCase):
     @staticmethod
     def _copy_root(directory: str) -> Path:
-        import shutil
-        source = Path(__file__).parents[1] / "pilots" / "free_v05_dev"
         copied = Path(directory) / "free_v05_dev"
-        shutil.copytree(source, copied)
+        write_jsonl(copied / "requests" / "canonical_requests.jsonl", build_canonical_requests())
         return copied
 
     def test_mock_collection_is_atomic_resumable_and_never_overwrites(self):
@@ -208,7 +222,7 @@ class CodexProviderDriverTests(unittest.TestCase):
                 if row["exact_model_identifier"] == "gpt-5.6-luna"
             )
             marker = root / "raw_provider_responses" / "luna" / "started" / f"{request['request_id']}.json"
-            marker.parent.mkdir(parents=True)
+            marker.parent.mkdir(parents=True, exist_ok=True)
             marker.write_text("{}\n", encoding="utf-8")
             runner = Mock()
             with self.assertRaisesRegex(PilotContractError, "refusing a possible second call"):
@@ -224,6 +238,138 @@ class CodexProviderDriverTests(unittest.TestCase):
             "provider_request_id": "r", "returned_model_identifier": "m",
         })
         self.assertTrue(all(value is None for value in extract_provider_metadata("not-json").values()))
+
+
+class FinalArtifactFreezeTests(unittest.TestCase):
+    @staticmethod
+    def _valid_mechanic(index: int) -> dict:
+        return {
+            "id": f"pilot_fixture_{index}", "name": f"Pilot Fixture {index}",
+            "target_scope": "zone",
+            "effects": [{"field": "wetness", "delta": 0.25}],
+            "duration": 0.0, "periodic": None, "trigger_conditions": [],
+            "resource_cost": 1.0, "charges": 1, "slot_cost": 1,
+        }
+
+    @classmethod
+    def _final_fixture(cls, directory: str, *, complete_report: bool = True) -> Path:
+        root = Path(directory) / "free_v05_dev"
+        requests = list(build_canonical_requests())
+        write_jsonl(root / "requests" / "canonical_requests.jsonl", requests)
+        call_index = 0
+
+        def fake_run(command, **kwargs):
+            nonlocal call_index
+            response = (
+                json.dumps({"mechanic": cls._valid_mechanic(call_index)})
+                if call_index < 27 else "invalid first response"
+            )
+            call_index += 1
+            output = Path(command[command.index("--output-last-message") + 1])
+            output.write_text(response, encoding="utf-8")
+            event = json.dumps({"thread_id": f"thread-{call_index}"}) + "\n"
+            return __import__("subprocess").CompletedProcess(command, 0, event, "")
+
+        collect_model("gpt-5.6-luna", root=root, runner=fake_run)
+        collect_model("gpt-5.6-terra", root=root, runner=fake_run)
+        raw = []
+        for slug in ("luna", "terra"):
+            raw.extend(read_jsonl(root / "raw_provider_responses" / slug / "first_attempts.jsonl"))
+        ingested = list(ingest_raw_records(raw, requests))
+        for slug, model in (("luna", "gpt-5.6-luna"), ("terra", "gpt-5.6-terra")):
+            model_ingested = [row for row in ingested if row["requested_model_identifier"] == model]
+            write_jsonl(root / "ingested" / f"{slug}.jsonl", model_ingested)
+            profiles = [{
+                "dataset_kind": DATASET_KIND,
+                "dataset_namespace": DATASET_NAMESPACE,
+                "request_batch_id": row["request_batch_id"],
+                "request_id": row["request_id"],
+                "sample_id": row["sample_id"],
+                "model_identifier": model,
+                "evaluation_protocol": EVALUATION_PROTOCOL,
+                "evaluation_status": "success",
+                "profile": {"protocol_version": EVALUATION_PROTOCOL},
+                "error_type": None,
+                "error_message": None,
+            } for row in model_ingested if row["compile_valid"]]
+            write_jsonl(root / "profiles" / f"{slug}.jsonl", profiles)
+        audit = []
+        for index, request in enumerate(requests):
+            audit.append({
+                "dataset_kind": DATASET_KIND, "dataset_namespace": DATASET_NAMESPACE,
+                "sample_id": request["sample_id"], "selection_category": "fixture",
+                "metric_output_semantically_reasonable": "yes",
+                "near_copy_reasonable": "yes", "recombination_reasonable": "yes",
+                "abstract_topology_reasonable": "yes",
+                "dependency_depth_trace_consistent": "yes",
+                "outcome_path_split_reasonable": "yes", "inertness_reasonable": "yes",
+                "auditor_reason": f"fixture audit {index}", "metric_values_modified": False,
+            })
+        write_jsonl(root / "manual_audit" / "manual_audit.jsonl", audit)
+        analysis = {
+            "dataset_kind": DATASET_KIND, "dataset_namespace": DATASET_NAMESPACE,
+            "formal_experiment_status": "NOT STARTED", "models": [],
+        }
+        (root / "analysis").mkdir(parents=True)
+        for name in ("summary.json", "metric_distributions.json"):
+            (root / "analysis" / name).write_text(json.dumps(analysis), encoding="utf-8")
+        bias = {
+            **analysis,
+            "readiness": "FORMAL_EXPERIMENT_READY",
+            "metrics": [{"metric": metric} for metric in (
+                "Activation", "Inertness", "Exact match", "Near-copy", "Recombination",
+                "Semantic structure", "Abstract topology", "Dependency depth",
+                "Necessity depth", "Outcome differentiation", "Path differentiation",
+            )],
+            "required_questions": [
+                {"number": number, "answer": f"fixture answer {number}"}
+                for number in range(1, 17)
+            ],
+        }
+        (root / "analysis" / "bias_audit.json").write_text(json.dumps(bias), encoding="utf-8")
+        report = """# Pilot Report
+
+## Bias Audit
+
+| Metric | Saturated? | Missing? | Agreement? | Anomaly? | Blocks? |
+|---|---|---|---|---|---|
+| Activation | no | no | yes | no | no |
+
+FORMAL_EXPERIMENT_READY
+"""
+        if not complete_report:
+            report = report.replace("no | no | yes | no | no", "pending | pending | pending | pending | pending")
+        (root / "analysis" / "PILOT_REPORT.md").write_text(report, encoding="utf-8")
+        return root
+
+    def test_final_manifest_recursively_binds_complete_fixture(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self._final_fixture(directory)
+            manifest = finalize_pilot_artifacts(root)
+            self.assertEqual(manifest["collection_status"], "COMPLETE")
+            self.assertEqual(manifest["genuine_provider_call_count"], 30)
+            self.assertEqual((manifest["ingested_count"], manifest["profile_count"]), (30, 27))
+            result = validate_pilot_artifacts(root, stage="final")
+            self.assertEqual(result["pilot_artifact_digest"], manifest["pilot_artifact_digest"])
+            summary = root / "analysis" / "summary.json"
+            summary.write_text(summary.read_text(encoding="utf-8") + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(PilotContractError, "hash mismatch"):
+                validate_pilot_artifacts(root, stage="final")
+
+    def test_finalize_rejects_external_raw_evidence_mismatch(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self._final_fixture(directory)
+            event = next((root / "raw_provider_responses" / "luna" / "events").glob("*.stdout.jsonl"))
+            event.write_text(event.read_text(encoding="utf-8") + "tamper\n", encoding="utf-8")
+            with self.assertRaisesRegex(PilotContractError, "external and embedded raw evidence differ"):
+                finalize_pilot_artifacts(root)
+
+    def test_finalize_rejects_unfinished_bias_audit_without_partial_manifest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self._final_fixture(directory, complete_report=False)
+            with self.assertRaisesRegex(PilotContractError, "not finalized"):
+                finalize_pilot_artifacts(root)
+            self.assertFalse((root / "manifest" / "final_artifact_manifest.json").exists())
 
 
 if __name__ == "__main__":

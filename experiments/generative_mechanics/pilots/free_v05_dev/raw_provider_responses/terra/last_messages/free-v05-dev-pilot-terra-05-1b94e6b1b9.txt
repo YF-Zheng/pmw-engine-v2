@@ -1,0 +1,1 @@
+{"mechanic":{"id":"grounding_pulse","name":"Grounding Pulse","target_scope":"zone","effects":[{"field":"electric_field","delta":-0.38},{"field":"sound_level","delta":0.06}],"duration":0.0,"periodic":null,"trigger_conditions":[{"field":"electric_field","op":"gte","value":0.5},{"field":"wetness","op":"gte","value":0.45}],"resource_cost":27.0,"charges":4,"slot_cost":1}}
