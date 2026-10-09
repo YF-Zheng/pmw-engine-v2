@@ -1,0 +1,47 @@
+{
+  "registry_version": "formal-experiment-registry-v1",
+  "status": "READY_FOR_OWNER_SIGNOFF",
+  "formal_collection_started": false,
+  "formal_requests_sent": 0,
+  "free_invention": {
+    "status": "OWNER_DECISION_REQUIRED",
+    "formal_experiment_id": null,
+    "generation_protocol": "gm-free-invention-v0.3",
+    "evaluation_protocol": "gm-free-evaluation-v0.5",
+    "baseline": "world_substrate",
+    "dataset_kind": "formal",
+    "model_matrix": null,
+    "samples_per_model": null,
+    "inference_budget_policy": null,
+    "collection_order_seed": null,
+    "formal_request_manifest_sha256": null,
+    "collection_schedule_sha256": null,
+    "preregistration_commit": null,
+    "preregistration_tag": null,
+    "model_visible_prompt_matching": "EXACT_WITHIN_BASE_SAMPLE_BLOCK",
+    "analysis_unit": "generated_mechanism",
+    "arm_observations_independent": false,
+    "max_transport_attempts": 3,
+    "content_retry_allowed": false,
+    "raw_layer_immutable": true,
+    "fixed_n_stopping_rule": true,
+    "pilot_effect_size_used": false
+  },
+  "interface_experiment": {
+    "status": "planned",
+    "collection_started": false
+  },
+  "controlled_invention": {
+    "status": "planned_after_free_invention",
+    "generation_protocol": "gm-controlled-invention-v0.2",
+    "collection_started": false
+  },
+  "owner_gates": {
+    "model_matrix": null,
+    "sample_size_per_model": null,
+    "inference_budget_policy": null
+  },
+  "collection_authorized": false,
+  "next_state_after_owner_decisions": "PREREGISTRATION_FREEZE_PENDING",
+  "forbidden_current_state": "FORMAL_COLLECTION_STARTED"
+}

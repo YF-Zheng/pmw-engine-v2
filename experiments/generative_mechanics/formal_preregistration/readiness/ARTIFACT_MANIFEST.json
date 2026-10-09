@@ -1,0 +1,186 @@
+{
+  "baseline_commit": "e9a6ee104c7122d6c3b9c0cd221d58f05efdccad",
+  "files": [
+    {
+      "bytes": 4479,
+      "path": "experiments/generative_mechanics/formal_cli.py",
+      "sha256": "acfe34ba941ed5b224474ff67e3bb7d87a824fb10ce17aa4841f23d1b8d83d2d"
+    },
+    {
+      "bytes": 52218,
+      "path": "experiments/generative_mechanics/formal_experiment.py",
+      "sha256": "731779f92b244e922758eaede7d0451384a902aab43d4f1bffc9ddab94307dd4"
+    },
+    {
+      "bytes": 8044,
+      "path": "experiments/generative_mechanics/formal_preregistration/COLLECTION_COST_PLAN.md",
+      "sha256": "fb11da806fce2eb17ea2bb31706f7b6ae703efb60ea682d81f0f388640b1b8c1"
+    },
+    {
+      "bytes": 4509,
+      "path": "experiments/generative_mechanics/formal_preregistration/COLLECTION_PROTOCOL.md",
+      "sha256": "1774080d4c509d06fe655e4f285f0f861e633bc501a047dcc63fe6e528efa860"
+    },
+    {
+      "bytes": 2794,
+      "path": "experiments/generative_mechanics/formal_preregistration/CONTROLLED_EXPERIMENT_PLAN.md",
+      "sha256": "f3add008ba1735a29f7e7629d6fd08483d78acce9b4c2939dd7c3d9e81da7045"
+    },
+    {
+      "bytes": 9105,
+      "path": "experiments/generative_mechanics/formal_preregistration/DATA_DICTIONARY.md",
+      "sha256": "baef7172b676bd84ed7d0d85da9314e0b52c48e945f2a826498c3a7d2c9034f3"
+    },
+    {
+      "bytes": 42690,
+      "path": "experiments/generative_mechanics/formal_preregistration/DRY_MANIFEST_EXAMPLE.jsonl",
+      "sha256": "cd06ec112c9b0bf4c9729e6303b03f49833518fe65e825defc57f229e157647b"
+    },
+    {
+      "bytes": 4138,
+      "path": "experiments/generative_mechanics/formal_preregistration/ENDPOINTS.md",
+      "sha256": "36a9809be52b3886b0341d3650ce2661aa384bf3763b8361f1adc7b0bbb3451c"
+    },
+    {
+      "bytes": 4971,
+      "path": "experiments/generative_mechanics/formal_preregistration/FORMAL_COLLECTION_READINESS_REPORT.md",
+      "sha256": "0868a5e328278fb5f5eb2db0f1280412a7c025573906b5c76149e1e9849ce979"
+    },
+    {
+      "bytes": 1596,
+      "path": "experiments/generative_mechanics/formal_preregistration/FORMAL_EXPERIMENT_REGISTRY.json",
+      "sha256": "2dde2c153314516c09ec628a3b57381f9332a288e555dd88362f290be0c1d3d8"
+    },
+    {
+      "bytes": 4027,
+      "path": "experiments/generative_mechanics/formal_preregistration/FORMAL_REQUEST_POOL_PLAN.md",
+      "sha256": "9fc11edf026e8667fc7b62c50d9aaa3fcec49cc12649387ab5638389e6c02eab"
+    },
+    {
+      "bytes": 2880,
+      "path": "experiments/generative_mechanics/formal_preregistration/INTERFACE_EXPERIMENT_PLAN.md",
+      "sha256": "4a2291eedd899a4cb62a76f467bfdd911b830a1f27cd92903a328590125181f4"
+    },
+    {
+      "bytes": 6811,
+      "path": "experiments/generative_mechanics/formal_preregistration/MODEL_MATRIX_CANDIDATES.json",
+      "sha256": "cf2f8c35eb681d91ccf9eddb493b026cec73a1c568909ffe6a93b6b3e6978379"
+    },
+    {
+      "bytes": 4603,
+      "path": "experiments/generative_mechanics/formal_preregistration/MODEL_MATRIX_CANDIDATES.md",
+      "sha256": "313e212b96061a95044bc3e268dcef6fdbfe15cd245eb6865e9cc19e88655b7f"
+    },
+    {
+      "bytes": 2409,
+      "path": "experiments/generative_mechanics/formal_preregistration/OWNER_DECISIONS.md",
+      "sha256": "8c243c552a1e13599014fbf647bb79065aa39819f1282afd0be7c2ed6500d456"
+    },
+    {
+      "bytes": 2722,
+      "path": "experiments/generative_mechanics/formal_preregistration/PAPER_OUTPUT_PLAN.md",
+      "sha256": "49341f0f3b5682dfab24acdcbd6a44a01dc3591586e48a5380f3a1fb27786847"
+    },
+    {
+      "bytes": 3708,
+      "path": "experiments/generative_mechanics/formal_preregistration/README.md",
+      "sha256": "8d217922e87d8fdc19fba1602a9ee68e448b1f262681dded5c40e4bf852e3d13"
+    },
+    {
+      "bytes": 3424,
+      "path": "experiments/generative_mechanics/formal_preregistration/RESEARCH_QUESTIONS.md",
+      "sha256": "0bb2b020ac3cb30f9c1792060ab78c685ad63d69b3588306243bf92cefcff3d6"
+    },
+    {
+      "bytes": 2136,
+      "path": "experiments/generative_mechanics/formal_preregistration/SAMPLE_SIZE_PLAN.md",
+      "sha256": "d777b3c648210e6184375f878be8ae373b68465113924d65fd788b309ea5dac5"
+    },
+    {
+      "bytes": 9429,
+      "path": "experiments/generative_mechanics/formal_preregistration/STATISTICAL_ANALYSIS_PLAN.md",
+      "sha256": "c132ba9efeabaffbc20cc1130698e154eb48479bf653fe34d5beb1b2be4eb2d8"
+    },
+    {
+      "bytes": 12192,
+      "path": "experiments/generative_mechanics/formal_preregistration/readiness/FIXTURE_ROWS.jsonl",
+      "sha256": "eeed9c746a8968ed8d728b8dfc6ffff8898b0393979cab3f794dd35248ce6720"
+    },
+    {
+      "bytes": 20099,
+      "path": "experiments/generative_mechanics/formal_preregistration/readiness/fixture_analysis/figure_data/capability_profiles.json",
+      "sha256": "d27c19a230eb9f3ef1d3afa34121fca72ba9d0825111bf61cd6abd92710b047b"
+    },
+    {
+      "bytes": 4550,
+      "path": "experiments/generative_mechanics/formal_preregistration/readiness/fixture_analysis/model_profiles.csv",
+      "sha256": "7a48c5402dcc8fe7d1978afd90b055f79ef36eb9b7cc9dbf213099de23e78733"
+    },
+    {
+      "bytes": 6684,
+      "path": "experiments/generative_mechanics/formal_preregistration/readiness/fixture_analysis/model_profiles.json",
+      "sha256": "4c5a2e7a7d5ecf4624b77d9c78637a8b2eb83bb587aaec698cf8136bf6bf7787"
+    },
+    {
+      "bytes": 7384,
+      "path": "experiments/generative_mechanics/formal_preregistration/readiness/fixture_analysis/primary_results.json",
+      "sha256": "da42cc221349dd40ff69219e7fda765804afb49bf8bcd76b672d0f46998f9273"
+    },
+    {
+      "bytes": 13512,
+      "path": "experiments/generative_mechanics/formal_preregistration/readiness/fixture_analysis/secondary_results.json",
+      "sha256": "4482b2e4a74d2df53b6458c6883b61e0a0e36e765f8053ee2d8cb064ef32865d"
+    },
+    {
+      "bytes": 15144,
+      "path": "experiments/generative_mechanics/formal_preregistration/readiness/fixture_analysis/statistical_tests.json",
+      "sha256": "49d73bd8979a719c329dddb8e00681b0d696c36db70d47777448b8554b2b81ea"
+    },
+    {
+      "bytes": 7079,
+      "path": "experiments/generative_mechanics/formal_preregistration/readiness/fixture_analysis/table_data/table_1.json",
+      "sha256": "38cda6420a01daafd2af4c2a6f66e16cb1ab78ccd7d70f9466f94cfb15d8c631"
+    },
+    {
+      "bytes": 19858,
+      "path": "experiments/generative_mechanics/formal_statistics.py",
+      "sha256": "95c5cd5664b88a959d1cba57b5a387e31ea75a281da13770645fad6cac19f22a"
+    },
+    {
+      "bytes": 18708,
+      "path": "experiments/generative_mechanics/tests/test_formal_experiment.py",
+      "sha256": "7ca427cc96bb3196ebe41e82ebf0e3d064b8c734a48d3356a95ca72b076d05c0"
+    },
+    {
+      "bytes": 7534,
+      "path": "experiments/generative_mechanics/tests/test_formal_statistics.py",
+      "sha256": "b7664f89373482bc77af805bd81bed5d425051ae1854745b36b13b53509ba3ac"
+    }
+  ],
+  "formal_collection_started": false,
+  "formal_requests_sent": 0,
+  "frozen_boundary_tree_digest": "70c4607e69c197d3afb0dcc1bf73c9ec5c1fc9b8d289d489dada6107602579d8",
+  "generated_on": "2026-10-09",
+  "owner_gates": {
+    "inference_budget_policy": null,
+    "model_matrix": null,
+    "sample_size_per_model": null
+  },
+  "schema_version": "formal-preregistration-artifact-manifest-v1",
+  "status": "READY_FOR_OWNER_SIGNOFF",
+  "test_evidence": {
+    "focused_formal_statistics": {
+      "note": "included in the two suites above",
+      "status": "PASS",
+      "tests": 28
+    },
+    "generative_mechanics": {
+      "status": "PASS",
+      "tests": 345
+    },
+    "pmw_core": {
+      "status": "PASS",
+      "tests": 254
+    }
+  }
+}

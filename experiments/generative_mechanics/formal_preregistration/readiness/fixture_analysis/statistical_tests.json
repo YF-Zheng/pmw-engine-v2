@@ -1,0 +1,445 @@
+{
+  "data": {
+    "analysis_unit": "generated_mechanism",
+    "arm_rows_are_repeated_observations": true,
+    "confirmatory_omnibus": "permutation",
+    "confirmatory_pairwise_correction": "Holm",
+    "exploratory_secondary_correction": "Benjamini-Hochberg",
+    "primary_omnibus": [
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "complete_block_count": 6,
+        "endpoint": "end_to_end_executable_validity",
+        "exact": true,
+        "holm_adjusted_p_value": 1.0,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "pairwise_gate_open": false,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "complete_block_count": 6,
+        "endpoint": "activation_rate",
+        "exact": true,
+        "holm_adjusted_p_value": 1.0,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "pairwise_gate_open": false,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "complete_block_count": 6,
+        "endpoint": "median_realized_dependency_depth",
+        "exact": true,
+        "holm_adjusted_p_value": 1.0,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "pairwise_gate_open": false,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "complete_block_count": 6,
+        "endpoint": "abstract_topology_collision_probability",
+        "exact": true,
+        "holm_adjusted_p_value": 1.0,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "pairwise_gate_open": false,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "complete_block_count": 6,
+        "endpoint": "outcome_differentiation_rate",
+        "exact": true,
+        "holm_adjusted_p_value": 1.0,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "pairwise_gate_open": false,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "complete_block_count": 6,
+        "endpoint": "path_differentiation_rate",
+        "exact": true,
+        "holm_adjusted_p_value": 1.0,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "pairwise_gate_open": false,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED"
+      }
+    ],
+    "primary_pairwise": [
+      {
+        "comparison_id": "end_to_end_executable_validity|Fixture Model A|Fixture Model B",
+        "confirmatory_status": "NOT_OPENED_BY_OMNIBUS_GATE",
+        "effect_size": {
+          "ci_high": 0.0,
+          "ci_low": 0.0,
+          "complete_block_count": 6,
+          "confidence_level": 0.95,
+          "contrast": "Fixture Model A - Fixture Model B",
+          "endpoint": "end_to_end_executable_validity",
+          "estimate": 0.0,
+          "replicates_omitted": 0,
+          "replicates_requested": 200,
+          "replicates_valid": 200,
+          "resampling_unit": "base_sample_index_block",
+          "seed": 20261007,
+          "status": "ESTIMATED"
+        },
+        "endpoint": "end_to_end_executable_validity",
+        "holm_adjusted_p_value": null,
+        "models": [
+          "Fixture Model A",
+          "Fixture Model B"
+        ],
+        "raw_p_value": null
+      },
+      {
+        "comparison_id": "activation_rate|Fixture Model A|Fixture Model B",
+        "confirmatory_status": "NOT_OPENED_BY_OMNIBUS_GATE",
+        "effect_size": {
+          "ci_high": 0.0,
+          "ci_low": 0.0,
+          "complete_block_count": 6,
+          "confidence_level": 0.95,
+          "contrast": "Fixture Model A - Fixture Model B",
+          "endpoint": "activation_rate",
+          "estimate": 0.0,
+          "replicates_omitted": 0,
+          "replicates_requested": 200,
+          "replicates_valid": 200,
+          "resampling_unit": "base_sample_index_block",
+          "seed": 20261007,
+          "status": "ESTIMATED"
+        },
+        "endpoint": "activation_rate",
+        "holm_adjusted_p_value": null,
+        "models": [
+          "Fixture Model A",
+          "Fixture Model B"
+        ],
+        "raw_p_value": null
+      },
+      {
+        "comparison_id": "median_realized_dependency_depth|Fixture Model A|Fixture Model B",
+        "confirmatory_status": "NOT_OPENED_BY_OMNIBUS_GATE",
+        "effect_size": {
+          "ci_high": 0.0,
+          "ci_low": 0.0,
+          "complete_block_count": 6,
+          "confidence_level": 0.95,
+          "contrast": "Fixture Model A - Fixture Model B",
+          "endpoint": "median_realized_dependency_depth",
+          "estimate": 0.0,
+          "replicates_omitted": 0,
+          "replicates_requested": 200,
+          "replicates_valid": 200,
+          "resampling_unit": "base_sample_index_block",
+          "seed": 20261007,
+          "status": "ESTIMATED"
+        },
+        "endpoint": "median_realized_dependency_depth",
+        "holm_adjusted_p_value": null,
+        "models": [
+          "Fixture Model A",
+          "Fixture Model B"
+        ],
+        "raw_p_value": null
+      },
+      {
+        "comparison_id": "abstract_topology_collision_probability|Fixture Model A|Fixture Model B",
+        "confirmatory_status": "NOT_OPENED_BY_OMNIBUS_GATE",
+        "effect_size": {
+          "ci_high": 0.0,
+          "ci_low": 0.0,
+          "complete_block_count": 6,
+          "confidence_level": 0.95,
+          "contrast": "Fixture Model A - Fixture Model B",
+          "endpoint": "abstract_topology_collision_probability",
+          "estimate": 0.0,
+          "replicates_omitted": 0,
+          "replicates_requested": 200,
+          "replicates_valid": 200,
+          "resampling_unit": "base_sample_index_block",
+          "seed": 20261007,
+          "status": "ESTIMATED"
+        },
+        "endpoint": "abstract_topology_collision_probability",
+        "holm_adjusted_p_value": null,
+        "models": [
+          "Fixture Model A",
+          "Fixture Model B"
+        ],
+        "raw_p_value": null
+      },
+      {
+        "comparison_id": "outcome_differentiation_rate|Fixture Model A|Fixture Model B",
+        "confirmatory_status": "NOT_OPENED_BY_OMNIBUS_GATE",
+        "effect_size": {
+          "ci_high": 0.0,
+          "ci_low": 0.0,
+          "complete_block_count": 6,
+          "confidence_level": 0.95,
+          "contrast": "Fixture Model A - Fixture Model B",
+          "endpoint": "outcome_differentiation_rate",
+          "estimate": 0.0,
+          "replicates_omitted": 0,
+          "replicates_requested": 200,
+          "replicates_valid": 200,
+          "resampling_unit": "base_sample_index_block",
+          "seed": 20261007,
+          "status": "ESTIMATED"
+        },
+        "endpoint": "outcome_differentiation_rate",
+        "holm_adjusted_p_value": null,
+        "models": [
+          "Fixture Model A",
+          "Fixture Model B"
+        ],
+        "raw_p_value": null
+      },
+      {
+        "comparison_id": "path_differentiation_rate|Fixture Model A|Fixture Model B",
+        "confirmatory_status": "NOT_OPENED_BY_OMNIBUS_GATE",
+        "effect_size": {
+          "ci_high": 0.0,
+          "ci_low": 0.0,
+          "complete_block_count": 6,
+          "confidence_level": 0.95,
+          "contrast": "Fixture Model A - Fixture Model B",
+          "endpoint": "path_differentiation_rate",
+          "estimate": 0.0,
+          "replicates_omitted": 0,
+          "replicates_requested": 200,
+          "replicates_valid": 200,
+          "resampling_unit": "base_sample_index_block",
+          "seed": 20261007,
+          "status": "ESTIMATED"
+        },
+        "endpoint": "path_differentiation_rate",
+        "holm_adjusted_p_value": null,
+        "models": [
+          "Fixture Model A",
+          "Fixture Model B"
+        ],
+        "raw_p_value": null
+      }
+    ],
+    "production_defaults": {
+      "bootstrap_replicates": 10000,
+      "permutation_replicates": 100000
+    },
+    "replicates_used": {
+      "bootstrap": 200,
+      "permutation": 1000
+    },
+    "secondary_exploratory": [
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "benjamini_hochberg_adjusted_p_value": 1.0,
+        "complete_block_count": 6,
+        "endpoint": "schema_valid",
+        "exact": true,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED",
+        "test": "within_block_permutation_omnibus_between_model_means"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "benjamini_hochberg_adjusted_p_value": 1.0,
+        "complete_block_count": 6,
+        "endpoint": "compile_valid",
+        "exact": true,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED",
+        "test": "within_block_permutation_omnibus_between_model_means"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "benjamini_hochberg_adjusted_p_value": 1.0,
+        "complete_block_count": 6,
+        "endpoint": "behaviorally_inert",
+        "exact": true,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED",
+        "test": "within_block_permutation_omnibus_between_model_means"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "benjamini_hochberg_adjusted_p_value": 1.0,
+        "complete_block_count": 6,
+        "endpoint": "exact_match",
+        "exact": true,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED",
+        "test": "within_block_permutation_omnibus_between_model_means"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "benjamini_hochberg_adjusted_p_value": 1.0,
+        "complete_block_count": 6,
+        "endpoint": "near_copy",
+        "exact": true,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED",
+        "test": "within_block_permutation_omnibus_between_model_means"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "benjamini_hochberg_adjusted_p_value": 1.0,
+        "complete_block_count": 6,
+        "endpoint": "recombination",
+        "exact": true,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED",
+        "test": "within_block_permutation_omnibus_between_model_means"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "benjamini_hochberg_adjusted_p_value": 1.0,
+        "complete_block_count": 6,
+        "endpoint": "median_necessity_backed_depth",
+        "exact": true,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED",
+        "test": "within_block_permutation_omnibus_between_model_means"
+      },
+      {
+        "admissible_permutations": 64,
+        "analysis_unit": "generated_mechanism",
+        "benjamini_hochberg_adjusted_p_value": 1.0,
+        "complete_block_count": 6,
+        "endpoint": "mean_depth_gap",
+        "exact": true,
+        "observed_statistic": 0.0,
+        "p_value": 1.0,
+        "permutation_unit": "labels_within_base_sample_index_block",
+        "permutations_evaluated": 64,
+        "seed": 20261007,
+        "status": "ESTIMATED",
+        "test": "within_block_permutation_omnibus_between_model_means"
+      }
+    ],
+    "sensitivity_analyses": {
+      "S1_execution_valid_only": {
+        "Fixture Model A": {
+          "abstract_topology_collision_probability": 0.2,
+          "activation_rate": 0.5,
+          "median_realized_dependency_depth": 2.0,
+          "outcome_differentiation_rate": 0.5,
+          "path_differentiation_rate": 0.3333333333333333
+        },
+        "Fixture Model B": {
+          "abstract_topology_collision_probability": 0.2,
+          "activation_rate": 0.5,
+          "median_realized_dependency_depth": 2.0,
+          "outcome_differentiation_rate": 0.5,
+          "path_differentiation_rate": 0.3333333333333333
+        }
+      },
+      "S2_median_vs_max_depth": {
+        "Fixture Model A": {
+          "max_per_mechanism": 3,
+          "median_per_mechanism": 2.0
+        },
+        "Fixture Model B": {
+          "max_per_mechanism": 3,
+          "median_per_mechanism": 2.0
+        }
+      },
+      "S3_abstract_vs_semantic_collision": {
+        "Fixture Model A": {
+          "abstract": 0.2,
+          "semantic": 0.4
+        },
+        "Fixture Model B": {
+          "abstract": 0.2,
+          "semantic": 0.4
+        }
+      },
+      "S4_safety_refusal_validity": {
+        "Fixture Model A": {
+          "excluding_refusals": 0.8333333333333334,
+          "including_refusals": 0.8333333333333334,
+          "safety_refusal_count": 0
+        },
+        "Fixture Model B": {
+          "excluding_refusals": 0.8333333333333334,
+          "including_refusals": 0.8333333333333334,
+          "safety_refusal_count": 0
+        }
+      },
+      "S5_backend_time_blocks": {
+        "Fixture Model A": {},
+        "Fixture Model B": {}
+      }
+    },
+    "status": "NON_FORMAL_ESTIMATES"
+  },
+  "run_status": "NON_FORMAL_TEST_RUN"
+}
