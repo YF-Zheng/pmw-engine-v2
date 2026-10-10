@@ -63,6 +63,65 @@ class RuntimeTests(unittest.TestCase):
         self.assertEqual(runtime.state.entities["reactor"].components["gm_v06_dynamics"]["attractor_slots"]["temp_attractor_0"], slot_before)
         self.assertEqual(len(runtime.state.scheduled_events), 1)
 
+    def test_compound_permanent_reentry_is_rejected_atomically(self):
+        impulse = deepcopy(VALID_OPERATORS["impulse"])
+        attractor = deepcopy(VALID_OPERATORS["attractor_modifier"])
+        attractor["lifecycle"] = {"mode": "permanent"}
+        runtime, _, compiled, _ = self.thermal(mechanism(
+            [impulse, attractor], artifact_id="atomic_compound",
+        ))
+        before = deepcopy(runtime.state.to_dict())
+        second = activation_event(
+            compiled, activation_id="cast_02", instance_index=0, time=0,
+        )
+
+        with self.assertRaises(ExecutionContractError):
+            activate(runtime, compiled, second)
+
+        self.assertEqual(runtime.state.to_dict(), before)
+
+    def test_explicit_conditional_operator_may_naturally_skip(self):
+        impulse = deepcopy(VALID_OPERATORS["impulse"])
+        attractor = deepcopy(VALID_OPERATORS["attractor_modifier"])
+        attractor["lifecycle"] = {"mode": "permanent"}
+        attractor["commitment"] = "conditional"
+        runtime, _, compiled, _ = self.thermal(mechanism(
+            [impulse, attractor], artifact_id="conditional_compound",
+        ))
+        before = runtime.state.entities["reactor"].components["gm_v06_dynamics"]["value"]
+        second = activation_event(
+            compiled, activation_id="cast_02", instance_index=0, time=0,
+        )
+
+        result = activate(runtime, compiled, second)
+
+        after = runtime.state.entities["reactor"].components["gm_v06_dynamics"]["value"]
+        self.assertAlmostEqual(after, before - 0.2)
+        self.assertEqual(len(result.triggered_law_ids), 1)
+        self.assertIn("impulse_op", result.triggered_law_ids[0])
+
+    def test_compound_preflight_does_not_break_partial_expiry_cancellation(self):
+        short = deepcopy(VALID_OPERATORS["attractor_modifier"])
+        short["id"] = "short_anchor"
+        short["lifecycle"]["steps"] = 1
+        long = deepcopy(VALID_OPERATORS["attractor_modifier"])
+        long["id"] = "long_anchor"
+        long["lifecycle"]["steps"] = 3
+        runtime, _, compiled, _ = self.thermal(mechanism(
+            [short, long], artifact_id="partial_expiry",
+        ))
+        run_step(runtime)
+
+        results = cancel_activation(
+            runtime, compiled, activation_id="cast_01", instance_index=0,
+        )
+
+        self.assertEqual(len(results), 1)
+        self.assertEqual(runtime.state.scheduled_events, [])
+        slots = runtime.state.entities["reactor"].components["gm_v06_dynamics"]["attractor_slots"]
+        self.assertFalse(slots["temp_attractor_0"]["active"])
+        self.assertFalse(slots["temp_attractor_1"]["active"])
+
     def test_cancellation_clears_slot_and_pending_handle(self):
         runtime, _, compiled, _ = self.thermal(mechanism([VALID_OPERATORS["attractor_modifier"]], artifact_id="cancel_me"))
         results = cancel_activation(runtime, compiled, activation_id="cast_01", instance_index=0)

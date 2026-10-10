@@ -22,6 +22,25 @@ class CatalogValidationTests(unittest.TestCase):
         raw = raw_catalog()
         self.assertEqual(canonical_json(raw), canonical_json(deepcopy(raw)))
 
+    def test_dynamic_field_requires_unit_domain(self):
+        raw = raw_catalog()
+        field = next(item for item in raw["objects"] if item["id"] == "reactor_temperature")
+        field["domain"] = {"min": 0.0, "max": 2.0}
+        field["initial"] = 1.5
+        with self.assertRaises(MechanismValidationError) as caught:
+            validate_catalog(raw)
+        self.assertEqual(caught.exception.issues[0].code, "DYNAMICS_DOMAIN_MISMATCH")
+
+    def test_non_dynamic_field_may_use_declared_non_unit_domain(self):
+        raw = raw_catalog()
+        field = next(item for item in raw["objects"] if item["id"] == "reactor_temperature")
+        field["domain"] = {"min": -10.0, "max": 50.0}
+        field["initial"] = 20.0
+        field["dynamics"] = None
+        parsed = validate_catalog(raw)
+        parsed_field = parsed.object_index["reactor_temperature"]
+        self.assertEqual((parsed_field.minimum, parsed_field.maximum), (-10.0, 50.0))
+
 
 def _catalog_mutation_test(name, mutate, code):
     def test(self):
@@ -66,6 +85,21 @@ class MechanismValidationTests(unittest.TestCase):
             with self.subTest(kind=kind):
                 ir = validate_mechanism(mechanism([item]), catalog())
                 self.assertEqual(ir.operators[0].kind, kind)
+
+    def test_operator_commitment_defaults_to_required(self):
+        ir = validate_mechanism(mechanism(), catalog())
+        self.assertEqual(ir.operators[0].commitment, "required")
+
+    def test_explicit_conditional_commitment_is_preserved(self):
+        raw = mechanism()
+        raw["operators"][0]["commitment"] = "conditional"
+        ir = validate_mechanism(raw, catalog())
+        self.assertEqual(ir.operators[0].commitment, "conditional")
+
+    def test_unknown_commitment_fails_closed(self):
+        raw = mechanism()
+        raw["operators"][0]["commitment"] = "optional"
+        self.assert_code(raw, "SCHEMA_TYPE")
 
     def test_key_order_does_not_change_ir_hash(self):
         raw = mechanism()

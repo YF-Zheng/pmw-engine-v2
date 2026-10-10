@@ -360,6 +360,12 @@ def validate_catalog(raw: Any) -> ObjectCatalog:
         if set(refs) - object_ids:
             _fail("UNKNOWN_OBJECT", f"$.objects.{item.id}", f"unknown object refs: {sorted(set(refs)-object_ids)}")
         if isinstance(item, FieldObject) and item.dynamics:
+            if item.minimum != 0.0 or item.maximum != 1.0:
+                _fail(
+                    "DYNAMICS_DOMAIN_MISMATCH",
+                    f"$.objects.{item.id}.domain",
+                    "normalized dynamics requires the exact [0, 1] domain",
+                )
             declared = set(item.dynamics["attractor_slots"] + item.dynamics["alpha_slots"] + item.dynamics["drive_slots"])
             if declared - slot_ids:
                 _fail("UNKNOWN_OBJECT", f"$.objects.{item.id}.dynamics", f"unknown slots: {sorted(declared-slot_ids)}")
@@ -422,16 +428,24 @@ def _lifecycle(raw: Any, path: str, max_steps: int) -> tuple[str, int | None]:
 
 
 def _operator(raw: Any, path: str, max_steps: int) -> OperatorSpec:
-    data = _strict(raw, {"id", "kind", "capability_id", "scope", "target", "parameters", "lifecycle"}, set(), path)
+    data = _strict(
+        raw,
+        {"id", "kind", "capability_id", "scope", "target", "parameters", "lifecycle"},
+        {"commitment"},
+        path,
+    )
     if data["kind"] not in OPERATOR_KINDS:
         _fail("UNKNOWN_OPERATOR", f"{path}.kind", "unknown operator")
     if data["scope"] not in SCOPES:
         _fail("SCHEMA_TYPE", f"{path}.scope", "must be local or linked")
+    commitment = data.get("commitment", "required")
+    if commitment not in {"required", "conditional"}:
+        _fail("SCHEMA_TYPE", f"{path}.commitment", "must be required or conditional")
     target = _strict(data["target"], {"object"}, set(), f"{path}.target")
     if not isinstance(data["parameters"], dict):
         _fail("SCHEMA_TYPE", f"{path}.parameters", "must be an object")
     mode, steps = _lifecycle(data["lifecycle"], f"{path}.lifecycle", max_steps)
-    return OperatorSpec(_identifier(data["id"], f"{path}.id", allow_reserved=True), data["kind"], _identifier(data["capability_id"], f"{path}.capability_id", allow_reserved=True), data["scope"], _identifier(target["object"], f"{path}.target.object", allow_reserved=True), MappingProxyType(dict(data["parameters"])), mode, steps, path)
+    return OperatorSpec(_identifier(data["id"], f"{path}.id", allow_reserved=True), data["kind"], _identifier(data["capability_id"], f"{path}.capability_id", allow_reserved=True), data["scope"], _identifier(target["object"], f"{path}.target.object", allow_reserved=True), commitment, MappingProxyType(dict(data["parameters"])), mode, steps, path)
 
 
 def _validate_parameters(op: OperatorSpec, target: Any, objects: Mapping[str, Any], cap: CapabilitySpec) -> tuple[Mapping[str, Any], tuple[str, ...], str | None]:
@@ -661,7 +675,7 @@ def validate_mechanism(raw: Any, catalog: ObjectCatalog) -> MechanismIR:
             for instance in range(max_instances):
                 handles.add(f"{namespace}.instance.{instance}.{op.id}.expiry.{{activation_id}}")
         source_map[op.id] = op.source_pointer
-        operator_ir = OperatorIR(op.id, op.kind, op.capability_id, op.scope, op.target_object_id, params, LifecycleIR(op.lifecycle_mode, op.lifecycle_steps), tuple(reservations), op.source_pointer)
+        operator_ir = OperatorIR(op.id, op.kind, op.capability_id, op.scope, op.target_object_id, op.commitment, params, LifecycleIR(op.lifecycle_mode, op.lifecycle_steps), tuple(reservations), op.source_pointer)
         operator_irs.append(operator_ir)
         all_reservations.extend(reservations)
     if len(required_objects) > catalog.limits.max_targets:

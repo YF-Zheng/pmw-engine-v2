@@ -7,7 +7,7 @@ from typing import Any, Mapping
 from pmw import parse_law
 
 from .canonical import canonical_json
-from .contracts import CompiledMechanism, MechanismIR, OperatorIR, SlotReservation, StateHandle
+from .contracts import ActivationRequirement, CompiledMechanism, MechanismIR, OperatorIR, SlotReservation, StateHandle
 from .spec import (
     FieldObject, ObjectCatalog, ProcessObject, RelationObject, StockObject,
 )
@@ -33,10 +33,14 @@ def compile_mechanism(ir: MechanismIR, catalog: ObjectCatalog) -> CompiledMechan
     source_map: dict[str, str] = {}
     handle_templates: set[str] = set(ir.generated_handle_templates)
     event_types: set[str] = set(ir.generated_event_types)
+    activation_requirements: list[ActivationRequirement] = []
     for operator in ir.operators:
         if operator.target_object_id not in objects:
             raise MechanismCompileError(f"unknown validated target {operator.target_object_id!r}")
         for instance_index in range(ir.max_instances):
+            activation_requirements.extend(
+                _activation_requirements(ir, operator, instance_index, catalog)
+            )
             activation_id = _law_id(ir, operator, instance_index, "activate")
             expiry_type = _event_type(ir, operator, instance_index, "expire")
             event_types.update((f"gm.v06.mechanism.{ir.artifact_id}.activate", expiry_type))
@@ -118,12 +122,103 @@ def compile_mechanism(ir: MechanismIR, catalog: ObjectCatalog) -> CompiledMechan
             ir.reservations,
             key=lambda item: (item.target_object_id, item.artifact_id, item.operator_id, item.instance_index, item.slot_id),
         )),
+        activation_requirements=tuple(sorted(
+            activation_requirements,
+            key=lambda item: (
+                item.instance_index, item.operator_id, item.kind,
+                "" if item.handle is None else item.handle.kind,
+                "" if item.handle is None else item.handle.object_id,
+                () if item.handle is None else item.handle.path,
+                item.relation_id or "",
+            ),
+        )),
         source_map=dict(sorted(source_map.items())),
     )
 
 
 def compiled_document(compiled: CompiledMechanism) -> dict[str, Any]:
     return {"schema_version": "2.0", "laws": [dict(item) for item in compiled.law_bundle]}
+
+
+def _activation_requirements(
+    ir: MechanismIR,
+    operator: OperatorIR,
+    instance: int,
+    catalog: ObjectCatalog,
+) -> list[ActivationRequirement]:
+    """Compile preconditions for required v0.6 activation members.
+
+    PMW event laws intentionally remain independently matchable.  This manifest
+    lets the trusted adapter prove every required law can run before it submits
+    the single activation event, preventing a partially matching compound cast.
+    """
+
+    if operator.commitment == "conditional":
+        return []
+
+    target = catalog.object_index[operator.target_object_id]
+    requirements: list[ActivationRequirement] = []
+    reservations = [
+        item for item in operator.reservations if item.instance_index == instance
+    ]
+    for reservation in reservations:
+        requirements.append(ActivationRequirement(
+            instance,
+            operator.operator_id,
+            "slot_inactive",
+            handle=catalog.slot_index[reservation.slot_id].storage_ref,
+        ))
+
+    if isinstance(target, RelationObject):
+        action = operator.parameters.get("action")
+        if action == "create":
+            requirements.append(ActivationRequirement(
+                instance,
+                operator.operator_id,
+                "relation_absent",
+                relation_id=_created_relation_id(ir, operator, instance),
+            ))
+            for endpoint_id in target.source_objects + target.target_objects:
+                endpoint = catalog.object_index[endpoint_id]
+                requirements.append(ActivationRequirement(
+                    instance,
+                    operator.operator_id,
+                    "state_exists",
+                    handle=_primary_handle(endpoint),
+                ))
+        elif action == "delete":
+            requirements.append(ActivationRequirement(
+                instance,
+                operator.operator_id,
+                "relation_present",
+                relation_id=target.relation_id,
+            ))
+        elif not reservations and target.relation_id:
+            requirements.append(ActivationRequirement(
+                instance,
+                operator.operator_id,
+                "relation_present",
+                relation_id=target.relation_id,
+            ))
+        return requirements
+
+    handle = _primary_handle(target)
+    if isinstance(target, ProcessObject) and operator.kind == "process_start":
+        requirements.append(ActivationRequirement(
+            instance,
+            operator.operator_id,
+            "state_equals" if target.already_running == "reject" else "state_exists",
+            handle=handle,
+            expected=target.stop_state if target.already_running == "reject" else None,
+        ))
+    elif not reservations:
+        requirements.append(ActivationRequirement(
+            instance,
+            operator.operator_id,
+            "state_exists",
+            handle=handle,
+        ))
+    return requirements
 
 
 def _activation_conditions(ir: MechanismIR, operator: OperatorIR, instance: int, catalog: ObjectCatalog) -> list[dict[str, Any]]:

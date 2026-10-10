@@ -170,6 +170,7 @@ class OperatorSpec:
     capability_id: str
     scope: str
     target_object_id: str
+    commitment: str
     parameters: Mapping[str, Any]
     lifecycle_mode: str
     lifecycle_steps: int | None

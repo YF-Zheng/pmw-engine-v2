@@ -14,6 +14,22 @@ from experiments.generative_mechanics.next_tracks_v06.execution import build_run
 from experiments.generative_mechanics.next_tracks_v06.worlds import build_electric_world, build_structural_world, build_thermal_world
 
 
+def _assert_semantically_equal(test, actual, expected, path="$", *, tolerance=1e-12):
+    test.assertIs(type(actual), type(expected), path)
+    if isinstance(actual, dict):
+        test.assertEqual(set(actual), set(expected), path)
+        for key in sorted(actual):
+            _assert_semantically_equal(test, actual[key], expected[key], f"{path}.{key}", tolerance=tolerance)
+    elif isinstance(actual, list):
+        test.assertEqual(len(actual), len(expected), path)
+        for index, (left, right) in enumerate(zip(actual, expected)):
+            _assert_semantically_equal(test, left, right, f"{path}[{index}]", tolerance=tolerance)
+    elif isinstance(actual, float):
+        test.assertAlmostEqual(actual, expected, delta=tolerance, msg=path)
+    else:
+        test.assertEqual(actual, expected, path)
+
+
 class WorldTests(unittest.TestCase):
     def test_three_worlds_build_and_step(self):
         for builder in (build_thermal_world, build_electric_world, build_structural_world):
@@ -57,8 +73,12 @@ class DemoTests(unittest.TestCase):
 
     def test_demo_output_is_byte_deterministic(self):
         with tempfile.TemporaryDirectory() as one, tempfile.TemporaryDirectory() as two:
-            first = run_all(Path(one)); second = run_all(Path(two))
-        self.assertEqual(canonical_json(first), canonical_json(second))
+            run_all(Path(one)); run_all(Path(two))
+            first = Path(one); second = Path(two)
+            names = sorted(path.name for path in first.glob("*.json"))
+            self.assertEqual(names, sorted(path.name for path in second.glob("*.json")))
+            for name in names:
+                self.assertEqual((first / name).read_bytes(), (second / name).read_bytes(), name)
 
     def test_impulse_and_attractor_trajectories_differ(self):
         branches = run_demo(DEMO_ROOT / "impulse_vs_attractor.json")["branches"]
@@ -87,9 +107,13 @@ class DemoTests(unittest.TestCase):
 
     def test_checked_in_results_match_rebuild(self):
         with tempfile.TemporaryDirectory() as directory:
-            summary = run_all(Path(directory))
-        checked = json.loads((DEMO_ROOT / "results" / "summary.json").read_text(encoding="utf-8"))
-        self.assertEqual(summary, checked)
+            output = Path(directory)
+            run_all(output)
+            for checked_path in sorted((DEMO_ROOT / "results").glob("*.json")):
+                rebuilt_path = output / checked_path.name
+                checked = json.loads(checked_path.read_text(encoding="utf-8"))
+                rebuilt = json.loads(rebuilt_path.read_text(encoding="utf-8"))
+                _assert_semantically_equal(self, rebuilt, checked, checked_path.name)
 
 
 class LocalityTests(unittest.TestCase):

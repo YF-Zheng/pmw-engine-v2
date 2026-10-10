@@ -46,12 +46,25 @@ class SlotReservation:
 
 
 @dataclass(frozen=True, slots=True)
+class ActivationRequirement:
+    """One compiler-derived condition that must hold before an activation runs."""
+
+    instance_index: int
+    operator_id: str
+    kind: str
+    handle: StateHandle | None = None
+    relation_id: str | None = None
+    expected: Any = None
+
+
+@dataclass(frozen=True, slots=True)
 class OperatorIR:
     operator_id: str
     kind: str
     capability_id: str
     scope: str
     target_object_id: str
+    commitment: str
     parameters: Mapping[str, Any]
     lifecycle: LifecycleIR
     reservations: tuple[SlotReservation, ...]
@@ -89,6 +102,7 @@ class CompiledMechanism:
     generated_event_types: tuple[str, ...]
     generated_temporal_handles: tuple[str, ...]
     slot_allocations: tuple[SlotReservation, ...]
+    activation_requirements: tuple[ActivationRequirement, ...]
     source_map: Mapping[str, str]
 
     def to_dict(self) -> dict[str, Any]:
@@ -112,6 +126,22 @@ class CompiledMechanism:
                     "instance_index": item.instance_index,
                 }
                 for item in self.slot_allocations
+            ],
+            "activation_requirements": [
+                {
+                    "instance_index": item.instance_index,
+                    "operator_id": item.operator_id,
+                    "kind": item.kind,
+                    "handle": None if item.handle is None else {
+                        "kind": item.handle.kind,
+                        "object_id": item.handle.object_id,
+                        "path": list(item.handle.path),
+                        "value_type": item.handle.value_type,
+                    },
+                    "relation_id": item.relation_id,
+                    "expected": item.expected,
+                }
+                for item in self.activation_requirements
             ],
             "source_map": dict(sorted(self.source_map.items())),
         }

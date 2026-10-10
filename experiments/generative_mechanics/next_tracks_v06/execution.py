@@ -13,7 +13,7 @@ from typing import Any, Iterable, Mapping
 
 from pmw import Engine, Event, WorldState, load_world, parse_law, save_world
 
-from .contracts import CompiledMechanism
+from .contracts import ActivationRequirement, CompiledMechanism, StateHandle
 from .dynamics.tick_protocol import TickResult, advance_dynamics_step
 
 
@@ -117,7 +117,78 @@ def activate(runtime, mechanism: CompiledMechanism, event: Event):
         raise ExecutionContractError(
             "mechanism instance still has a live timed activation"
         )
+    _preflight_activation(runtime, mechanism, event.payload["instance_index"])
     return runtime.run_event(event)
+
+
+def _preflight_activation(runtime, mechanism: CompiledMechanism, instance_index: int) -> None:
+    """Reject a compound activation before PMW if any required member is blocked."""
+
+    for requirement in mechanism.activation_requirements:
+        if requirement.instance_index != instance_index:
+            continue
+        try:
+            _check_activation_requirement(runtime.state, requirement)
+        except ExecutionContractError:
+            raise
+        except (KeyError, TypeError) as exc:
+            raise ExecutionContractError(
+                f"activation target for {requirement.operator_id!r} is unavailable"
+            ) from exc
+
+
+def _check_activation_requirement(state: WorldState, requirement: ActivationRequirement) -> None:
+    if requirement.kind == "relation_present":
+        if requirement.relation_id not in state.relations:
+            raise ExecutionContractError(
+                f"required relation for {requirement.operator_id!r} is absent"
+            )
+        return
+    if requirement.kind == "relation_absent":
+        if requirement.relation_id in state.relations:
+            raise ExecutionContractError(
+                f"created relation for {requirement.operator_id!r} already exists"
+            )
+        return
+
+    value = _read_state_handle(state, requirement.handle)
+    if requirement.kind == "state_exists":
+        return
+    if requirement.kind == "state_equals":
+        if value != requirement.expected:
+            raise ExecutionContractError(
+                f"required state for {requirement.operator_id!r} is unavailable"
+            )
+        return
+    if requirement.kind == "slot_inactive":
+        if (
+            not isinstance(value, Mapping)
+            or value.get("active") is not False
+            or value.get("owner") is not None
+        ):
+            raise ExecutionContractError(
+                f"required slot for {requirement.operator_id!r} is occupied"
+            )
+        return
+    raise ExecutionContractError(
+        f"unknown activation requirement {requirement.kind!r}"
+    )
+
+
+def _read_state_handle(state: WorldState, handle: StateHandle | None):
+    if handle is None:
+        raise ExecutionContractError("activation requirement has no state handle")
+    if handle.kind == "entity":
+        current: Any = state.entities[handle.object_id].components
+    elif handle.kind == "relation":
+        current = state.relations[handle.object_id].components
+    else:
+        raise ExecutionContractError(
+            f"unsupported activation handle kind {handle.kind!r}"
+        )
+    for segment in handle.path:
+        current = current[segment]
+    return current
 
 
 def cancel_activation(runtime, mechanism: CompiledMechanism, *, activation_id: str, instance_index: int):
