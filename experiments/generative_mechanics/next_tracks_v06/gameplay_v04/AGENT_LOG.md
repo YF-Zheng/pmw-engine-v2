@@ -10,9 +10,11 @@ Luna High.
 | B | `/root/v04_design_b` | unverified | Gate 2 contract audit and implementation | G2.01-G2.10 implemented; owner corrected one audit payload value, reran tests, and integrated |
 | C | `/root/v04_design_c` | unverified | Gate 3 Weather/Ecology/Harvest/Skills implementation | Production implementation and tests produced, then agent stopped on service usage limit; Role B and owner reviewed and integrated it |
 | B (takeover) | `/root/v04_design_b` | unverified | Gate 3 integration and adversarial fixes | Fixed reversible active loadout moves and Status-granted weather traits; Gate 3 and integration suites passed |
-| E | `/root/v04_design_e` | unverified | Gate 4 observation, simulation, and AI implementation | Production implementation and tests produced, then agent stopped on service usage limit; owner review remains in progress |
+| E | `/root/v04_design_e` | unverified | Gate 4 observation, simulation, and AI implementation | Production implementation and tests produced, then agent stopped on service usage limit; owner fixed version-ref and utility gaps, reviewed, tested, and integrated |
 | C2 | `/root/v04_gate4_registry` | unverified | Gate 4 runtime registry and checkpointing | Implemented G4.01-G4.02 with seven focused tests; owner independently reviewed and ran the combined Gate 1-4 suite |
+| D | `/root/v04_gate5_qa` | unverified | Independent Gate 5 adversarial QA | Added six independent counterexamples/oracles, changed no production code, and reported PASS |
 
-Role D independent QA is deliberately deferred until all implementation gates
-are integrated. D will use independent test logic and will not certify its own
-production changes.
+Role D was invoked after Gate 4 integration. Its six tests cover atomicity,
+closed-form dynamics, Status/checkpoint/Scheduler lifecycle, combat ordering,
+and hidden-information isolation. Full provenance and raw findings are in
+`INDEPENDENT_QA_REPORT_V04.md`.

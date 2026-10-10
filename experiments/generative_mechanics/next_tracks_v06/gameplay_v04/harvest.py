@@ -186,7 +186,11 @@ def resolve_harvest(session, registry: ActionRegistry, spec: HarvestSpec, reques
     if spec.material_id not in inventory:
         raise GameplayContractError("material is not declared in Actor inventory")
     before_material = inventory[spec.material_id]
-    degrade = spec.overharvest is not None and after_amount < spec.overharvest.below
+    degrade = (
+        spec.overharvest is not None
+        and after_amount < spec.overharvest.below
+        and not math.isclose(after_amount, spec.overharvest.below, rel_tol=0.0, abs_tol=1e-12)
+    )
     payload = {
         "harvest_id": spec.id, "spec_hash": spec.canonical_hash, "action_id": action.id,
         "action_hash": action.canonical_hash, "area_id": area_id, "source_kind": spec.source_kind,

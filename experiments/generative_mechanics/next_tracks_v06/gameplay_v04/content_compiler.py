@@ -20,6 +20,7 @@ from .runtime import build_runtime, discover_profiles
 from .registry import REGISTRY_COMPONENT, build_registry_laws, registry_component
 from .skills import MechanismRegistryManifest, SkillBlueprint, passive_hook, registry_manifest
 from .status import STATUS_COMPONENT, neutral_status_slot
+from .time_ledger import build_time_budget_laws
 from .weather import (TRAIT_PROJECTION_COMPONENT, WEATHER_COMPONENT, WeatherSpec,
                       build_weather_laws, trait_projection_component, weather_component)
 
@@ -131,6 +132,7 @@ def compile_content(content: Gate3Content) -> CompiledGate3Content:
         *build_harvest_laws(content.harvest_by_area),
         *build_loadout_laws(),
         *build_registry_laws(),
+        *build_time_budget_laws(),
     ]
     ids = [item["id"] for item in laws]
     if len(ids) != len(set(ids)):
