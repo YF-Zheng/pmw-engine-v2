@@ -1,0 +1,104 @@
+{
+  "protocol": "gm-object-catalog-v0.6",
+  "catalog_id": "thermal_fluid_v06",
+  "limits": {"max_operators": 8, "max_instances": 2, "max_targets": 8, "max_duration_steps": 100, "max_total_effect_slots": 20, "max_scheduled_handles": 16},
+  "objects": [
+    {
+      "id": "reactor_temperature", "kind": "field", "ownership": "world",
+      "state_ref": {"kind": "entity", "object_id": "reactor", "path": ["gm_v06_dynamics", "value"]},
+      "domain": {"min": 0.0, "max": 1.0}, "initial": 0.8, "normalization": "clamp", "writable": true,
+      "allowed_operators": ["impulse", "drive", "attractor_modifier", "dynamics_modifier"],
+      "dynamics": {
+        "base_attractor_ref": {"kind": "entity", "object_id": "reactor", "path": ["gm_v06_dynamics", "base_attractor"]},
+        "base_alpha_ref": {"kind": "entity", "object_id": "reactor", "path": ["gm_v06_dynamics", "base_alpha"]},
+        "base_weight": 1.0,
+        "attractor_slots": ["temp_attractor_0", "temp_attractor_1"],
+        "alpha_slots": ["temp_alpha_0", "temp_alpha_1"],
+        "drive_slots": ["temp_drive_0", "temp_drive_1"]
+      }
+    },
+    {
+      "id": "coolant_stock", "kind": "stock", "ownership": "world",
+      "amount_ref": {"kind": "entity", "object_id": "coolant_tank", "path": ["stock", "amount"]},
+      "capacity": 1.0, "initial": 0.8, "boundary_policy": "bounded_flow", "transfer_unit": "coolant",
+      "allowed_operators": ["impulse", "drive"], "source_policy": "capability_required", "sink_policy": "capability_required"
+    },
+    {
+      "id": "reserve_coolant", "kind": "stock", "ownership": "world",
+      "amount_ref": {"kind": "entity", "object_id": "reserve_tank", "path": ["stock", "amount"]},
+      "capacity": 1.0, "initial": 0.4, "boundary_policy": "bounded_flow", "transfer_unit": "coolant",
+      "allowed_operators": ["impulse", "drive"], "source_policy": "capability_required", "sink_policy": "capability_required"
+    },
+    {
+      "id": "waste_coolant", "kind": "stock", "ownership": "world",
+      "amount_ref": {"kind": "entity", "object_id": "waste_tank", "path": ["stock", "amount"]},
+      "capacity": 1.0, "initial": 0.0, "boundary_policy": "bounded_flow", "transfer_unit": "coolant",
+      "allowed_operators": ["impulse", "drive"], "source_policy": "capability_required", "sink_policy": "capability_required"
+    },
+    {
+      "id": "coolant_pump", "kind": "process", "ownership": "world", "entity_id": "pump_01",
+      "running_ref": {"kind": "entity", "object_id": "pump_01", "path": ["process", "state"], "value_type": "string"},
+      "lifecycle": {"start_state": "running", "stop_state": "stopped", "already_running": "reject"},
+      "source_objects": ["coolant_stock"], "target_objects": ["reactor_temperature"],
+      "parameters": [{
+        "id": "flow_rate", "state_ref": {"kind": "entity", "object_id": "pump_01", "path": ["process", "base_flow_rate"]},
+        "domain": {"min": 0.0, "max": 1.0}, "combination": "base_plus_additive_slots",
+        "modifier_slots": ["pump_flow_0", "pump_flow_1"]
+      }],
+      "allowed_operators": ["process_start", "process_modify"]
+    },
+    {
+      "id": "thermal_link", "kind": "relation", "ownership": "world", "relation_type": "conducts_heat", "lifecycle": "existing", "relation_id": "thermal_link_ab",
+      "source_objects": ["reactor_temperature"], "target_objects": ["reactor_temperature"],
+      "parameters": [{
+        "id": "conductivity", "state_ref": {"kind": "relation", "object_id": "thermal_link_ab", "path": ["coupling", "base_conductivity"]},
+        "domain": {"min": 0.0, "max": 1.0}, "combination": "base_plus_additive_slots",
+        "modifier_slots": ["link_dynamic_0", "link_dynamic_1", "link_param_0", "link_param_1"], "dynamics_parameter": true
+      }],
+      "allowed_operators": ["relation_modifier", "dynamics_modifier"]
+    },
+    {
+      "id": "thermal_link_template", "kind": "relation", "ownership": "artifact", "relation_type": "conducts_heat", "lifecycle": "template",
+      "source_objects": ["reactor_temperature"], "target_objects": ["reactor_temperature"], "parameters": [],
+      "allowed_operators": ["relation_modifier", "dynamics_modifier"]
+    },
+    {
+      "id": "pump_mode", "kind": "discrete", "ownership": "world",
+      "state_ref": {"kind": "entity", "object_id": "pump_01", "path": ["process", "state"], "value_type": "string"},
+      "initial": "stopped", "values": ["stopped", "running", "failed"],
+      "transitions": [{"from": "stopped", "to": "running"}, {"from": "running", "to": "stopped"}, {"from": "running", "to": "failed"}],
+      "allowed_operators": []
+    },
+    {
+      "id": "reactor_operational", "kind": "derived", "ownership": "world",
+      "state_ref": {"kind": "entity", "object_id": "reactor", "path": ["derived", "operational"], "value_type": "boolean"},
+      "value_type": "boolean", "source_objects": ["reactor_temperature", "pump_mode"],
+      "derivation_law_ids": ["gm.v06.world.reactor_operational"], "writable": false, "allowed_operators": []
+    }
+  ],
+  "capabilities": [
+    {"id": "temperature_impulse", "operator_kind": "impulse", "targets": ["reactor_temperature"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["instant"], "numeric_limits": {"max_abs_value": 1.0}, "privileges": []},
+    {"id": "temperature_drive", "operator_kind": "drive", "targets": ["reactor_temperature", "reserve_coolant"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed", "permanent"], "numeric_limits": {"max_abs_value": 0.25}, "privileges": ["nonconserved_source", "nonconserved_sink", "permanent_modifier"]},
+    {"id": "temperature_attractor", "operator_kind": "attractor_modifier", "targets": ["reactor_temperature"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed", "permanent"], "numeric_limits": {"max_weight": 4.0}, "privileges": ["permanent_modifier"]},
+    {"id": "thermal_dynamics", "operator_kind": "dynamics_modifier", "targets": ["reactor_temperature", "thermal_link"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed", "permanent"], "numeric_limits": {"max_abs_value": 1.0}, "privileges": ["permanent_modifier"]},
+    {"id": "pump_start", "operator_kind": "process_start", "targets": ["coolant_pump"], "scopes": ["local"], "actions": ["start"], "lifecycles": ["timed", "permanent"], "numeric_limits": {}, "privileges": ["permanent_modifier", "modify_world_owned_process"]},
+    {"id": "pump_modify", "operator_kind": "process_modify", "targets": ["coolant_pump"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed", "permanent"], "numeric_limits": {"max_abs_value": 1.0}, "privileges": ["permanent_modifier", "modify_world_owned_process"]},
+    {"id": "link_modify", "operator_kind": "relation_modifier", "targets": ["thermal_link", "thermal_link_template"], "scopes": ["local"], "actions": ["create", "delete", "modify"], "lifecycles": ["timed", "permanent"], "numeric_limits": {"max_abs_value": 1.0}, "privileges": ["permanent_modifier", "delete_world_relation"]}
+  ],
+  "effect_slots": [
+    {"id": "temp_attractor_0", "slot_kind": "attractor", "target": "reactor_temperature", "storage_ref": {"kind": "entity", "object_id": "reactor", "path": ["gm_v06_dynamics", "attractor_slots", "temp_attractor_0"], "value_type": "object"}},
+    {"id": "temp_attractor_1", "slot_kind": "attractor", "target": "reactor_temperature", "storage_ref": {"kind": "entity", "object_id": "reactor", "path": ["gm_v06_dynamics", "attractor_slots", "temp_attractor_1"], "value_type": "object"}},
+    {"id": "temp_alpha_0", "slot_kind": "alpha", "target": "reactor_temperature", "storage_ref": {"kind": "entity", "object_id": "reactor", "path": ["gm_v06_dynamics", "alpha_slots", "temp_alpha_0"], "value_type": "object"}},
+    {"id": "temp_alpha_1", "slot_kind": "alpha", "target": "reactor_temperature", "storage_ref": {"kind": "entity", "object_id": "reactor", "path": ["gm_v06_dynamics", "alpha_slots", "temp_alpha_1"], "value_type": "object"}},
+    {"id": "temp_drive_0", "slot_kind": "drive", "target": "reactor_temperature", "storage_ref": {"kind": "entity", "object_id": "reactor", "path": ["gm_v06_dynamics", "drive_slots", "temp_drive_0"], "value_type": "object"}},
+    {"id": "temp_drive_1", "slot_kind": "drive", "target": "reactor_temperature", "storage_ref": {"kind": "entity", "object_id": "reactor", "path": ["gm_v06_dynamics", "drive_slots", "temp_drive_1"], "value_type": "object"}},
+    {"id": "stock_drive_0", "slot_kind": "drive", "target": "reserve_coolant", "storage_ref": {"kind": "entity", "object_id": "reserve_tank", "path": ["slots", "drive_0"], "value_type": "object"}},
+    {"id": "stock_drive_1", "slot_kind": "drive", "target": "reserve_coolant", "storage_ref": {"kind": "entity", "object_id": "reserve_tank", "path": ["slots", "drive_1"], "value_type": "object"}},
+    {"id": "pump_flow_0", "slot_kind": "process_parameter", "target": "coolant_pump", "storage_ref": {"kind": "entity", "object_id": "pump_01", "path": ["gm_v06_process", "modifier_slots", "pump_flow_0"], "value_type": "object"}},
+    {"id": "pump_flow_1", "slot_kind": "process_parameter", "target": "coolant_pump", "storage_ref": {"kind": "entity", "object_id": "pump_01", "path": ["gm_v06_process", "modifier_slots", "pump_flow_1"], "value_type": "object"}},
+    {"id": "link_dynamic_0", "slot_kind": "dynamics", "target": "thermal_link", "storage_ref": {"kind": "relation", "object_id": "thermal_link_ab", "path": ["gm_v06_coupling", "modifier_slots", "link_dynamic_0"], "value_type": "object"}},
+    {"id": "link_dynamic_1", "slot_kind": "dynamics", "target": "thermal_link", "storage_ref": {"kind": "relation", "object_id": "thermal_link_ab", "path": ["gm_v06_coupling", "modifier_slots", "link_dynamic_1"], "value_type": "object"}},
+    {"id": "link_param_0", "slot_kind": "relation_parameter", "target": "thermal_link", "storage_ref": {"kind": "relation", "object_id": "thermal_link_ab", "path": ["gm_v06_coupling", "modifier_slots", "link_param_0"], "value_type": "object"}},
+    {"id": "link_param_1", "slot_kind": "relation_parameter", "target": "thermal_link", "storage_ref": {"kind": "relation", "object_id": "thermal_link_ab", "path": ["gm_v06_coupling", "modifier_slots", "link_param_1"], "value_type": "object"}}
+  ]
+}

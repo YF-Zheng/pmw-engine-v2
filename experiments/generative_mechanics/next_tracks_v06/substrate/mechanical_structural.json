@@ -1,0 +1,29 @@
+{
+  "protocol": "gm-object-catalog-v0.6",
+  "catalog_id": "mechanical_structural_v06",
+  "limits": {"max_operators": 8, "max_instances": 2, "max_targets": 8, "max_duration_steps": 100, "max_total_effect_slots": 12, "max_scheduled_handles": 16},
+  "objects": [
+    {"id": "frame_stability", "kind": "field", "ownership": "world", "state_ref": {"kind": "entity", "object_id": "frame", "path": ["gm_v06_dynamics", "value"]}, "domain": {"min": 0.0, "max": 1.0}, "initial": 0.75, "normalization": "clamp", "writable": true, "allowed_operators": ["impulse", "drive", "attractor_modifier", "dynamics_modifier"], "dynamics": {"base_attractor_ref": {"kind": "entity", "object_id": "frame", "path": ["gm_v06_dynamics", "base_attractor"]}, "base_alpha_ref": {"kind": "entity", "object_id": "frame", "path": ["gm_v06_dynamics", "base_alpha"]}, "base_weight": 1.0, "attractor_slots": ["stability_attractor_0", "stability_attractor_1"], "alpha_slots": ["stability_alpha_0", "stability_alpha_1"], "drive_slots": ["stability_drive_0", "stability_drive_1"]}},
+    {"id": "frame_coupling", "kind": "relation", "ownership": "world", "relation_type": "supports", "lifecycle": "existing", "relation_id": "frame_support", "source_objects": ["frame_stability"], "target_objects": ["frame_stability"], "parameters": [{"id": "stiffness", "state_ref": {"kind": "relation", "object_id": "frame_support", "path": ["coupling", "base_stiffness"]}, "domain": {"min": 0.0, "max": 1.0}, "combination": "base_plus_additive_slots", "modifier_slots": ["stiffness_dynamic_0", "stiffness_dynamic_1", "stiffness_param_0", "stiffness_param_1"], "dynamics_parameter": true}], "allowed_operators": ["relation_modifier", "dynamics_modifier"]},
+    {"id": "frame_operational", "kind": "derived", "ownership": "world", "state_ref": {"kind": "entity", "object_id": "frame", "path": ["derived", "operational"], "value_type": "boolean"}, "value_type": "boolean", "source_objects": ["frame_stability"], "derivation_law_ids": ["gm.v06.world.frame_operational"], "writable": false, "allowed_operators": []}
+  ],
+  "capabilities": [
+    {"id": "stability_impulse", "operator_kind": "impulse", "targets": ["frame_stability"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["instant"], "numeric_limits": {"max_abs_value": 1.0}, "privileges": []},
+    {"id": "stability_drive", "operator_kind": "drive", "targets": ["frame_stability"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed"], "numeric_limits": {"max_abs_value": 0.25}, "privileges": []},
+    {"id": "stability_attractor", "operator_kind": "attractor_modifier", "targets": ["frame_stability"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed"], "numeric_limits": {"max_weight": 4.0}, "privileges": []},
+    {"id": "stability_dynamics", "operator_kind": "dynamics_modifier", "targets": ["frame_stability", "frame_coupling"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed"], "numeric_limits": {"max_abs_value": 1.0}, "privileges": []},
+    {"id": "coupling_modify", "operator_kind": "relation_modifier", "targets": ["frame_coupling"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed"], "numeric_limits": {"max_abs_value": 1.0}, "privileges": []}
+  ],
+  "effect_slots": [
+    {"id": "stability_attractor_0", "slot_kind": "attractor", "target": "frame_stability", "storage_ref": {"kind": "entity", "object_id": "frame", "path": ["gm_v06_dynamics", "attractor_slots", "stability_attractor_0"], "value_type": "object"}},
+    {"id": "stability_attractor_1", "slot_kind": "attractor", "target": "frame_stability", "storage_ref": {"kind": "entity", "object_id": "frame", "path": ["gm_v06_dynamics", "attractor_slots", "stability_attractor_1"], "value_type": "object"}},
+    {"id": "stability_alpha_0", "slot_kind": "alpha", "target": "frame_stability", "storage_ref": {"kind": "entity", "object_id": "frame", "path": ["gm_v06_dynamics", "alpha_slots", "stability_alpha_0"], "value_type": "object"}},
+    {"id": "stability_alpha_1", "slot_kind": "alpha", "target": "frame_stability", "storage_ref": {"kind": "entity", "object_id": "frame", "path": ["gm_v06_dynamics", "alpha_slots", "stability_alpha_1"], "value_type": "object"}},
+    {"id": "stability_drive_0", "slot_kind": "drive", "target": "frame_stability", "storage_ref": {"kind": "entity", "object_id": "frame", "path": ["gm_v06_dynamics", "drive_slots", "stability_drive_0"], "value_type": "object"}},
+    {"id": "stability_drive_1", "slot_kind": "drive", "target": "frame_stability", "storage_ref": {"kind": "entity", "object_id": "frame", "path": ["gm_v06_dynamics", "drive_slots", "stability_drive_1"], "value_type": "object"}},
+    {"id": "stiffness_dynamic_0", "slot_kind": "dynamics", "target": "frame_coupling", "storage_ref": {"kind": "relation", "object_id": "frame_support", "path": ["gm_v06_coupling", "modifier_slots", "stiffness_dynamic_0"], "value_type": "object"}},
+    {"id": "stiffness_dynamic_1", "slot_kind": "dynamics", "target": "frame_coupling", "storage_ref": {"kind": "relation", "object_id": "frame_support", "path": ["gm_v06_coupling", "modifier_slots", "stiffness_dynamic_1"], "value_type": "object"}},
+    {"id": "stiffness_param_0", "slot_kind": "relation_parameter", "target": "frame_coupling", "storage_ref": {"kind": "relation", "object_id": "frame_support", "path": ["gm_v06_coupling", "modifier_slots", "stiffness_param_0"], "value_type": "object"}},
+    {"id": "stiffness_param_1", "slot_kind": "relation_parameter", "target": "frame_coupling", "storage_ref": {"kind": "relation", "object_id": "frame_support", "path": ["gm_v06_coupling", "modifier_slots", "stiffness_param_1"], "value_type": "object"}}
+  ]
+}

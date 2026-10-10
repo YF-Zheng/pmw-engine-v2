@@ -1,0 +1,33 @@
+{
+  "protocol": "gm-object-catalog-v0.6",
+  "catalog_id": "electric_network_v06",
+  "limits": {"max_operators": 8, "max_instances": 2, "max_targets": 8, "max_duration_steps": 100, "max_total_effect_slots": 16, "max_scheduled_handles": 16},
+  "objects": [
+    {"id": "bus_voltage", "kind": "field", "ownership": "world", "state_ref": {"kind": "entity", "object_id": "power_bus", "path": ["gm_v06_dynamics", "value"]}, "domain": {"min": 0.0, "max": 1.0}, "initial": 0.2, "normalization": "clamp", "writable": true, "allowed_operators": ["impulse", "drive", "attractor_modifier", "dynamics_modifier"], "dynamics": {"base_attractor_ref": {"kind": "entity", "object_id": "power_bus", "path": ["gm_v06_dynamics", "base_attractor"]}, "base_alpha_ref": {"kind": "entity", "object_id": "power_bus", "path": ["gm_v06_dynamics", "base_alpha"]}, "base_weight": 1.0, "attractor_slots": ["voltage_attractor_0", "voltage_attractor_1"], "alpha_slots": ["voltage_alpha_0", "voltage_alpha_1"], "drive_slots": ["voltage_drive_0", "voltage_drive_1"]}},
+    {"id": "battery_charge", "kind": "stock", "ownership": "world", "amount_ref": {"kind": "entity", "object_id": "battery", "path": ["stock", "amount"]}, "capacity": 1.0, "initial": 0.6, "boundary_policy": "bounded_flow", "transfer_unit": "charge", "allowed_operators": ["impulse", "drive"], "source_policy": "capability_required", "sink_policy": "capability_required"},
+    {"id": "charger_process", "kind": "process", "ownership": "world", "entity_id": "charger", "running_ref": {"kind": "entity", "object_id": "charger", "path": ["process", "state"], "value_type": "string"}, "lifecycle": {"start_state": "running", "stop_state": "stopped", "already_running": "idempotent"}, "source_objects": ["bus_voltage"], "target_objects": ["battery_charge"], "parameters": [{"id": "charge_rate", "state_ref": {"kind": "entity", "object_id": "charger", "path": ["process", "base_rate"]}, "domain": {"min": 0.0, "max": 1.0}, "combination": "base_plus_additive_slots", "modifier_slots": ["charger_rate_0", "charger_rate_1"]}], "allowed_operators": ["process_start", "process_modify"]},
+    {"id": "power_link_template", "kind": "relation", "ownership": "artifact", "relation_type": "supplies_power", "lifecycle": "template", "source_objects": ["bus_voltage"], "target_objects": ["battery_charge"], "parameters": [], "allowed_operators": ["relation_modifier", "dynamics_modifier"]},
+    {"id": "switch_mode", "kind": "discrete", "ownership": "world", "state_ref": {"kind": "entity", "object_id": "switch", "path": ["control", "mode"], "value_type": "string"}, "initial": "off", "values": ["off", "on", "failed"], "transitions": [{"from": "off", "to": "on"}, {"from": "on", "to": "off"}, {"from": "on", "to": "failed"}], "allowed_operators": []}
+  ],
+  "capabilities": [
+    {"id": "voltage_impulse", "operator_kind": "impulse", "targets": ["bus_voltage"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["instant"], "numeric_limits": {"max_abs_value": 1.0}, "privileges": []},
+    {"id": "voltage_drive", "operator_kind": "drive", "targets": ["bus_voltage"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed"], "numeric_limits": {"max_abs_value": 0.25}, "privileges": ["nonconserved_source", "nonconserved_sink"]},
+    {"id": "voltage_attractor", "operator_kind": "attractor_modifier", "targets": ["bus_voltage"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed"], "numeric_limits": {"max_weight": 4.0}, "privileges": []},
+    {"id": "voltage_dynamics", "operator_kind": "dynamics_modifier", "targets": ["bus_voltage"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed"], "numeric_limits": {"max_abs_value": 1.0}, "privileges": []},
+    {"id": "charger_start", "operator_kind": "process_start", "targets": ["charger_process"], "scopes": ["local"], "actions": ["start"], "lifecycles": ["timed"], "numeric_limits": {}, "privileges": ["modify_world_owned_process"]},
+    {"id": "charger_modify", "operator_kind": "process_modify", "targets": ["charger_process"], "scopes": ["local"], "actions": ["modify"], "lifecycles": ["timed"], "numeric_limits": {"max_abs_value": 1.0}, "privileges": ["modify_world_owned_process"]},
+    {"id": "power_link_create", "operator_kind": "relation_modifier", "targets": ["power_link_template"], "scopes": ["local"], "actions": ["create"], "lifecycles": ["timed"], "numeric_limits": {}, "privileges": []}
+  ],
+  "effect_slots": [
+    {"id": "voltage_attractor_0", "slot_kind": "attractor", "target": "bus_voltage", "storage_ref": {"kind": "entity", "object_id": "power_bus", "path": ["gm_v06_dynamics", "attractor_slots", "voltage_attractor_0"], "value_type": "object"}},
+    {"id": "voltage_attractor_1", "slot_kind": "attractor", "target": "bus_voltage", "storage_ref": {"kind": "entity", "object_id": "power_bus", "path": ["gm_v06_dynamics", "attractor_slots", "voltage_attractor_1"], "value_type": "object"}},
+    {"id": "voltage_alpha_0", "slot_kind": "alpha", "target": "bus_voltage", "storage_ref": {"kind": "entity", "object_id": "power_bus", "path": ["gm_v06_dynamics", "alpha_slots", "voltage_alpha_0"], "value_type": "object"}},
+    {"id": "voltage_alpha_1", "slot_kind": "alpha", "target": "bus_voltage", "storage_ref": {"kind": "entity", "object_id": "power_bus", "path": ["gm_v06_dynamics", "alpha_slots", "voltage_alpha_1"], "value_type": "object"}},
+    {"id": "voltage_drive_0", "slot_kind": "drive", "target": "bus_voltage", "storage_ref": {"kind": "entity", "object_id": "power_bus", "path": ["gm_v06_dynamics", "drive_slots", "voltage_drive_0"], "value_type": "object"}},
+    {"id": "voltage_drive_1", "slot_kind": "drive", "target": "bus_voltage", "storage_ref": {"kind": "entity", "object_id": "power_bus", "path": ["gm_v06_dynamics", "drive_slots", "voltage_drive_1"], "value_type": "object"}},
+    {"id": "battery_drive_0", "slot_kind": "drive", "target": "battery_charge", "storage_ref": {"kind": "entity", "object_id": "battery", "path": ["slots", "drive_0"], "value_type": "object"}},
+    {"id": "battery_drive_1", "slot_kind": "drive", "target": "battery_charge", "storage_ref": {"kind": "entity", "object_id": "battery", "path": ["slots", "drive_1"], "value_type": "object"}},
+    {"id": "charger_rate_0", "slot_kind": "process_parameter", "target": "charger_process", "storage_ref": {"kind": "entity", "object_id": "charger", "path": ["gm_v06_process", "modifier_slots", "charger_rate_0"], "value_type": "object"}},
+    {"id": "charger_rate_1", "slot_kind": "process_parameter", "target": "charger_process", "storage_ref": {"kind": "entity", "object_id": "charger", "path": ["gm_v06_process", "modifier_slots", "charger_rate_1"], "value_type": "object"}}
+  ]
+}
