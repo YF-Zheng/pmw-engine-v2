@@ -11,7 +11,7 @@ Luna High.
 | C | `/root/v04_design_c` | unverified | Gate 3 Weather/Ecology/Harvest/Skills implementation | Production implementation and tests produced, then agent stopped on service usage limit; Role B and owner reviewed and integrated it |
 | B (takeover) | `/root/v04_design_b` | unverified | Gate 3 integration and adversarial fixes | Fixed reversible active loadout moves and Status-granted weather traits; Gate 3 and integration suites passed |
 | E | `/root/v04_design_e` | unverified | Gate 4 observation, simulation, and AI implementation | Production implementation and tests produced, then agent stopped on service usage limit; owner review remains in progress |
-| C2 | `/root/v04_gate4_registry` | unverified | Gate 4 runtime registry and checkpointing | Active; result will be recorded at Gate 4 integration |
+| C2 | `/root/v04_gate4_registry` | unverified | Gate 4 runtime registry and checkpointing | Implemented G4.01-G4.02 with seven focused tests; owner independently reviewed and ran the combined Gate 1-4 suite |
 
 Role D independent QA is deliberately deferred until all implementation gates
 are integrated. D will use independent test logic and will not certify its own

@@ -17,12 +17,13 @@ def build_action_laws(registry: ActionRegistry, *, status_slots: int = 8, dynami
         raise GameplayContractError("dynamics_slots must be in [1, 32]")
     laws: list[dict] = []
     for action in registry.actions.values():
+        action_token = _action_token(action)
         common = [
             {"event.type": {"eq": ACTION_EVENT}},
             {"ref": "$event.payload.action_id", "eq": action.id},
             {"ref": "$event.payload.action_hash", "eq": action.canonical_hash},
         ]
-        base_id = f"pmw.v04.action.{action.id}.cost"
+        base_id = f"pmw.v04.action.{action_token}.cost"
         laws.append({"id": base_id, "mode": "event", "priority": 100,
                      "bindings": {"actor": {"kind": "entity", "requires": [ACTOR_COMPONENT]}},
                      "when": {"all": [*common, {"ref": "$event.payload.execution_kind", "eq": "primary"},
@@ -38,7 +39,8 @@ def build_action_laws(registry: ActionRegistry, *, status_slots: int = 8, dynami
                      "effects": [{"op": "set", "target": "$actor.pmw_gameplay_dynamics.fields.mana.value",
                                   "value": "$event.payload.actor_mana"}]})
         for effect in action.effects:
-            laws.extend(_effect_laws(action.id, action.canonical_hash, effect, status_slots, dynamics_slots))
+            laws.extend(_effect_laws(action.id, action.version, action.canonical_hash, effect,
+                                     status_slots, dynamics_slots))
     for hook in registry.hooks.values():
         laws.append({"id": f"pmw.v04.hook.{hook.id}.cooldown", "mode": "event", "priority": 100,
                      "bindings": {"actor": {"kind": "entity", "requires": [ACTOR_COMPONENT]}},
@@ -68,8 +70,13 @@ def build_action_session(world, profiles: Iterable = (), registry: ActionRegistr
     return build_runtime(world, profiles, build_action_laws(registry, dynamics_slots=dynamics_slots))
 
 
-def _effect_laws(action_id, action_hash, effect, status_slots, dynamics_slots):
-    prefix = f"pmw.v04.action.{action_id}.effect.{effect.id}"
+def _action_token(action):
+    return f"{action.id}.v{action.version}.{action.canonical_hash[:12]}"
+
+
+def _effect_laws(action_id, action_version, action_hash, effect, status_slots, dynamics_slots):
+    token = f"{action_id}.v{action_version}.{action_hash[:12]}"
+    prefix = f"pmw.v04.action.{token}.effect.{effect.id}"
     common = [
         {"event.type": {"eq": ACTION_EVENT}}, {"ref": "$event.payload.action_id", "eq": action_id},
         {"ref": "$event.payload.action_hash", "eq": action_hash},
@@ -112,7 +119,7 @@ def _effect_laws(action_id, action_hash, effect, status_slots, dynamics_slots):
                     "value": f"{value_root}.{key}"}]}]
     if effect.kind in {"modify_attractor", "modify_rate"}:
         result = []
-        expiry_type = f"pmw.v04.action.{action_id}.{effect.id}.expire"
+        expiry_type = f"pmw.v04.action.{token}.{effect.id}.expire"
         for index in range(dynamics_slots):
             slot = f"slot_{index}"; slot_root = f"${binding}.pmw_gameplay_dynamics.fields.{effect.field_id}.temporary_modifiers.{slot}"
             slot_condition = {"ref": f"{value_root}.slot", "eq": slot}

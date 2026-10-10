@@ -41,6 +41,8 @@ class SkillBlueprint:
     action: ActionDefinition
     canonical_hash: str
     material_ids: tuple[str, ...]
+    canonical_document_json: str
+    material_authority: MaterialAuthority
 
 
 @dataclass(frozen=True, slots=True)
@@ -111,9 +113,11 @@ def parse_skill_blueprint(raw: Any, statuses: Mapping[str, StatusSpec], authorit
     action = parse_action_definition(action_raw, statuses, f"{path}.action")
     if kind == "passive_blueprint" and (action.cost.mana != 0 or action.cost.duration != 1):
         raise GameplayContractError(f"{path} passive hook action must use the neutral 1/0 cost")
-    canonical = json.dumps(raw, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
+    canonical_text = json.dumps(raw, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    canonical = canonical_text.encode()
     return SkillBlueprint(skill_id, version, kind, trigger, condition, duration, effects, limit, used,
-                          firings, action, hashlib.sha256(canonical).hexdigest(), authority.material_ids)
+                          firings, action, hashlib.sha256(canonical).hexdigest(), authority.material_ids,
+                          canonical_text, authority)
 
 
 def passive_hook(blueprint: SkillBlueprint) -> HookSpec:

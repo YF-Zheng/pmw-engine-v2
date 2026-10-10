@@ -17,6 +17,7 @@ from .harvest import (MATERIAL_INVENTORY_COMPONENT, RESOURCE_COMPONENT, HarvestS
                       build_harvest_laws, material_inventory_component, resource_component)
 from .loadout import build_loadout_laws
 from .runtime import build_runtime, discover_profiles
+from .registry import REGISTRY_COMPONENT, build_registry_laws, registry_component
 from .skills import MechanismRegistryManifest, SkillBlueprint, passive_hook, registry_manifest
 from .status import STATUS_COMPONENT, neutral_status_slot
 from .weather import (TRAIT_PROJECTION_COMPONENT, WEATHER_COMPONENT, WeatherSpec,
@@ -115,6 +116,10 @@ def initialize_content_world(world: WorldState, content: Gate3Content) -> WorldS
         entity.components[TRAIT_PROJECTION_COMPONENT] = trait_projection_component(actor, tuple(projected_traits))
         entity.components.setdefault(STATUS_COMPONENT, {"slots": {f"slot_{index}": neutral_status_slot() for index in range(8)}})
         entity.components.setdefault("pmw_gameplay_hooks", {"cooldowns": {item.id: -1.0 for item in content.action_registry.hooks.values()}})
+    clocks = [entity for entity in result.entities.values() if "pmw_gameplay_clock" in entity.components]
+    if len(clocks) != 1:
+        raise GameplayContractError("Gate 3 content requires exactly one gameplay clock")
+    clocks[0].components[REGISTRY_COMPONENT] = registry_component(content.manifest)
     return result
 
 
@@ -125,6 +130,7 @@ def compile_content(content: Gate3Content) -> CompiledGate3Content:
         *build_ecology_laws(content.ecology_by_area),
         *build_harvest_laws(content.harvest_by_area),
         *build_loadout_laws(),
+        *build_registry_laws(),
     ]
     ids = [item["id"] for item in laws]
     if len(ids) != len(set(ids)):
