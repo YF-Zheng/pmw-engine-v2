@@ -4,6 +4,7 @@ Status: **READY_FOR_OWNER_REVIEW**
 
 Baseline: `326d29b4e6887ff257115dbb07e06d984deec1af`  
 Branch: `feature/pmw-v04-gameplay-foundations`
+Implementation commit: `23bce15b5055ef97b3e4179d3958f03d34b5df51`
 
 Gate 5.1 repairs the final gameplay integration defects. It does not modify PMW
 Core, start TODO2 collection, freeze a benchmark, or begin TODO3 production.
