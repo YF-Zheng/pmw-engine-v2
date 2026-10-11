@@ -13,7 +13,9 @@ class WeatherEcologyTests(unittest.TestCase):
     def test_demo_weather_is_selective_and_bounded(self):
         result = run_gate3_demo()
         self.assertEqual((result["weather"]["hero_mana"], result["weather"]["plain_mana"]), (11.0, 10.0))
-        self.assertEqual(result["weather"]["state"]["remaining"], 1)
+        # Harvest owns its world ticks, so the weather may expire and re-enter
+        # during the integrated demo instead of pausing between harvest/time calls.
+        self.assertEqual(result["weather"]["state"]["remaining"], 2)
 
     def test_status_granted_trait_compiles_runtime_slot_variants(self):
         registry = basic_registry()

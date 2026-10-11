@@ -8,6 +8,7 @@ from .actions import ACTION_EVENT, ACTOR_COMPONENT, ActionRegistry
 from .contracts import GameplayContractError
 from .runtime import GameplaySession, build_runtime
 from .status import DurationSpec, STATUS_CANCEL_EVENT, STATUS_COMPONENT, StatusSpec, neutral_status_slot
+from .shields import SHIELD_COMPONENT, SHIELD_SLOTS, neutral_shield_layer
 
 
 def build_action_laws(registry: ActionRegistry, *, status_slots: int = 8, dynamics_slots: int = 4) -> tuple[dict, ...]:
@@ -102,6 +103,9 @@ def _effect_laws(action_id, action_version, action_hash, effect, status_slots, d
             return result  # Primary execution is committed by the cost law exactly once.
         effects = [{"op": "set", "target": f"${binding}.{ACTOR_COMPONENT}.{key}", "value": f"{value_root}.{key}"}
                    for key in actor_paths[effect.kind]]
+        if effect.kind in {"damage", "shield"}:
+            effects.append({"op": "set", "target": f"${binding}.{SHIELD_COMPONENT}",
+                            "value": f"{value_root}.shield_component"})
         result = [{"id": prefix, "mode": "event", "priority": 100, "bindings": identity,
                    "when": {"all": conditions}, "effects": effects}]
         if effect.kind == "add_resource" and effect.resource == "mana":
@@ -177,19 +181,59 @@ def _status_clock_laws(status_specs, status_slots):
             laws.append({"id": f"pmw.v04.status.{spec.id}.{slot}.tick", "mode": "event", "priority": 100,
                          "bindings": bindings, "when": {"all": [*base, {"ref": f"{root}.remaining", "gt": 1}]},
                          "effects": [*effects, {"op": "delta", "target": f"{root}.remaining", "value": -1}]})
-            laws.append({"id": f"pmw.v04.status.{spec.id}.{slot}.expire", "mode": "event", "priority": 100,
-                         "bindings": bindings, "when": {"all": [*base, {"ref": f"{root}.remaining", "eq": 1}]},
-                         "effects": [*effects, *([{"op": "set", "target": f"$owner.{ACTOR_COMPONENT}.{spec.on_expire_resource[0]}",
-                                                  "value": spec.on_expire_resource[1]}] if spec.on_expire_resource else []),
-                                     {"op": "set", "target": root, "value": neutral_status_slot()}]})
             cancel_base = [{"event.type": {"eq": STATUS_CANCEL_EVENT}}, {"ref": "$owner.id", "eq": "$event.target"},
                            {"ref": "$event.source", "eq": "$event.payload.owner_id"},
                            {"ref": "$event.payload.slot", "eq": slot}, {"ref": f"{root}.active", "eq": True},
                            {"ref": f"{root}.instance_id", "eq": "$event.payload.instance_id"},
                            {"ref": f"{root}.spec_hash", "eq": spec.canonical_hash}]
-            laws.append({"id": f"pmw.v04.status.{spec.id}.{slot}.cancel", "mode": "event", "priority": 100,
-                         "bindings": bindings, "when": {"all": cancel_base},
-                         "effects": [*([{"op": "set", "target": f"$owner.{ACTOR_COMPONENT}.{spec.on_expire_resource[0]}",
-                                        "value": spec.on_expire_resource[1]}] if spec.on_expire_resource else []),
-                                     {"op": "set", "target": root, "value": neutral_status_slot()}]})
+            shield_owned = bool(spec.on_expire_resource and spec.on_expire_resource[0] == "shield")
+            if not shield_owned:
+                expire_resource = ([{"op": "set", "target": f"$owner.{ACTOR_COMPONENT}.{spec.on_expire_resource[0]}",
+                                     "value": spec.on_expire_resource[1]}]
+                                   if spec.on_expire_resource else [])
+                laws.append({"id": f"pmw.v04.status.{spec.id}.{slot}.expire", "mode": "event", "priority": 100,
+                             "bindings": bindings, "when": {"all": [*base, {"ref": f"{root}.remaining", "eq": 1}]},
+                             "effects": [*effects, *expire_resource,
+                                         {"op": "set", "target": root, "value": neutral_status_slot()}]})
+                laws.append({"id": f"pmw.v04.status.{spec.id}.{slot}.cancel", "mode": "event", "priority": 100,
+                             "bindings": bindings, "when": {"all": cancel_base},
+                             "effects": [*expire_resource,
+                                         {"op": "set", "target": root, "value": neutral_status_slot()}]})
+                continue
+
+            owned_bindings = {"owner": {"kind": "entity", "requires": [
+                ACTOR_COMPONENT, STATUS_COMPONENT, SHIELD_COMPONENT]}}
+            for layer_index in range(SHIELD_SLOTS):
+                layer_slot = f"slot_{layer_index}"
+                layer_root = f"$owner.{SHIELD_COMPONENT}.slots.{layer_slot}"
+                ownership = [
+                    {"ref": f"{root}.shield_layer_slot", "eq": layer_slot},
+                    {"ref": f"{layer_root}.active", "eq": True},
+                    {"ref": f"{layer_root}.status_instance_id", "eq": f"{root}.instance_id"},
+                ]
+                clear_owned = [
+                    {"op": "set", "target": f"$owner.{ACTOR_COMPONENT}.shield",
+                     "value": {"max": [0.0, {"add": [f"$owner.{ACTOR_COMPONENT}.shield",
+                                                        {"mul": [-1.0, f"{layer_root}.remaining"]}]}]}},
+                    {"op": "set", "target": layer_root, "value": neutral_shield_layer()},
+                    {"op": "set", "target": root, "value": neutral_status_slot()},
+                ]
+                laws.append({"id": f"pmw.v04.status.{spec.id}.{slot}.expire.{layer_slot}",
+                             "mode": "event", "priority": 100, "bindings": owned_bindings,
+                             "when": {"all": [*base, {"ref": f"{root}.remaining", "eq": 1}, *ownership]},
+                             "effects": [*effects, *clear_owned]})
+                laws.append({"id": f"pmw.v04.status.{spec.id}.{slot}.cancel.{layer_slot}",
+                             "mode": "event", "priority": 100, "bindings": owned_bindings,
+                             "when": {"all": [*cancel_base, *ownership]}, "effects": clear_owned})
+            # A migrated status without an owned layer still expires, but cannot erase an
+            # unrelated aggregate shield whose provenance is unknown.
+            no_layer = {"ref": f"{root}.shield_layer_slot", "eq": None}
+            laws.append({"id": f"pmw.v04.status.{spec.id}.{slot}.expire.unowned", "mode": "event",
+                         "priority": 100, "bindings": bindings,
+                         "when": {"all": [*base, {"ref": f"{root}.remaining", "eq": 1}, no_layer]},
+                         "effects": [*effects, {"op": "set", "target": root, "value": neutral_status_slot()}]})
+            laws.append({"id": f"pmw.v04.status.{spec.id}.{slot}.cancel.unowned", "mode": "event",
+                         "priority": 100, "bindings": bindings,
+                         "when": {"all": [*cancel_base, no_layer]},
+                         "effects": [{"op": "set", "target": root, "value": neutral_status_slot()}]})
     return laws

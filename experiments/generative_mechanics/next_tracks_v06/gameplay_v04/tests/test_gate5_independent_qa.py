@@ -13,6 +13,7 @@ from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.action_compil
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import (
     ActionRegistry,
     ActionRequest,
+    _resolve_action,
     resolve_action,
 )
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.ai_demo import ai_demo_session
@@ -91,6 +92,15 @@ def _action_session(registry: ActionRegistry, actor_count: int = 2):
         instantiate_actor(actor_blueprint, f"qa_actor_{index}", controller="ai")
         for index in range(actor_count)
     ]
+    equipped = [action for action in registry.actions.values() if not action.builtin]
+    if len(equipped) > 6:
+        raise AssertionError("QA fixture cannot equip more than six active skills")
+    for actor in actors:
+        actor.components["pmw_gameplay_actor"]["active_equipped"][:len(equipped)] = [
+            {"id": action.id, "version": action.version,
+             "canonical_hash": action.canonical_hash, "kind": "skill_blueprint"}
+            for action in equipped
+        ]
     area = instantiate_area(parse_area_blueprint(_area_document()), "qa_arena")
     world = build_gameplay_world(
         "independent_qa",
@@ -188,7 +198,9 @@ class IndependentAtomicityTests(unittest.TestCase):
         before = deepcopy(session.state.to_dict())
 
         with self.assertRaisesRegex(GameplayContractError, "required effect"):
-            resolve_action(
+            # This is a white-box atomicity test for the trusted primitive;
+            # external primary requests are covered through resolve_action.
+            _resolve_action(
                 session,
                 registry,
                 ActionRequest("qa_atomic", "qa_actor_0", "qa_composite", "qa_actor_1"),
@@ -313,6 +325,7 @@ class IndependentCombatOrderTests(unittest.TestCase):
                 "qa_actor_0": ActionRequest("qa_first_kill", "qa_actor_0", "basic_attack", "qa_actor_1"),
                 "qa_actor_1": ActionRequest("qa_dead_reply", "qa_actor_1", "basic_attack", "qa_actor_0"),
             },
+            time_policy="unbudgeted_fixture",
         )
         self.assertEqual(result.skipped, ("qa_actor_1",))
         self.assertEqual([row.request.request_id for row in result.outcomes], ["qa_first_kill"])
@@ -330,6 +343,7 @@ class IndependentCombatOrderTests(unittest.TestCase):
                 "qa_actor_0": ActionRequest("qa_late_kill", "qa_actor_0", "basic_attack", "qa_actor_1"),
                 "qa_actor_1": ActionRequest("qa_live_reply", "qa_actor_1", "basic_attack", "qa_actor_0"),
             },
+            time_policy="unbudgeted_fixture",
         )
         self.assertEqual(reversed_result.skipped, ())
         self.assertEqual(

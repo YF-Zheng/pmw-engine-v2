@@ -37,7 +37,7 @@ class RealSandboxTests(unittest.TestCase):
         wait = self.simulator.simulate(
             self.observation, ActionRequest("ai_wait", "ai_monster", "basic_wait")
         )
-        self.assertEqual(wait.next_observation.to_dict()["actors"]["ai_monster"]["mana"], 14.0)
+        self.assertEqual(wait.next_observation.to_dict()["actors"]["ai_monster"]["mana"], 15.0)
         self.assertEqual(self.session.state.entities["ai_hero"].components["pmw_gameplay_actor"]["hp"], 50.0)
 
     def test_simple_skill_changes_projected_area_through_pmw(self):
@@ -63,7 +63,11 @@ class RealSandboxTests(unittest.TestCase):
         self.session.state.relations["adjacent:ai_annex:ai_arena"] = Relation(
             "adjacent:ai_annex:ai_arena", "adjacent", "ai_annex", "ai_arena"
         )
-        self.session.state.entities["ai_monster"].components["pmw_gameplay_actor"]["active_equipped"][0] = "cool_annex"
+        action = registry.actions["cool_annex"]
+        self.session.state.entities["ai_monster"].components["pmw_gameplay_actor"]["active_equipped"][0] = {
+            "id": action.id, "version": action.version,
+            "canonical_hash": action.canonical_hash, "kind": "skill_blueprint",
+        }
         observation = ActorObservationBuilder().build(
             self.session, registry, "ai_monster",
             ObservationDisclosure.create(visible_relation_types=("adjacent",)),
@@ -84,7 +88,11 @@ class RealSandboxTests(unittest.TestCase):
         document["actions"].append(costly)
         registry = ActionRegistry.parse(document)
         session, _ = ai_demo_session()
-        session.state.entities["ai_monster"].components["pmw_gameplay_actor"]["active_equipped"][0] = "costly_hit"
+        action = registry.actions["costly_hit"]
+        session.state.entities["ai_monster"].components["pmw_gameplay_actor"]["active_equipped"][0] = {
+            "id": action.id, "version": action.version,
+            "canonical_hash": action.canonical_hash, "kind": "skill_blueprint",
+        }
         session.state.entities["ai_monster"].components["pmw_gameplay_actor"]["mana"] = 0.0
         before = session.state.to_dict()
         result = revalidate_and_execute(

@@ -37,7 +37,11 @@ class ActorSafeObservationTests(unittest.TestCase):
 
     def test_unrevealed_opponent_skill_is_not_projected(self):
         session, registry = ai_demo_session()
-        session.state.entities["ai_hero"].components["pmw_gameplay_actor"]["active_equipped"][0] = "mist_burst"
+        action = registry.actions["mist_burst"]
+        session.state.entities["ai_hero"].components["pmw_gameplay_actor"]["active_equipped"][0] = {
+            "id": action.id, "version": action.version,
+            "canonical_hash": action.canonical_hash, "kind": "skill_blueprint",
+        }
         observation = ActorObservationBuilder().build(session, registry, "ai_monster")
         self.assertNotIn("mist_burst", observation.to_dict()["known_actions"]["ai_hero"])
         revealed = ActorObservationBuilder().build(

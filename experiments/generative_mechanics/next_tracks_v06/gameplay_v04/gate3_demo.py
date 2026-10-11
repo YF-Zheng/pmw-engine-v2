@@ -14,11 +14,12 @@ from .loadout import change_loadout, skill_ref
 from .materials import material_authority, parse_material
 from .runtime import advance_world_tick, clock_entity
 from .skills import parse_skill_blueprint
+from .time_ledger import initialize_time_budget
 from .weather import parse_weather_spec
 from .worlds import build_gameplay_world
 
 
-def build_gate3_demo():
+def build_gate3_demo(*, time_budget_ticks: int = 100):
     actor_raw = {"protocol": "pmw-gameplay-v0.4", "kind": "actor_blueprint", "id": "demo_actor",
                  "hp": {"max": 40, "initial": 40}, "mana": {"max": 30, "initial": 10, "dynamics": None},
                  "attributes": {"power": 4, "control": 5, "resilience": 3, "agility": 3}, "traits": ["mist_attuned"]}
@@ -98,6 +99,7 @@ def build_gate3_demo():
                            ecology_by_area={area.id: plan}, harvest_by_area={area.id: (harvest,)},
                            material_ids=(material.id,))
     initialized = initialize_content_world(world, content)
+    initialized = initialize_time_budget(initialized, time_budget_ticks)
     compiled = compile_content(content)
     return build_content_session(initialized, compiled), content, skill, harvest
 

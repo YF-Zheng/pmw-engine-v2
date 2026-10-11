@@ -64,7 +64,7 @@ def parse_hook(raw: Any, path: str = "$.hook") -> HookSpec:
 def execute_hook(session, registry, hook: HookSpec, lineage: HookLineage, *, actor_id: str,
                  target_actor_id: str | None, trigger: str):
     """Execute a trusted hook action through the same PMW Effect pipeline."""
-    from .actions import ActionRequest, _actor_view, _condition_context, resolve_action
+    from .actions import ActionRequest, _actor_view, _condition_context, _resolve_action
     from .conditions import evaluate_condition
     if trigger != hook.trigger: raise GameplayContractError("hook trigger mismatch")
     if registry.hooks.get(hook.id) != hook: raise GameplayContractError("hook is not installed in the trusted registry")
@@ -83,4 +83,4 @@ def execute_hook(session, registry, hook: HookSpec, lineage: HookLineage, *, act
         raise GameplayContractError("hook is on cooldown")
     next_lineage = lineage.fire(f"hook:{hook.id}")
     context = {"hook_id": hook.id, "cooldown_until": session.state.sim_time + hook.cooldown}
-    return resolve_action(session, registry, request, execution_kind="hook", hook_context=context), next_lineage
+    return _resolve_action(session, registry, request, execution_kind="hook", hook_context=context), next_lineage

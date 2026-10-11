@@ -80,15 +80,17 @@ def parse_status_spec(raw: Any, path: str = "$.status") -> StatusSpec:
 def neutral_status_slot() -> dict[str, Any]:
     return {"active": False, "instance_id": None, "spec_id": None, "spec_hash": None, "source_id": None,
             "owner_id": None, "stacks": 0, "remaining": 0, "clock_unit": None,
-            "granted_traits": [], "expiry_handle": None}
+            "granted_traits": [], "expiry_handle": None, "shield_layer_slot": None}
 
 
 def active_status_slot(spec: StatusSpec, *, instance_id: str, source_id: str, owner_id: str,
-                       stacks: int = 1, expiry_handle: str | None = None) -> dict[str, Any]:
+                       stacks: int = 1, expiry_handle: str | None = None,
+                       shield_layer_slot: str | None = None) -> dict[str, Any]:
     return {"active": True, "instance_id": instance_id, "spec_id": spec.id, "spec_hash": spec.canonical_hash,
             "source_id": source_id, "owner_id": owner_id, "stacks": stacks,
             "remaining": spec.duration.amount, "clock_unit": spec.duration.unit,
-            "granted_traits": list(spec.granted_traits), "expiry_handle": expiry_handle}
+            "granted_traits": list(spec.granted_traits), "expiry_handle": expiry_handle,
+            "shield_layer_slot": shield_layer_slot}
 
 
 def cancel_status(session, registry, *, owner_id: str, instance_id: str, requester_id: str):

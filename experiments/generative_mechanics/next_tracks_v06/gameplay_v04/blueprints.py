@@ -13,6 +13,7 @@ from .contracts import (
     ATTRIBUTES, CURVES, PROTOCOL_ID, ActorBlueprint, AreaBlueprint,
     FieldDefinition, GameplayContractError,
 )
+from .shields import SHIELD_COMPONENT, shield_component
 
 
 _ID = re.compile(r"[a-z][a-z0-9_]{1,47}\Z")
@@ -200,7 +201,7 @@ def instantiate_actor(blueprint: ActorBlueprint, instance_id: str, *, controller
         "active_equipped": [None] * 6, "active_stowed": [None] * 6,
         "passive_equipped": [None] * 6,
     }
-    components = {"pmw_gameplay_actor": actor}
+    components = {"pmw_gameplay_actor": actor, SHIELD_COMPONENT: shield_component()}
     if blueprint.mana_dynamics is not None:
         components["pmw_gameplay_dynamics"] = {
             "fields": {"mana": field_state(blueprint.mana_dynamics)},

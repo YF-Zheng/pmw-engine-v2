@@ -15,7 +15,7 @@ from .runtime import GameplaySession, advance_world_tick
 
 TIME_BUDGET_COMPONENT = "pmw_gameplay_time_budget"
 TIME_SPEND_EVENT = "pmw.v04.time.spend"
-TIME_REASONS = ("exploration", "harvest", "move", "rest", "offline")
+TIME_REASONS = ("combat", "exploration", "harvest", "move", "rest", "offline")
 
 
 @dataclass(frozen=True, slots=True)
@@ -72,15 +72,9 @@ def build_time_budget_laws() -> tuple[dict, ...]:
 
 
 def spend_world_time(session: GameplaySession, duration: int, *, reason: str) -> TimeSpendResult:
-    if isinstance(duration, bool) or not isinstance(duration, int) or duration < 1:
-        raise GameplayContractError("time spend duration must be a positive integer")
-    if reason not in TIME_REASONS:
-        raise GameplayContractError("unknown world time spend reason")
-    clock_id, budget = _budget(session)
+    clock_id, budget = preflight_world_time(session, duration, reason=reason)
     remaining = budget["remaining_ticks"]
     spent = budget["spent_ticks"]
-    if duration > remaining:
-        raise GameplayContractError("world time budget is exhausted")
     payload = {
         "reason": reason, "duration": duration,
         "before_remaining": remaining, "after_remaining": remaining - duration,
@@ -94,6 +88,18 @@ def spend_world_time(session: GameplaySession, duration: int, *, reason: str) ->
         raise GameplayContractError("world time spend did not commit")
     ticks = tuple(advance_world_tick(session, clock_id=clock_id) for _ in range(duration))
     return TimeSpendResult(reason, duration, remaining, remaining - duration, event_result, ticks)
+
+
+def preflight_world_time(session: GameplaySession, duration: int, *, reason: str) -> tuple[str, dict[str, Any]]:
+    """Validate a complete time charge without mutating the runtime."""
+    if isinstance(duration, bool) or not isinstance(duration, int) or duration < 1:
+        raise GameplayContractError("time spend duration must be a positive integer")
+    if reason not in TIME_REASONS:
+        raise GameplayContractError("unknown world time spend reason")
+    clock_id, budget = _budget(session)
+    if duration > budget["remaining_ticks"]:
+        raise GameplayContractError("world time budget is exhausted")
+    return clock_id, budget
 
 
 def _budget(session: GameplaySession) -> tuple[str, dict[str, Any]]:

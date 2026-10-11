@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass
 import hashlib
 import json
@@ -15,12 +16,15 @@ from .actions import ACTOR_COMPONENT, ActionRegistry, ActionRequest
 from .conditions import evaluate_condition
 from .contracts import GameplayContractError
 from .dynamics import DYNAMICS_COMPONENT
+from .runtime import GameplaySession
+from .time_ledger import preflight_world_time, spend_world_time
 
 
 RESOURCE_COMPONENT = "pmw_gameplay_resources"
 MATERIAL_INVENTORY_COMPONENT = "pmw_gameplay_material_inventory"
 HARVEST_EVENT = "pmw.v04.resource.harvest"
 RESOURCE_HARVESTED_EVENT = "pmw.v04.resource_harvested"
+HARVEST_RECEIPT_RELATION = "pmw_gameplay_harvest_receipt"
 _ID = re.compile(r"[a-z][a-z0-9_]{1,63}\Z")
 
 
@@ -69,6 +73,7 @@ class HarvestOutcome:
     yield_amount: float
     consumption: float
     event_result: Any
+    time_result: Any | None = None
 
 
 def parse_harvest_spec(raw: Any, path: str = "$.harvest") -> HarvestSpec:
@@ -148,6 +153,24 @@ def build_harvest_laws(bindings: Mapping[str, tuple[HarvestSpec, ...]]) -> tuple
 
 def resolve_harvest(session, registry: ActionRegistry, spec: HarvestSpec, request: HarvestRequest,
                     *, permissions: tuple[str, ...] = ()) -> HarvestOutcome:
+    """Execute harvest, time charge, ticks, and Scheduler work as one transaction."""
+    receipt_id = _receipt_id(request.request_id)
+    if receipt_id in session.state.relations:
+        raise GameplayContractError("harvest request was already committed")
+
+    staged = _staged_session(session)
+    harvested = _commit_harvest(staged, registry, spec, request, permissions=permissions)
+    # Check the authoritative live budget as well as the staged copy before any
+    # state pointer can be published.
+    preflight_world_time(session, harvested.duration, reason="harvest")
+    time_result = spend_world_time(staged, harvested.duration, reason="harvest")
+    session.runtime = staged.runtime
+    return HarvestOutcome(request, harvested.duration, harvested.yield_amount,
+                          harvested.consumption, harvested.event_result, time_result)
+
+
+def _commit_harvest(session, registry: ActionRegistry, spec: HarvestSpec, request: HarvestRequest,
+                    *, permissions: tuple[str, ...] = ()) -> HarvestOutcome:
     if not _ID.fullmatch(request.request_id) or not _ID.fullmatch(request.actor_id) or request.harvest_id != spec.id:
         raise GameplayContractError("HarvestRequest is invalid")
     if not isinstance(request.lucky, bool):
@@ -192,7 +215,9 @@ def resolve_harvest(session, registry: ActionRegistry, spec: HarvestSpec, reques
         and not math.isclose(after_amount, spec.overharvest.below, rel_tol=0.0, abs_tol=1e-12)
     )
     payload = {
-        "harvest_id": spec.id, "spec_hash": spec.canonical_hash, "action_id": action.id,
+        "request_id": request.request_id, "receipt_id": _receipt_id(request.request_id),
+        "harvest_id": spec.id,
+        "spec_hash": spec.canonical_hash, "action_id": action.id,
         "action_hash": action.canonical_hash, "area_id": area_id, "source_kind": spec.source_kind,
         "source_id": spec.source_id, "material_id": spec.material_id,
         "before_amount": before_amount, "after_amount": after_amount,
@@ -240,6 +265,15 @@ def _harvest_law(area_id: str, spec: HarvestSpec) -> dict:
          "value": "$event.payload.after_material"},
         {"op": "set", "target": f"$actor.{ACTOR_COMPONENT}.mana", "value": "$event.payload.mana_after"},
         {"op": "set", "target": f"$actor.{ACTOR_COMPONENT}.last_action_duration", "value": "$event.payload.duration"},
+        {"op": "create_relation", "value": {
+            "id": "$event.payload.receipt_id", "type": HARVEST_RECEIPT_RELATION,
+            "source": "$actor.id", "target": "$area.id",
+            "components": {"pmw_gameplay_harvest_receipt": {
+                "request_id": "$event.payload.request_id",
+                "harvest_id": "$event.payload.harvest_id",
+                "spec_hash": "$event.payload.spec_hash",
+            }},
+        }},
         {"op": "emit_event", "event": {"type": RESOURCE_HARVESTED_EVENT, "time": "$event.time",
          "source": "$actor.id", "target": "$area.id", "payload": {"harvest_id": spec.id,
          "material_id": spec.material_id, "yield": "$event.payload.yield", "consumption": "$event.payload.consumption"}}},
@@ -267,6 +301,19 @@ def _current_area(session, actor_id: str) -> str:
     if len(rows) != 1:
         raise GameplayContractError("harvester must be in exactly one Area")
     return rows[0]
+
+
+def _staged_session(session) -> GameplaySession:
+    runtime = session.runtime.engine.attach(deepcopy(session.state))
+    runtime.stats = deepcopy(session.runtime.stats)
+    runtime.revision = session.runtime.revision
+    runtime.object_revision = session.runtime.object_revision
+    runtime.state_closure_known = session.runtime.state_closure_known
+    return GameplaySession(runtime, session.profiles)
+
+
+def _receipt_id(request_id: str) -> str:
+    return f"pmw:v04:harvest-receipt:{request_id}"
 
 
 def _resource_state(area, spec: HarvestSpec) -> tuple[float, dict | None]:

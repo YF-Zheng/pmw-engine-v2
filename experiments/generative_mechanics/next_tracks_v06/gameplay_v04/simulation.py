@@ -9,7 +9,13 @@ from typing import Any
 from pmw import Entity, Relation, WorldState
 
 from .action_compiler import build_action_session
-from .actions import ACTOR_COMPONENT, ActionOutcome, ActionRegistry, ActionRequest, resolve_action
+from .actions import (
+    ACTOR_COMPONENT,
+    ActionOutcome,
+    ActionRegistry,
+    ActionRequest,
+    submit_primary_action,
+)
 from .blueprints import field_state
 from .contracts import FieldDefinition, GameplayContractError
 from .dynamics import CLOCK_COMPONENT, DYNAMICS_COMPONENT
@@ -61,7 +67,7 @@ class SandboxSimulator:
         try:
             if owner_turn_before:
                 run_phase_event(session, "owner_turn", actor_id=request.actor_id)
-            outcome = resolve_action(session, registry, request)
+            outcome = submit_primary_action(session, registry, request)
             if complete_round_after:
                 run_phase_event(session, "combat_round")
                 advance_world_tick(session)
@@ -98,7 +104,13 @@ class SandboxSimulator:
                     "power", "control", "resilience", "agility", "traits",
                 )},
                 "active_equipped": [
-                    action_id for action_id in known[actor_id]
+                    {
+                        "id": action_id,
+                        "version": registry.actions[action_id].version,
+                        "canonical_hash": registry.actions[action_id].canonical_hash,
+                        "kind": "skill_blueprint",
+                    }
+                    for action_id in known[actor_id]
                     if action_id in registry.actions and not registry.actions[action_id].builtin
                 ][:6] + [None] * max(0, 6 - sum(
                     1 for action_id in known[actor_id]
@@ -207,7 +219,7 @@ def revalidate_and_execute(
     if not allowed:
         return RevalidationResult(False, None, "action is no longer legal in the newest state", latest)
     try:
-        outcome = resolve_action(session, registry, request)
+        outcome = submit_primary_action(session, registry, request)
         return RevalidationResult(True, outcome, None, latest)
     except GameplayContractError as exc:
         if session.state.to_dict() != before:

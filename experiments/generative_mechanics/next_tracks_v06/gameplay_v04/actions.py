@@ -19,10 +19,18 @@ from .contracts import GameplayContractError, ScopeCapability, SelectorContext
 from .effects import EffectSpec, parse_effect
 from .selectors import resolve_selector
 from .status import DurationSpec, STATUS_COMPONENT, StatusSpec, active_status_slot, neutral_status_slot, parse_status_spec
+from .shields import (SHIELD_COMPONENT, absorb_damage, bind_layer_to_status,
+                      grant_shield, shield_component)
 
 
 ACTION_EVENT = "pmw.v04.action.resolve"
 ACTOR_COMPONENT = "pmw_gameplay_actor"
+REGISTRY_COMPONENT = "pmw_gameplay_mechanism_registry"
+SLOT_FREE_BASIC_ACTIONS = {
+    "basic_attack": "attack",
+    "basic_guard": "guard",
+    "basic_wait": "wait",
+}
 _ID = re.compile(r"^[a-z][a-z0-9_]{1,63}$")
 
 
@@ -163,8 +171,14 @@ def parse_action_request(raw: Any) -> ActionRequest:
     return ActionRequest(raw["request_id"], raw["actor_id"], raw["action_id"], target)
 
 
-def resolve_action(session, registry: ActionRegistry, request: ActionRequest, *, execution_kind: str = "primary",
-                   hook_context: Mapping[str, Any] | None = None) -> ActionOutcome:
+def resolve_action(session, registry: ActionRegistry, request: ActionRequest) -> ActionOutcome:
+    """Resolve an external primary request after authoritative authorization."""
+    authorize_primary_action(session, registry, request)
+    return _resolve_action(session, registry, request)
+
+
+def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *, execution_kind: str = "primary",
+                    hook_context: Mapping[str, Any] | None = None) -> ActionOutcome:
     if execution_kind not in {"primary", "hook"}: raise GameplayContractError("invalid action execution kind")
     if (execution_kind == "hook") != (hook_context is not None): raise GameplayContractError("hook execution requires trusted hook context")
     definition = registry.actions.get(request.action_id)
@@ -221,6 +235,75 @@ def resolve_action(session, registry: ActionRegistry, request: ActionRequest, *,
     return ActionOutcome(request, definition, quote, tuple(outcomes), result)
 
 
+def authorize_primary_action(session, registry: ActionRegistry, request: ActionRequest) -> ActionDefinition:
+    """Authorize an untrusted controller request without mutating WorldState."""
+    definition = registry.actions.get(request.action_id)
+    if definition is None:
+        raise GameplayContractError("unknown registered action")
+    actor_entity = session.state.entities.get(request.actor_id)
+    if actor_entity is None or ACTOR_COMPONENT not in actor_entity.components:
+        raise GameplayContractError("request actor is not an Actor")
+
+    basic_type = SLOT_FREE_BASIC_ACTIONS.get(definition.id)
+    if basic_type is not None:
+        # `builtin` is definition metadata, not an authority token.  Bind each
+        # slot-free action to the canonical shipped definition so a caller
+        # cannot register a stronger action under a privileged basic ID.
+        from .basics import basic_registry
+        trusted = basic_registry().actions[definition.id]
+        if (
+            not definition.builtin
+            or definition.action_type != basic_type
+            or definition.version != trusted.version
+            or definition.canonical_hash != trusted.canonical_hash
+        ):
+            raise GameplayContractError("slot-free basic action identity is invalid")
+        return definition
+    if definition.builtin or definition.action_type != "skill":
+        raise GameplayContractError("only the three trusted basic actions are slot-free")
+
+    formal_registries = [
+        entity.components[REGISTRY_COMPONENT]
+        for entity in session.state.entities.values()
+        if REGISTRY_COMPONENT in entity.components
+    ]
+    reference_hash = definition.canonical_hash
+    if formal_registries:
+        if len(formal_registries) != 1:
+            raise GameplayContractError("world mechanism registry is ambiguous")
+        component = formal_registries[0]
+        entries = component.get("entries") if isinstance(component, Mapping) else None
+        matches = [row for row in entries or () if (
+            isinstance(row, Mapping)
+            and row.get("skill_id") == definition.id
+            and row.get("version") == definition.version
+            and row.get("kind") == "skill_blueprint"
+            and row.get("enabled") is True
+        )]
+        if not isinstance(entries, list) or len(matches) != 1:
+            raise GameplayContractError("equipped skill is not enabled in the formal registry")
+        reference_hash = matches[0].get("canonical_hash")
+
+    actor = actor_entity.components[ACTOR_COMPONENT]
+    equipped = actor.get("active_equipped")
+    if not isinstance(equipped, list) or len(equipped) != 6:
+        raise GameplayContractError("Actor active equipped loadout is invalid")
+    expected = {
+        "id": definition.id,
+        "version": definition.version,
+        "canonical_hash": reference_hash,
+        "kind": "skill_blueprint",
+    }
+    if not any(isinstance(row, Mapping) and dict(row) == expected for row in equipped):
+        raise GameplayContractError("action is not an exact currently equipped active skill")
+    return definition
+
+
+def submit_primary_action(session, registry: ActionRegistry, request: ActionRequest) -> ActionOutcome:
+    """Authoritative external action boundary for human and AI controllers."""
+    return resolve_action(session, registry, request)
+
+
 def _condition_context(session, request, shadow):
     actor = shadow[request.actor_id]
     target = shadow.get(request.target_actor_id) if request.target_actor_id else None
@@ -244,17 +327,29 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
     if effect.kind in {"damage", "heal", "shield", "add_resource"}:
         if actor_state is None: raise GameplayContractError(f"{effect.kind} target must be Actor")
         row = writes.setdefault(target_id, {})
+        shield_state = actor_state["_shield_component"]
         if effect.kind == "damage":
-            absorbed = min(actor_state["shield"], amount); actor_state["shield"] -= absorbed
+            absorbed = absorb_damage(actor_state, shield_state, amount)
             actor_state["hp"] = max(0.0, actor_state["hp"] - (amount - absorbed))
-            row.update({"shield": actor_state["shield"], "hp": actor_state["hp"]})
+            row.update({"shield": actor_state["shield"], "hp": actor_state["hp"],
+                        "shield_component": shield_state})
         elif effect.kind == "heal": actor_state["hp"] = min(actor_state["max_hp"], actor_state["hp"] + amount); row["hp"] = actor_state["hp"]
-        elif effect.kind == "shield": actor_state["shield"] = max(actor_state["shield"], amount); row["shield"] = actor_state["shield"]
+        elif effect.kind == "shield":
+            layer_slot = grant_shield(actor_state, shield_state,
+                                      source_id=f"{definition.id}:{effect.id}",
+                                      owner_id=request.actor_id, amount=amount)
+            actor_state["_pending_shield_layer"] = layer_slot
+            row.update({"shield": actor_state["shield"],
+                        "shield_component": shield_state})
         else:
             key = effect.resource; maximum = actor_state.get(f"max_{key}")
             actor_state[key] = max(0.0, min(maximum, actor_state[key] + amount)) if maximum is not None else max(0.0, actor_state[key] + amount)
             row[key] = actor_state[key]
-        values = {key: row[key] for key in ({"hp", "shield"} if effect.kind == "damage" else {"hp"} if effect.kind == "heal" else {"shield"} if effect.kind == "shield" else {effect.resource}) if key in row}
+        keys = ({"hp", "shield", "shield_component"} if effect.kind == "damage" else
+                {"hp"} if effect.kind == "heal" else
+                {"shield", "shield_component"} if effect.kind == "shield" else
+                {effect.resource})
+        values = {key: row[key] for key in keys if key in row}
     elif effect.kind in {"apply_status", "grant_trait"}:
         if actor_state is None: raise GameplayContractError(f"{effect.kind} target must be Actor")
         slots = actor_state.setdefault("status_slots", {f"slot_{i}": neutral_status_slot() for i in range(8)})
@@ -267,8 +362,15 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
         slot = existing[0] if existing else next((name for name, value in sorted(slots.items()) if not value["active"]), None)
         if slot is None: raise GameplayContractError("status capacity exhausted")
         prior = slots[slot]; stacks = min(spec.max_stacks, prior["stacks"] + 1) if existing and spec.stack_policy == "add_stacks" else 1
-        value = active_status_slot(spec, instance_id=f"{request.request_id}:{effect.id}", source_id=definition.id,
-                                   owner_id=request.actor_id, stacks=stacks)
+        instance_id = f"{request.request_id}:{effect.id}"
+        candidate_layer = actor_state.pop("_pending_shield_layer", None)
+        shield_layer_slot = (candidate_layer if spec.on_expire_resource and
+                             spec.on_expire_resource[0] == "shield" else None)
+        if shield_layer_slot is not None:
+            bind_layer_to_status(actor_state["_shield_component"], shield_layer_slot, instance_id)
+        value = active_status_slot(spec, instance_id=instance_id, source_id=definition.id,
+                                   owner_id=request.actor_id, stacks=stacks,
+                                   shield_layer_slot=shield_layer_slot)
         slots[slot] = value; reservations.append((target_id, slot, value)); values = {"slot": slot, "status": value, "status_component": {"slots": slots}}
     elif effect.kind in {"modify_field", "modify_attractor", "modify_rate"}:
         fields = target_entity.components.get("pmw_gameplay_dynamics", {}).get("fields", {})
@@ -296,4 +398,5 @@ def _actor_view(entity) -> dict[str, Any]:
     result["status_slots"] = deepcopy(entity.components.get(STATUS_COMPONENT, {}).get(
         "slots", {f"slot_{i}": neutral_status_slot() for i in range(8)}
     ))
+    result["_shield_component"] = deepcopy(entity.components.get(SHIELD_COMPONENT, shield_component()))
     return result

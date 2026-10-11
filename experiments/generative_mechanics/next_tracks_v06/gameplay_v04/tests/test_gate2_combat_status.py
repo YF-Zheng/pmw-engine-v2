@@ -45,7 +45,7 @@ class CombatTests(unittest.TestCase):
         result = run_combat_round(session, registry, round_index=1, actor_order=("actor_0", "actor_1"), requests={
             "actor_0": ActionRequest("request_1", "actor_0", "basic_guard"),
             "actor_1": ActionRequest("request_2", "actor_1", "basic_attack", "actor_0"),
-        })
+        }, time_policy="unbudgeted_fixture")
         actor = session.state.entities["actor_0"].components["pmw_gameplay_actor"]
         self.assertEqual(actor["shield"], 0)
         self.assertEqual(actor["hp"], 94)
@@ -53,14 +53,19 @@ class CombatTests(unittest.TestCase):
 
     def test_actor_count_does_not_accelerate_world_tick(self):
         one, registry = make_session(actors=1); many, registry_many = make_session(actors=4)
-        run_combat_round(one, registry, round_index=1, actor_order=("actor_0",), requests={})
-        run_combat_round(many, registry_many, round_index=1, actor_order=tuple(f"actor_{i}" for i in range(4)), requests={})
+        run_combat_round(one, registry, round_index=1, actor_order=("actor_0",), requests={},
+                         time_policy="unbudgeted_fixture")
+        run_combat_round(many, registry_many, round_index=1, actor_order=tuple(f"actor_{i}" for i in range(4)), requests={},
+                         time_policy="unbudgeted_fixture")
         self.assertEqual(one.state.entities["pmw:v04:clock"].components["pmw_gameplay_clock"]["last_completed_step"], 1)
         self.assertEqual(many.state.entities["pmw:v04:clock"].components["pmw_gameplay_clock"]["last_completed_step"], 1)
 
     def test_duplicate_actor_order_rejected(self):
         session, registry = make_session()
-        with self.assertRaises(GameplayContractError): run_combat_round(session, registry, round_index=1, actor_order=("actor_0", "actor_0"), requests={})
+        with self.assertRaises(GameplayContractError):
+            run_combat_round(session, registry, round_index=1,
+                             actor_order=("actor_0", "actor_0"), requests={},
+                             time_policy="unbudgeted_fixture")
 
     def test_demo_is_deterministic_and_advances_one_tick_per_round(self):
         left, right = run_gate2_demo(), run_gate2_demo()

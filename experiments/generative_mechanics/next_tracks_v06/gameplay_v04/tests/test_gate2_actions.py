@@ -5,7 +5,9 @@ import math
 import unittest
 
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.action_compiler import build_action_session
-from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRegistry, ActionRequest, parse_action_request, resolve_action
+from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import (
+    ActionRegistry, ActionRequest, _resolve_action, parse_action_request, resolve_action,
+)
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.audit import explain_action
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.basics import basic_registry, basic_registry_document
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.blueprints import instantiate_actor, instantiate_area, parse_actor_blueprint, parse_area_blueprint
@@ -34,6 +36,15 @@ def make_session(registry=None, actors=2):
         placements=[(x.id, zone.id) for x in units])
     clock = clock_entity(); world.entities[clock.id] = clock
     registry = registry or basic_registry()
+    equipped = [action for action in registry.actions.values() if not action.builtin]
+    if len(equipped) > 6:
+        raise AssertionError("test fixture cannot equip more than six active skills")
+    for unit in units:
+        unit.components["pmw_gameplay_actor"]["active_equipped"][:len(equipped)] = [
+            {"id": action.id, "version": action.version,
+             "canonical_hash": action.canonical_hash, "kind": "skill_blueprint"}
+            for action in equipped
+        ]
     return build_action_session(world, discover_profiles(world), registry), registry
 
 
@@ -68,7 +79,7 @@ class RequestAndBasicActionTests(unittest.TestCase):
         doc = basic_registry_document(wait_mana=5)
         doc["actions"][2]["cost"]["mana"] = 7
         registry = ActionRegistry.parse(doc); session, _ = make_session(registry, actors=1)
-        resolve_action(session, registry, ActionRequest("request_1", "actor_0", "basic_wait"))
+        _resolve_action(session, registry, ActionRequest("request_1", "actor_0", "basic_wait"))
         self.assertEqual(session.state.entities["actor_0"].components["pmw_gameplay_actor"]["mana"], 18)
 
     def test_action_cost_modifiers_are_explicit_and_keep_positive_time(self):
@@ -77,7 +88,7 @@ class RequestAndBasicActionTests(unittest.TestCase):
             "subject": "self", "key": "control", "comparator": "gte", "value": 1}},
             "duration_add": -99, "mana_add": 2}]
         registry = ActionRegistry.parse(doc); session, _ = make_session(registry, actors=1)
-        outcome = resolve_action(session, registry, ActionRequest("request_1", "actor_0", "basic_wait"))
+        outcome = _resolve_action(session, registry, ActionRequest("request_1", "actor_0", "basic_wait"))
         self.assertEqual(outcome.cost.duration, 1)
         self.assertEqual(outcome.cost.mana, 2)
         self.assertEqual(session.state.entities["actor_0"].components["pmw_gameplay_actor"]["mana"], 23)
@@ -100,7 +111,10 @@ class RequestAndBasicActionTests(unittest.TestCase):
         doc = basic_registry_document(); doc["actions"][0]["cost"]["mana"] = 30
         registry = ActionRegistry.parse(doc); session, _ = make_session(registry)
         before = deepcopy(session.state.to_dict())
-        with self.assertRaises(GameplayContractError): resolve_action(session, registry, ActionRequest("request_1", "actor_0", "basic_attack", "actor_1"))
+        with self.assertRaises(GameplayContractError):
+            _resolve_action(session, registry, ActionRequest(
+                "request_1", "actor_0", "basic_attack", "actor_1"
+            ))
         self.assertEqual(session.state.to_dict(), before)
 
     def test_audit_is_backed_by_causal_trace(self):

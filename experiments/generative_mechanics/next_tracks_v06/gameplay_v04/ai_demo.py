@@ -16,7 +16,7 @@ from .worlds import build_gameplay_world
 
 
 def ai_demo_registry() -> ActionRegistry:
-    document = basic_registry_document(attack_base=6.0, power_scale=0.0, wait_mana=4.0)
+    document = basic_registry_document()
     document["actions"].extend([
         {
             "id": "raise_mist", "version": 1, "action_type": "skill", "builtin": False,
@@ -57,16 +57,21 @@ def ai_demo_session():
             "max_persistent_patches": 2, "max_temporary_modifiers": 4,
         }],
     })
+    registry = ai_demo_registry()
     monster = instantiate_actor(actor_blueprint, "ai_monster", controller="ai")
     hero = instantiate_actor(actor_blueprint, "ai_hero", controller="human")
-    monster.components["pmw_gameplay_actor"]["active_equipped"][:2] = ["raise_mist", "mist_burst"]
+    monster.components["pmw_gameplay_actor"]["active_equipped"][:2] = [
+        {"id": action_id, "version": registry.actions[action_id].version,
+         "canonical_hash": registry.actions[action_id].canonical_hash,
+         "kind": "skill_blueprint"}
+        for action_id in ("raise_mist", "mist_burst")
+    ]
     area = instantiate_area(area_blueprint, "ai_arena")
     world = build_gameplay_world(
         "gate4_ai_demo", areas=[area], actors=[monster, hero],
         placements=[(monster.id, area.id), (hero.id, area.id)],
     )
     clock = clock_entity(); world.entities[clock.id] = clock
-    registry = ai_demo_registry()
     return build_action_session(world, registry=registry), registry
 
 

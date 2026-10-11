@@ -116,8 +116,10 @@ class EndToEndScenarios(unittest.TestCase):
         self.assertEqual((lucky.yield_amount, ordinary.yield_amount), (2.0, 1.0))
         self.assertEqual((lucky.consumption, ordinary.consumption), (0.2, 0.2))
         area = session.state.entities["mist_forest"]
-        self.assertAlmostEqual(area.components["pmw_gameplay_dynamics"]["fields"]["herbs"]["value"], 0.3)
-        self.assertAlmostEqual(area.components["pmw_gameplay_dynamics"]["fields"]["herbs"]["baseline"]["target"], 0.6)
+        # Harvest now atomically advances its two world ticks, so the depleted
+        # field has already begun recovering toward its degraded attractor.
+        self.assertAlmostEqual(area.components["pmw_gameplay_dynamics"]["fields"]["herbs"]["value"], 0.339552)
+        self.assertAlmostEqual(area.components["pmw_gameplay_dynamics"]["fields"]["herbs"]["baseline"]["target"], 0.2)
         resolve_harvest(session, content.action_registry, harvest,
                         HarvestRequest("e2e_last", "hero_actor", harvest.id))
         with self.assertRaises(GameplayContractError):
@@ -161,9 +163,11 @@ class TimeAndTraceLedger(unittest.TestCase):
     def test_combat_round_costs_one_world_tick_regardless_of_actor_count(self):
         one, registry_one = make_session(actors=1)
         many, registry_many = make_session(actors=6)
-        run_combat_round(one, registry_one, round_index=1, actor_order=("actor_0",), requests={})
+        run_combat_round(one, registry_one, round_index=1, actor_order=("actor_0",), requests={},
+                         time_policy="unbudgeted_fixture")
         run_combat_round(many, registry_many, round_index=1,
-                         actor_order=tuple(f"actor_{i}" for i in range(6)), requests={})
+                         actor_order=tuple(f"actor_{i}" for i in range(6)), requests={},
+                         time_policy="unbudgeted_fixture")
         self.assertEqual(one.state.tick, many.state.tick)
         self.assertEqual(one.state.sim_time, many.state.sim_time)
 
@@ -192,7 +196,7 @@ class TimeAndTraceLedger(unittest.TestCase):
             HarvestRequest("timed_harvest", "hero_actor", harvest.id, True),
             permissions=("lucky_harvest",),
         )
-        exploration = spend_world_time(session, gathered.duration, reason="harvest")
+        exploration = gathered.time_result
         offline = spend_world_time(session, 2, reason="offline")
         budget = session.state.entities["pmw:v04:clock"].components[TIME_BUDGET_COMPONENT]
         self.assertEqual((exploration.duration, len(exploration.ticks)), (1, 1))

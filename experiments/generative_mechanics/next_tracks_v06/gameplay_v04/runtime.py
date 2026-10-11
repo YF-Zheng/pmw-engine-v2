@@ -14,6 +14,8 @@ from .dynamics import (
     SOURCE_APPLY_EVENT, SOURCE_EXPIRE_EVENT, SOURCE_REMOVE_EVENT,
     WORLD_TICK_EVENT, build_dynamics_laws, source_state, validate_source,
 )
+from .shields import SHIELD_COMPONENT, reconcile_shields, shield_component
+from .status import STATUS_COMPONENT
 
 
 @dataclass(slots=True)
@@ -66,10 +68,34 @@ def build_runtime(
     profiles: Iterable[FieldProfile] | None = None,
     extra_laws: Iterable[Mapping[str, Any]] = (),
 ) -> GameplaySession:
+    migrate_gameplay_world(world)
     profiles = tuple(profiles) if profiles is not None else discover_profiles(world)
     laws = [*build_dynamics_laws(profiles), *[dict(item) for item in extra_laws]]
     parsed = [parse_law(item) for item in sorted(laws, key=lambda item: item["id"])]
     return GameplaySession(Engine(parsed).attach(world), profiles)
+
+
+def migrate_gameplay_world(world: WorldState) -> None:
+    """Idempotently attach fields introduced after the original v0.4 checkpoint.
+
+    Unknown historical shield provenance is deliberately represented as one
+    unowned legacy layer.  In particular, an active historical Guard status is
+    never allowed to claim that value and therefore cannot erase it on expiry.
+    """
+    for entity in world.entities.values():
+        actor = entity.components.get("pmw_gameplay_actor")
+        if not isinstance(actor, dict):
+            continue
+        if SHIELD_COMPONENT not in entity.components:
+            component = shield_component()
+            reconcile_shields(actor, component)
+            entity.components[SHIELD_COMPONENT] = component
+        statuses = entity.components.get(STATUS_COMPONENT)
+        slots = statuses.get("slots") if isinstance(statuses, dict) else None
+        if isinstance(slots, dict):
+            for row in slots.values():
+                if isinstance(row, dict) and "shield_layer_slot" not in row:
+                    row["shield_layer_slot"] = None
 
 
 def apply_source(
