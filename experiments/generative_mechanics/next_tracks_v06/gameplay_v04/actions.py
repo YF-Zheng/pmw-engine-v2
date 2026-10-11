@@ -18,9 +18,11 @@ from .conditions import ConditionSpec, evaluate_condition, parse_condition
 from .contracts import GameplayContractError, ScopeCapability, SelectorContext
 from .effects import EffectSpec, parse_effect
 from .selectors import resolve_selector
-from .status import DurationSpec, STATUS_COMPONENT, StatusSpec, active_status_slot, neutral_status_slot, parse_status_spec
+from .status import (DurationSpec, STATUS_COMPONENT, StatusSpec, active_status_slot,
+                     matches_status_source, neutral_status_slot, parse_status_spec)
 from .shields import (SHIELD_COMPONENT, absorb_damage, bind_layer_to_status,
-                      grant_shield, shield_component)
+                      grant_shield, release_status_layer, shield_component,
+                      validate_status_shield_ownership)
 
 
 ACTION_EVENT = "pmw.v04.action.resolve"
@@ -218,6 +220,16 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
             outcomes.append({"effect_id": effect.id, "kind": effect.kind, "status": "skipped", "target_id": target_id, "values": {}}); continue
         outcome = _simulate_effect(session, registry, request, definition, effect, target_id, shadow, writes, reservations)
         outcomes.append(outcome)
+    for outcome in outcomes:
+        final_actor = shadow.get(outcome["target_id"])
+        if (final_actor is not None and final_actor.get("_replacement_released_shield") and
+                "shield" in outcome["values"]):
+            outcome["values"]["shield"] = final_actor["shield"]
+            outcome["values"]["shield_component"] = final_actor["_shield_component"]
+    for actor_state in shadow.values():
+        validate_status_shield_ownership(
+            {"slots": actor_state["status_slots"]}, actor_state["_shield_component"]
+        )
     payload = {"protocol": "pmw-gameplay-v0.4", "request_id": request.request_id, "action_id": definition.id,
                "action_hash": definition.canonical_hash, "actor_id": request.actor_id, "target_actor_id": request.target_actor_id,
                "execution_kind": execution_kind, "actor_mana": shadow[request.actor_id]["mana"], "action_duration": quote.duration,
@@ -357,13 +369,28 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
             f"trait_{effect.trait_id}", 1, "buff", 1, "refresh",
             DurationSpec("owner_turn", effect.duration),
             (effect.trait_id,), None, None, f"trait:{effect.trait_id}")
-        existing = next(((name, value) for name, value in slots.items() if value["active"] and value["spec_id"] == spec.id), None)
+        if spec.stack_policy in {"reject", "replace"}:
+            existing = next(((name, value) for name, value in slots.items()
+                             if value.get("active") and value.get("spec_id") == spec.id and
+                             value.get("spec_hash") == spec.canonical_hash), None)
+        else:
+            existing = next(((name, value) for name, value in slots.items()
+                             if matches_status_source(value, spec, source_id=definition.id,
+                                                      owner_id=request.actor_id)), None)
         if existing and spec.stack_policy == "reject": raise GameplayContractError("status stacking rejected")
         slot = existing[0] if existing else next((name for name, value in sorted(slots.items()) if not value["active"]), None)
         if slot is None: raise GameplayContractError("status capacity exhausted")
         prior = slots[slot]; stacks = min(spec.max_stacks, prior["stacks"] + 1) if existing and spec.stack_policy == "add_stacks" else 1
         instance_id = f"{request.request_id}:{effect.id}"
         candidate_layer = actor_state.pop("_pending_shield_layer", None)
+        if (existing and spec.stack_policy == "replace" and
+                prior.get("shield_layer_slot") != candidate_layer):
+            release_status_layer(actor_state, actor_state["_shield_component"], prior)
+            actor_state["_replacement_released_shield"] = True
+            writes.setdefault(target_id, {}).update({
+                "shield": actor_state["shield"],
+                "shield_component": actor_state["_shield_component"],
+            })
         shield_layer_slot = (candidate_layer if spec.on_expire_resource and
                              spec.on_expire_resource[0] == "shield" else None)
         if shield_layer_slot is not None:

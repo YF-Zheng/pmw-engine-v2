@@ -11,6 +11,7 @@ from pmw import Event, WorldState, parse_law
 from .contracts import GameplayContractError, TickResult
 from .dynamics import CLOCK_COMPONENT
 from .runtime import GameplaySession, advance_world_tick
+from .transactions import publish_gameplay_session, stage_gameplay_session
 
 
 TIME_BUDGET_COMPONENT = "pmw_gameplay_time_budget"
@@ -72,6 +73,17 @@ def build_time_budget_laws() -> tuple[dict, ...]:
 
 
 def spend_world_time(session: GameplaySession, duration: int, *, reason: str) -> TimeSpendResult:
+    """Consume a complete time request atomically on an isolated runtime."""
+    preflight_world_time(session, duration, reason=reason)
+    staged = stage_gameplay_session(session)
+    result = _spend_world_time_in_place(staged, duration, reason=reason)
+    publish_gameplay_session(session, staged)
+    return result
+
+
+def _spend_world_time_in_place(
+    session: GameplaySession, duration: int, *, reason: str,
+) -> TimeSpendResult:
     clock_id, budget = preflight_world_time(session, duration, reason=reason)
     remaining = budget["remaining_ticks"]
     spent = budget["spent_ticks"]

@@ -14,7 +14,8 @@ from .dynamics import (
     SOURCE_APPLY_EVENT, SOURCE_EXPIRE_EVENT, SOURCE_REMOVE_EVENT,
     WORLD_TICK_EVENT, build_dynamics_laws, source_state, validate_source,
 )
-from .shields import SHIELD_COMPONENT, reconcile_shields, shield_component
+from .shields import (SHIELD_COMPONENT, migrate_status_shield_ownership,
+                      reconcile_shields, shield_component)
 from .status import STATUS_COMPONENT
 
 
@@ -96,6 +97,10 @@ def migrate_gameplay_world(world: WorldState) -> None:
             for row in slots.values():
                 if isinstance(row, dict) and "shield_layer_slot" not in row:
                     row["shield_layer_slot"] = None
+        ownership_statuses = statuses if isinstance(slots, dict) else {"slots": {}}
+        migrate_status_shield_ownership(
+            actor, ownership_statuses, entity.components[SHIELD_COMPONENT]
+        )
 
 
 def apply_source(

@@ -93,6 +93,18 @@ def active_status_slot(spec: StatusSpec, *, instance_id: str, source_id: str, ow
             "shield_layer_slot": shield_layer_slot}
 
 
+def matches_status_source(value: dict[str, Any], spec: StatusSpec, *,
+                          source_id: str, owner_id: str) -> bool:
+    """Return whether an active slot belongs to one logical status source."""
+    return bool(
+        value.get("active")
+        and value.get("spec_id") == spec.id
+        and value.get("spec_hash") == spec.canonical_hash
+        and value.get("source_id") == source_id
+        and value.get("owner_id") == owner_id
+    )
+
+
 def cancel_status(session, registry, *, owner_id: str, instance_id: str, requester_id: str):
     from pmw import Event
     entity = session.state.entities.get(owner_id)

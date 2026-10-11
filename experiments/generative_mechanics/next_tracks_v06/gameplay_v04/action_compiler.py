@@ -212,9 +212,8 @@ def _status_clock_laws(status_specs, status_slots):
                     {"ref": f"{layer_root}.status_instance_id", "eq": f"{root}.instance_id"},
                 ]
                 clear_owned = [
-                    {"op": "set", "target": f"$owner.{ACTOR_COMPONENT}.shield",
-                     "value": {"max": [0.0, {"add": [f"$owner.{ACTOR_COMPONENT}.shield",
-                                                        {"mul": [-1.0, f"{layer_root}.remaining"]}]}]}},
+                    {"op": "delta", "target": f"$owner.{ACTOR_COMPONENT}.shield",
+                     "value": {"mul": [-1.0, f"{layer_root}.remaining"]}},
                     {"op": "set", "target": layer_root, "value": neutral_shield_layer()},
                     {"op": "set", "target": root, "value": neutral_status_slot()},
                 ]

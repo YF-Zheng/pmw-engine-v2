@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from copy import deepcopy
 from dataclasses import dataclass
 import hashlib
 import json
@@ -12,12 +11,12 @@ from typing import Any, Mapping
 
 from pmw import Event, parse_law
 
-from .actions import ACTOR_COMPONENT, ActionRegistry, ActionRequest
+from .actions import ACTOR_COMPONENT, ActionRegistry, ActionRequest, _actor_view
 from .conditions import evaluate_condition
 from .contracts import GameplayContractError
 from .dynamics import DYNAMICS_COMPONENT
-from .runtime import GameplaySession
 from .time_ledger import preflight_world_time, spend_world_time
+from .transactions import publish_gameplay_session, stage_gameplay_session
 
 
 RESOURCE_COMPONENT = "pmw_gameplay_resources"
@@ -158,13 +157,13 @@ def resolve_harvest(session, registry: ActionRegistry, spec: HarvestSpec, reques
     if receipt_id in session.state.relations:
         raise GameplayContractError("harvest request was already committed")
 
-    staged = _staged_session(session)
+    staged = stage_gameplay_session(session)
     harvested = _commit_harvest(staged, registry, spec, request, permissions=permissions)
     # Check the authoritative live budget as well as the staged copy before any
     # state pointer can be published.
     preflight_world_time(session, harvested.duration, reason="harvest")
     time_result = spend_world_time(staged, harvested.duration, reason="harvest")
-    session.runtime = staged.runtime
+    publish_gameplay_session(session, staged)
     return HarvestOutcome(request, harvested.duration, harvested.yield_amount,
                           harvested.consumption, harvested.event_result, time_result)
 
@@ -186,7 +185,7 @@ def _commit_harvest(session, registry: ActionRegistry, spec: HarvestSpec, reques
     hashes = area.components.get(RESOURCE_COMPONENT, {}).get("spec_hashes", {})
     if hashes.get(spec.id) != spec.canonical_hash:
         raise GameplayContractError("HarvestSpec is not installed in the current Area")
-    actor = actor_entity.components[ACTOR_COMPONENT]
+    actor = _actor_view(actor_entity)
     duration, mana = action.cost.duration, action.cost.mana
     context = {"self": actor, "target_actor": {}, "current_area": {"fields": area.components.get(DYNAMICS_COMPONENT, {}).get("fields", {})}}
     for modifier in action.cost_modifiers:
@@ -301,15 +300,6 @@ def _current_area(session, actor_id: str) -> str:
     if len(rows) != 1:
         raise GameplayContractError("harvester must be in exactly one Area")
     return rows[0]
-
-
-def _staged_session(session) -> GameplaySession:
-    runtime = session.runtime.engine.attach(deepcopy(session.state))
-    runtime.stats = deepcopy(session.runtime.stats)
-    runtime.revision = session.runtime.revision
-    runtime.object_revision = session.runtime.object_revision
-    runtime.state_closure_known = session.runtime.state_closure_known
-    return GameplaySession(runtime, session.profiles)
 
 
 def _receipt_id(request_id: str) -> str:

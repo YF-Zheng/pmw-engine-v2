@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from copy import deepcopy
 from dataclasses import dataclass
 import json
 from typing import Mapping
@@ -16,13 +15,14 @@ from .actions import (
     submit_primary_action,
 )
 from .contracts import GameplayContractError
-from .runtime import GameplaySession, advance_world_tick, run_phase_event
+from .runtime import advance_world_tick, run_phase_event
 from .time_ledger import (
     TIME_BUDGET_COMPONENT,
     TimeSpendResult,
     preflight_world_time,
     spend_world_time,
 )
+from .transactions import publish_gameplay_session, stage_gameplay_session
 
 
 @dataclass(frozen=True, slots=True)
@@ -68,12 +68,7 @@ def run_combat_round(session, registry: ActionRegistry, *, round_index: int,
     # leaves the caller's live session unchanged.
     working = session
     if time_policy == "finite":
-        staged_runtime = session.runtime.engine.attach(deepcopy(session.state))
-        staged_runtime.stats = deepcopy(session.runtime.stats)
-        staged_runtime.revision = session.runtime.revision
-        staged_runtime.object_revision = session.runtime.object_revision
-        staged_runtime.state_closure_known = session.runtime.state_closure_known
-        working = GameplaySession(staged_runtime, session.profiles)
+        working = stage_gameplay_session(session)
     outcomes, skipped = [], []
     for actor_id in actor_order:
         entity = working.state.entities[actor_id]
@@ -89,7 +84,7 @@ def run_combat_round(session, registry: ActionRegistry, *, round_index: int,
     if time_policy == "finite":
         time_spend = spend_world_time(working, 1, reason="combat")
         world_tick = time_spend.ticks[0]
-        session.runtime = working.runtime
+        publish_gameplay_session(session, working)
     else:
         world_tick = advance_world_tick(working)
     return CombatRoundResult(

@@ -92,6 +92,97 @@ def bind_layer_to_status(component: dict[str, Any], slot: str,
     layer["status_instance_id"] = status_instance_id
 
 
+def release_status_layer(actor: dict[str, Any], component: dict[str, Any],
+                         status: dict[str, Any]) -> None:
+    """Release exactly the remaining layer owned by one replaced status."""
+    layer_slot = status.get("shield_layer_slot")
+    if layer_slot is None:
+        return
+    layer = component.get("slots", {}).get(layer_slot)
+    if (not isinstance(layer, dict) or not layer.get("active") or
+            layer.get("status_instance_id") != status.get("instance_id")):
+        raise GameplayContractError("replaced status shield ownership is invalid")
+    layer.clear()
+    layer.update(neutral_shield_layer())
+    actor["shield"] = _total(component["slots"])
+
+
+def validate_status_shield_ownership(status_component: dict[str, Any],
+                                     component: dict[str, Any]) -> None:
+    """Require every temporary shield layer and status pointer to agree."""
+    statuses = status_component.get("slots")
+    layers = component.get("slots")
+    if not isinstance(statuses, dict) or not isinstance(layers, dict):
+        raise GameplayContractError("status/shield ownership components are invalid")
+    active_statuses: dict[str, list[tuple[str, dict[str, Any]]]] = {}
+    for status_slot, status in statuses.items():
+        if status.get("active") and status.get("instance_id") is not None:
+            active_statuses.setdefault(status["instance_id"], []).append((status_slot, status))
+    for layer_slot, layer in layers.items():
+        instance_id = layer.get("status_instance_id") if layer.get("active") else None
+        if instance_id is None:
+            continue
+        matches = active_statuses.get(instance_id, [])
+        if (len(matches) != 1 or matches[0][1].get("shield_layer_slot") != layer_slot or
+                not _layer_matches_status_source(layer, matches[0][1])):
+            raise GameplayContractError("temporary shield layer has no unique status owner")
+    for matches in active_statuses.values():
+        for _, status in matches:
+            layer_slot = status.get("shield_layer_slot")
+            if layer_slot is None:
+                continue
+            layer = layers.get(layer_slot)
+            if (not isinstance(layer, dict) or not layer.get("active") or
+                    layer.get("status_instance_id") != status.get("instance_id") or
+                    not _layer_matches_status_source(layer, status)):
+                raise GameplayContractError("status shield owner does not resolve to its layer")
+
+
+def migrate_status_shield_ownership(actor: dict[str, Any], status_component: dict[str, Any],
+                                    component: dict[str, Any]) -> None:
+    """Idempotently discard temporary layers orphaned by pre-Gate-5.2 refresh."""
+    reconcile_shields(actor, component)
+    statuses = status_component.get("slots", {})
+    layers = component.get("slots", {})
+    by_instance: dict[str, list[tuple[str, dict[str, Any]]]] = {}
+    for status_slot, status in statuses.items():
+        if status.get("active") and status.get("instance_id") is not None:
+            by_instance.setdefault(status["instance_id"], []).append((status_slot, status))
+
+    valid_layers: set[str] = set()
+    for instance_matches in by_instance.values():
+        for _, status in instance_matches:
+            layer_slot = status.get("shield_layer_slot")
+            layer = layers.get(layer_slot) if layer_slot is not None else None
+            if (len(instance_matches) == 1 and isinstance(layer, dict) and
+                    layer.get("active") and
+                    layer.get("status_instance_id") == status.get("instance_id") and
+                    _layer_matches_status_source(layer, status)):
+                valid_layers.add(layer_slot)
+            elif layer_slot is not None:
+                status["shield_layer_slot"] = None
+
+    for layer_slot, layer in layers.items():
+        if (layer.get("active") and layer.get("status_instance_id") is not None and
+                layer_slot not in valid_layers):
+            layer.clear()
+            layer.update(neutral_shield_layer())
+    actor["shield"] = _total(layers)
+    validate_status_shield_ownership(status_component, component)
+
+
+def _layer_matches_status_source(layer: dict[str, Any], status: dict[str, Any]) -> bool:
+    """Match caster ownership and the action-to-effect source lineage."""
+    status_source = status.get("source_id")
+    layer_source = layer.get("source_id")
+    return bool(
+        layer.get("owner_id") == status.get("owner_id")
+        and isinstance(status_source, str)
+        and isinstance(layer_source, str)
+        and layer_source.startswith(f"{status_source}:")
+    )
+
+
 def absorb_damage(actor: dict[str, Any], component: dict[str, Any], amount: float) -> float:
     reconcile_shields(actor, component)
     absorbed = _consume(component["slots"], amount)
