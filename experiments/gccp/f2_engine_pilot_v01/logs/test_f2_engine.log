@@ -1,0 +1,19 @@
+test_calibration_reveals_interface_not_root (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_equivalent_solver_matches_three_reference_optima (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_forge_consumes_once_registers_and_ticks_once (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_four_tick_terminal_is_physical_not_answer_comparison (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_information_ablation_removes_investment_value (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_initial_observation_and_actions_are_hidden_world_invariant (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_native_resources_remove_normalized_cost_flip (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_probe_has_real_correct_wrong_and_incompatible_effects (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_probe_is_one_shot_and_failed_interface_still_consumes_time (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_published_solver_evidence_matches_fresh_results (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_real_world_tick_matches_f2_physics (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_solver_can_abandon_exploration_after_observation (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+test_solver_replay_is_deterministic_and_branch_local (experiments.gccp.f2_engine_pilot_v01.tests.test_f2_engine.F2EngineTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 97.916s
+
+OK
+elapsed=98.04 maxrss_kb=29668

@@ -1,0 +1,2 @@
+{"ablation": {"optimal_actions": ["repair_water"], "value": 0.65}, "equivalent": {"cf=0.10,ci=0.03": {"matches": true, "optimal_actions": ["calibrate"], "value": 0.87}, "cf=0.10,ci=0.23": {"matches": true, "optimal_actions": ["forge_resonance", "forge_water"], "value": 0.725}, "cf=0.40,ci=0.03": {"matches": true, "optimal_actions": ["repair_water"], "value": 0.65}}, "native": {"optimal_actions": ["calibrate"], "value": 1.0}}
+elapsed=97.74 maxrss_kb=30788
