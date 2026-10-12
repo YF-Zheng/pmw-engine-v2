@@ -1,0 +1,94 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 14
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 0.35,
+        "commitment": "required",
+        "field_id": "smoke",
+        "id": "veil_smoke",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "amount": 6,
+        "commitment": "required",
+        "id": "veil_shield",
+        "kind": "shield",
+        "target": {
+          "kind": "self"
+        }
+      }
+    ],
+    "id": "ash_veil",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "hollow_charcoal"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area",
+        "self"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_005",
+  "category": "战斗与环境操纵",
+  "claims": {
+    "emergent_effect": "通用天气或 Dynamics 产生的后续差异由证据中的 Law IDs 单独标出。",
+    "intended_effect": "烟雾不是装饰：施法者获得临时护盾，同时把战场推进烟雾天气阈值。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_005.json。"
+  },
+  "creator": "Creator A",
+  "intent_zh": "烟雾不是装饰：施法者获得临时护盾，同时把战场推进烟雾天气阈值。",
+  "limitations_zh": [
+    "眼前防御可能触发后续环境热化。",
+    "技能不会自动消费世界时间；runner 对两组推进相同 Tick。"
+  ],
+  "material": {
+    "id": "hollow_charcoal",
+    "region_rarity": "abundant",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 14,
+        "effect_kinds": [
+          "modify_field",
+          "shield"
+        ],
+        "id": "hollow_charcoal_craft",
+        "selectors": [
+          "current_area",
+          "self"
+        ]
+      }
+    ]
+  },
+  "name_zh": "灰幕",
+  "scenario": {
+    "environment": "depleted_grove",
+    "horizon_ticks": 4,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "combat",
+    "environment",
+    "ash_veil"
+  ]
+}

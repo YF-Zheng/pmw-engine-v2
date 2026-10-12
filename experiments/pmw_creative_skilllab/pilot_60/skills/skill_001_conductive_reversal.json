@@ -1,0 +1,110 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 14
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 3
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 8,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "conductivity",
+            "subject": "current_area",
+            "value": 0.65
+          }
+        },
+        "id": "ground_arc",
+        "kind": "damage",
+        "target": {
+          "kind": "target_actor"
+        }
+      },
+      {
+        "amount": -0.35,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "conductivity",
+            "subject": "current_area",
+            "value": 0.65
+          }
+        },
+        "field_id": "conductivity",
+        "id": "drain_charge",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "conductive_reversal",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "forked_fulgurite"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "target_actor",
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_001",
+  "category": "战斗与环境操纵",
+  "claims": {
+    "emergent_effect": "通用天气或 Dynamics 产生的后续差异由证据中的 Law IDs 单独标出。",
+    "intended_effect": "把高导电环境当作一次性弹药：强击会同步接地，后续同技能失去条件。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_001.json。"
+  },
+  "creator": "Creator A",
+  "intent_zh": "把高导电环境当作一次性弹药：强击会同步接地，后续同技能失去条件。",
+  "limitations_zh": [
+    "雷暴/潮湿区爆发；消耗公共导电场。",
+    "技能不会自动消费世界时间；runner 对两组推进相同 Tick。"
+  ],
+  "material": {
+    "id": "forked_fulgurite",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 14,
+        "effect_kinds": [
+          "damage",
+          "modify_field"
+        ],
+        "id": "forked_fulgurite_craft",
+        "selectors": [
+          "target_actor",
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "逆流接地",
+  "scenario": {
+    "environment": "storm_plateau",
+    "horizon_ticks": 4,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "combat",
+    "environment",
+    "conductive_reversal"
+  ]
+}

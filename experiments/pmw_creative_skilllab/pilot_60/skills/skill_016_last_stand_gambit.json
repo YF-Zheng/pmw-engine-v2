@@ -1,0 +1,98 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": {
+      "resource": {
+        "comparator": "lte",
+        "key": "hp",
+        "subject": "self",
+        "value": 30
+      }
+    },
+    "cost": {
+      "duration": 1,
+      "mana": 4
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 18,
+        "commitment": "required",
+        "id": "all_in",
+        "kind": "damage",
+        "target": {
+          "kind": "target_actor"
+        }
+      },
+      {
+        "amount": 6,
+        "commitment": "required",
+        "id": "recoil",
+        "kind": "damage",
+        "target": {
+          "kind": "self"
+        }
+      }
+    ],
+    "id": "last_stand_gambit",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "redline_core"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self",
+        "target_actor"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_016",
+  "category": "防御状态与反制",
+  "claims": {
+    "emergent_effect": "尚未观察到超出设计意图的额外效应。",
+    "intended_effect": "仅在 HP 不高于 30 时可用：高伤与自伤同时结算。门槛不满足时整个动作原子拒绝。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_016.json。"
+  },
+  "creator": "Creator B",
+  "intent_zh": "仅在 HP 不高于 30 时可用：高伤与自伤同时结算。门槛不满足时整个动作原子拒绝。",
+  "limitations_zh": [
+    "数值仍属于 Pilot 人工约束，未做全局平衡。"
+  ],
+  "material": {
+    "id": "redline_core",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "damage"
+        ],
+        "id": "redline_core_authority",
+        "selectors": [
+          "self",
+          "target_actor"
+        ]
+      }
+    ]
+  },
+  "name_zh": "末路豪赌",
+  "scenario": {
+    "environment": "dry_basin",
+    "hero_hp": 28,
+    "horizon_ticks": 2
+  },
+  "statuses": [],
+  "tags": [
+    "defense",
+    "counterplay",
+    "skill_blueprint"
+  ]
+}

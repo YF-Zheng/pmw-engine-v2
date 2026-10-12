@@ -1,0 +1,92 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 0
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": -0.18,
+        "commitment": "required",
+        "field_id": "biomass",
+        "id": "clear_biomass",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "amount": -0.12,
+        "commitment": "required",
+        "field_id": "mist",
+        "id": "open_dry_lane",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "controlled_firebreak",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "ash_salt"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_031",
+  "category": "探索资源与非战斗",
+  "claims": {
+    "emergent_effect": "公共场量变化可能被天气或生态 Law 消费，只有 evidence 中实际触发的 Law 才计为观察结果。",
+    "intended_effect": "同时清除局部植被与雾气，牺牲资源换取干燥通道。当前引擎没有导航收益，因此只把它认定为可执行环境改造，不夸称已经开路。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_031.json。"
+  },
+  "creator": "Creator D",
+  "intent_zh": "同时清除局部植被与雾气，牺牲资源换取干燥通道。当前引擎没有导航收益，因此只把它认定为可执行环境改造，不夸称已经开路。",
+  "limitations_zh": [
+    "探索 Trait 只是显式组合接口；当前没有自动导航或发现系统。",
+    "资源场变化不等于材料已经采入背包，除非另行执行正式 harvest。"
+  ],
+  "material": {
+    "id": "ash_salt",
+    "region_rarity": "uncommon",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "modify_field"
+        ],
+        "id": "dry_clearance",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "可控防火带",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 4,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "exploration",
+    "resource",
+    "sacrifice biomass to dry a local area"
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 10
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 18,
+        "commitment": "required",
+        "id": "borrowed_guard",
+        "kind": "shield",
+        "target": {
+          "kind": "self"
+        }
+      },
+      {
+        "commitment": "required",
+        "id": "guard_clock",
+        "kind": "apply_status",
+        "status_id": "blood_guarded",
+        "target": {
+          "kind": "self"
+        }
+      }
+    ],
+    "id": "blood_mortgage",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "sanguine_iron"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_011",
+  "category": "防御状态与反制",
+  "claims": {
+    "emergent_effect": "尚未观察到超出设计意图的额外效应。",
+    "intended_effect": "抵押 10 Mana 换取两次自身回合前有效的 18 点临时盾；错误时机将耗尽施法余量，盾到期会严格清理。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_011.json。"
+  },
+  "creator": "Creator B",
+  "intent_zh": "抵押 10 Mana 换取两次自身回合前有效的 18 点临时盾；错误时机将耗尽施法余量，盾到期会严格清理。",
+  "limitations_zh": [
+    "数值仍属于 Pilot 人工约束，未做全局平衡。"
+  ],
+  "material": {
+    "id": "sanguine_iron",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "shield",
+          "apply_status"
+        ],
+        "id": "sanguine_iron_authority",
+        "selectors": [
+          "self"
+        ]
+      }
+    ]
+  },
+  "name_zh": "血契抵押",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 2,
+    "phase": "owner_turn",
+    "phase_steps": 2
+  },
+  "statuses": [
+    {
+      "duration": {
+        "amount": 2,
+        "unit": "owner_turn"
+      },
+      "granted_traits": [
+        "blood_guarded"
+      ],
+      "id": "blood_guarded",
+      "max_stacks": 1,
+      "on_expire_resource": {
+        "resource": "shield",
+        "value": 0
+      },
+      "polarity": "buff",
+      "stack_policy": "refresh",
+      "version": 1
+    }
+  ],
+  "tags": [
+    "defense",
+    "status",
+    "skill_blueprint"
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": {
+      "resource": {
+        "comparator": "gt",
+        "key": "shield",
+        "subject": "target_actor",
+        "value": 0
+      }
+    },
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 4,
+        "commitment": "required",
+        "id": "chip_guard",
+        "kind": "damage",
+        "target": {
+          "kind": "target_actor"
+        }
+      },
+      {
+        "commitment": "required",
+        "id": "leave_fault",
+        "kind": "apply_status",
+        "status_id": "fractured_guard",
+        "target": {
+          "kind": "target_actor"
+        }
+      }
+    ],
+    "id": "breaker_mark",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "fault_salt"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "target_actor"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_019",
+  "category": "防御状态与反制",
+  "claims": {
+    "emergent_effect": "尚未观察到超出设计意图的额外效应。",
+    "intended_effect": "只对当前有盾目标合法：先削盾并留下两回合 brittle_guard Trait，供其他显式条件技能组合使用。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_019.json。"
+  },
+  "creator": "Creator B",
+  "intent_zh": "只对当前有盾目标合法：先削盾并留下两回合 brittle_guard Trait，供其他显式条件技能组合使用。",
+  "limitations_zh": [
+    "数值仍属于 Pilot 人工约束，未做全局平衡。"
+  ],
+  "material": {
+    "id": "fault_salt",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "damage",
+          "apply_status"
+        ],
+        "id": "fault_salt_authority",
+        "selectors": [
+          "target_actor"
+        ]
+      }
+    ]
+  },
+  "name_zh": "破盾印记",
+  "scenario": {
+    "environment": "storm_plateau",
+    "horizon_ticks": 2,
+    "prelude_actions": [
+      {
+        "action_id": "basic_guard",
+        "actor_id": "pilot_target",
+        "target_actor_id": "pilot_target"
+      }
+    ]
+  },
+  "statuses": [
+    {
+      "duration": {
+        "amount": 2,
+        "unit": "owner_turn"
+      },
+      "granted_traits": [
+        "brittle_guard"
+      ],
+      "id": "fractured_guard",
+      "max_stacks": 1,
+      "polarity": "debuff",
+      "stack_policy": "refresh",
+      "version": 1
+    }
+  ],
+  "tags": [
+    "defense",
+    "status",
+    "skill_blueprint"
+  ]
+}

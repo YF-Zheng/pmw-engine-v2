@@ -1,0 +1,83 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 8
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 0.9,
+        "commitment": "required",
+        "duration": 4,
+        "field_id": "wetness",
+        "id": "effect_dew_seed",
+        "kind": "modify_attractor",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "dew_seed",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "mat_dew_seed"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_021",
+  "category": "天气生态与世界演化",
+  "claims": {
+    "emergent_effect": "天气、生态换挡或到期后的轨迹残差仅在实际出现时由 evidence 证明。",
+    "intended_effect": "把湿度的临时吸引子抬高；在恢复快的区域可跨过降雨阈值，在迟钝干地只留下短暂回潮。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_021.json。"
+  },
+  "creator": "Creator C",
+  "intent_zh": "把湿度的临时吸引子抬高；在恢复快的区域可跨过降雨阈值，在迟钝干地只留下短暂回潮。",
+  "limitations_zh": [
+    "低恢复率干地在修正到期前不能跨过降雨阈值。",
+    "modify_attractor 使用绝对临时 target；modify_rate 使用 additive rate。"
+  ],
+  "material": {
+    "id": "mat_dew_seed",
+    "region_rarity": "uncommon",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 8,
+        "effect_kinds": [
+          "modify_attractor"
+        ],
+        "id": "trait_dew_seed",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "露种",
+  "scenario": {
+    "environment": "rain_edge",
+    "horizon_ticks": 6,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "weather",
+    "ecology",
+    "modify_attractor"
+  ]
+}

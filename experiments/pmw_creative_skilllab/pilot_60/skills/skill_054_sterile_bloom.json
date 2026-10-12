@@ -1,0 +1,95 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 14
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 1
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 9,
+        "commitment": "required",
+        "id": "bloom_heal",
+        "kind": "heal",
+        "target": {
+          "kind": "self"
+        }
+      },
+      {
+        "amount": -0.3,
+        "commitment": "required",
+        "field_id": "biomass",
+        "id": "sterilize_soil",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "sterile_bloom",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "sterile_seed"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self",
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_054",
+  "category": "治疗/生态交换",
+  "claims": {
+    "emergent_effect": "公共场量、天气、生态与状态的后续变化由正式 World Laws 消费；未在证据中触发的联动不计为结果。",
+    "intended_effect": "以区域生物量换取治疗。治疗发生在自己身上，生态代价留给整片区域，之后由自然恢复承担。",
+    "observed_effect": "完整状态序列与 CausalTrace 见 evidence/skill_054.json；只把真实执行器产生的差异计为结果。"
+  },
+  "creator": "Creator F",
+  "intent_zh": "以区域生物量换取治疗。治疗发生在自己身上，生态代价留给整片区域，之后由自然恢复承担。",
+  "limitations_zh": [
+    "连续使用会压低生态存量；收益不是免费的治疗。",
+    "动作不会自动推进世界时间；runner 对 baseline/treatment 使用相同 World Tick 预算。"
+  ],
+  "material": {
+    "id": "sterile_seed",
+    "region_rarity": "uncommon",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 14,
+        "effect_kinds": [
+          "heal",
+          "modify_field"
+        ],
+        "id": "sterile_seed_license",
+        "selectors": [
+          "self",
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "无菌花期",
+  "scenario": {
+    "environment": "lush_grove",
+    "hero_hp": 35,
+    "horizon_ticks": 3,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "free_experiment",
+    "odd_mechanic",
+    "治疗/生态交换"
+  ]
+}

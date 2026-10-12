@@ -1,0 +1,123 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 3
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 10,
+        "commitment": "required",
+        "id": "mist_layer",
+        "kind": "shield",
+        "target": {
+          "kind": "self"
+        }
+      },
+      {
+        "commitment": "required",
+        "id": "mist_clock",
+        "kind": "apply_status",
+        "status_id": "fogbound_guarded",
+        "target": {
+          "kind": "self"
+        }
+      },
+      {
+        "amount": 0.35,
+        "commitment": "required",
+        "field_id": "mist",
+        "id": "blind_field",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "fogbound_bastion",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "clouded_glass"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area",
+        "self"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_017",
+  "category": "防御状态与反制",
+  "claims": {
+    "emergent_effect": "尚未观察到超出设计意图的额外效应。",
+    "intended_effect": "获得一回合临时盾，同时增浓全场迷雾；防御收益私有，但环境变化对双方公开且可能帮助敌人。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_017.json。"
+  },
+  "creator": "Creator B",
+  "intent_zh": "获得一回合临时盾，同时增浓全场迷雾；防御收益私有，但环境变化对双方公开且可能帮助敌人。",
+  "limitations_zh": [
+    "数值仍属于 Pilot 人工约束，未做全局平衡。"
+  ],
+  "material": {
+    "id": "clouded_glass",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "shield",
+          "apply_status",
+          "modify_field"
+        ],
+        "id": "clouded_glass_authority",
+        "selectors": [
+          "self",
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "雾锁壁垒",
+  "scenario": {
+    "environment": "mist_cavern",
+    "horizon_ticks": 3,
+    "phase": "owner_turn",
+    "phase_steps": 1
+  },
+  "statuses": [
+    {
+      "duration": {
+        "amount": 1,
+        "unit": "owner_turn"
+      },
+      "granted_traits": [
+        "fogbound"
+      ],
+      "id": "fogbound_guarded",
+      "max_stacks": 1,
+      "on_expire_resource": {
+        "resource": "shield",
+        "value": 0
+      },
+      "polarity": "buff",
+      "stack_policy": "refresh",
+      "version": 1
+    }
+  ],
+  "tags": [
+    "defense",
+    "status",
+    "skill_blueprint"
+  ]
+}

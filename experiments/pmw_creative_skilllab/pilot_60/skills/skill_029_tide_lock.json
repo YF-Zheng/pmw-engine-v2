@@ -1,0 +1,83 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 8
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 0.8,
+        "commitment": "required",
+        "duration": 6,
+        "field_id": "wetness",
+        "id": "effect_tide_lock",
+        "kind": "modify_attractor",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "tide_lock",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "mat_tide_lock"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_029",
+  "category": "天气生态与世界演化",
+  "claims": {
+    "emergent_effect": "天气、生态换挡或到期后的轨迹残差仅在实际出现时由 evidence 证明。",
+    "intended_effect": "把水位暂时牵向高位；快流区迅速见效，慢渗区可能在到达前就失效。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_029.json。"
+  },
+  "creator": "Creator C",
+  "intent_zh": "把水位暂时牵向高位；快流区迅速见效，慢渗区可能在到达前就失效。",
+  "limitations_zh": [
+    "慢渗区域在 duration 内接近不了高水位。",
+    "modify_attractor 使用绝对临时 target；modify_rate 使用 additive rate。"
+  ],
+  "material": {
+    "id": "mat_tide_lock",
+    "region_rarity": "uncommon",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 8,
+        "effect_kinds": [
+          "modify_attractor"
+        ],
+        "id": "trait_tide_lock",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "潮汐锁",
+  "scenario": {
+    "environment": "dry_basin",
+    "horizon_ticks": 6,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "weather",
+    "ecology",
+    "modify_attractor"
+  ]
+}

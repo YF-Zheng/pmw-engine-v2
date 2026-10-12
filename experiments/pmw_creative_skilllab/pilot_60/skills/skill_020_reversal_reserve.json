@@ -1,0 +1,130 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": {
+      "resource": {
+        "comparator": "gte",
+        "key": "mana",
+        "subject": "self",
+        "value": 15
+      }
+    },
+    "cost": {
+      "duration": 1,
+      "mana": 8
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 14,
+        "commitment": "required",
+        "id": "reserve_layer",
+        "kind": "shield",
+        "target": {
+          "kind": "self"
+        }
+      },
+      {
+        "commitment": "required",
+        "id": "reserve_clock",
+        "kind": "apply_status",
+        "status_id": "reversal_guarded",
+        "target": {
+          "kind": "self"
+        }
+      },
+      {
+        "amount": 6,
+        "commitment": "required",
+        "id": "ally_relief",
+        "kind": "heal",
+        "target": {
+          "kind": "target_actor"
+        }
+      }
+    ],
+    "id": "reversal_reserve",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "inversion_plate"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self",
+        "target_actor"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_020",
+  "category": "防御状态与反制",
+  "claims": {
+    "emergent_effect": "尚未观察到超出设计意图的额外效应。",
+    "intended_effect": "以高 Mana 门槛与成本换取短暂自保并治疗队友；技能结束时自盾清零，队友治疗保留。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_020.json。"
+  },
+  "creator": "Creator B",
+  "intent_zh": "以高 Mana 门槛与成本换取短暂自保并治疗队友；技能结束时自盾清零，队友治疗保留。",
+  "limitations_zh": [
+    "数值仍属于 Pilot 人工约束，未做全局平衡。"
+  ],
+  "material": {
+    "id": "inversion_plate",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "shield",
+          "apply_status",
+          "heal"
+        ],
+        "id": "inversion_plate_authority",
+        "selectors": [
+          "self",
+          "target_actor"
+        ]
+      }
+    ]
+  },
+  "name_zh": "逆转储备",
+  "scenario": {
+    "environment": "depleted_grove",
+    "horizon_ticks": 2,
+    "phase": "owner_turn",
+    "phase_steps": 1,
+    "target_hp": 60
+  },
+  "statuses": [
+    {
+      "duration": {
+        "amount": 1,
+        "unit": "owner_turn"
+      },
+      "granted_traits": [
+        "reversal_ready"
+      ],
+      "id": "reversal_guarded",
+      "max_stacks": 1,
+      "on_expire_resource": {
+        "resource": "shield",
+        "value": 0
+      },
+      "polarity": "buff",
+      "stack_policy": "replace",
+      "version": 1
+    }
+  ],
+  "tags": [
+    "defense",
+    "status",
+    "skill_blueprint"
+  ]
+}

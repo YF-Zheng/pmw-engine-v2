@@ -1,0 +1,100 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": {
+      "resource": {
+        "comparator": "lte",
+        "key": "hp",
+        "subject": "self",
+        "value": 45
+      }
+    },
+    "cost": {
+      "duration": 1,
+      "mana": 0
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 7,
+        "commitment": "required",
+        "id": "reprisal",
+        "kind": "damage",
+        "target": {
+          "kind": "target_actor"
+        }
+      },
+      {
+        "amount": 3,
+        "commitment": "required",
+        "id": "thorn_tithe",
+        "kind": "damage",
+        "target": {
+          "kind": "self"
+        }
+      }
+    ],
+    "id": "thorn_covenant",
+    "kind": "passive_blueprint",
+    "material_ids": [
+      "widow_thorn"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self",
+        "target_actor"
+      ]
+    },
+    "trigger": "damage_resolved",
+    "version": 1
+  },
+  "case_id": "skill_014",
+  "category": "防御状态与反制",
+  "claims": {
+    "emergent_effect": "尚未观察到超出设计意图的额外效应。",
+    "intended_effect": "低血量受击后反伤 7 并自伤 3；能抢节奏，也可能在临界生命时把自己推向死亡。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_014.json。"
+  },
+  "creator": "Creator B",
+  "intent_zh": "低血量受击后反伤 7 并自伤 3；能抢节奏，也可能在临界生命时把自己推向死亡。",
+  "limitations_zh": [
+    "数值仍属于 Pilot 人工约束，未做全局平衡。",
+    "当前没有统一自动 Hook dispatcher；runner 在真实触发动作后调用受支持 execute_hook。"
+  ],
+  "material": {
+    "id": "widow_thorn",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "damage"
+        ],
+        "id": "widow_thorn_authority",
+        "selectors": [
+          "self",
+          "target_actor"
+        ]
+      }
+    ]
+  },
+  "name_zh": "荆棘盟约",
+  "scenario": {
+    "environment": "dry_basin",
+    "hero_hp": 40,
+    "horizon_ticks": 2,
+    "trigger_direction": "incoming"
+  },
+  "statuses": [],
+  "tags": [
+    "defense",
+    "counterplay",
+    "passive_blueprint"
+  ]
+}

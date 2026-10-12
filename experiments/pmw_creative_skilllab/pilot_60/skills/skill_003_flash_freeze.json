@@ -1,0 +1,128 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 14
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 3
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 4,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "wetness",
+            "subject": "current_area",
+            "value": 0.6
+          }
+        },
+        "id": "rime_cut",
+        "kind": "damage",
+        "target": {
+          "kind": "target_actor"
+        }
+      },
+      {
+        "amount": -30,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "wetness",
+            "subject": "current_area",
+            "value": 0.6
+          }
+        },
+        "field_id": "temperature",
+        "id": "freeze_area",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "amount": -0.2,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "wetness",
+            "subject": "current_area",
+            "value": 0.6
+          }
+        },
+        "field_id": "wetness",
+        "id": "bind_water",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "flash_freeze",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "rime_reed"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "target_actor",
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_003",
+  "category": "战斗与环境操纵",
+  "claims": {
+    "emergent_effect": "通用天气或 Dynamics 产生的后续差异由证据中的 Law IDs 单独标出。",
+    "intended_effect": "只在湿地生效，把水分和热量一起抽走并造成小额伤害。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_003.json。"
+  },
+  "creator": "Creator A",
+  "intent_zh": "只在湿地生效，把水分和热量一起抽走并造成小额伤害。",
+  "limitations_zh": [
+    "干燥区失败；可能破坏依赖湿度的后续构筑。",
+    "技能不会自动消费世界时间；runner 对两组推进相同 Tick。"
+  ],
+  "material": {
+    "id": "rime_reed",
+    "region_rarity": "uncommon",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 14,
+        "effect_kinds": [
+          "damage",
+          "modify_field"
+        ],
+        "id": "rime_reed_craft",
+        "selectors": [
+          "target_actor",
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "闪霜抽湿",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 3,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "combat",
+    "environment",
+    "flash_freeze"
+  ]
+}

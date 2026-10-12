@@ -1,0 +1,83 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 1
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": -0.08,
+        "commitment": "required",
+        "duration": 3,
+        "field_id": "biomass",
+        "id": "slow_herb_dynamics",
+        "kind": "modify_rate",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "preservation_wrap",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "stillfiber"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_037",
+  "category": "探索资源与非战斗",
+  "claims": {
+    "emergent_effect": "公共场量变化可能被天气或生态 Law 消费，只有 evidence 中实际触发的 Law 才计为观察结果。",
+    "intended_effect": "暂时降低 herbs 的恢复速率。它可减慢任意方向的生态变化，既可能延缓枯竭，也会拖慢复苏，是依赖当前吸引子方向的双刃工具。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_037.json。"
+  },
+  "creator": "Creator D",
+  "intent_zh": "暂时降低 herbs 的恢复速率。它可减慢任意方向的生态变化，既可能延缓枯竭，也会拖慢复苏，是依赖当前吸引子方向的双刃工具。",
+  "limitations_zh": [
+    "探索 Trait 只是显式组合接口；当前没有自动导航或发现系统。",
+    "资源场变化不等于材料已经采入背包，除非另行执行正式 harvest。"
+  ],
+  "material": {
+    "id": "stillfiber",
+    "region_rarity": "uncommon",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "modify_rate"
+        ],
+        "id": "metabolic_brake",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "静滞保鲜布",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 5,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "exploration",
+    "resource",
+    "temporary slowing of bidirectional field dynamics"
+  ]
+}

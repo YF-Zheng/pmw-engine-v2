@@ -1,0 +1,92 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 8
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 0.25,
+        "commitment": "required",
+        "field_id": "electric_field",
+        "id": "effect_lightning_rod_grove",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "amount": -0.15,
+        "commitment": "required",
+        "field_id": "wetness",
+        "id": "dry_canopy",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "lightning_rod_grove",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "mat_lightning_rod_grove"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_028",
+  "category": "天气生态与世界演化",
+  "claims": {
+    "emergent_effect": "天气、生态换挡或到期后的轨迹残差仅在实际出现时由 evidence 证明。",
+    "intended_effect": "提高环境导电性，同时消耗湿度；它创造雷暴联动表面，也制造干燥副作用。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_028.json。"
+  },
+  "creator": "Creator C",
+  "intent_zh": "提高环境导电性，同时消耗湿度；它创造雷暴联动表面，也制造干燥副作用。",
+  "limitations_zh": [
+    "无雷暴通用 Law 的区域只有导电/干燥改变，不会虚构雷击。",
+    "modify_attractor 使用绝对临时 target；modify_rate 使用 additive rate。"
+  ],
+  "material": {
+    "id": "mat_lightning_rod_grove",
+    "region_rarity": "scarce",
+    "tier": "epic",
+    "traits": [
+      {
+        "budget_points": 8,
+        "effect_kinds": [
+          "modify_field"
+        ],
+        "id": "trait_lightning_rod_grove",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "引雷林",
+  "scenario": {
+    "environment": "mist_cavern",
+    "horizon_ticks": 4,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "weather",
+    "ecology",
+    "modify_field"
+  ]
+}

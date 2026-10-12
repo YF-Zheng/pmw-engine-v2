@@ -1,0 +1,102 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 1
+    },
+    "duration": null,
+    "effects": [
+      {
+        "commitment": "required",
+        "id": "accept_burden",
+        "kind": "apply_status",
+        "status_id": "deferred_burden",
+        "target": {
+          "kind": "self"
+        }
+      }
+    ],
+    "id": "deferred_dividend",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "hourglass_resin"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_012",
+  "category": "防御状态与反制",
+  "claims": {
+    "emergent_effect": "尚未观察到超出设计意图的额外效应。",
+    "intended_effect": "三次世界 Tick 各失去 4 HP，完整撑过后才把 Mana 设置为 40；高 Mana 时可能亏损，提前取消也会按正式取消语义结算。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_012.json。"
+  },
+  "creator": "Creator B",
+  "intent_zh": "三次世界 Tick 各失去 4 HP，完整撑过后才把 Mana 设置为 40；高 Mana 时可能亏损，提前取消也会按正式取消语义结算。",
+  "limitations_zh": [
+    "数值仍属于 Pilot 人工约束，未做全局平衡。"
+  ],
+  "material": {
+    "id": "hourglass_resin",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "apply_status"
+        ],
+        "id": "hourglass_resin_authority",
+        "selectors": [
+          "self"
+        ]
+      }
+    ]
+  },
+  "name_zh": "迟付红利",
+  "scenario": {
+    "environment": "dry_basin",
+    "horizon_ticks": 3
+  },
+  "statuses": [
+    {
+      "duration": {
+        "amount": 3,
+        "unit": "world_tick"
+      },
+      "granted_traits": [
+        "waiting_dividend"
+      ],
+      "id": "deferred_burden",
+      "max_stacks": 1,
+      "on_expire_resource": {
+        "resource": "mana",
+        "value": 40
+      },
+      "periodic_resource": {
+        "delta": -4,
+        "resource": "hp"
+      },
+      "polarity": "neutral",
+      "stack_policy": "reject",
+      "version": 1
+    }
+  ],
+  "tags": [
+    "defense",
+    "status",
+    "skill_blueprint"
+  ]
+}

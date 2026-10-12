@@ -1,0 +1,93 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 12,
+        "commitment": "required",
+        "id": "donor_wound",
+        "kind": "damage",
+        "target": {
+          "kind": "self"
+        }
+      },
+      {
+        "amount": 15,
+        "commitment": "required",
+        "id": "recipient_heal",
+        "kind": "heal",
+        "target": {
+          "kind": "target_actor"
+        }
+      }
+    ],
+    "id": "life_transfusion",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "mercy_needle"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self",
+        "target_actor"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_018",
+  "category": "防御状态与反制",
+  "claims": {
+    "emergent_effect": "尚未观察到超出设计意图的额外效应。",
+    "intended_effect": "用自身 12 HP 为目标恢复 15 HP；目标已满血时仍会支付自伤，形成真实误用风险。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_018.json。"
+  },
+  "creator": "Creator B",
+  "intent_zh": "用自身 12 HP 为目标恢复 15 HP；目标已满血时仍会支付自伤，形成真实误用风险。",
+  "limitations_zh": [
+    "数值仍属于 Pilot 人工约束，未做全局平衡。"
+  ],
+  "material": {
+    "id": "mercy_needle",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "damage",
+          "heal"
+        ],
+        "id": "mercy_needle_authority",
+        "selectors": [
+          "self",
+          "target_actor"
+        ]
+      }
+    ]
+  },
+  "name_zh": "生命转输",
+  "scenario": {
+    "environment": "wet_forest",
+    "hero_hp": 70,
+    "horizon_ticks": 2,
+    "target_hp": 55
+  },
+  "statuses": [],
+  "tags": [
+    "defense",
+    "counterplay",
+    "skill_blueprint"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 0
+    },
+    "duration": null,
+    "effects": [
+      {
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "biomass",
+            "subject": "current_area",
+            "value": 0.6
+          }
+        },
+        "duration": 2,
+        "id": "mark_dense_growth",
+        "kind": "grant_trait",
+        "target": {
+          "kind": "self"
+        },
+        "trait_id": "dense_growth_surveyed"
+      }
+    ],
+    "id": "mushroom_scout",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "whisper_cap"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_036",
+  "category": "探索资源与非战斗",
+  "claims": {
+    "emergent_effect": "公共场量变化可能被天气或生态 Law 消费，只有 evidence 中实际触发的 Law 才计为观察结果。",
+    "intended_effect": "植被丰盛时记录短时调查标记。技能自身不直接给材料，适合作为后续天气或收获规则的公开前置条件。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_036.json。"
+  },
+  "creator": "Creator D",
+  "intent_zh": "植被丰盛时记录短时调查标记。技能自身不直接给材料，适合作为后续天气或收获规则的公开前置条件。",
+  "limitations_zh": [
+    "探索 Trait 只是显式组合接口；当前没有自动导航或发现系统。",
+    "资源场变化不等于材料已经采入背包，除非另行执行正式 harvest。"
+  ],
+  "material": {
+    "id": "whisper_cap",
+    "region_rarity": "uncommon",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "grant_trait"
+        ],
+        "id": "living_survey",
+        "selectors": [
+          "self"
+        ]
+      }
+    ]
+  },
+  "name_zh": "菌群侦察",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 3,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "exploration",
+    "resource",
+    "resource-density-gated survey trait"
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 14
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 1
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 8,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "lte",
+            "key": "temperature",
+            "subject": "current_area",
+            "value": 30
+          }
+        },
+        "id": "vent_heal",
+        "kind": "heal",
+        "target": {
+          "kind": "self"
+        }
+      },
+      {
+        "amount": 15,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "lte",
+            "key": "temperature",
+            "subject": "current_area",
+            "value": 30
+          }
+        },
+        "field_id": "temperature",
+        "id": "dump_heat",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "amount": 0.15,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "lte",
+            "key": "temperature",
+            "subject": "current_area",
+            "value": 30
+          }
+        },
+        "field_id": "smoke",
+        "id": "vent_haze",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "pressure_vent",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "cryovent_glass"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self",
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_007",
+  "category": "战斗与环境操纵",
+  "claims": {
+    "emergent_effect": "通用天气或 Dynamics 产生的后续差异由证据中的 Law IDs 单独标出。",
+    "intended_effect": "仅在低温区把冷储备转成治疗，代价是显著升温并放出烟雾。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_007.json。"
+  },
+  "creator": "Creator A",
+  "intent_zh": "仅在低温区把冷储备转成治疗，代价是显著升温并放出烟雾。",
+  "limitations_zh": [
+    "不能连续无脑治疗，使用会消耗自身成立条件。",
+    "技能不会自动消费世界时间；runner 对两组推进相同 Tick。"
+  ],
+  "material": {
+    "id": "cryovent_glass",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 14,
+        "effect_kinds": [
+          "heal",
+          "modify_field"
+        ],
+        "id": "cryovent_glass_craft",
+        "selectors": [
+          "self",
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "冷压泄放",
+  "scenario": {
+    "environment": "mist_cavern",
+    "hero_hp": 62,
+    "horizon_ticks": 3,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "combat",
+    "environment",
+    "pressure_vent"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 14
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 0
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 2,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "conductivity",
+            "subject": "current_area",
+            "value": 0.7
+          }
+        },
+        "id": "capture_charge",
+        "kind": "add_resource",
+        "resource": "mana",
+        "target": {
+          "kind": "self"
+        }
+      },
+      {
+        "amount": -0.1,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "conductivity",
+            "subject": "current_area",
+            "value": 0.7
+          }
+        },
+        "field_id": "conductivity",
+        "id": "ground_storm",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "storm_battery",
+    "kind": "passive_blueprint",
+    "material_ids": [
+      "storm_capacitor"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self",
+        "current_area"
+      ]
+    },
+    "trigger": "weather_changed",
+    "version": 1
+  },
+  "case_id": "skill_008",
+  "category": "战斗与环境操纵",
+  "claims": {
+    "emergent_effect": "通用天气或 Dynamics 产生的后续差异由证据中的 Law IDs 单独标出。",
+    "intended_effect": "被动只监听真实 weather_changed，捕获高导电天气的能量并使环境接地。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_008.json。"
+  },
+  "creator": "Creator A",
+  "intent_zh": "被动只监听真实 weather_changed，捕获高导电天气的能量并使环境接地。",
+  "limitations_zh": [
+    "天气事件专用；触发会削弱下一次触发条件。",
+    "技能不会自动消费世界时间；runner 对两组推进相同 Tick。"
+  ],
+  "material": {
+    "id": "storm_capacitor",
+    "region_rarity": "scarce",
+    "tier": "epic",
+    "traits": [
+      {
+        "budget_points": 14,
+        "effect_kinds": [
+          "add_resource",
+          "modify_field"
+        ],
+        "id": "storm_capacitor_craft",
+        "selectors": [
+          "self",
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "风暴蓄电",
+  "scenario": {
+    "environment": "storm_plateau",
+    "horizon_ticks": 3,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "combat",
+    "environment",
+    "storm_battery"
+  ]
+}

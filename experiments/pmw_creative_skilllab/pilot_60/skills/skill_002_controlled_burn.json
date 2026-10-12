@@ -1,0 +1,128 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 14
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 5,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "biomass",
+            "subject": "current_area",
+            "value": 0.6
+          }
+        },
+        "id": "burn_target",
+        "kind": "damage",
+        "target": {
+          "kind": "target_actor"
+        }
+      },
+      {
+        "amount": -0.25,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "biomass",
+            "subject": "current_area",
+            "value": 0.6
+          }
+        },
+        "field_id": "biomass",
+        "id": "consume_growth",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "amount": 0.5,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "biomass",
+            "subject": "current_area",
+            "value": 0.6
+          }
+        },
+        "field_id": "smoke",
+        "id": "raise_smoke",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "controlled_burn",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "ember_spore"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "target_actor",
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_002",
+  "category": "战斗与环境操纵",
+  "claims": {
+    "emergent_effect": "通用天气或 Dynamics 产生的后续差异由证据中的 Law IDs 单独标出。",
+    "intended_effect": "用充足生物量点燃目标，同时消耗生态存量并制造烟雾。烟雾可触发通用天气热反馈。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_002.json。"
+  },
+  "creator": "Creator A",
+  "intent_zh": "用充足生物量点燃目标，同时消耗生态存量并制造烟雾。烟雾可触发通用天气热反馈。",
+  "limitations_zh": [
+    "伤害换生态退化和后续升温。",
+    "技能不会自动消费世界时间；runner 对两组推进相同 Tick。"
+  ],
+  "material": {
+    "id": "ember_spore",
+    "region_rarity": "uncommon",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 14,
+        "effect_kinds": [
+          "damage",
+          "modify_field"
+        ],
+        "id": "ember_spore_craft",
+        "selectors": [
+          "target_actor",
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "控燃术",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 4,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "combat",
+    "environment",
+    "controlled_burn"
+  ]
+}

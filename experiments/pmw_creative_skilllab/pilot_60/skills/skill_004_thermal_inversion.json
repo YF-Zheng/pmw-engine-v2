@@ -1,0 +1,114 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 14
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 1
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 10,
+        "commitment": "required",
+        "duration": 3,
+        "field_id": "temperature",
+        "id": "cold_attractor",
+        "kind": "modify_attractor",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "commitment": "required",
+        "id": "thermal_debt_self",
+        "kind": "apply_status",
+        "status_id": "thermal_debt",
+        "target": {
+          "kind": "self"
+        }
+      }
+    ],
+    "id": "thermal_inversion",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "inverse_thermite"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area",
+        "self"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_004",
+  "category": "战斗与环境操纵",
+  "claims": {
+    "emergent_effect": "通用天气或 Dynamics 产生的后续差异由证据中的 Law IDs 单独标出。",
+    "intended_effect": "短期把区域温度吸引子拉向严寒，但施法者承担逐 Tick 法力债。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_004.json。"
+  },
+  "creator": "Creator A",
+  "intent_zh": "短期把区域温度吸引子拉向严寒，但施法者承担逐 Tick 法力债。",
+  "limitations_zh": [
+    "持续控场与明确个人机会成本。",
+    "技能不会自动消费世界时间；runner 对两组推进相同 Tick。"
+  ],
+  "material": {
+    "id": "inverse_thermite",
+    "region_rarity": "scarce",
+    "tier": "epic",
+    "traits": [
+      {
+        "budget_points": 14,
+        "effect_kinds": [
+          "modify_attractor",
+          "apply_status"
+        ],
+        "id": "inverse_thermite_craft",
+        "selectors": [
+          "current_area",
+          "self"
+        ]
+      }
+    ]
+  },
+  "name_zh": "热势倒转",
+  "scenario": {
+    "environment": "dry_basin",
+    "horizon_ticks": 5,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [
+    {
+      "duration": {
+        "amount": 3,
+        "unit": "world_tick"
+      },
+      "granted_traits": [
+        "thermally_overdrawn"
+      ],
+      "id": "thermal_debt",
+      "max_stacks": 1,
+      "periodic_resource": {
+        "delta": -2,
+        "resource": "mana"
+      },
+      "polarity": "debuff",
+      "stack_policy": "refresh",
+      "version": 1
+    }
+  ],
+  "tags": [
+    "combat",
+    "environment",
+    "thermal_inversion"
+  ]
+}

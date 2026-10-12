@@ -1,0 +1,114 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 9
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 0
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 3,
+        "commitment": "conditional",
+        "condition": {
+          "resource": {
+            "comparator": "lte",
+            "key": "hp",
+            "subject": "self",
+            "value": 30
+          }
+        },
+        "id": "echo_mend",
+        "kind": "heal",
+        "target": {
+          "kind": "self"
+        }
+      },
+      {
+        "amount": 0.08,
+        "commitment": "conditional",
+        "condition": {
+          "resource": {
+            "comparator": "lte",
+            "key": "hp",
+            "subject": "self",
+            "value": 30
+          }
+        },
+        "field_id": "stability",
+        "id": "echo_resonance",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "bruised_echo",
+    "kind": "passive_blueprint",
+    "material_ids": [
+      "scar_tuning_fork"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area",
+        "self"
+      ]
+    },
+    "trigger": "damage_resolved",
+    "version": 1
+  },
+  "case_id": "skill_050",
+  "category": "被动 Hook/濒危反馈",
+  "claims": {
+    "emergent_effect": "公共场量、天气、生态与状态的后续变化由正式 World Laws 消费；未在证据中触发的联动不计为结果。",
+    "intended_effect": "受到真实伤害事件后，只有生命降到阈值以下才通过 Hook 小幅治疗并提高共振场。它把濒危状态变为后续组合资源，而非无限反伤。",
+    "observed_effect": "完整状态序列与 CausalTrace 见 evidence/skill_050.json；只把真实执行器产生的差异计为结果。"
+  },
+  "creator": "Creator E",
+  "intent_zh": "受到真实伤害事件后，只有生命降到阈值以下才通过 Hook 小幅治疗并提高共振场。它把濒危状态变为后续组合资源，而非无限反伤。",
+  "limitations_zh": [
+    "条件不满足时两个 conditional 效果都跳过；每个根事件最多一次。",
+    "Hook 由真实来源事件后显式调用受信执行器；当前没有自动事件路由。",
+    "Creator 提议中的领域字段被映射到公开的规范字段：resonance->stability."
+  ],
+  "material": {
+    "id": "scar_tuning_fork",
+    "region_rarity": "uncommon",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 9,
+        "effect_kinds": [
+          "heal",
+          "modify_field"
+        ],
+        "id": "scar_tuning_fork_affinity",
+        "selectors": [
+          "self",
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "伤痕回声",
+  "scenario": {
+    "environment": "dry_basin",
+    "hero_hp": 35,
+    "horizon_ticks": 3,
+    "target_actor_id": "pilot_target",
+    "trigger_direction": "incoming"
+  },
+  "statuses": [],
+  "tags": [
+    "passive",
+    "hook",
+    "low_hp",
+    "shared_field"
+  ]
+}

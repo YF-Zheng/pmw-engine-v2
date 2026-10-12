@@ -1,0 +1,108 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 1
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 0.12,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "mist",
+            "subject": "current_area",
+            "value": 0.6
+          }
+        },
+        "field_id": "biomass",
+        "id": "collect_dew",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "amount": -0.15,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "mist",
+            "subject": "current_area",
+            "value": 0.6
+          }
+        },
+        "field_id": "mist",
+        "id": "consume_mist",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "dewline_condenser",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "wicked_moss"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_033",
+  "category": "探索资源与非战斗",
+  "claims": {
+    "emergent_effect": "公共场量变化可能被天气或生态 Law 消费，只有 evidence 中实际触发的 Law 才计为观察结果。",
+    "intended_effect": "把高雾环境中的水分导入可采植被：即时提高 herbs，但消耗 mist。它不是凭空产资源，而是交换两个公共场量；干燥环境会整次原子失败。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_033.json。"
+  },
+  "creator": "Creator D",
+  "intent_zh": "把高雾环境中的水分导入可采植被：即时提高 herbs，但消耗 mist。它不是凭空产资源，而是交换两个公共场量；干燥环境会整次原子失败。",
+  "limitations_zh": [
+    "探索 Trait 只是显式组合接口；当前没有自动导航或发现系统。",
+    "资源场变化不等于材料已经采入背包，除非另行执行正式 harvest。"
+  ],
+  "material": {
+    "id": "wicked_moss",
+    "region_rarity": "uncommon",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "modify_field"
+        ],
+        "id": "capillary_exchange",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "露线集水器",
+  "scenario": {
+    "environment": "mist_cavern",
+    "horizon_ticks": 4,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "exploration",
+    "resource",
+    "conditioned two-field transfer"
+  ]
+}

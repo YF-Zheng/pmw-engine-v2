@@ -1,0 +1,86 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": {
+      "has_status": {
+        "id": "basic_guarding",
+        "subject": "self"
+      }
+    },
+    "cost": {
+      "duration": 1,
+      "mana": 0
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 3,
+        "commitment": "required",
+        "id": "recover_focus",
+        "kind": "add_resource",
+        "resource": "mana",
+        "target": {
+          "kind": "self"
+        }
+      }
+    ],
+    "id": "guard_echo",
+    "kind": "passive_blueprint",
+    "material_ids": [
+      "resonant_buckle"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self"
+      ]
+    },
+    "trigger": "status_changed",
+    "version": 1
+  },
+  "case_id": "skill_015",
+  "category": "防御状态与反制",
+  "claims": {
+    "emergent_effect": "尚未观察到超出设计意图的额外效应。",
+    "intended_effect": "基础格挡状态改变且仍处于 guarding 时返还 3 Mana；无关状态事件不应触发。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_015.json。"
+  },
+  "creator": "Creator B",
+  "intent_zh": "基础格挡状态改变且仍处于 guarding 时返还 3 Mana；无关状态事件不应触发。",
+  "limitations_zh": [
+    "数值仍属于 Pilot 人工约束，未做全局平衡。",
+    "当前没有统一自动 Hook dispatcher；runner 在真实触发动作后调用受支持 execute_hook。"
+  ],
+  "material": {
+    "id": "resonant_buckle",
+    "region_rarity": "scarce",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "add_resource"
+        ],
+        "id": "resonant_buckle_authority",
+        "selectors": [
+          "self"
+        ]
+      }
+    ]
+  },
+  "name_zh": "守势回声",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 2
+  },
+  "statuses": [],
+  "tags": [
+    "defense",
+    "counterplay",
+    "passive_blueprint"
+  ]
+}

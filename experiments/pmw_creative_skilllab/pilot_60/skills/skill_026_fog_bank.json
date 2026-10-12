@@ -1,0 +1,90 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 8
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 0.25,
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "wetness",
+            "subject": "current_area",
+            "value": 0.5
+          }
+        },
+        "field_id": "mist",
+        "id": "effect_fog_bank",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "fog_bank",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "mat_fog_bank"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_026",
+  "category": "天气生态与世界演化",
+  "claims": {
+    "emergent_effect": "天气、生态换挡或到期后的轨迹残差仅在实际出现时由 evidence 证明。",
+    "intended_effect": "在湿度至少 0.5 时把水汽转为雾；干燥环境中 required 条件会原子拒绝。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_026.json。"
+  },
+  "creator": "Creator C",
+  "intent_zh": "在湿度至少 0.5 时把水汽转为雾；干燥环境中 required 条件会原子拒绝。",
+  "limitations_zh": [
+    "humidity < 0.5 时 required 条件使整个动作拒绝。",
+    "modify_attractor 使用绝对临时 target；modify_rate 使用 additive rate。"
+  ],
+  "material": {
+    "id": "mat_fog_bank",
+    "region_rarity": "uncommon",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 8,
+        "effect_kinds": [
+          "modify_field"
+        ],
+        "id": "trait_fog_bank",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "雾库开闸",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 4,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "weather",
+    "ecology",
+    "modify_field"
+  ]
+}

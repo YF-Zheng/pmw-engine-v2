@@ -1,0 +1,82 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 8
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": -0.4,
+        "commitment": "required",
+        "field_id": "biomass",
+        "id": "effect_phenology_reset",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "phenology_reset",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "mat_phenology_reset"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_030",
+  "category": "天气生态与世界演化",
+  "claims": {
+    "emergent_effect": "天气、生态换挡或到期后的轨迹残差仅在实际出现时由 evidence 证明。",
+    "intended_effect": "把开花指标回拨，推迟依赖持续高开花值的生态转换，以时间换取采集窗口。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_030.json。"
+  },
+  "creator": "Creator C",
+  "intent_zh": "把开花指标回拨，推迟依赖持续高开花值的生态转换，以时间换取采集窗口。",
+  "limitations_zh": [
+    "低 bloom 本就远离阈值时只有很小策略价值。",
+    "modify_attractor 使用绝对临时 target；modify_rate 使用 additive rate。"
+  ],
+  "material": {
+    "id": "mat_phenology_reset",
+    "region_rarity": "abundant",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 8,
+        "effect_kinds": [
+          "modify_field"
+        ],
+        "id": "trait_phenology_reset",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "物候回拨",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 4,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "weather",
+    "ecology",
+    "modify_field"
+  ]
+}

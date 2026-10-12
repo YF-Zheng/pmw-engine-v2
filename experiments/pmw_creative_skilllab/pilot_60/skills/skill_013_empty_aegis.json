@@ -1,0 +1,88 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": {
+      "resource": {
+        "comparator": "lte",
+        "key": "shield",
+        "subject": "self",
+        "value": 0
+      }
+    },
+    "cost": {
+      "duration": 1,
+      "mana": 0
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 6,
+        "commitment": "required",
+        "id": "emergency_layer",
+        "kind": "shield",
+        "target": {
+          "kind": "self"
+        }
+      }
+    ],
+    "id": "empty_aegis",
+    "kind": "passive_blueprint",
+    "material_ids": [
+      "hollow_scale"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self"
+      ]
+    },
+    "trigger": "damage_resolved",
+    "version": 1
+  },
+  "case_id": "skill_013",
+  "category": "防御状态与反制",
+  "claims": {
+    "emergent_effect": "尚未观察到超出设计意图的额外效应。",
+    "intended_effect": "伤害结算后若盾已耗尽，生成一层 6 点持续到被击碎的护盾；不是自动减伤，且每根事件因果链仅触发一次。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_013.json。"
+  },
+  "creator": "Creator B",
+  "intent_zh": "伤害结算后若盾已耗尽，生成一层 6 点持续到被击碎的护盾；不是自动减伤，且每根事件因果链仅触发一次。",
+  "limitations_zh": [
+    "数值仍属于 Pilot 人工约束，未做全局平衡。",
+    "当前没有统一自动 Hook dispatcher；runner 在真实触发动作后调用受支持 execute_hook。"
+  ],
+  "material": {
+    "id": "hollow_scale",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "shield"
+        ],
+        "id": "hollow_scale_authority",
+        "selectors": [
+          "self"
+        ]
+      }
+    ]
+  },
+  "name_zh": "空盾回响",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 2,
+    "trigger_direction": "incoming"
+  },
+  "statuses": [],
+  "tags": [
+    "defense",
+    "counterplay",
+    "passive_blueprint"
+  ]
+}

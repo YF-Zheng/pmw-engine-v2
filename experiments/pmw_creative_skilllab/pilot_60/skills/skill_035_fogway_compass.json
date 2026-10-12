@@ -1,0 +1,90 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 0
+    },
+    "duration": null,
+    "effects": [
+      {
+        "commitment": "required",
+        "condition": {
+          "field": {
+            "comparator": "gte",
+            "key": "mist",
+            "subject": "current_area",
+            "value": 0.6
+          }
+        },
+        "duration": 3,
+        "id": "mark_fog_bearing",
+        "kind": "grant_trait",
+        "target": {
+          "kind": "self"
+        },
+        "trait_id": "fogway_marked"
+      }
+    ],
+    "id": "fogway_compass",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "lodestone_glass"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "self"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_035",
+  "category": "探索资源与非战斗",
+  "claims": {
+    "emergent_effect": "公共场量变化可能被天气或生态 Law 消费，只有 evidence 中实际触发的 Law 才计为观察结果。",
+    "intended_effect": "浓雾中赋予短时 fogway_marked 标记，供合法 Condition/Weather 内容联动。现有场景没有消费该 Trait，所以证据只支持‘建立工具状态’，不支持移动加速。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_035.json。"
+  },
+  "creator": "Creator D",
+  "intent_zh": "浓雾中赋予短时 fogway_marked 标记，供合法 Condition/Weather 内容联动。现有场景没有消费该 Trait，所以证据只支持‘建立工具状态’，不支持移动加速。",
+  "limitations_zh": [
+    "探索 Trait 只是显式组合接口；当前没有自动导航或发现系统。",
+    "资源场变化不等于材料已经采入背包，除非另行执行正式 harvest。"
+  ],
+  "material": {
+    "id": "lodestone_glass",
+    "region_rarity": "uncommon",
+    "tier": "fine",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "grant_trait"
+        ],
+        "id": "mist_orientation",
+        "selectors": [
+          "self"
+        ]
+      }
+    ]
+  },
+  "name_zh": "雾途罗盘",
+  "scenario": {
+    "environment": "mist_cavern",
+    "horizon_ticks": 3,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "exploration",
+    "resource",
+    "environment-gated temporary exploration trait"
+  ]
+}

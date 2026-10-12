@@ -1,0 +1,13 @@
+test_assets_include_active_passive_temporal_and_world_effects (experiments.pmw_creative_skilllab.pilot_60.tests.test_pilot_60.PilotAssetTests) ... ok
+test_exactly_sixty_unique_cases_from_six_creators (experiments.pmw_creative_skilllab.pilot_60.tests.test_pilot_60.PilotAssetTests) ... ok
+test_published_evidence_matches_assets (experiments.pmw_creative_skilllab.pilot_60.tests.test_pilot_60.PilotAssetTests) ... ok
+test_all_sixty_execute_through_real_runtime (experiments.pmw_creative_skilllab.pilot_60.tests.test_pilot_60.PilotExecutionTests) ... ok
+test_baseline_and_treatment_use_equal_time_horizons (experiments.pmw_creative_skilllab.pilot_60.tests.test_pilot_60.PilotExecutionTests) ... ok
+test_every_case_has_traces_and_atomic_negative_control (experiments.pmw_creative_skilllab.pilot_60.tests.test_pilot_60.PilotExecutionTests) ... ok
+test_passives_follow_a_source_event_and_trusted_hook (experiments.pmw_creative_skilllab.pilot_60.tests.test_pilot_60.PilotExecutionTests) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 261.839s
+
+OK
+elapsed=262.13 maxrss_kb=120816

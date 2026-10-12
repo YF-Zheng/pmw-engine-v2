@@ -1,0 +1,83 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 8
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 20.0,
+        "commitment": "required",
+        "duration": 5,
+        "field_id": "temperature",
+        "id": "effect_thermal_inversion",
+        "kind": "modify_attractor",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "thermal_sink",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "mat_thermal_inversion"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_025",
+  "category": "天气生态与世界演化",
+  "claims": {
+    "emergent_effect": "天气、生态换挡或到期后的轨迹残差仅在实际出现时由 evidence 证明。",
+    "intended_effect": "让温度朝低位吸引子演化；价值取决于区域热惯性，而非立即固定降温。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_025.json。"
+  },
+  "creator": "Creator C",
+  "intent_zh": "让温度朝低位吸引子演化；价值取决于区域热惯性，而非立即固定降温。",
+  "limitations_zh": [
+    "基础 rate 很低时临时吸引子未必来得及产生显著降温。",
+    "modify_attractor 使用绝对临时 target；modify_rate 使用 additive rate。"
+  ],
+  "material": {
+    "id": "mat_thermal_inversion",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 8,
+        "effect_kinds": [
+          "modify_attractor"
+        ],
+        "id": "trait_thermal_inversion",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "热逆层",
+  "scenario": {
+    "environment": "dry_basin",
+    "horizon_ticks": 5,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "weather",
+    "ecology",
+    "modify_attractor"
+  ]
+}

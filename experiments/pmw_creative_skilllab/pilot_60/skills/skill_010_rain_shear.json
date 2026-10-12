@@ -1,0 +1,95 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 14
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 3
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 0.1,
+        "commitment": "required",
+        "duration": 4,
+        "field_id": "wetness",
+        "id": "drying_front",
+        "kind": "modify_attractor",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "amount": -0.04,
+        "commitment": "required",
+        "duration": 4,
+        "field_id": "biomass",
+        "id": "growth_drag",
+        "kind": "modify_rate",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "rain_shear",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "saltwind_seed"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_010",
+  "category": "战斗与环境操纵",
+  "claims": {
+    "emergent_effect": "通用天气或 Dynamics 产生的后续差异由证据中的 Law IDs 单独标出。",
+    "intended_effect": "临时把湿度吸引子拉向干燥，同时降低生物量恢复率，制造跨系统干旱窗口。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_010.json。"
+  },
+  "creator": "Creator A",
+  "intent_zh": "临时把湿度吸引子拉向干燥，同时降低生物量恢复率，制造跨系统干旱窗口。",
+  "limitations_zh": [
+    "无即时伤害；数 Tick 后才显现生态代价。",
+    "技能不会自动消费世界时间；runner 对两组推进相同 Tick。"
+  ],
+  "material": {
+    "id": "saltwind_seed",
+    "region_rarity": "scarce",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 14,
+        "effect_kinds": [
+          "modify_attractor",
+          "modify_rate"
+        ],
+        "id": "saltwind_seed_craft",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "裂雨锋",
+  "scenario": {
+    "environment": "wet_forest",
+    "horizon_ticks": 5,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "combat",
+    "environment",
+    "rain_shear"
+  ]
+}

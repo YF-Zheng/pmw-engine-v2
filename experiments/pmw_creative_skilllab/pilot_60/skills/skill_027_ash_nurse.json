@@ -1,0 +1,83 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 8
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 2
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 0.2,
+        "commitment": "required",
+        "duration": 4,
+        "field_id": "biomass",
+        "id": "effect_ash_nurse",
+        "kind": "modify_rate",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "ash_nurse",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "mat_ash_nurse"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_027",
+  "category": "天气生态与世界演化",
+  "claims": {
+    "emergent_effect": "天气、生态换挡或到期后的轨迹残差仅在实际出现时由 evidence 证明。",
+    "intended_effect": "临时加快药草丰度向既有目标恢复；贫瘠生态的低目标会限制收益。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_027.json。"
+  },
+  "creator": "Creator C",
+  "intent_zh": "临时加快药草丰度向既有目标恢复；贫瘠生态的低目标会限制收益。",
+  "limitations_zh": [
+    "低丰度 target 限制恢复，rate 增益不能凭空抬高 target。",
+    "modify_attractor 使用绝对临时 target；modify_rate 使用 additive rate。"
+  ],
+  "material": {
+    "id": "mat_ash_nurse",
+    "region_rarity": "uncommon",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 8,
+        "effect_kinds": [
+          "modify_rate"
+        ],
+        "id": "trait_ash_nurse",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "灰圃催生",
+  "scenario": {
+    "environment": "depleted_grove",
+    "horizon_ticks": 5,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "weather",
+    "ecology",
+    "modify_rate"
+  ]
+}

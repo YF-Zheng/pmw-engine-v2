@@ -1,0 +1,94 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 1
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": -0.1,
+        "commitment": "required",
+        "field_id": "biomass",
+        "id": "spend_seed_stock",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "amount": 1.0,
+        "commitment": "required",
+        "duration": 5,
+        "field_id": "biomass",
+        "id": "set_cultivation_target",
+        "kind": "modify_attractor",
+        "target": {
+          "kind": "current_area"
+        }
+      }
+    ],
+    "id": "cultivation_bed",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "seed_clay"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_032",
+  "category": "探索资源与非战斗",
+  "claims": {
+    "emergent_effect": "公共场量变化可能被天气或生态 Law 消费，只有 evidence 中实际触发的 Law 才计为观察结果。",
+    "intended_effect": "立即消耗一部分 herbs 作为种源，换取五 Tick 高目标值。短期必亏、长期可能回本，且受临时槽容量和自然动力学约束。",
+    "observed_effect": "真实状态序列与 CausalTrace 见 evidence/skill_032.json。"
+  },
+  "creator": "Creator D",
+  "intent_zh": "立即消耗一部分 herbs 作为种源，换取五 Tick 高目标值。短期必亏、长期可能回本，且受临时槽容量和自然动力学约束。",
+  "limitations_zh": [
+    "探索 Trait 只是显式组合接口；当前没有自动导航或发现系统。",
+    "资源场变化不等于材料已经采入背包，除非另行执行正式 harvest。"
+  ],
+  "material": {
+    "id": "seed_clay",
+    "region_rarity": "uncommon",
+    "tier": "rare",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "modify_field",
+          "modify_attractor"
+        ],
+        "id": "deferred_yield",
+        "selectors": [
+          "current_area"
+        ]
+      }
+    ]
+  },
+  "name_zh": "育种苗床",
+  "scenario": {
+    "environment": "depleted_grove",
+    "horizon_ticks": 5,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [],
+  "tags": [
+    "exploration",
+    "resource",
+    "immediate resource sacrifice for delayed recovery"
+  ]
+}

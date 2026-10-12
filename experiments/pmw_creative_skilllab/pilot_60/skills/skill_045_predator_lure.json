@@ -1,0 +1,123 @@
+{
+  "blueprint": {
+    "budget": {
+      "limit": 12
+    },
+    "condition": null,
+    "cost": {
+      "duration": 1,
+      "mana": 3
+    },
+    "duration": null,
+    "effects": [
+      {
+        "amount": 0.3,
+        "commitment": "required",
+        "field_id": "toxin",
+        "id": "raise_scent",
+        "kind": "modify_field",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "amount": 0.85,
+        "commitment": "required",
+        "duration": 4,
+        "field_id": "biomass",
+        "id": "draw_prey",
+        "kind": "modify_attractor",
+        "target": {
+          "kind": "current_area"
+        }
+      },
+      {
+        "commitment": "required",
+        "id": "mark_hunter",
+        "kind": "apply_status",
+        "status_id": "marked_scent",
+        "target": {
+          "kind": "self"
+        }
+      }
+    ],
+    "id": "predator_lure",
+    "kind": "skill_blueprint",
+    "material_ids": [
+      "pheromone_resin"
+    ],
+    "max_firings_per_root": 1,
+    "protocol": "pmw-gameplay-v0.4",
+    "scope": {
+      "relation_types": [],
+      "selectors": [
+        "current_area",
+        "self"
+      ]
+    },
+    "trigger": "on_use",
+    "version": 1
+  },
+  "case_id": "skill_045",
+  "category": "天气/生态风险",
+  "claims": {
+    "emergent_effect": "公共场量、天气、生态与状态的后续变化由正式 World Laws 消费；未在证据中触发的联动不计为结果。",
+    "intended_effect": "提高气味场并暂时把猎物丰度吸引子拉高，看似利于狩猎，却给自己挂上气味标记。通用捕食压力天气会消耗猎物并伤害带标记者。",
+    "observed_effect": "完整状态序列与 CausalTrace 见 evidence/skill_045.json；只把真实执行器产生的差异计为结果。"
+  },
+  "creator": "Creator E",
+  "intent_zh": "提高气味场并暂时把猎物丰度吸引子拉高，看似利于狩猎，却给自己挂上气味标记。通用捕食压力天气会消耗猎物并伤害带标记者。",
+  "limitations_zh": [
+    "短期聚集资源，随后可能触发生态转变和自身伤害。",
+    "动作解析器不自动推进世界时间，基线与处理组由 runner 等时推进。",
+    "Creator 提议中的领域字段被映射到公开的规范字段：scent->toxin, prey->biomass."
+  ],
+  "material": {
+    "id": "pheromone_resin",
+    "region_rarity": "scarce",
+    "tier": "epic",
+    "traits": [
+      {
+        "budget_points": 12,
+        "effect_kinds": [
+          "modify_field",
+          "modify_attractor",
+          "apply_status"
+        ],
+        "id": "pheromone_resin_affinity",
+        "selectors": [
+          "current_area",
+          "self"
+        ]
+      }
+    ]
+  },
+  "name_zh": "捕食者信标",
+  "scenario": {
+    "environment": "depleted_grove",
+    "horizon_ticks": 5,
+    "target_actor_id": "pilot_target"
+  },
+  "statuses": [
+    {
+      "duration": {
+        "amount": 4,
+        "unit": "world_tick"
+      },
+      "granted_traits": [
+        "predator_mark"
+      ],
+      "id": "marked_scent",
+      "max_stacks": 1,
+      "polarity": "debuff",
+      "stack_policy": "refresh",
+      "version": 1
+    }
+  ],
+  "tags": [
+    "weather",
+    "ecology",
+    "status",
+    "risk_reward"
+  ]
+}
