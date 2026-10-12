@@ -1,0 +1,28 @@
+{
+  "build_id": "build_a",
+  "name_zh": "赦免与处决",
+  "skill_case_ids": ["skill_051", "skill_052"],
+  "environment": "wet_forest",
+  "initial": {
+    "hero_hp": 80,
+    "hero_mana": 45,
+    "target_hp": 60,
+    "target_mana": 20,
+    "target_traits": []
+  },
+  "objective": {
+    "kind": "combat_damage",
+    "statement_zh": "四个等时战斗轮内，在玩家存活的前提下尽量降低敌人 HP。",
+    "primary_metric": "target_damage"
+  },
+  "rounds": 4,
+  "enemy_action": "basic_attack",
+  "arms": {
+    "no_skill": {"equip": [], "actions": ["basic_wait", "basic_wait", "basic_wait", "basic_wait"]},
+    "a_only": {"equip": ["false_mercy"], "actions": ["false_mercy", "basic_wait", "basic_wait", "basic_wait"]},
+    "b_only": {"equip": ["doctrinal_exception"], "actions": ["doctrinal_exception", "basic_wait", "basic_wait", "basic_wait"]},
+    "a_then_b": {"equip": ["false_mercy", "doctrinal_exception"], "actions": ["false_mercy", "doctrinal_exception", "basic_wait", "basic_wait"]},
+    "b_then_a": {"equip": ["false_mercy", "doctrinal_exception"], "actions": ["doctrinal_exception", "false_mercy", "basic_wait", "basic_wait"]},
+    "matched_alternative": {"equip": [], "actions": ["basic_attack", "basic_attack", "basic_wait", "basic_wait"]}
+  }
+}

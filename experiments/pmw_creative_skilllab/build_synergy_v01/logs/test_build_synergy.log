@@ -1,0 +1,16 @@
+test_build_a_real_status_enables_followup_but_loses_to_attacks (experiments.pmw_creative_skilllab.build_synergy_v01.tests.test_build_synergy.BuildSynergyTests) ... ok
+test_build_b_creates_real_wetness_window_but_guard_is_better (experiments.pmw_creative_skilllab.build_synergy_v01.tests.test_build_synergy.BuildSynergyTests) ... ok
+test_build_c_dispatches_only_real_weather_changed_events (experiments.pmw_creative_skilllab.build_synergy_v01.tests.test_build_synergy.BuildSynergyTests) ... ok
+test_build_d_is_redundant_and_weather_absent_case_has_no_feedback (experiments.pmw_creative_skilllab.build_synergy_v01.tests.test_build_synergy.BuildSynergyTests) ... ok
+test_build_e_adds_rates_but_not_a_new_threshold_outcome (experiments.pmw_creative_skilllab.build_synergy_v01.tests.test_build_synergy.BuildSynergyTests) ... ok
+test_build_f_resource_enabler_is_dominated_by_waiting (experiments.pmw_creative_skilllab.build_synergy_v01.tests.test_build_synergy.BuildSynergyTests) ... ok
+test_every_round_retains_real_traces_and_atomic_rejections (experiments.pmw_creative_skilllab.build_synergy_v01.tests.test_build_synergy.BuildSynergyTests) ... ok
+test_published_catalog_freezes_reviewed_classifications (experiments.pmw_creative_skilllab.build_synergy_v01.tests.test_build_synergy.BuildSynergyTests) ... ok
+test_published_evidence_matches_fresh_engine_runs (experiments.pmw_creative_skilllab.build_synergy_v01.tests.test_build_synergy.BuildSynergyTests) ... ok
+test_six_builds_use_six_equal_time_arms (experiments.pmw_creative_skilllab.build_synergy_v01.tests.test_build_synergy.BuildSynergyTests) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 113.846s
+
+OK
+elapsed=114.16 maxrss_kb=177320

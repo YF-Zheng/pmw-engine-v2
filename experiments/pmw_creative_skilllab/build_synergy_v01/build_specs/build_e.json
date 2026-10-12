@@ -1,0 +1,20 @@
+{
+  "build_id": "build_e",
+  "name_zh": "防御与生态维护共用能力",
+  "skill_case_ids": ["skill_027", "skill_042"],
+  "objective": {"kind": "ecology_survival", "statement_zh": "四轮敌方攻击后保持存活，并阻止生态进入 stressed。"},
+  "rounds": 4,
+  "enemy_action": "basic_attack",
+  "variants": [
+    {"variant_id": "collapse_edge", "environment": "depleted_grove", "field_overrides": {"biomass": 0.30, "smoke": 0.10, "temperature": 50}, "initial": {"hero_hp": 80, "hero_mana": 45, "target_hp": 80, "target_mana": 20, "target_traits": []}},
+    {"variant_id": "far_from_threshold", "environment": "lush_grove", "field_overrides": {"biomass": 0.78, "smoke": 0.05, "temperature": 45}, "initial": {"hero_hp": 80, "hero_mana": 45, "target_hp": 80, "target_mana": 20, "target_traits": []}}
+  ],
+  "arms": {
+    "no_skill": {"equip": [], "actions": ["basic_wait", "basic_wait", "basic_wait", "basic_wait"]},
+    "a_only": {"equip": ["ash_nurse"], "actions": ["ash_nurse", "basic_wait", "basic_wait", "basic_wait"]},
+    "b_only": {"equip": ["root_circuit"], "actions": ["root_circuit", "basic_wait", "basic_wait", "basic_wait"]},
+    "a_then_b": {"equip": ["ash_nurse", "root_circuit"], "actions": ["ash_nurse", "root_circuit", "basic_wait", "basic_wait"]},
+    "b_then_a": {"equip": ["ash_nurse", "root_circuit"], "actions": ["root_circuit", "ash_nurse", "basic_wait", "basic_wait"]},
+    "matched_alternative": {"equip": [], "actions": ["basic_guard", "basic_guard", "basic_wait", "basic_wait"]}
+  }
+}

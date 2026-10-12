@@ -1,0 +1,22 @@
+{
+  "build_id": "build_f",
+  "name_zh": "用未来生命偿还当前能力",
+  "skill_case_ids": ["skill_056", "skill_060"],
+  "objective": {"kind": "threshold_survival", "statement_zh": "在四轮内越过热浪阈值并存活，记录为此支付的生命与法力机会成本。"},
+  "rounds": 4,
+  "enemy_action": "basic_wait",
+  "variants": [
+    {"variant_id": "near_high_hp_low_mana", "environment": "fever_marsh", "field_overrides": {"temperature": 55}, "initial": {"hero_hp": 80, "hero_mana": 0, "target_hp": 80, "target_mana": 20, "target_traits": []}},
+    {"variant_id": "near_low_hp_low_mana", "environment": "fever_marsh", "field_overrides": {"temperature": 55}, "initial": {"hero_hp": 14, "hero_mana": 0, "target_hp": 80, "target_mana": 20, "target_traits": []}},
+    {"variant_id": "near_high_hp_full_mana", "environment": "fever_marsh", "field_overrides": {"temperature": 55}, "initial": {"hero_hp": 80, "hero_mana": 45, "target_hp": 80, "target_mana": 20, "target_traits": []}},
+    {"variant_id": "far_high_hp_low_mana", "environment": "frozen_hollow", "field_overrides": {"temperature": 20}, "initial": {"hero_hp": 80, "hero_mana": 0, "target_hp": 80, "target_mana": 20, "target_traits": []}}
+  ],
+  "arms": {
+    "no_skill": {"equip": [], "actions": ["basic_wait", "basic_wait", "basic_wait", "basic_wait"]},
+    "a_only": {"equip": ["fermentation_mana"], "actions": ["fermentation_mana", "basic_wait", "basic_wait", "basic_wait"]},
+    "b_only": {"equip": ["fever_key"], "actions": ["fever_key", "basic_wait", "basic_wait", "basic_wait"]},
+    "a_then_b": {"equip": ["fermentation_mana", "fever_key"], "actions": ["fermentation_mana", "fever_key", "basic_wait", "basic_wait"]},
+    "b_then_a": {"equip": ["fermentation_mana", "fever_key"], "actions": ["fever_key", "fermentation_mana", "basic_wait", "basic_wait"]},
+    "matched_alternative": {"equip": ["fever_key"], "actions": ["basic_wait", "fever_key", "basic_wait", "basic_wait"]}
+  }
+}

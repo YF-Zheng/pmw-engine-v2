@@ -1,0 +1,20 @@
+{
+  "build_id": "build_d",
+  "name_zh": "烟幕积累与热浪放大",
+  "skill_case_ids": ["skill_005", "skill_053"],
+  "objective": {"kind": "smoke_threshold", "statement_zh": "在两次准备行动内触发烟雾热锋，同时比较护盾、伤害和公共升温代价。"},
+  "rounds": 4,
+  "enemy_action": "basic_attack",
+  "variants": [
+    {"variant_id": "sensitive_threshold", "environment": "dry_basin", "field_overrides": {"smoke": 0.05, "temperature": 60, "wetness": 0.25}, "initial": {"hero_hp": 80, "hero_mana": 45, "target_hp": 80, "target_mana": 20, "target_traits": []}},
+    {"variant_id": "weather_absent_counterexample", "environment": "frozen_hollow", "disabled_weather_ids": ["smoke_heat_front"], "field_overrides": {"smoke": 0.0, "temperature": 20, "wetness": 0.40}, "initial": {"hero_hp": 80, "hero_mana": 45, "target_hp": 80, "target_mana": 20, "target_traits": []}}
+  ],
+  "arms": {
+    "no_skill": {"equip": [], "actions": ["basic_wait", "basic_wait", "basic_wait", "basic_wait"]},
+    "a_only": {"equip": ["ash_veil"], "actions": ["ash_veil", "basic_wait", "basic_wait", "basic_wait"]},
+    "b_only": {"equip": ["widows_last_match"], "actions": ["widows_last_match", "basic_wait", "basic_wait", "basic_wait"]},
+    "a_then_b": {"equip": ["ash_veil", "widows_last_match"], "actions": ["ash_veil", "widows_last_match", "basic_wait", "basic_wait"]},
+    "b_then_a": {"equip": ["ash_veil", "widows_last_match"], "actions": ["widows_last_match", "ash_veil", "basic_wait", "basic_wait"]},
+    "matched_alternative": {"equip": [], "actions": ["basic_guard", "basic_attack", "basic_wait", "basic_wait"]}
+  }
+}
