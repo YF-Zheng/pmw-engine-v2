@@ -1,6 +1,6 @@
 # PMW M0 Storm Relay Implementation Plan
 
-Status: `PLANNED / PRODUCTION BLOCKED BY REQUIRED MODEL SELECTION`
+Status: `IMPLEMENTED / VERIFICATION IN PROGRESS`
 
 This plan is based on the repository at commit
 `7ee4d31cac119593a61f4a91cb9d82fe1cc360ba` on the new branch
@@ -16,16 +16,20 @@ message, and context-fork parameters. It exposes no model selector, reasoning
 effort selector, or verifiable model identity, and there is no live child agent
 whose Luna identity can be verified.
 
-Consequently, the main agent must not claim that a generic child agent is Luna.
-Under the task's explicit fallback rule, repository investigation and this plan
-may be completed, but production implementation must pause until either:
+The Owner subsequently authorized the available generic child-agent model as
+the implementation substitute.  The generic child identity was independently
+verified as `gpt-5.6-sol` with `medium` reasoning effort.  This document does
+not claim a Luna selection.
+
+Before that authorization, the production fallback rule required a pause until
+either:
 
 1. a tool exposing a verifiable GPT-5.6 Luna selection is made available; or
 2. the Owner explicitly authorizes a named available agent/model as a substitute.
 
-Once the gate is resolved, the main agent will give Luna the staged contracts
-below, review every diff, rerun tests independently, and return concrete defects
-to Luna rather than accepting self-reported completion.
+After the gate was resolved, the main agent integrated and independently tested
+the child changes.  The current implementation report is maintained in
+`DEMO_IMPLEMENTATION_REPORT.md`.
 
 ## 2. Existing System and Protected Boundaries
 

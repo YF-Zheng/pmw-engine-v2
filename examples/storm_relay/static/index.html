@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#102638" />
+    <title>风暴继电</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <noscript>风暴继电需要浏览器启用 JavaScript。</noscript>
+    <main class="app-shell" aria-live="polite">
+      <header class="topbar">
+        <div class="brand" aria-label="风暴继电">
+          <span class="brand-mark" aria-hidden="true">&#9889;</span>
+          <span>风暴继电</span>
+        </div>
+        <div id="connection" class="connection is-loading">正在连接</div>
+        <button id="restart" class="icon-button" type="button" title="开始新游戏" aria-label="开始新游戏">
+          &#8635;
+        </button>
+      </header>
+
+      <section id="notice" class="notice is-hidden" role="status"></section>
+
+      <section id="hero" class="scene" aria-labelledby="scene-title">
+        <div class="scene-copy">
+          <p class="eyebrow">潮汐湿地 / 继电塔</p>
+          <h1 id="scene-title">正在读取世界状态</h1>
+          <p id="scene-description">本地服务会提供唯一的权威游戏状态。</p>
+        </div>
+        <img class="scene-media" src="/static/assets/storm-relay-tower.png" alt="暴风雨中的继电塔与湿地" />
+      </section>
+
+      <section id="status-strip" class="status-strip" aria-label="角色与时间状态"></section>
+
+      <section id="terminal" class="terminal is-hidden" aria-live="assertive"></section>
+
+      <div class="play-grid">
+        <section class="panel world-panel" aria-labelledby="world-heading">
+          <div class="panel-heading">
+            <h2 id="world-heading">区域与场量</h2>
+            <span id="weather-chip" class="weather-chip">--</span>
+          </div>
+          <div id="areas" class="area-list"></div>
+          <div class="split-section">
+            <h3>环境库存</h3>
+            <div id="stocks" class="token-list"></div>
+          </div>
+          <div class="split-section">
+            <h3>发现</h3>
+            <div id="discoveries" class="token-list"></div>
+          </div>
+        </section>
+
+        <section class="panel actions-panel" aria-labelledby="actions-heading">
+          <div class="panel-heading">
+            <h2 id="actions-heading">可执行行动</h2>
+            <span id="action-count" class="count-badge">0</span>
+          </div>
+          <p id="action-hint" class="muted">行动由当前世界状态决定。</p>
+          <div id="actions" class="action-list"></div>
+        </section>
+
+        <section class="panel inventory-panel" aria-labelledby="inventory-heading">
+          <div class="panel-heading"><h2 id="inventory-heading">背包与配方</h2></div>
+          <div id="inventory" class="inventory-list"></div>
+          <div class="split-section">
+            <h3>配方</h3>
+            <div id="recipes" class="recipe-list"></div>
+          </div>
+        </section>
+
+        <section class="panel build-panel" aria-labelledby="build-heading">
+          <div class="panel-heading"><h2 id="build-heading">机制构筑</h2></div>
+          <div class="split-section">
+            <h3>已注册</h3>
+            <div id="registry" class="registry-list"></div>
+          </div>
+          <div class="split-section">
+            <h3>装备槽</h3>
+            <div id="loadout" class="slot-list"></div>
+          </div>
+        </section>
+
+        <section class="panel combat-panel" aria-labelledby="combat-heading">
+          <div class="panel-heading"><h2 id="combat-heading">战斗</h2></div>
+          <div id="combat" class="combat-list"></div>
+        </section>
+
+        <section class="panel events-panel" aria-labelledby="events-heading">
+          <div class="panel-heading"><h2 id="events-heading">世界事件</h2></div>
+          <ol id="events" class="event-list"></ol>
+        </section>
+      </div>
+    </main>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
