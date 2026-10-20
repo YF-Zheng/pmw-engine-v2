@@ -103,6 +103,5 @@ class HttpUiTests(unittest.TestCase):
         projected = project_public_state({"outcome": "playing", "raw": object()})
         self.assertEqual(set(projected), {
             "outcome", "time", "current_area", "player", "areas", "inventory", "discoveries",
-            "recipes", "registered_skills", "equipped_skills", "combat", "recent_events", "legal_actions",
+            "recipes", "registered_skills", "equipped_skills", "combat", "recent_events", "feedback", "legal_actions",
         })
-

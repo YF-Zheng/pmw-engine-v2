@@ -3,11 +3,12 @@
 
   const endpoint = "/api/state";
   const elements = Object.fromEntries([
-    "connection", "notice", "hero", "scene-title", "scene-description", "status-strip",
+    "connection", "notice", "feedback", "hero", "scene-title", "scene-description", "status-strip",
     "terminal", "weather-chip", "areas", "stocks", "discoveries", "actions", "action-count",
     "action-hint", "inventory", "recipes", "registry", "loadout", "combat", "events", "restart",
   ].map((id) => [id, document.getElementById(id)]));
   let pending = false;
+  let feedbackTimer = null;
 
   const text = (value, fallback = "--") => {
     if (value === undefined || value === null || value === "") return fallback;
@@ -28,6 +29,14 @@
     elements.notice.className = `notice${isError ? " is-error" : ""}`;
   }
   function clearNotice() { elements.notice.className = "notice is-hidden"; elements.notice.textContent = ""; }
+  function renderFeedback(messages) {
+    const rows = array(messages).filter((message) => typeof message === "string" && message);
+    if (!rows.length) return;
+    elements.feedback.innerHTML = rows.map((message) => `<p>${escape(message)}</p>`).join("");
+    elements.feedback.className = "feedback";
+    if (feedbackTimer) window.clearTimeout(feedbackTimer);
+    feedbackTimer = window.setTimeout(() => { elements.feedback.className = "feedback is-hidden"; }, 7500);
+  }
   function empty(label) { return `<p class="empty">${escape(label)}</p>`; }
   function sectionRows(container, rows, renderer, emptyLabel) {
     container.innerHTML = rows.length ? rows.map(renderer).join("") : empty(emptyLabel);
@@ -61,6 +70,7 @@
       ["剩余时间", clock.remaining ?? clock.remaining_ticks ?? game.remaining_time ?? game.time?.remaining_ticks],
       ["生命", player.hp !== undefined ? `${num(player.hp)}/${num(player.max_hp)}` : undefined],
       ["法力", player.mana !== undefined ? `${num(player.mana)}/${num(player.max_mana)}` : undefined],
+      ["护盾", player.shield],
       ["力量", attributes.power ?? player.power],
       ["控制", attributes.control ?? player.control],
       ["韧性", attributes.resilience ?? player.resilience],
@@ -157,6 +167,7 @@
     renderHero(game); renderStatus(game); renderAreas(game); renderInventory(game); renderBuild(game); renderCombat(game);
     renderActions(array(payload.legal_actions || game.legal_actions));
     renderEvents(array(payload.events || game.events || game.recent_events)); renderTerminal(game);
+    renderFeedback(array(game.feedback));
   }
   async function request(url, options) {
     const response = await fetch(url, { headers: { "Accept": "application/json", ...(options?.body ? { "Content-Type": "application/json" } : {}) }, ...options });

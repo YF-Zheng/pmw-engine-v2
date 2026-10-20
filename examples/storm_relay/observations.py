@@ -24,6 +24,7 @@ PUBLIC_TOP_LEVEL = (
     "equipped_skills",
     "combat",
     "recent_events",
+    "feedback",
     "legal_actions",
 )
 
@@ -94,7 +95,7 @@ def project_public_state(state: Mapping[str, Any]) -> dict[str, Any]:
                     for item in value
                     if isinstance(item, Mapping)
                 ]
-        elif field in ("areas", "inventory", "discoveries", "recipes", "registered_skills", "equipped_skills"):
+        elif field in ("areas", "inventory", "discoveries", "recipes", "registered_skills", "equipped_skills", "feedback"):
             result[field] = _json_data(value) if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)) else []
         elif field in ("time", "player", "combat"):
             result[field] = _json_data(value) if isinstance(value, Mapping) else {}

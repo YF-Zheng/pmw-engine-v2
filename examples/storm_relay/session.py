@@ -80,6 +80,12 @@ _ACTION_DETAILS = {
     "equip_passive": "消耗 1 世界刻，装备到被动技能槽；天气变化会自动触发。",
 }
 
+_MATERIAL_NAMES = {
+    "wet_moss": "潮湿苔藓",
+    "thunder_crystal": "雷晶",
+    "storm_glass": "风暴玻璃",
+}
+
 
 @dataclass
 class StormRelaySession:
@@ -89,6 +95,7 @@ class StormRelaySession:
     _registry: MechanismRegistryRuntime
     _events: list[dict[str, Any]]
     _budget: int
+    _feedback: list[str]
 
     @classmethod
     def new_game(cls, *, time_budget: int = 23) -> "StormRelaySession":
@@ -117,7 +124,7 @@ class StormRelaySession:
         )))
         session = build_content_session(world, combined)
         registry = MechanismRegistryRuntime.from_compiled_content(session, combined)
-        return cls(registry.session, registry, [], time_budget)
+        return cls(registry.session, registry, [], time_budget, [])
 
     @property
     def state(self):
@@ -125,7 +132,7 @@ class StormRelaySession:
 
     def restart(self) -> None:
         fresh = self.new_game(time_budget=self._budget)
-        self._session, self._registry, self._events = fresh._session, fresh._registry, fresh._events
+        self._session, self._registry, self._events, self._feedback = fresh._session, fresh._registry, fresh._events, fresh._feedback
 
     def _clone(self) -> "StormRelaySession":
         # A clone is rebuilt through the same Law configuration.  Registry
@@ -139,7 +146,7 @@ class StormRelaySession:
                                             self._registry.status_slots,
                                             self._registry.dynamics_slots)
         registry._rebuild()
-        return StormRelaySession(registry.session, registry, deepcopy(self._events), self._budget)
+        return StormRelaySession(registry.session, registry, deepcopy(self._events), self._budget, deepcopy(self._feedback))
 
     def perform(self, action: str, target: str | None = None, slot: int | None = None) -> dict[str, Any]:
         try:
@@ -151,11 +158,14 @@ class StormRelaySession:
             staged._perform(command)
         except (CommandError, GameplayContractError, SessionError) as error:
             raise SessionError(str(error)) from error
-        self._session, self._registry, self._events = staged._session, staged._registry, staged._events
+        self._session, self._registry, self._events, self._feedback = (
+            staged._session, staged._registry, staged._events, staged._feedback,
+        )
         return self.public_state()
 
     def _perform(self, command: Command) -> None:
         action = command.action
+        before = self.public_state()
         if action.startswith("investigate_"):
             recipes = list(self._actor_state()["known_recipes"])
             if action == "investigate_inscription":
@@ -194,6 +204,9 @@ class StormRelaySession:
         else:
             raise SessionError("unknown action")
         self._evaluate_terminal()
+        self._feedback = self._feedback_for(action, before)
+        for message in self._feedback:
+            self._record(action, "world", None, message=message)
 
     def _formal(self, action: str, **extra: Any) -> None:
         actor = self._actor_state()
@@ -469,11 +482,67 @@ class StormRelaySession:
         elif self._remaining() == 0:
             self._formal("terminal_defeat")
 
-    def _record(self, action: str, source: str, result: Any) -> None:
+    def _record(self, action: str, source: str, result: Any, *, message: str | None = None) -> None:
         self._events.append({"id": f"m0-{len(self._events)+1}", "type": action,
-                             "message": COMMAND_LABELS.get(action, action), "source": source,
+                             "message": message or COMMAND_LABELS.get(action, action), "source": source,
                              "area": self._current_area(), "tick": self.state.tick})
         self._events[:] = self._events[-32:]
+
+    def _feedback_for(self, action: str, before: dict[str, Any]) -> list[str]:
+        """Translate authoritative deltas into concise player-facing clues."""
+        weather = self._area_state(self._current_area())["weather"]
+        prior_weather = next((row["weather"] for row in before["areas"] if row["id"] == self._current_area()), None)
+        if action == "investigate_inscription":
+            return ["残铭描述两种做法：引雷播种推高湿度与蓄电，雾幕回响只推高湿度。配方已记录在背包区。"]
+        if action == "investigate_storm_glass":
+            return ["破碎玻璃的刻纹指向一种被动继电器。先采集塔内唯一的风暴玻璃，配方详情已记录。"]
+        if action.startswith("harvest_"):
+            material = action.removeprefix("harvest_")
+            return [f"获得 1 {_MATERIAL_NAMES[material]}。环境库存会耗尽；制作区会显示当前材料是否足够。"]
+        if action.startswith("craft_"):
+            recipe = "fog_echo" if action == "craft_mist_echo" else action.removeprefix("craft_")
+            return [f"已制作{_RECIPE_INFO[recipe]['name']}。{_RECIPE_INFO[recipe]['effect']}", "把它装备到对应槽位后，操作区会出现施放或自动触发方式。"]
+        if action in {"travel_tower", "travel_shallows"}:
+            area_name = "旧引雷塔" if self._current_area() == TOWER_ID else "风暴浅滩"
+            return [f"抵达{area_name}。场量会在每个世界刻向各自目标回归，两个区域互不共享。"]
+        if action in {"equip_active", "equip_passive"}:
+            if action == "equip_passive" and weather in {"storm", "fog"}:
+                shield = self.state.entities[PLAYER_ID].components[GAMEPLAY_ACTOR]["shield"]
+                return [f"被动装备完成；当前{weather}已响应，风暴玻璃继电提供 {shield:g} 护盾。"]
+            return ["装备完成。主动技能会出现在操作区；被动技能只在满足天气条件时自动响应。"]
+        if action in {"cast_lightning_seed", "cast_mist_echo"}:
+            recipe = "lightning_seed" if action == "cast_lightning_seed" else "fog_echo"
+            messages = [f"施放{_RECIPE_INFO[recipe]['name']}：{_RECIPE_INFO[recipe]['effect']}"]
+            if prior_weather != weather:
+                messages.append(f"当前区域天气从{prior_weather}转为{weather}，这会改变守卫与被动继电器的表现。")
+            return messages
+        if action == "start_core":
+            return [f"核心启动，塔卫开始拦截。当前为{weather}：守卫本轮反击为{'7' if weather == 'storm' else '2' if weather == 'fog' else '5'}伤害。"]
+        if action == "attack":
+            previous_guard = before["combat"]["guard_hp"]
+            guard = self.state.entities[GUARD_ID].components[GAMEPLAY_ACTOR]["hp"]
+            previous_hp = before["player"]["hp"]
+            hp = self.state.entities[PLAYER_ID].components[GAMEPLAY_ACTOR]["hp"]
+            previous_shield = before["player"].get("shield", 0.0)
+            shield = self.state.entities[PLAYER_ID].components[GAMEPLAY_ACTOR]["shield"]
+            messages = [f"攻击造成 {previous_guard - guard:g} 伤害；塔卫生命 {guard:g}/42。"]
+            if guard > 0:
+                if previous_hp == hp and previous_shield > shield:
+                    messages.append(f"塔卫在{weather}中反击，护盾吸收了 {previous_shield - shield:g} 点伤害。")
+                else:
+                    messages.append(f"塔卫在{weather}中反击，你的生命 {previous_hp:g}→{hp:g}。")
+                if prior_weather != weather:
+                    messages.append(f"天气从{prior_weather}转为{weather}；持续效果可能因此失效或重新触发。")
+            else:
+                messages.append("塔卫已停止运作。现在可以关闭核心。")
+            return messages
+        if action == "guard":
+            return ["防御姿态获得 6 护盾，仅用于抵挡本回合守卫反击；其他来源护盾不会被清除。"]
+        if action == "wait":
+            return ["原地调整：回复 2 HP 与 2 Mana（不超过上限），但守卫仍会行动，世界仍会推进。"]
+        if action == "close_core":
+            return ["继电核心已关闭，风暴浅滩与旧引雷塔重新稳定。"]
+        return [COMMAND_LABELS.get(action, action)]
 
     def _actor_state(self) -> dict[str, Any]:
         return self.state.entities[PLAYER_ID].components["storm_relay_actor"]
@@ -547,13 +616,13 @@ class StormRelaySession:
                 "player": {"id": PLAYER_ID, "hp": actor["hp"], "max_hp": actor["max_hp"],
                            "mana": actor["mana"], "max_mana": actor["max_mana"],
                            "attributes": {name: actor[name] for name in ("power", "control", "resilience", "agility")},
-                           "relay_shield": self._actor_state()["relay_shield"]},
+                           "shield": actor["shield"], "relay_shield": self._actor_state()["relay_shield"]},
                 "areas": areas, "inventory": [{"id": name, "count": count} for name, count in sorted(self._inventory().items())],
                 "discoveries": list(self._actor_state()["known_recipes"]), "recipes": self._recipe_views(),
                 "registered_skills": [self._skill_view(row.skill_id, row.version, row.kind) for row in self._registry.manifest.entries if row.enabled],
                 "equipped_skills": [self._equipped_skill_view(row) for key in ("active_equipped", "passive_equipped") for row in actor[key] if row],
                 "combat": {"active": self._combat_active(), "guard_hp": self.state.entities[GUARD_ID].components[GAMEPLAY_ACTOR]["hp"]},
-                "recent_events": list(self._events), "legal_actions": self.legal_actions()}
+                "recent_events": list(self._events), "feedback": list(self._feedback), "legal_actions": self.legal_actions()}
 
     def _can_craft(self, recipe: str) -> bool:
         return all(self._inventory().get(material, 0.0) >= count for material, count in _RECIPES[recipe])

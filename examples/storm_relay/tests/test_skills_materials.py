@@ -37,3 +37,16 @@ class StormRelaySkillsMaterialsTests(unittest.TestCase):
         self.assertFalse(seed["craftable"])
         self.assertIn("wet_moss 1", seed["missing"])
         self.assertNotIn("craft_lightning_seed", [row["action"] for row in session.legal_actions()])
+
+    def test_action_returns_player_facing_causal_feedback(self) -> None:
+        session = StormRelaySession.new_game()
+        state = session.perform("investigate_inscription")
+        self.assertTrue(state["feedback"])
+        self.assertIn("引雷播种", state["feedback"][0])
+        self.assertEqual(state["recent_events"][-1]["message"], state["feedback"][-1])
+
+    def test_harvest_feedback_uses_player_facing_material_name(self) -> None:
+        session = StormRelaySession.new_game()
+        state = session.perform("harvest_wet_moss")
+        self.assertIn("潮湿苔藓", state["feedback"][0])
+        self.assertNotIn("wet_moss", state["feedback"][0])
