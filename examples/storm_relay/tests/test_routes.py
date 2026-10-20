@@ -37,4 +37,4 @@ class StormRelayRouteTests(unittest.TestCase):
 
     def test_runner_is_only_public_commands(self) -> None:
         result = run_commands([{"action": "investigate_inscription"}])
-        self.assertEqual(result["state"]["recipes"], ["fog_echo", "lightning_seed"])
+        self.assertEqual([row["id"] for row in result["state"]["recipes"]], ["fog_echo", "lightning_seed"])

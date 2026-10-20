@@ -59,6 +59,9 @@ h3 { font-size: .8rem; color: #aac3c9; }
 .row-detail { margin-top: 5px; color: #a6bdc4; font-size: .82rem; line-height: 1.45; overflow-wrap: anywhere; }
 .field-list, .token-list { display: flex; flex-wrap: wrap; gap: 6px; }
 .field { color: #9acbd5; font-size: .77rem; }
+.recipe-row.is-ready { border-left-color: #78b891; }
+.recipe-meta, .recipe-materials { margin-top: 6px; color: #93b6bb; font-size: .76rem; line-height: 1.4; overflow-wrap: anywhere; }
+.recipe-materials { color: #d8c67c; }
 .action-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .action-copy { min-width: 0; }
 .action-button { flex: 0 0 auto; min-height: 36px; border: 1px solid #537c81; border-radius: 4px; background: #1a3d42; color: #effbf5; font-weight: 650; padding: 7px 10px; }

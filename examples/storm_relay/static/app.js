@@ -91,11 +91,17 @@
     const inventory = game.inventory || playerOf(game).inventory || [];
     const rows = Array.isArray(inventory) ? inventory : valuePairs(inventory).map(([id, amount]) => ({ id, amount }));
     sectionRows(elements.inventory, rows, (item) => `<article class="item-row"><div class="row-title"><span>${escape(item.name || item.label || item.id || item.type || "物品")}</span><span>${escape(num(item.amount ?? item.count ?? item.quantity ?? ""))}</span></div>${item.description ? `<div class="row-detail">${escape(item.description)}</div>` : ""}</article>`, "背包为空。");
-    sectionRows(elements.recipes, array(game.recipes || game.available_recipes), (recipe) => `<article class="recipe-row"><div class="row-title"><span>${escape(recipe.name || recipe.id || "配方")}</span><span>${escape(recipe.time_cost ?? recipe.cost ?? "")}</span></div><div class="row-detail">${escape(recipe.description || recipe.requirements || "等待材料与发现条件")}</div></article>`, "当前没有可见配方。");
+    sectionRows(elements.recipes, array(game.recipes || game.available_recipes), (recipe) => {
+      if (typeof recipe !== "object") return `<article class="recipe-row"><div class="row-title"><span>${escape(recipe)}</span></div></article>`;
+      const materials = array(recipe.materials).map((material) => `${material.id} ${num(material.available)}/${num(material.required)}`).join(" · ");
+      const state = recipe.crafted ? "已制作" : recipe.craftable ? "材料齐全" : `缺少：${array(recipe.missing).join("、")}`;
+      const costs = `制作 ${num(recipe.craft_ticks)} 刻${recipe.mana ? ` · 施放 ${num(recipe.mana)} Mana` : ""}`;
+      return `<article class="recipe-row${recipe.craftable ? " is-ready" : ""}"><div class="row-title"><span>${escape(recipe.name || recipe.id || "配方")}</span><span>${escape(state)}</span></div><div class="recipe-meta">${escape(recipe.kind || "技能")} · ${escape(costs)}</div><div class="row-detail">${escape(recipe.effect || "")}</div><div class="recipe-materials">${escape(materials || recipe.requirements || "")}</div></article>`;
+    }, "先调查环境中的线索，才能获得可制作的技能配方。");
   }
   function renderBuild(game) {
     const registry = array(game.registry || game.registered_skills || game.mechanisms);
-    sectionRows(elements.registry, registry, (entry) => `<article class="registry-row"><div class="row-title"><span>${escape(entry.name || entry.label || entry.skill_id || entry.id || "机制")}</span><span>${escape(entry.version || entry.kind || "")}</span></div><div class="row-detail">${escape(entry.description || entry.hash || entry.status || "已验证")}</div></article>`, "尚未注册机制。");
+    sectionRows(elements.registry, registry, (entry) => `<article class="registry-row"><div class="row-title"><span>${escape(entry.name || entry.label || entry.skill_id || entry.id || "机制")}</span><span>${escape(entry.kind || entry.version || "")}</span></div><div class="row-detail">${escape(entry.effect || entry.description || entry.status || "已验证")}</div></article>`, "制作技能后，会在这里显示它的效果与类型。");
     const loadout = game.loadout || game.equipped_skills || playerOf(game).loadout || {};
     const slots = Array.isArray(loadout) ? loadout : Object.entries(object(loadout)).map(([slot, value]) => ({ slot, value }));
     sectionRows(elements.loadout, slots, (entry, index) => {

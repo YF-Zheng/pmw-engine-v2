@@ -25,3 +25,15 @@ class StormRelaySkillsMaterialsTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             session.perform("craft_lightning_seed")
         self.assertEqual(session.state.to_dict(), before)
+
+    def test_recipe_view_explains_cost_effect_and_missing_materials(self) -> None:
+        session = StormRelaySession.new_game()
+        session.perform("investigate_inscription")
+        recipes = {row["id"]: row for row in session.public_state()["recipes"]}
+        seed = recipes["lightning_seed"]
+        self.assertEqual(seed["mana"], 3)
+        self.assertEqual(seed["craft_ticks"], 2)
+        self.assertIn("蓄电 +0.30", seed["effect"])
+        self.assertFalse(seed["craftable"])
+        self.assertIn("wet_moss 1", seed["missing"])
+        self.assertNotIn("craft_lightning_seed", [row["action"] for row in session.legal_actions()])

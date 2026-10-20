@@ -48,6 +48,38 @@ _RECIPES = {
     "storm_glass_relay": (("storm_glass", 1), ("thunder_crystal", 1)),
 }
 
+_RECIPE_INFO = {
+    "lightning_seed": {
+        "name": "引雷播种", "kind": "主动技能", "mana": 3, "craft_ticks": 2,
+        "effect": "立即令当前区域湿度 +0.25、蓄电 +0.30；数值越过阈值会形成雷暴。",
+    },
+    "fog_echo": {
+        "name": "雾幕回响", "kind": "主动技能", "mana": 3, "craft_ticks": 2,
+        "effect": "立即令当前区域湿度 +0.35；高湿低电会形成雾，守卫攻击降为 2。",
+    },
+    "storm_glass_relay": {
+        "name": "风暴玻璃继电", "kind": "被动技能", "mana": 0, "craft_ticks": 2,
+        "effect": "装备后进入雷暴获得 6 护盾、进入雾获得 4 护盾；仅刷新自身来源，持续 3 个后续世界刻。",
+    },
+}
+
+_ACTION_DETAILS = {
+    "investigate_inscription": "消耗 1 世界刻，揭示引雷播种和雾幕回响的完整配方。",
+    "investigate_storm_glass": "消耗 1 世界刻，揭示风暴玻璃继电的完整配方。",
+    "harvest_wet_moss": "消耗 1 世界刻，采集 1 潮湿苔藓。",
+    "harvest_thunder_crystal": "消耗 1 世界刻，采集 1 雷晶。",
+    "harvest_storm_glass": "消耗 1 世界刻，采集 1 风暴玻璃。",
+    "travel_tower": "消耗 1 世界刻，前往旧引雷塔。",
+    "travel_shallows": "消耗 1 世界刻，返回风暴浅滩。",
+    "start_core": "消耗 1 世界刻，启动核心并进入战斗。",
+    "close_core": "消耗 1 世界刻，关闭已击败守卫的核心。",
+    "attack": "本回合造成 6 伤害；守卫仍会依天气反击。",
+    "guard": "本回合获得 6 护盾，抵挡守卫反击后移除。",
+    "wait": "本回合回复 2 HP 和 2 Mana（不超过上限），守卫仍会行动。",
+    "equip_active": "消耗 1 世界刻，装备到主动技能槽；装备后可施放。",
+    "equip_passive": "消耗 1 世界刻，装备到被动技能槽；天气变化会自动触发。",
+}
+
 
 @dataclass
 class StormRelaySession:
@@ -487,7 +519,7 @@ class StormRelaySession:
             elif guard_hp <= 0:
                 result.append({"action": "close_core", "label": COMMAND_LABELS["close_core"]})
         for recipe in state["known_recipes"]:
-            if recipe not in state["crafted_receipts"]:
+            if recipe not in state["crafted_receipts"] and self._can_craft(recipe):
                 action = "craft_mist_echo" if recipe == "fog_echo" else f"craft_{recipe}"
                 result.append({"action": action, "label": COMMAND_LABELS[action]})
         for blueprint in self._registry.blueprints.values():
@@ -498,7 +530,7 @@ class StormRelaySession:
             result.append({"action": "cast_lightning_seed", "label": COMMAND_LABELS["cast_lightning_seed"]})
         if any(row and row["id"] == "fog_echo" for row in equipped):
             result.append({"action": "cast_mist_echo", "label": COMMAND_LABELS["cast_mist_echo"]})
-        return result
+        return [{**row, "description": self._action_description(row)} for row in result]
 
     def public_state(self) -> dict[str, Any]:
         actor = self.state.entities[PLAYER_ID].components[GAMEPLAY_ACTOR]
@@ -517,11 +549,50 @@ class StormRelaySession:
                            "attributes": {name: actor[name] for name in ("power", "control", "resilience", "agility")},
                            "relay_shield": self._actor_state()["relay_shield"]},
                 "areas": areas, "inventory": [{"id": name, "count": count} for name, count in sorted(self._inventory().items())],
-                "discoveries": list(self._actor_state()["known_recipes"]), "recipes": list(self._actor_state()["known_recipes"]),
-                "registered_skills": [{"id": row.skill_id, "version": row.version, "kind": row.kind} for row in self._registry.manifest.entries if row.enabled],
-                "equipped_skills": [row for key in ("active_equipped", "passive_equipped") for row in actor[key] if row],
+                "discoveries": list(self._actor_state()["known_recipes"]), "recipes": self._recipe_views(),
+                "registered_skills": [self._skill_view(row.skill_id, row.version, row.kind) for row in self._registry.manifest.entries if row.enabled],
+                "equipped_skills": [self._equipped_skill_view(row) for key in ("active_equipped", "passive_equipped") for row in actor[key] if row],
                 "combat": {"active": self._combat_active(), "guard_hp": self.state.entities[GUARD_ID].components[GAMEPLAY_ACTOR]["hp"]},
                 "recent_events": list(self._events), "legal_actions": self.legal_actions()}
+
+    def _can_craft(self, recipe: str) -> bool:
+        return all(self._inventory().get(material, 0.0) >= count for material, count in _RECIPES[recipe])
+
+    def _recipe_views(self) -> list[dict[str, Any]]:
+        inventory = self._inventory()
+        crafted = set(self._actor_state()["crafted_receipts"])
+        rows = []
+        for recipe in sorted(self._actor_state()["known_recipes"]):
+            info = _RECIPE_INFO[recipe]
+            materials = [{"id": material, "required": count, "available": inventory.get(material, 0.0)}
+                         for material, count in _RECIPES[recipe]]
+            missing = [f"{material} {count - inventory.get(material, 0.0):g}" for material, count in _RECIPES[recipe]
+                       if inventory.get(material, 0.0) < count]
+            rows.append({"id": recipe, **info, "materials": materials, "crafted": recipe in crafted,
+                         "craftable": recipe not in crafted and not missing,
+                         "missing": missing, "requirements": "、".join(f"{material} {count}" for material, count in _RECIPES[recipe])})
+        return rows
+
+    def _skill_view(self, skill_id: str, version: int, kind: str) -> dict[str, Any]:
+        return {"id": skill_id, "version": version, "kind": kind, **_RECIPE_INFO.get(skill_id, {})}
+
+    def _equipped_skill_view(self, item: dict[str, Any]) -> dict[str, Any]:
+        return {"id": item["id"], "slot": item.get("slot", "已装备"), **_RECIPE_INFO.get(item["id"], {})}
+
+    def _action_description(self, row: dict[str, Any]) -> str:
+        action = row["action"]
+        if action.startswith("craft_"):
+            recipe = "fog_echo" if action == "craft_mist_echo" else action.removeprefix("craft_")
+            info = _RECIPE_INFO[recipe]
+            return f"消耗 {info['craft_ticks']} 世界刻；材料：{self._recipe_requirements(recipe)}。{info['effect']}"
+        if action.startswith("cast_"):
+            recipe = "fog_echo" if action == "cast_mist_echo" else action.removeprefix("cast_")
+            return f"消耗 {int(_RECIPE_INFO[recipe]['mana'])} Mana 和 1 世界刻。{_RECIPE_INFO[recipe]['effect']}"
+        return _ACTION_DETAILS.get(action, "由当前世界状态决定。")
+
+    @staticmethod
+    def _recipe_requirements(recipe: str) -> str:
+        return "、".join(f"{material} {count}" for material, count in _RECIPES[recipe])
 
 
 def _authority(recipe: str) -> MaterialAuthority:
