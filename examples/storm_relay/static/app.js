@@ -58,7 +58,11 @@
     return object(payload.game || payload.state || payload);
   }
   function playerOf(game) { return object(game.player || game.actor || game.player_state); }
-  function areaOf(game) { return object(game.current_area); }
+  function areaOf(game) {
+    const embedded = object(game.current_area);
+    if (Object.keys(embedded).length) return embedded;
+    return array(game.areas).find((area) => area.id === game.current_area) || {};
+  }
 
   function renderStatus(game) {
     const player = playerOf(game);
@@ -201,7 +205,7 @@
   elements.restart.addEventListener("click", async () => {
     if (pending) return;
     setPending(true);
-    try { const result = await request("/api/new-game", { method: "POST" }); render(result); clearNotice(); setConnection("ready", "新游戏已开始"); }
+    try { const result = await request("/api/new-game", { method: "POST", body: JSON.stringify({}) }); render(result); clearNotice(); setConnection("ready", "新游戏已开始"); }
     catch (error) { showNotice(text(error.message, "无法开始新游戏。"), true); setConnection("error", "连接错误"); }
     finally { setPending(false); }
   });

@@ -95,6 +95,11 @@ class HttpUiTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(self.session.restarts, 1)
 
+    def test_empty_new_game_post_is_accepted_for_browser_compatibility(self) -> None:
+        status, _ = self.request("POST", "/api/new-game")
+        self.assertEqual(status, 200)
+        self.assertEqual(self.session.restarts, 1)
+
     def test_static_traversal_is_rejected(self) -> None:
         status, _ = self.request("GET", "/../server.py")
         self.assertEqual(status, 404)

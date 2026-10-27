@@ -192,7 +192,10 @@ class StormRelaySession:
         elif action in {"equip_active", "equip_passive", "unload_active", "unload_passive"}:
             self._loadout(action, command.target, command.slot)
         elif action in {"cast_lightning_seed", "cast_mist_echo"}:
-            self._cast(action.removeprefix("cast_"))
+            if self._combat_active():
+                self._combat_skill(action.removeprefix("cast_"))
+            else:
+                self._cast(action.removeprefix("cast_"))
         elif action == "start_core":
             self._formal("start_core")
             self._spend(1, "exploration")
@@ -376,7 +379,7 @@ class StormRelaySession:
             self._grant_relay_shield(self._area_state(self._current_area())["weather"], "relay_equip")
         self._record(action, "loadout", None)
 
-    def _cast(self, skill: str) -> None:
+    def _cast(self, skill: str, *, advance_time: bool = True) -> None:
         action_id = {"lightning_seed": "lightning_seed", "mist_echo": "fog_echo"}[skill]
         from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import resolve_action
         from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRequest
@@ -397,7 +400,15 @@ class StormRelaySession:
         self._record("weather_evaluate", "world", weather)
         if weather.changed:
             self._dispatch_weather_passives(weather)
-        self._spend(1, "exploration")
+        if advance_time:
+            self._spend(1, "exploration")
+
+    def _combat_skill(self, skill: str) -> None:
+        """Resolve an equipped skill as one full combat turn, never a free cast."""
+        self._cast(skill, advance_time=False)
+        if self.state.entities[GUARD_ID].components[GAMEPLAY_ACTOR]["hp"] > 0:
+            self._resolve_combat_action(GUARD_ID, "attack", PLAYER_ID)
+        self._spend(1, "combat")
 
     def _combat(self, action: str) -> None:
         if not self._combat_active():
@@ -568,7 +579,14 @@ class StormRelaySession:
             return []
         area, state, result = self._current_area(), self._actor_state(), []
         if self._combat_active():
-            return [{"action": action, "label": COMMAND_LABELS[action]} for action in ("attack", "guard", "wait")]
+            result = [{"action": action, "label": COMMAND_LABELS[action]} for action in ("attack", "guard", "wait")]
+            equipped = self.state.entities[PLAYER_ID].components[GAMEPLAY_ACTOR]["active_equipped"]
+            equipped_ids = {row["id"] for row in equipped if row}
+            if "lightning_seed" in equipped_ids:
+                result.append({"action": "cast_lightning_seed", "label": COMMAND_LABELS["cast_lightning_seed"]})
+            if "fog_echo" in equipped_ids:
+                result.append({"action": "cast_mist_echo", "label": COMMAND_LABELS["cast_mist_echo"]})
+            return [{**row, "description": self._action_description(row)} for row in result]
         if area == SHALLOWS_ID:
             if "lightning_seed" not in state["known_recipes"]:
                 result.append({"action": "investigate_inscription", "label": COMMAND_LABELS["investigate_inscription"]})
@@ -621,7 +639,11 @@ class StormRelaySession:
                 "discoveries": list(self._actor_state()["known_recipes"]), "recipes": self._recipe_views(),
                 "registered_skills": [self._skill_view(row.skill_id, row.version, row.kind) for row in self._registry.manifest.entries if row.enabled],
                 "equipped_skills": [self._equipped_skill_view(row) for key in ("active_equipped", "passive_equipped") for row in actor[key] if row],
-                "combat": {"active": self._combat_active(), "guard_hp": self.state.entities[GUARD_ID].components[GAMEPLAY_ACTOR]["hp"]},
+                "combat": {"active": self._combat_active(), "guard_hp": self.state.entities[GUARD_ID].components[GAMEPLAY_ACTOR]["hp"],
+                           "actors": [
+                               {"id": PLAYER_ID, "name": "调查员", "hp": actor["hp"], "max_hp": actor["max_hp"], "shield": actor["shield"], "controller": "player"},
+                               {"id": GUARD_ID, "name": "塔卫", "hp": self.state.entities[GUARD_ID].components[GAMEPLAY_ACTOR]["hp"], "max_hp": self.state.entities[GUARD_ID].components[GAMEPLAY_ACTOR]["max_hp"], "shield": self.state.entities[GUARD_ID].components[GAMEPLAY_ACTOR]["shield"], "controller": "ai"},
+                           ]},
                 "recent_events": list(self._events), "feedback": list(self._feedback), "legal_actions": self.legal_actions()}
 
     def _can_craft(self, recipe: str) -> bool:

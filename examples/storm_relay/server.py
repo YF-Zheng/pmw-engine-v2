@@ -126,9 +126,11 @@ def make_handler(application: StormRelayApplication) -> type[BaseHTTPRequestHand
         def _error(self, status: HTTPStatus, message: str) -> None:
             self._json(status, {"error": {"message": message}})
 
-        def _body(self) -> Any:
+        def _body(self, *, allow_empty: bool = False) -> Any:
             raw_length = self.headers.get("Content-Length")
             if raw_length is None:
+                if allow_empty:
+                    return None
                 raise ValueError("Content-Length is required")
             try:
                 length = int(raw_length)
@@ -136,6 +138,8 @@ def make_handler(application: StormRelayApplication) -> type[BaseHTTPRequestHand
                 raise ValueError("invalid Content-Length") from error
             if length < 0 or length > _MAX_BODY_BYTES:
                 raise ValueError("request body is too large")
+            if length == 0 and allow_empty:
+                return None
             try:
                 return json.loads(self.rfile.read(length).decode("utf-8"))
             except (UnicodeDecodeError, json.JSONDecodeError) as error:
@@ -181,7 +185,7 @@ def make_handler(application: StormRelayApplication) -> type[BaseHTTPRequestHand
                 self._error(HTTPStatus.NOT_FOUND, "unknown API endpoint")
                 return
             try:
-                payload = self._body()
+                payload = self._body(allow_empty=path == "/api/new-game")
                 if path == "/api/action":
                     action, target, slot = _parse_action_payload(payload)
                     state = application.action(action=action, target=target, slot=slot)
