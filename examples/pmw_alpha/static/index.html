@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#121918" />
+    <title>第七夜之前 | PMW Alpha</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <noscript>《第七夜之前》需要启用 JavaScript。</noscript>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark" aria-hidden="true">VII</span><span>第七夜之前</span><small>PMW ALPHA</small></div>
+        <div class="time-readout" id="time-readout">第 -- 夜</div>
+        <div id="connection" class="connection is-loading">连接世界中</div>
+        <div class="utility-actions">
+          <button id="save" class="icon-button" type="button" title="保存进度" aria-label="保存进度">存</button>
+          <button id="load" class="icon-button" type="button" title="载入进度" aria-label="载入进度">读</button>
+          <button id="restart" class="icon-button" type="button" title="开始新一局" aria-label="开始新一局">重</button>
+        </div>
+      </header>
+
+      <section id="notice" class="notice is-hidden" role="status"></section>
+      <aside id="feedback" class="feedback is-hidden" aria-live="polite"></aside>
+
+      <section class="scene" aria-labelledby="scene-title">
+        <div class="scene-wash" aria-hidden="true"></div>
+        <div class="scene-copy">
+          <p id="scene-kicker" class="eyebrow">迷雾边境</p>
+          <h1 id="scene-title">正在读取世界</h1>
+          <p id="scene-description">每一次行动都会消耗这个世界所剩无几的夜晚。</p>
+          <div id="area-tags" class="tag-row"></div>
+        </div>
+        <div class="scene-emblem" aria-hidden="true"><span>7</span><small>NIGHTS</small></div>
+      </section>
+
+      <section id="status-strip" class="status-strip" aria-label="调查员状态"></section>
+
+      <section id="ending" class="ending is-hidden" aria-live="assertive"></section>
+
+      <div class="game-grid">
+        <section class="panel map-panel" aria-labelledby="map-heading">
+          <div class="panel-heading"><h2 id="map-heading">边境地图</h2><span id="map-summary" class="microcopy"></span></div>
+          <div id="map" class="map" aria-label="探索地图"></div>
+          <div class="map-key"><span><i class="key-dot current"></i>当前位置</span><span><i class="key-dot discovered"></i>已知区域</span><span><i class="key-dot locked"></i>未通道路</span></div>
+        </section>
+
+        <section class="panel action-panel" aria-labelledby="action-heading">
+          <div class="panel-heading"><h2 id="action-heading">此刻可做</h2><span id="action-count" class="count">0</span></div>
+          <p id="action-hint" class="muted">行动会由世界的当前状态决定。</p>
+          <div id="controls" class="control-list"></div>
+        </section>
+
+        <section class="panel exploration-panel" aria-labelledby="explore-heading">
+          <div class="panel-heading"><h2 id="explore-heading">观察与线索</h2></div>
+          <div id="interactions" class="interaction-list"></div>
+        </section>
+
+        <section class="panel player-panel" aria-labelledby="player-heading">
+          <div class="panel-heading"><h2 id="player-heading">调查员</h2><span id="level-chip" class="chip">Lv. --</span></div>
+          <div id="player" class="player-card"></div>
+          <div class="subheading">持有材料</div>
+          <div id="inventory" class="token-list"></div>
+        </section>
+
+        <section class="panel recipe-panel" aria-labelledby="recipe-heading">
+          <div class="panel-heading"><h2 id="recipe-heading">符文工坊</h2><span class="microcopy">核心 × 形态</span></div>
+          <div id="recipes" class="recipe-list"></div>
+        </section>
+
+        <section class="panel skills-panel" aria-labelledby="skills-heading">
+          <div class="panel-heading"><h2 id="skills-heading">已知机制</h2></div>
+          <div id="skills" class="skill-list"></div>
+        </section>
+
+        <section class="panel combat-panel" aria-labelledby="combat-heading">
+          <div class="panel-heading"><h2 id="combat-heading">遭遇</h2><span id="combat-state" class="chip">平静</span></div>
+          <div id="combat" class="combat-card"></div>
+        </section>
+
+        <section class="panel events-panel" aria-labelledby="event-heading">
+          <div class="panel-heading"><h2 id="event-heading">世界回响</h2></div>
+          <ol id="events" class="event-list"></ol>
+        </section>
+      </div>
+    </main>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
