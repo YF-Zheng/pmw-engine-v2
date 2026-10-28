@@ -35,3 +35,25 @@ class AlphaSessionTests(unittest.TestCase):
         with self.assertRaises(AlphaSessionError):
             session.perform("travel", target="ash_observatory")
 
+    def test_crafting_equipping_and_casting_use_the_gameplay_registry(self) -> None:
+        session = AlphaSession.new_game()
+        session._player()["knowledge"].append("insight_dais")
+        session._inventory()["thunder_crystal"] = 1.0
+        session._craft("thunder_instant")
+        session._equip("equip_active", "thunder_instant", 0)
+        session._travel("thunder_mine")
+        before = session.state.entities["thunder_mine"].components["pmw_gameplay_dynamics"]["fields"]["charge"]["value"]
+        session._cast("thunder_instant")
+        after = session.state.entities["thunder_mine"].components["pmw_gameplay_dynamics"]["fields"]["charge"]["value"]
+        self.assertGreater(after, before)
+        self.assertEqual(session._inventory()["thunder_crystal"], 0.0)
+        self.assertTrue(any(item["id"] == "thunder_instant" for item in session.state.entities["seventh_walker"].components["pmw_gameplay_actor"]["active_equipped"] if item))
+
+    def test_recipe_projection_explains_costs_and_lock_state(self) -> None:
+        session = AlphaSession.new_game()
+        locked = next(item for item in session.public_state()["recipes"] if item["id"] == "thunder_instant")
+        self.assertTrue(locked["locked"])
+        session._player()["knowledge"].append("insight_dais")
+        recipe = next(item for item in session.public_state()["recipes"] if item["id"] == "thunder_instant")
+        self.assertFalse(recipe["locked"])
+        self.assertEqual({item["name"] for item in recipe["materials"]}, {"雷晶", "瞬发纹"})

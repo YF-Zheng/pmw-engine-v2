@@ -6,16 +6,23 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from pmw import Relation
+
+from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRequest, resolve_action
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.basics import basic_registry
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.content_compiler import build_content_session, compile_content, make_content
+from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.loadout import change_loadout, skill_ref
+from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.materials import MaterialAuthority
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.registry import MechanismRegistryRuntime
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.runtime import build_runtime, discover_profiles
+from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.skills import parse_skill_blueprint
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.time_ledger import spend_world_time
 
 from .content import (ACTOR_COMPONENT, AREA_COMPONENT, AREA_IDS, ASH_OBSERVATORY_ID, CLOCK_ID,
                       FROST_FOREST_ID, MATERIAL_IDS, MIST_CAMP_ID, MOSS_SHALLOWS_ID,
                       PLAYER_ID, STARTING_MAP_EDGES, THUNDER_MINE_ID, make_alpha_world)
 from .savegame import SingleSlotSave
+from .skills import AlphaSkillTemplate, recipe_materials, skill_catalogue
 
 
 class AlphaSessionError(ValueError): pass
@@ -36,7 +43,7 @@ class AlphaSession:
     def new_game(cls) -> "AlphaSession":
         world = make_alpha_world()
         player = world.entities[PLAYER_ID].components[ACTOR_COMPONENT]
-        player.update({"current_area": MIST_CAMP_ID, "knowledge": [], "visited": [MIST_CAMP_ID], "outcome": "playing", "xp": 0, "level": 1, "lift_powered": False, "root_bridge_formed": False, "boss_defeated": False, "core_closed": False})
+        player.update({"current_area": MIST_CAMP_ID, "knowledge": [], "visited": [MIST_CAMP_ID], "outcome": "playing", "xp": 0, "level": 1, "lift_powered": False, "root_bridge_formed": False, "boss_defeated": False, "core_closed": False, "crafted_skills": [], "action_serial": 0})
         for area_id in AREA_IDS:
             area = world.entities[area_id].components[AREA_COMPONENT]
             area["stock"] = {material: amount for point, (material, amount) in RESOURCES.items() if point in INTERACTIONS[area_id]}
@@ -56,16 +63,19 @@ class AlphaSession:
 
     def perform(self, action: str, *, target: str | None = None, slot: int | None = None) -> dict[str, Any]:
         if not any(row["action"] == action and row.get("target") in (None, target) for row in self.controls()): raise AlphaSessionError("该行动当前不可执行")
-        staged = self._clone(); staged._perform(action, target); self._session, self._registry, self._events, self._feedback = staged._session, staged._registry, staged._events, staged._feedback
+        staged = self._clone(); staged._perform(action, target, slot); self._session, self._registry, self._events, self._feedback = staged._session, staged._registry, staged._events, staged._feedback
         return self.public_state()
 
-    def _perform(self, action: str, target: str | None) -> None:
+    def _perform(self, action: str, target: str | None, slot: int | None) -> None:
         if action == "travel": self._travel(target or "")
         elif action == "inspect": self._inspect(target or "")
         elif action == "harvest": self._harvest(target or "")
         elif action == "rest": self._rest()
         elif action == "restore_forest": self._restore_forest()
         elif action == "power_lift": self._power_lift()
+        elif action == "craft": self._craft(target or "")
+        elif action in {"equip_active", "equip_passive"}: self._equip(action, target or "", slot)
+        elif action == "cast": self._cast(target or "")
         else: raise AlphaSessionError("未知行动")
         self._terminal()
 
@@ -76,7 +86,13 @@ class AlphaSession:
     def _travel(self, destination: str) -> None:
         origin = self._player()["current_area"]
         if destination not in self._neighbors(origin): raise AlphaSessionError("路径尚未形成")
-        self._player()["current_area"] = destination; self._player()["visited"] = sorted(set(self._player()["visited"] + [destination])); self._spend(2, "move")
+        self._player()["current_area"] = destination; self._player()["visited"] = sorted(set(self._player()["visited"] + [destination]))
+        previous = next((key for key, row in self.state.relations.items() if row.type == "located_in" and row.source == PLAYER_ID), None)
+        if previous is None: raise AlphaSessionError("玩家位置关系缺失")
+        del self.state.relations[previous]
+        relation = Relation(f"located:{PLAYER_ID}:{destination}", "located_in", PLAYER_ID, destination)
+        self.state.relations[relation.id] = relation
+        self._spend(2, "move")
         self._note(f"抵达{NAMES[destination]}。{DESCRIPTIONS[destination]}")
 
     def _inspect(self, point: str) -> None:
@@ -106,6 +122,36 @@ class AlphaSession:
         if fields["charge"]["value"] < .60: raise AlphaSessionError("矿穴电荷仍不足；先调查导管，或寻找能改变电荷的机制")
         self._player()["lift_powered"] = True; self._spend(2, "exploration"); self._note("升降机在持续供能下启动。矿穴至观测站的通路已经建立；这项供能也可能增强观测站。")
 
+    def _craft(self, skill_id: str) -> None:
+        template = self._template(skill_id)
+        if "insight_dais" not in self._player()["knowledge"] or self._player()["current_area"] != MIST_CAMP_ID:
+            raise AlphaSessionError("在营地仔细调查技能领悟台后才能制作技能")
+        if skill_id in self._player()["crafted_skills"]: raise AlphaSessionError("该技能已经制作")
+        materials = recipe_materials(template); inventory = self._inventory()
+        if any(inventory.get(material, 0) < amount for material, amount in materials.items()): raise AlphaSessionError("制作材料不足")
+        for material, amount in materials.items(): inventory[material] -= amount
+        blueprint = parse_skill_blueprint(_blueprint_document(template), self._registry.base_registry.statuses, _authority(template))
+        self._registry.install_blueprint(blueprint); self._session = self._registry.session
+        self._player()["crafted_skills"].append(skill_id); self._spend(2, "exploration")
+        self._note(f"制作了{template.name}。{template.effect}；还需装备后才能施放。")
+
+    def _equip(self, action: str, skill_id: str, slot: int | None) -> None:
+        if slot is None: raise AlphaSessionError("装备需要指定技能槽")
+        blueprint = self._blueprint(skill_id)
+        expected = "equip_passive" if blueprint.kind == "passive_blueprint" else "equip_active"
+        if action != expected: raise AlphaSessionError("该技能类型不能装备到此栏位")
+        change_loadout(self._session, self._registry.manifest, actor_id=PLAYER_ID, operation=action, skill=skill_ref(blueprint), slot=slot)
+        self._spend(1, "exploration"); self._note(f"{self._template(skill_id).name} 已装备至槽位 {slot + 1}。")
+
+    def _cast(self, skill_id: str) -> None:
+        blueprint = self._blueprint(skill_id)
+        if blueprint.kind != "skill_blueprint": raise AlphaSessionError("被动回响会在满足触发条件时自行响应")
+        serial = self._player()["action_serial"] + 1
+        resolved = resolve_action(self._session, self._registry.action_registry, ActionRequest(f"alpha_cast_{serial}", PLAYER_ID, skill_id))
+        self._player()["action_serial"] = serial
+        self._spend(resolved.cost.duration, "exploration")
+        self._note(f"施放{self._template(skill_id).name}：{self._template(skill_id).effect}")
+
     def _terminal(self) -> None:
         if self._remaining() <= 0 and not self._player()["core_closed"]: self._player()["outcome"] = "seventh_night"; self._note("第七夜降临，核心仍未关闭。")
 
@@ -124,13 +170,25 @@ class AlphaSession:
         if area == MIST_CAMP_ID: rows.append({"action": "rest", "label": "在补给火休整", "description": "消耗 3 个世界刻，恢复生命与法力。"})
         if area == FROST_FOREST_ID and "forest_heart" in self._player()["knowledge"] and self._inventory()["spore_bud"] >= 2: rows.append({"action": "restore_forest", "label": "以孢芽修复林心", "description": "消耗 2 孢芽与 2 个世界刻，改变长期生物量恢复。"})
         if area == THUNDER_MINE_ID and "damaged_conduit" in self._player()["knowledge"]: rows.append({"action": "power_lift", "label": "尝试启动升降机", "description": "需要当前电荷达到 0.60；成功后会永久建立通路。"})
+        if area == MIST_CAMP_ID and "insight_dais" in self._player()["knowledge"]:
+            for template in skill_catalogue():
+                if template.id not in self._player()["crafted_skills"]:
+                    rows.append({"action": "craft", "target": template.id, "label": f"制作{template.name}", "description": self._recipe_description(template)})
+        for skill_id in self._player()["crafted_skills"]:
+            blueprint = self._blueprint(skill_id)
+            if blueprint.kind == "skill_blueprint" and not self._is_equipped(skill_id, "active_equipped") and (slot := self._first_free_slot("active_equipped")) is not None:
+                rows.append({"action": "equip_active", "target": skill_id, "slot": slot, "label": f"装备{self._template(skill_id).name}", "description": "占用一个主动技能槽；装备后可在探索或战斗中施放。"})
+            elif blueprint.kind == "passive_blueprint" and not self._is_equipped(skill_id, "passive_equipped") and (slot := self._first_free_slot("passive_equipped")) is not None:
+                rows.append({"action": "equip_passive", "target": skill_id, "slot": slot, "label": f"装备{self._template(skill_id).name}", "description": "占用一个被动技能槽；会在对应事件中自动响应。"})
+            elif blueprint.kind == "skill_blueprint" and self._is_equipped(skill_id, "active_equipped"):
+                rows.append({"action": "cast", "target": skill_id, "label": f"施放{self._template(skill_id).name}", "description": f"消耗 {blueprint.action.cost.mana:g} Mana。{self._template(skill_id).effect}"})
         return rows
 
     def public_state(self) -> dict[str, Any]:
         area_id = self._player()["current_area"]; actor = self.state.entities[PLAYER_ID].components["pmw_gameplay_actor"]
         areas = [{"id": aid, "name": NAMES[aid], "discovered": aid in self._player()["visited"], "current": aid == area_id, "locked": aid == ASH_OBSERVATORY_ID and aid not in self._neighbors(THUNDER_MINE_ID) | self._neighbors(FROST_FOREST_ID), "description": DESCRIPTIONS[aid]} for aid in AREA_IDS]
         fields = self.state.entities[area_id].components["pmw_gameplay_dynamics"]["fields"]
-        return {"title": "第七夜之前", "time": self.state.tick, "remaining_time": self._remaining(), "area": {"id": area_id, "name": NAMES[area_id], "description": DESCRIPTIONS[area_id], "fields": {key: round(value["value"], 3) for key, value in fields.items()}}, "map": {"areas": areas}, "player": {"name": "第七夜行者", "hp": actor["hp"], "max_hp": actor["max_hp"], "mana": actor["mana"], "max_mana": actor["max_mana"], "shield": actor["shield"], "level": self._player()["level"], "xp": self._player()["xp"], "attributes": {key: actor[key] for key in ("power", "control", "resilience", "agility")}, "inventory": self._inventory()}, "interactions": [{"id": point, "name": _interaction_name(point), "description": "已调查" if point in self._area()["inspected"] else "尚未调查", "state": "已知" if point in self._area()["inspected"] else "可观察"} for point in INTERACTIONS[area_id]], "recipes": [], "skills": [], "combat": {"active": False}, "recent_events": self._events[-24:], "feedback": self._feedback, "outcome": self._player()["outcome"], "controls": self.controls()}
+        return {"title": "第七夜之前", "time": self.state.tick, "remaining_time": self._remaining(), "area": {"id": area_id, "name": NAMES[area_id], "description": DESCRIPTIONS[area_id], "fields": {key: round(value["value"], 3) for key, value in fields.items()}}, "map": {"areas": areas}, "player": {"name": "第七夜行者", "hp": actor["hp"], "max_hp": actor["max_hp"], "mana": actor["mana"], "max_mana": actor["max_mana"], "shield": actor["shield"], "level": self._player()["level"], "xp": self._player()["xp"], "attributes": {key: actor[key] for key in ("power", "control", "resilience", "agility")}, "inventory": self._inventory()}, "interactions": [{"id": point, "name": _interaction_name(point), "description": "已调查" if point in self._area()["inspected"] else "尚未调查", "state": "已知" if point in self._area()["inspected"] else "可观察"} for point in INTERACTIONS[area_id]], "recipes": self._recipe_views(), "skills": self._skill_views(), "combat": {"active": False}, "recent_events": self._events[-24:], "feedback": self._feedback, "outcome": self._player()["outcome"], "controls": self.controls()}
 
     def export_save_metadata(self) -> dict[str, Any]: return {"events": self._events[-24:], "feedback": self._feedback}
     def save(self, directory: str | Path) -> None: SingleSlotSave(directory).save(self)
@@ -141,6 +199,52 @@ class AlphaSession:
     def _inventory(self) -> dict[str, float]: return self.state.entities[PLAYER_ID].components["pmw_gameplay_material_inventory"]["quantities"]
     def _remaining(self) -> int: return self.state.entities[CLOCK_ID].components["pmw_gameplay_time_budget"]["remaining_ticks"]
     def _note(self, message: str) -> None: self._feedback = [message]; self._events.append({"source": "世界", "message": message, "tick": self.state.tick})
+    def _template(self, skill_id: str) -> AlphaSkillTemplate:
+        for item in skill_catalogue():
+            if item.id == skill_id:
+                return item
+        raise AlphaSessionError("未知技能")
+    def _blueprint(self, skill_id: str):
+        rows = [item for item in self._registry.blueprints.values() if item.id == skill_id]
+        if len(rows) != 1: raise AlphaSessionError("该技能尚未注册")
+        return rows[0]
+    def _first_free_slot(self, key: str) -> int | None:
+        return next((index for index, row in enumerate(self.state.entities[PLAYER_ID].components["pmw_gameplay_actor"][key]) if row is None), None)
+    def _is_equipped(self, skill_id: str, key: str) -> bool:
+        return any(row and row["id"] == skill_id for row in self.state.entities[PLAYER_ID].components["pmw_gameplay_actor"][key])
+    def _recipe_description(self, template: AlphaSkillTemplate) -> str:
+        costs = "、".join(f"{_material_name(item)} x{amount}" for item, amount in recipe_materials(template).items())
+        return f"材料：{costs}。效果：{template.effect}。"
+    def _recipe_views(self) -> list[dict[str, Any]]:
+        inventory = self._inventory(); known = "insight_dais" in self._player()["knowledge"]; crafted = set(self._player()["crafted_skills"])
+        return [{"id": item.id, "name": item.name, "description": item.effect, "materials": [{"name": _material_name(material), "required": amount, "available": inventory.get(material, 0)} for material, amount in recipe_materials(item).items()], "crafted": item.id in crafted, "locked": not known, "craftable": known and item.id not in crafted and all(inventory.get(material, 0) >= amount for material, amount in recipe_materials(item).items()), "missing": [_material_name(material) for material, amount in recipe_materials(item).items() if inventory.get(material, 0) < amount]} for item in skill_catalogue()]
+    def _skill_views(self) -> list[dict[str, Any]]:
+        return [{"id": item.id, "name": item.name, "kind": item.kind, "description": item.effect, "cost": f"{item.mana} Mana", "equipped": self._is_equipped(item.id, "active_equipped") or self._is_equipped(item.id, "passive_equipped")} for item in skill_catalogue() if item.id in self._player()["crafted_skills"]]
 
-def _material_name(material: str) -> str: return {"wet_moss": "潮湿苔藓", "thunder_crystal": "雷晶", "spore_bud": "孢芽", "ash_cinder": "灰烬晶"}.get(material, material)
+def _material_name(material: str) -> str: return {"wet_moss": "潮湿苔藓", "thunder_crystal": "雷晶", "spore_bud": "孢芽", "ash_cinder": "灰烬晶", "instant_glyph": "瞬发纹", "sustaining_glyph": "维持纹", "echo_glyph": "回响纹"}.get(material, material)
 def _interaction_name(point: str) -> str: return {"insight_dais": "技能领悟台", "supply_fire": "补给火", "survey_map": "北境地图", "hydrology_stele": "水文碑", "moss_bed": "苔藓群落", "fungal_grove": "隐蔽菌圃", "mist_beast": "潮雾潜伏兽", "damaged_conduit": "破损供能设备", "crystal_vein": "雷晶矿脉", "mine_lift": "矿井升降机", "sentinel": "导电哨兵", "spore_bed": "可采集孢芽", "forest_heart": "森林核心", "withered_grove": "退化林地", "root_bridge": "根桥遗迹", "stabilizer_array": "环境稳定装置", "ash_reliquary": "灰烬匣", "core_console": "核心控制台", "ash_observer": "灰烬观测者"}.get(point, point)
+
+
+def _authority(template: AlphaSkillTemplate) -> MaterialAuthority:
+    kinds = {"instant": ("modify_field",), "sustain": ("modify_attractor",), "echo": ("shield",)}[template.glyph]
+    selectors = ("self",) if template.glyph == "echo" else ("current_area",)
+    return MaterialAuthority(tuple(sorted(recipe_materials(template))), kinds, selectors, 10.0)
+
+
+def _blueprint_document(template: AlphaSkillTemplate) -> dict[str, Any]:
+    field = {"tide": "humidity", "thunder": "charge", "spore": "biomass", "ash": "temperature"}[template.core]
+    materials = sorted(recipe_materials(template))
+    if template.glyph == "instant":
+        kind, trigger, cost = "skill_blueprint", "on_use", {"duration": 1, "mana": float(template.mana)}
+        effect = {"id": f"{template.id}_field", "kind": "modify_field", "target": {"kind": "current_area"}, "commitment": "required", "field_id": field, "amount": .28 if template.core != "thunder" else .35}
+    elif template.glyph == "sustain":
+        kind, trigger, cost = "skill_blueprint", "on_use", {"duration": 1, "mana": float(template.mana)}
+        effect = {"id": f"{template.id}_target", "kind": "modify_attractor", "target": {"kind": "current_area"}, "commitment": "required", "field_id": field, "amount": .20}
+    else:
+        kind, trigger, cost = "passive_blueprint", "damage_resolved", {"duration": 1, "mana": 0.0}
+        effect = {"id": f"{template.id}_shield", "kind": "shield", "target": {"kind": "self"}, "commitment": "required", "amount": 3.0}
+    selectors = [effect["target"]["kind"]]
+    return {"protocol": "pmw-gameplay-v0.4", "kind": kind, "id": template.id, "version": 1,
+            "trigger": trigger, "condition": None, "duration": None, "cost": cost,
+            "scope": {"selectors": selectors, "relation_types": []}, "effects": [effect],
+            "budget": {"limit": 10.0}, "max_firings_per_root": 1, "material_ids": materials}

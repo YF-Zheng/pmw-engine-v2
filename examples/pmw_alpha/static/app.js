@@ -98,7 +98,9 @@
   function renderRecipes(game) {
     const recipes = asArray(game.recipes);
     rows(el.recipes, recipes, (recipe) => {
-      const materials = entries(recipe.materials || recipe.requirements).map(([name, value]) => `${name} ${typeof value === "object" ? value.available ?? "?" : value}`).join(" · ");
+      const materials = asArray(recipe.materials).length
+        ? asArray(recipe.materials).map((item) => `${nameOf(item)} ${num(item.available ?? 0)}/${num(item.required ?? 1)}`).join(" · ")
+        : entries(recipe.requirements).map(([name, value]) => `${name} ${typeof value === "object" ? value.available ?? "?" : value}`).join(" · ");
       const state = recipe.crafted ? "已制作" : recipe.craftable ? "材料足够" : recipe.locked ? "尚未发现" : recipe.missing ? `缺少 ${asArray(recipe.missing).join("、")}` : "待尝试";
       return `<article class="recipe ${recipe.craftable ? "is-ready" : ""}"><div class="row-title"><strong>${esc(nameOf(recipe))}</strong><span>${esc(state)}</span></div><p>${esc(descriptionOf(recipe))}</p><small>${esc(materials || recipe.cost || "探索以找到材料")}</small></article>`;
     }, "尚未掌握任何配方。仔细调查刻文、生态与残骸。");

@@ -166,7 +166,8 @@ def make_alpha_world(*, time_budget: int = 72):
     )
     initialized = initialize_time_budget(initialized, time_budget)
     inventory = initialized.entities[PLAYER_ID].components["pmw_gameplay_material_inventory"]["quantities"]
-    inventory.update({"wet_moss": 1.0, "instant_glyph": 1.0, "sustaining_glyph": 1.0})
+    inventory.update({"wet_moss": 1.0, "instant_glyph": 1.0, "sustaining_glyph": 1.0,
+                      "echo_glyph": 1.0})
     return initialized
 
 

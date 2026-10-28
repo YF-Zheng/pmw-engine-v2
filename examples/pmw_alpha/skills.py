@@ -33,8 +33,18 @@ def skill_catalogue() -> tuple[AlphaSkillTemplate, ...]:
 
 
 def recipe_materials(template: AlphaSkillTemplate) -> dict[str, int]:
+    # The elemental part of a recipe is deliberately the material that the
+    # player can see and harvest in the matching region.  This makes crafting
+    # compete with restoration instead of hiding an unrelated "core" currency
+    # behind the UI.
+    core_material = {
+        "tide": "wet_moss",
+        "thunder": "thunder_crystal",
+        "spore": "spore_bud",
+        "ash": "ash_cinder",
+    }[template.core]
     glyph_material = {"instant": "instant_glyph", "sustain": "sustaining_glyph", "echo": "echo_glyph"}[template.glyph]
-    return {f"{template.core}_core": 1, glyph_material: 1}
+    return {core_material: 1, glyph_material: 1}
 
 
 def _exploration(core: str, glyph: str) -> str:
