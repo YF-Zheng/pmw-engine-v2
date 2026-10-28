@@ -31,6 +31,18 @@ NAMES = {MIST_CAMP_ID: "雾栖营地", MOSS_SHALLOWS_ID: "雾苔浅滩", THUNDER
 DESCRIPTIONS = {MIST_CAMP_ID: "余烬在雾中微明。领悟台、补给火与北境地图守着出发前的片刻安宁。", MOSS_SHALLOWS_ID: "潮湿苔藓铺满浅滩，水文碑半沉在雾里。", THUNDER_MINE_ID: "矿穴深处的导线仍有微弱鸣响，升降机停在断电的井口。", FROST_FOREST_ID: "霜痕压低了树林。生物量尚未恢复，根桥的残骸埋在林心。", ASH_OBSERVATORY_ID: "观测站的灰烬控制台仍在等待一个足以改变第七夜的决定。"}
 RESOURCES = {"moss_bed": ("wet_moss", 3), "crystal_vein": ("thunder_crystal", 3), "spore_bed": ("spore_bud", 3), "ash_reliquary": ("ash_cinder", 2)}
 INTERACTIONS = {MIST_CAMP_ID: ("insight_dais", "supply_fire", "survey_map"), MOSS_SHALLOWS_ID: ("hydrology_stele", "moss_bed", "fungal_grove", "mist_beast"), THUNDER_MINE_ID: ("damaged_conduit", "crystal_vein", "mine_lift", "sentinel"), FROST_FOREST_ID: ("forest_heart", "spore_bed", "withered_grove", "root_bridge"), ASH_OBSERVATORY_ID: ("stabilizer_array", "ash_reliquary", "core_console", "ash_observer")}
+INTERACTION_HINTS = {
+    "insight_dais": "调查后会公开核心、纹章、配方成本与所有技能效果；制作只可在这里进行。",
+    "survey_map": "确认观测站的两条路线，以及矿穴供能和森林生态各自的门槛。",
+    "hydrology_stele": "解释湿度、雾和潮息技能为什么会影响浅滩遭遇。",
+    "moss_bed": "可采集潮湿苔藓，用于潮息技能，也可能留给其他生态用途。",
+    "damaged_conduit": "升降机要求电荷至少 0.60；雷晶技能可以改变矿穴的真实场量。",
+    "crystal_vein": "可采集雷晶，用于雷晶技能；矿脉库存有限。",
+    "forest_heart": "投入 2 孢芽可将生物量基础目标提高到 0.78；随后要让世界推进，根桥才会生长。",
+    "spore_bed": "可采集孢芽；它既可做孢芽技能，也是修复森林的关键资源。",
+    "stabilizer_array": "终局需要一条稳定路线、受控供能与恢复生态；先收集证据，再决定如何关闭核心。",
+    "ash_reliquary": "可采集灰烬晶，用于灰烬系机制；它的代价会作用在环境中。",
+}
 
 @dataclass
 class AlphaSession:
@@ -179,7 +191,7 @@ class AlphaSession:
         if self._player()["outcome"] != "playing": return []
         area = self._player()["current_area"]; rows = [{"action": "travel", "target": dest, "label": f"前往{NAMES[dest]}", "description": "移动消耗 2 个世界刻。"} for dest in sorted(self._neighbors(area))]
         for point in INTERACTIONS[area]:
-            if point not in self._area()["inspected"]: rows.append({"action": "inspect", "target": point, "label": "仔细调查", "description": "消耗 1 个世界刻，获得可复用的规律线索。"})
+            if point not in self._area()["inspected"]: rows.append({"action": "inspect", "target": point, "label": f"调查{_interaction_name(point)}", "description": f"消耗 1 个世界刻。{INTERACTION_HINTS.get(point, '获得可复用的规律线索。')}"})
             if point in RESOURCES and self._area()["stock"].get(RESOURCES[point][0], 0) > 0: rows.append({"action": "harvest", "target": point, "label": f"采集{_material_name(RESOURCES[point][0])}", "description": "消耗 2 个世界刻，资源会减少。"})
         if area == MIST_CAMP_ID: rows.append({"action": "rest", "label": "在补给火休整", "description": "消耗 3 个世界刻，恢复生命与法力。"})
         if area == FROST_FOREST_ID and "forest_heart" in self._player()["knowledge"] and self._inventory()["spore_bud"] >= 2: rows.append({"action": "restore_forest", "label": "以孢芽修复林心", "description": "消耗 2 孢芽与 2 个世界刻，改变长期生物量恢复。"})
@@ -202,7 +214,7 @@ class AlphaSession:
         area_id = self._player()["current_area"]; actor = self.state.entities[PLAYER_ID].components["pmw_gameplay_actor"]
         areas = [{"id": aid, "name": NAMES[aid], "discovered": aid in self._player()["visited"], "current": aid == area_id, "locked": aid == ASH_OBSERVATORY_ID and aid not in self._neighbors(THUNDER_MINE_ID) | self._neighbors(FROST_FOREST_ID), "description": DESCRIPTIONS[aid]} for aid in AREA_IDS]
         fields = self.state.entities[area_id].components["pmw_gameplay_dynamics"]["fields"]
-        return {"title": "第七夜之前", "time": self.state.tick, "remaining_time": self._remaining(), "area": {"id": area_id, "name": NAMES[area_id], "description": DESCRIPTIONS[area_id], "fields": {key: round(value["value"], 3) for key, value in fields.items()}}, "map": {"areas": areas}, "player": {"name": "第七夜行者", "hp": actor["hp"], "max_hp": actor["max_hp"], "mana": actor["mana"], "max_mana": actor["max_mana"], "shield": actor["shield"], "level": self._player()["level"], "xp": self._player()["xp"], "attributes": {key: actor[key] for key in ("power", "control", "resilience", "agility")}, "inventory": self._inventory()}, "interactions": [{"id": point, "name": _interaction_name(point), "description": "已调查" if point in self._area()["inspected"] else "尚未调查", "state": "已知" if point in self._area()["inspected"] else "可观察"} for point in INTERACTIONS[area_id]], "recipes": self._recipe_views(), "skills": self._skill_views(), "combat": {"active": False}, "recent_events": self._events[-24:], "feedback": self._feedback, "outcome": self._player()["outcome"], "controls": self.controls()}
+        return {"title": "第七夜之前", "time": self.state.tick, "remaining_time": self._remaining(), "area": {"id": area_id, "name": NAMES[area_id], "description": DESCRIPTIONS[area_id], "fields": {key: round(value["value"], 3) for key, value in fields.items()}}, "map": {"areas": areas}, "player": {"name": "第七夜行者", "hp": actor["hp"], "max_hp": actor["max_hp"], "mana": actor["mana"], "max_mana": actor["max_mana"], "shield": actor["shield"], "level": self._player()["level"], "xp": self._player()["xp"], "attributes": {key: actor[key] for key in ("power", "control", "resilience", "agility")}, "inventory": self._inventory()}, "interactions": [{"id": point, "name": _interaction_name(point), "description": INTERACTION_HINTS.get(point, "尚未发现明确规律。") if point not in self._area()["inspected"] else "已调查：相关线索已记录到事件日志。", "state": "已知" if point in self._area()["inspected"] else "可观察"} for point in INTERACTIONS[area_id]], "recipes": self._recipe_views(), "skills": self._skill_views(), "combat": {"active": False}, "recent_events": self._events[-24:], "feedback": self._feedback, "outcome": self._player()["outcome"], "controls": self.controls()}
 
     def export_save_metadata(self) -> dict[str, Any]: return {"events": self._events[-24:], "feedback": self._feedback}
     def save(self, directory: str | Path) -> None: SingleSlotSave(directory).save(self)

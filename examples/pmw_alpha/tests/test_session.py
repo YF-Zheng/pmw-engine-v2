@@ -84,6 +84,17 @@ class AlphaSessionTests(unittest.TestCase):
         self.assertFalse(recipe["locked"])
         self.assertEqual({item["name"] for item in recipe["materials"]}, {"雷晶", "瞬发纹"})
 
+    def test_visible_world_objects_explain_their_actionable_leads(self) -> None:
+        session = AlphaSession.new_game()
+        state = session.public_state()
+        dais = next(item for item in state["interactions"] if item["id"] == "insight_dais")
+        self.assertIn("配方", dais["description"])
+        control = next(item for item in state["controls"] if item.get("target") == "insight_dais")
+        self.assertIn("技能效果", control["description"])
+        session.perform("travel", target="thunder_mine")
+        conduit = next(item for item in session.public_state()["interactions"] if item["id"] == "damaged_conduit")
+        self.assertIn("0.60", conduit["description"])
+
     def test_save_load_restores_world_and_registered_skill(self) -> None:
         session = AlphaSession.new_game()
         session._player()["knowledge"].append("insight_dais")
