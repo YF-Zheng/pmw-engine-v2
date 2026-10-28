@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from tempfile import TemporaryDirectory
 
 from examples.pmw_alpha.session import AlphaSession, AlphaSessionError
 
@@ -57,3 +58,14 @@ class AlphaSessionTests(unittest.TestCase):
         recipe = next(item for item in session.public_state()["recipes"] if item["id"] == "thunder_instant")
         self.assertFalse(recipe["locked"])
         self.assertEqual({item["name"] for item in recipe["materials"]}, {"雷晶", "瞬发纹"})
+
+    def test_save_load_restores_world_and_registered_skill(self) -> None:
+        session = AlphaSession.new_game()
+        session._player()["knowledge"].append("insight_dais")
+        session._inventory()["thunder_crystal"] = 1.0
+        session._craft("thunder_instant")
+        with TemporaryDirectory() as directory:
+            session.save(directory)
+            restored = AlphaSession.load(directory)
+        self.assertEqual(restored.state.to_dict(), session.state.to_dict())
+        self.assertEqual(restored.public_state()["skills"][0]["id"], "thunder_instant")

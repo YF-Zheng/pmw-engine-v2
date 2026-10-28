@@ -21,7 +21,7 @@ from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.time_ledger i
 from .content import (ACTOR_COMPONENT, AREA_COMPONENT, AREA_IDS, ASH_OBSERVATORY_ID, CLOCK_ID,
                       FROST_FOREST_ID, MATERIAL_IDS, MIST_CAMP_ID, MOSS_SHALLOWS_ID,
                       PLAYER_ID, STARTING_MAP_EDGES, THUNDER_MINE_ID, make_alpha_world)
-from .savegame import SingleSlotSave
+from .savegame import SaveGameError, SingleSlotSave
 from .skills import AlphaSkillTemplate, recipe_materials, skill_catalogue
 
 
@@ -193,7 +193,21 @@ class AlphaSession:
     def export_save_metadata(self) -> dict[str, Any]: return {"events": self._events[-24:], "feedback": self._feedback}
     def save(self, directory: str | Path) -> None: SingleSlotSave(directory).save(self)
     @classmethod
-    def load(cls, directory: str | Path) -> "AlphaSession": raise AlphaSessionError("Alpha save hydration will be enabled with the compiled action registry")
+    def load(cls, directory: str | Path) -> "AlphaSession":
+        compiled = compile_content(make_content(basic_registry(), material_ids=MATERIAL_IDS))
+        try:
+            return SingleSlotSave(directory).load(compiled, cls._restore)
+        except SaveGameError as error:
+            raise AlphaSessionError(str(error)) from error
+
+    @classmethod
+    def _restore(cls, runtime: MechanismRegistryRuntime, metadata: dict[str, Any]) -> "AlphaSession":
+        events, feedback = metadata.get("events", []), metadata.get("feedback", [])
+        if not isinstance(events, list) or not all(isinstance(row, dict) for row in events):
+            raise AlphaSessionError("存档事件记录格式无效")
+        if not isinstance(feedback, list) or not all(isinstance(row, str) for row in feedback):
+            raise AlphaSessionError("存档反馈格式无效")
+        return cls(runtime.session, runtime, list(events), list(feedback))
     def _player(self) -> dict[str, Any]: return self.state.entities[PLAYER_ID].components[ACTOR_COMPONENT]
     def _area(self) -> dict[str, Any]: return self.state.entities[self._player()["current_area"]].components[AREA_COMPONENT]
     def _inventory(self) -> dict[str, float]: return self.state.entities[PLAYER_ID].components["pmw_gameplay_material_inventory"]["quantities"]
