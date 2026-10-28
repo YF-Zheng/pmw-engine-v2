@@ -82,6 +82,17 @@ class AlphaSession:
     def _spend(self, ticks: int, reason: str) -> None:
         result = spend_world_time(self._session, ticks, reason=reason); self._registry.session = self._session
         for tick in result.ticks: self._events.append({"source": "世界", "message": f"世界推进至第 {self.state.tick} 刻。", "tick": self.state.tick})
+        self._progress_routes()
+
+    def _progress_routes(self) -> None:
+        if self._player()["root_bridge_formed"]:
+            return
+        biomass = self.state.entities[FROST_FOREST_ID].components["pmw_gameplay_dynamics"]["fields"]["biomass"]["value"]
+        if biomass >= .62:
+            self._player()["root_bridge_formed"] = True
+            message = "林心的生物量跨过根桥阈值。根须固定成桥，森林至观测站的路线已永久形成。"
+            self._feedback = [message]
+            self._events.append({"source": "生态", "message": message, "tick": self.state.tick})
 
     def _travel(self, destination: str) -> None:
         origin = self._player()["current_area"]
@@ -253,7 +264,8 @@ def _blueprint_document(template: AlphaSkillTemplate) -> dict[str, Any]:
         effect = {"id": f"{template.id}_field", "kind": "modify_field", "target": {"kind": "current_area"}, "commitment": "required", "field_id": field, "amount": .28 if template.core != "thunder" else .35}
     elif template.glyph == "sustain":
         kind, trigger, cost = "skill_blueprint", "on_use", {"duration": 1, "mana": float(template.mana)}
-        effect = {"id": f"{template.id}_target", "kind": "modify_attractor", "target": {"kind": "current_area"}, "commitment": "required", "field_id": field, "amount": .20}
+        target = {"tide": .82, "thunder": .78, "spore": .78, "ash": .70}[template.core]
+        effect = {"id": f"{template.id}_target", "kind": "modify_attractor", "target": {"kind": "current_area"}, "commitment": "required", "field_id": field, "amount": target, "duration": template.duration or 4}
     else:
         kind, trigger, cost = "passive_blueprint", "damage_resolved", {"duration": 1, "mana": 0.0}
         effect = {"id": f"{template.id}_shield", "kind": "shield", "target": {"kind": "self"}, "commitment": "required", "amount": 3.0}

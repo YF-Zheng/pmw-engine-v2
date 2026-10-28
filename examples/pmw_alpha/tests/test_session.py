@@ -50,6 +50,18 @@ class AlphaSessionTests(unittest.TestCase):
         self.assertEqual(session._inventory()["thunder_crystal"], 0.0)
         self.assertTrue(any(item["id"] == "thunder_instant" for item in session.state.entities["seventh_walker"].components["pmw_gameplay_actor"]["active_equipped"] if item))
 
+    def test_thunder_skill_opens_the_mine_lift_route(self) -> None:
+        session = AlphaSession.new_game()
+        session._player()["knowledge"].extend(("insight_dais", "damaged_conduit"))
+        session._inventory()["thunder_crystal"] = 1.0
+        session._craft("thunder_instant")
+        session._equip("equip_active", "thunder_instant", 0)
+        session._travel("thunder_mine")
+        session._cast("thunder_instant")
+        self.assertTrue(any(row["action"] == "power_lift" for row in session.controls()))
+        session._power_lift()
+        self.assertIn("ash_observatory", session._neighbors("thunder_mine"))
+
     def test_recipe_projection_explains_costs_and_lock_state(self) -> None:
         session = AlphaSession.new_game()
         locked = next(item for item in session.public_state()["recipes"] if item["id"] == "thunder_instant")
