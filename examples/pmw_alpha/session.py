@@ -126,7 +126,10 @@ class AlphaSession:
     def _restore_forest(self) -> None:
         inv = self._inventory()
         if inv["spore_bud"] < 2: raise AlphaSessionError("需要 2 孢芽")
-        inv["spore_bud"] -= 2; fields = self.state.entities[FROST_FOREST_ID].components["pmw_gameplay_dynamics"]["fields"]; fields["biomass"]["target"] = .78; fields["biomass"]["rate"] = .08; self._spend(2, "exploration"); self._note("孢芽融入林心。生物量的恢复目标已被改变；离开并让世界推进几刻，再回来观察根桥。")
+        inv["spore_bud"] -= 2; fields = self.state.entities[FROST_FOREST_ID].components["pmw_gameplay_dynamics"]["fields"]
+        fields["biomass"]["baseline"]["target"] = .78
+        fields["biomass"]["baseline"]["rate"] = .08
+        self._spend(2, "exploration"); self._note("孢芽融入林心。生物量的基础恢复目标已被改变；离开并让世界推进几刻，再回来观察根桥。")
 
     def _power_lift(self) -> None:
         fields = self.state.entities[THUNDER_MINE_ID].components["pmw_gameplay_dynamics"]["fields"]

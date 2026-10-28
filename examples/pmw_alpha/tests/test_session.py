@@ -62,6 +62,19 @@ class AlphaSessionTests(unittest.TestCase):
         session._power_lift()
         self.assertIn("ash_observatory", session._neighbors("thunder_mine"))
 
+    def test_forest_restoration_changes_real_baseline_and_grows_root_route(self) -> None:
+        session = AlphaSession.new_game()
+        session._player()["knowledge"].append("forest_heart")
+        session._inventory()["spore_bud"] = 2.0
+        session._travel("moss_shallows")
+        session._travel("frost_forest")
+        session._restore_forest()
+        field = session.state.entities["frost_forest"].components["pmw_gameplay_dynamics"]["fields"]["biomass"]
+        self.assertEqual(field["baseline"]["target"], .78)
+        for _ in range(9): session._spend(1, "exploration")
+        self.assertTrue(session._player()["root_bridge_formed"])
+        self.assertIn("ash_observatory", session._neighbors("frost_forest"))
+
     def test_recipe_projection_explains_costs_and_lock_state(self) -> None:
         session = AlphaSession.new_game()
         locked = next(item for item in session.public_state()["recipes"] if item["id"] == "thunder_instant")
