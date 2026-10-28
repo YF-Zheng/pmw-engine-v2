@@ -1,0 +1,20 @@
+P0 QA evidence: next_tracks_v06 pytest
+Command: $env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; python -m pytest -q -ra --durations=10 -p no:cacheprovider experiments/generative_mechanics/next_tracks_v06/tests
+........ [  4%]
+.................................................................................... [ 54%]
+................................................................. [ 92%]
+.............                                                            [100%]
+============================ slowest 10 durations =============================
+15.59s call     experiments/generative_mechanics/next_tracks_v06/tests/test_differential.py::DynamicsDifferentialTest::test_1000_randomized_lifecycles_match_independent_reference
+6.87s call     experiments/generative_mechanics/next_tracks_v06/tests/test_differential.py::DynamicsDifferentialTest::test_reference_matches_pmw_for_1000_deterministic_cases
+4.22s call     experiments/generative_mechanics/next_tracks_v06/tests/test_adversarial_qa.py::IndependentDynamicsDifferential::test_second_seed_1000_case_manual_oracle
+1.45s call     experiments/generative_mechanics/next_tracks_v06/tests/test_adversarial_qa.py::LocalityAdversarialTest::test_100k_unrelated_objects_do_not_increase_structural_work
+0.74s call     experiments/generative_mechanics/next_tracks_v06/tests/test_worlds_demos.py::DemoTests::test_demo_output_is_byte_deterministic
+0.65s call     experiments/generative_mechanics/next_tracks_v06/tests/test_worlds_demos.py::DemoTests::test_checked_in_results_match_rebuild
+0.36s call     experiments/generative_mechanics/next_tracks_v06/tests/test_worlds_demos.py::DemoTests::test_all_demos_run
+0.33s call     experiments/generative_mechanics/next_tracks_v06/tests/test_worlds_demos.py::DemoTests::test_each_demo_contains_full_audit_chain
+0.18s call     experiments/generative_mechanics/next_tracks_v06/tests/test_worlds_demos.py::LocalityTests::test_warm_candidate_work_is_independent_of_unrelated_objects
+0.14s call     experiments/generative_mechanics/next_tracks_v06/tests/test_dynamics.py::ReferenceDynamicsTest::test_long_horizon_remains_finite_and_bounded
+170 passed, 3011 subtests passed in 32.13s
+EXIT_CODE=0
+ELAPSED_SECONDS=33.189

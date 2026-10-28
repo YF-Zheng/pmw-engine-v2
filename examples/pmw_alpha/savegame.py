@@ -40,7 +40,7 @@ from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.checkpoint im
 )
 
 
-SAVE_SCHEMA = "pmw-alpha-save-v0.2"
+SAVE_SCHEMA = "pmw-alpha-save-v0.3"
 DEFAULT_SLOT_NAME = "pmw-alpha-save.json"
 
 

@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from pmw import parse_law
+
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.basics import basic_registry
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.blueprints import (
     instantiate_actor,
@@ -18,6 +20,8 @@ from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.blueprints im
     parse_area_blueprint,
 )
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.content_compiler import (
+    CompiledGate3Content,
+    compile_content,
     initialize_content_world,
     make_content,
 )
@@ -69,6 +73,69 @@ LOCKED_ROUTE_SPECS = {
     "mine_lift": {"from": THUNDER_MINE_ID, "to": ASH_OBSERVATORY_ID, "unlock": "lift_powered"},
     "forest_root_bridge": {"from": FROST_FOREST_ID, "to": ASH_OBSERVATORY_ID, "unlock": "root_bridge_formed"},
 }
+ROUTE_UNLOCK_EVENT = "pmw.alpha.route.unlock"
+ROUTE_COMPONENT = "pmw_alpha_route"
+
+
+def route_relation_id(left: str, right: str) -> str:
+    """Return the canonical ID used by the initial map builder and route Laws."""
+    first, second = sorted((left, right))
+    return f"adjacent:{first}:{second}"
+
+
+def build_route_laws() -> tuple[dict[str, Any], ...]:
+    """Compile Alpha's world-owned route transitions into trusted PMW Laws."""
+    laws = []
+    for route_id, spec in sorted(LOCKED_ROUTE_SPECS.items()):
+        left, right = sorted((spec["from"], spec["to"]))
+        condition = (
+            {"ref": f"$origin.pmw_gameplay_dynamics.fields.charge.value", "gte": .60}
+            if route_id == "mine_lift"
+            else {"ref": f"$origin.pmw_gameplay_dynamics.fields.biomass.value", "gte": .62}
+        )
+        law = {
+            "id": f"pmw.alpha.route.{route_id}",
+            "mode": "event",
+            "priority": 100,
+            "bindings": {
+                "actor": {"kind": "entity", "requires": [ACTOR_COMPONENT]},
+                "origin": {"kind": "entity", "requires": ["pmw_gameplay_area", "pmw_gameplay_dynamics"]},
+                "destination": {"kind": "entity", "requires": ["pmw_gameplay_area"]},
+            },
+            "when": {"all": [
+                {"event.type": {"eq": ROUTE_UNLOCK_EVENT}},
+                {"ref": "$event.payload.route", "eq": route_id},
+                {"ref": "$event.source", "eq": "$actor.id"},
+                {"ref": "$event.payload.origin", "eq": f"{spec['from']}"},
+                {"ref": "$event.payload.destination", "eq": f"{spec['to']}"},
+                {"ref": "$origin.id", "eq": f"{spec['from']}"},
+                {"ref": "$destination.id", "eq": f"{spec['to']}"},
+                condition,
+            ]},
+            "effects": [
+                {"op": "create_relation", "value": {
+                    "id": route_relation_id(left, right),
+                    "type": "adjacent",
+                    "source": left,
+                    "target": right,
+                    "components": {ROUTE_COMPONENT: {
+                        "route_id": route_id,
+                        "unlocked_by": spec["unlock"],
+                    }},
+                }},
+                {"op": "set", "target": f"$actor.{ACTOR_COMPONENT}.{spec['unlock']}", "value": True},
+            ],
+        }
+        parse_law(law)
+        laws.append(law)
+    return tuple(sorted(laws, key=lambda item: item["id"]))
+
+
+def compile_alpha_content() -> CompiledGate3Content:
+    """Compile the trusted Gameplay content plus Alpha's route lifecycle Laws."""
+    compiled = compile_content(make_content(basic_registry(), material_ids=MATERIAL_IDS))
+    laws = {law["id"]: law for law in (*compiled.laws, *build_route_laws())}
+    return CompiledGate3Content(compiled.content, tuple(laws[key] for key in sorted(laws)))
 
 
 def area_blueprint_documents() -> dict[str, dict[str, Any]]:

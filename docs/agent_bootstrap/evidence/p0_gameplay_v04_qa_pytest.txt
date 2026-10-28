@@ -1,0 +1,18 @@
+P0 QA evidence: gameplay_v04 pytest
+Command: $env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; python -m pytest -q -ra --durations=10 -p no:cacheprovider experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests
+...................................................................... [ 40%]
+......................................................................................................                       [100%]
+============================ slowest 10 durations =============================
+32.14s call     experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate5_ai_contract.py::ActorAndAIContractTests::test_repeated_planning_is_bounded_and_never_emits_an_illegal_request
+7.73s call     experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_ai_planner.py::BoundedPlannerTests::test_demo_is_reproducible
+5.97s call     experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate5_end_to_end.py::EndToEndScenarios::test_integrated_demo_is_deterministic
+5.36s call     experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate5_independent_qa.py::IndependentAIInformationBoundaryTests::test_hidden_ability_and_hidden_law_cannot_change_observation_or_plan
+4.19s call     experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_ai_observation.py::ActorSafeObservationTests::test_observation_is_json_owned_and_ignores_hidden_world_surfaces
+3.07s call     experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_ai_planner.py::BoundedPlannerTests::test_two_action_search_beats_myopic_and_random_paths
+2.86s call     experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_ai_observation.py::ActorSafeObservationTests::test_hidden_skill_registry_addition_cannot_change_decision
+2.80s call     experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate5_ai_contract.py::ActorAndAIContractTests::test_ai_plan_beats_one_step_and_average_bounded_paths
+1.84s call     experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate1_dynamics.py::LocalityTests::test_structural_work_is_constant_through_100k_unrelated_entities
+1.26s call     experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py::RegistryCheckpointTests::test_checkpoint_restores_world_registry_scheduler_and_continuation_trace
+172 passed, 22 subtests passed in 96.91s (0:01:36)
+EXIT_CODE=0
+ELAPSED_SECONDS=97.729

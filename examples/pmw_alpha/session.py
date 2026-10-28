@@ -6,11 +6,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from pmw import Relation
+from pmw import Event, Relation
 
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRequest, resolve_action
-from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.basics import basic_registry
-from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.content_compiler import build_content_session, compile_content, make_content
+from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.content_compiler import build_content_session
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.loadout import change_loadout, skill_ref
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.materials import MaterialAuthority
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.registry import MechanismRegistryRuntime
@@ -19,8 +18,9 @@ from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.skills import
 from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.time_ledger import spend_world_time
 
 from .content import (ACTOR_COMPONENT, AREA_COMPONENT, AREA_IDS, ASH_OBSERVATORY_ID, CLOCK_ID,
-                      FROST_FOREST_ID, MATERIAL_IDS, MIST_CAMP_ID, MOSS_SHALLOWS_ID,
-                      PLAYER_ID, STARTING_MAP_EDGES, THUNDER_MINE_ID, make_alpha_world)
+                      FROST_FOREST_ID, LOCKED_ROUTE_SPECS, MIST_CAMP_ID, MOSS_SHALLOWS_ID,
+                      PLAYER_ID, ROUTE_COMPONENT, ROUTE_UNLOCK_EVENT, THUNDER_MINE_ID,
+                      compile_alpha_content, make_alpha_world, route_relation_id)
 from .savegame import SaveGameError, SingleSlotSave
 from .skills import AlphaSkillTemplate, recipe_materials, skill_catalogue
 
@@ -60,8 +60,7 @@ class AlphaSession:
             area = world.entities[area_id].components[AREA_COMPONENT]
             area["stock"] = {material: amount for point, (material, amount) in RESOURCES.items() if point in INTERACTIONS[area_id]}
             area["inspected"] = []
-        content = make_content(basic_registry(), material_ids=MATERIAL_IDS)
-        compiled = compile_content(content)
+        compiled = compile_alpha_content()
         gameplay = build_content_session(world, compiled)
         return cls(gameplay, MechanismRegistryRuntime.from_compiled_content(gameplay, compiled), [], ["第七夜尚未来临。先在雾栖营地查看地图，或前往已知边境。"])
 
@@ -93,7 +92,8 @@ class AlphaSession:
 
     def _spend(self, ticks: int, reason: str) -> None:
         result = spend_world_time(self._session, ticks, reason=reason); self._registry.session = self._session
-        for tick in result.ticks: self._events.append({"source": "世界", "message": f"世界推进至第 {self.state.tick} 刻。", "tick": self.state.tick})
+        for tick in result.ticks:
+            self._events.append({"source": "世界", "message": f"世界推进至第 {tick.step} 刻。", "tick": tick.step})
         self._progress_routes()
 
     def _progress_routes(self) -> None:
@@ -101,10 +101,10 @@ class AlphaSession:
             return
         biomass = self.state.entities[FROST_FOREST_ID].components["pmw_gameplay_dynamics"]["fields"]["biomass"]["value"]
         if biomass >= .62:
-            self._player()["root_bridge_formed"] = True
+            self._unlock_route("forest_root_bridge")
             message = "林心的生物量跨过根桥阈值。根须固定成桥，森林至观测站的路线已永久形成。"
             self._feedback = [message]
-            self._events.append({"source": "生态", "message": message, "tick": self.state.tick})
+            self._events.append({"source": "生态", "message": message, "tick": self._time()})
 
     def _travel(self, destination: str) -> None:
         origin = self._player()["current_area"]
@@ -146,7 +146,18 @@ class AlphaSession:
     def _power_lift(self) -> None:
         fields = self.state.entities[THUNDER_MINE_ID].components["pmw_gameplay_dynamics"]["fields"]
         if fields["charge"]["value"] < .60: raise AlphaSessionError("矿穴电荷仍不足；先调查导管，或寻找能改变电荷的机制")
-        self._player()["lift_powered"] = True; self._spend(2, "exploration"); self._note("升降机在持续供能下启动。矿穴至观测站的通路已经建立；这项供能也可能增强观测站。")
+        self._unlock_route("mine_lift")
+        self._spend(2, "exploration"); self._note("升降机在持续供能下启动。矿穴至观测站的通路已经建立；这项供能也可能增强观测站。")
+
+    def _unlock_route(self, route_id: str) -> None:
+        spec = LOCKED_ROUTE_SPECS[route_id]
+        result = self._session.runtime.run_event(Event(
+            f"pmw:alpha:route:{route_id}:{self._player()['action_serial']}",
+            ROUTE_UNLOCK_EVENT, self.state.sim_time, PLAYER_ID, None,
+            {"route": route_id, "origin": spec["from"], "destination": spec["to"]},
+        ))
+        if not result.changed:
+            raise AlphaSessionError("路线解锁未通过可信世界规则")
 
     def _craft(self, skill_id: str) -> None:
         template = self._template(skill_id)
@@ -182,10 +193,11 @@ class AlphaSession:
         if self._remaining() <= 0 and not self._player()["core_closed"]: self._player()["outcome"] = "seventh_night"; self._note("第七夜降临，核心仍未关闭。")
 
     def _neighbors(self, origin: str) -> set[str]:
-        edges = {tuple(edge) for edge in STARTING_MAP_EDGES}; p = self._player()
-        if p["lift_powered"]: edges.add((THUNDER_MINE_ID, ASH_OBSERVATORY_ID))
-        if p["root_bridge_formed"]: edges.add((FROST_FOREST_ID, ASH_OBSERVATORY_ID))
-        return {b if a == origin else a for a, b in edges if origin in (a, b)}
+        return {
+            relation.target if relation.source == origin else relation.source
+            for relation in self.state.relations.values()
+            if relation.type == "adjacent" and origin in {relation.source, relation.target}
+        }
 
     def controls(self) -> list[dict[str, Any]]:
         if self._player()["outcome"] != "playing": return []
@@ -214,13 +226,13 @@ class AlphaSession:
         area_id = self._player()["current_area"]; actor = self.state.entities[PLAYER_ID].components["pmw_gameplay_actor"]
         areas = [{"id": aid, "name": NAMES[aid], "discovered": aid in self._player()["visited"], "current": aid == area_id, "locked": aid == ASH_OBSERVATORY_ID and aid not in self._neighbors(THUNDER_MINE_ID) | self._neighbors(FROST_FOREST_ID), "description": DESCRIPTIONS[aid]} for aid in AREA_IDS]
         fields = self.state.entities[area_id].components["pmw_gameplay_dynamics"]["fields"]
-        return {"title": "第七夜之前", "time": self.state.tick, "remaining_time": self._remaining(), "area": {"id": area_id, "name": NAMES[area_id], "description": DESCRIPTIONS[area_id], "fields": {key: round(value["value"], 3) for key, value in fields.items()}}, "map": {"areas": areas}, "player": {"name": "第七夜行者", "hp": actor["hp"], "max_hp": actor["max_hp"], "mana": actor["mana"], "max_mana": actor["max_mana"], "shield": actor["shield"], "level": self._player()["level"], "xp": self._player()["xp"], "attributes": {key: actor[key] for key in ("power", "control", "resilience", "agility")}, "inventory": self._inventory()}, "interactions": [{"id": point, "name": _interaction_name(point), "description": INTERACTION_HINTS.get(point, "尚未发现明确规律。") if point not in self._area()["inspected"] else "已调查：相关线索已记录到事件日志。", "state": "已知" if point in self._area()["inspected"] else "可观察"} for point in INTERACTIONS[area_id]], "recipes": self._recipe_views(), "skills": self._skill_views(), "combat": {"active": False}, "recent_events": self._events[-24:], "feedback": self._feedback, "outcome": self._player()["outcome"], "controls": self.controls()}
+        return {"title": "第七夜之前", "time": self._time(), "remaining_time": self._remaining(), "area": {"id": area_id, "name": NAMES[area_id], "description": DESCRIPTIONS[area_id], "fields": {key: round(value["value"], 3) for key, value in fields.items()}}, "map": {"areas": areas}, "player": {"name": "第七夜行者", "hp": actor["hp"], "max_hp": actor["max_hp"], "mana": actor["mana"], "max_mana": actor["max_mana"], "shield": actor["shield"], "level": self._player()["level"], "xp": self._player()["xp"], "attributes": {key: actor[key] for key in ("power", "control", "resilience", "agility")}, "inventory": self._inventory()}, "interactions": [{"id": point, "name": _interaction_name(point), "description": INTERACTION_HINTS.get(point, "尚未发现明确规律。") if point not in self._area()["inspected"] else "已调查：相关线索已记录到事件日志。", "state": "已知" if point in self._area()["inspected"] else "可观察"} for point in INTERACTIONS[area_id]], "recipes": self._recipe_views(), "skills": self._skill_views(), "combat": {"active": False}, "recent_events": self._events[-24:], "feedback": self._feedback, "outcome": self._player()["outcome"], "controls": self.controls()}
 
     def export_save_metadata(self) -> dict[str, Any]: return {"events": self._events[-24:], "feedback": self._feedback}
     def save(self, directory: str | Path) -> None: SingleSlotSave(directory).save(self)
     @classmethod
     def load(cls, directory: str | Path) -> "AlphaSession":
-        compiled = compile_content(make_content(basic_registry(), material_ids=MATERIAL_IDS))
+        compiled = compile_alpha_content()
         try:
             return SingleSlotSave(directory).load(compiled, cls._restore)
         except SaveGameError as error:
@@ -233,12 +245,31 @@ class AlphaSession:
             raise AlphaSessionError("存档事件记录格式无效")
         if not isinstance(feedback, list) or not all(isinstance(row, str) for row in feedback):
             raise AlphaSessionError("存档反馈格式无效")
+        actor = runtime.session.state.entities[PLAYER_ID].components[ACTOR_COMPONENT]
+        for route_id, spec in LOCKED_ROUTE_SPECS.items():
+            unlocked = actor[spec["unlock"]] is True
+            relation = runtime.session.state.relations.get(route_relation_id(spec["from"], spec["to"]))
+            if not unlocked:
+                invalid = relation is not None
+            else:
+                metadata = relation.components.get(ROUTE_COMPONENT) if relation is not None else None
+                invalid = (
+                    relation is None
+                    or relation.type != "adjacent"
+                    or sorted((relation.source, relation.target)) != sorted((spec["from"], spec["to"]))
+                    or not isinstance(metadata, dict)
+                    or metadata.get("route_id") != route_id
+                    or metadata.get("unlocked_by") != spec["unlock"]
+                )
+            if invalid:
+                raise AlphaSessionError("存档路线状态不完整；无法安全迁移旧拓扑")
         return cls(runtime.session, runtime, list(events), list(feedback))
     def _player(self) -> dict[str, Any]: return self.state.entities[PLAYER_ID].components[ACTOR_COMPONENT]
     def _area(self) -> dict[str, Any]: return self.state.entities[self._player()["current_area"]].components[AREA_COMPONENT]
     def _inventory(self) -> dict[str, float]: return self.state.entities[PLAYER_ID].components["pmw_gameplay_material_inventory"]["quantities"]
     def _remaining(self) -> int: return self.state.entities[CLOCK_ID].components["pmw_gameplay_time_budget"]["remaining_ticks"]
-    def _note(self, message: str) -> None: self._feedback = [message]; self._events.append({"source": "世界", "message": message, "tick": self.state.tick})
+    def _time(self) -> int: return self.state.entities[CLOCK_ID].components["pmw_gameplay_clock"]["last_completed_step"]
+    def _note(self, message: str) -> None: self._feedback = [message]; self._events.append({"source": "世界", "message": message, "tick": self._time()})
     def _template(self, skill_id: str) -> AlphaSkillTemplate:
         for item in skill_catalogue():
             if item.id == skill_id:

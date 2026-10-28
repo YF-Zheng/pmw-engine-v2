@@ -12,7 +12,7 @@ from typing import Any, Mapping
 
 from pmw import parse_law
 
-from .contracts import CURVES, GameplayContractError
+from .contracts import GameplayContractError, validate_curve_policy
 from .dynamics import DYNAMICS_COMPONENT, WORLD_TICK_EVENT
 
 
@@ -201,8 +201,10 @@ def _baseline(raw: Any, path: str) -> EcologyBaseline:
     if not isinstance(raw, dict) or set(raw) != {"field_id", "target", "rate", "curve"}:
         raise GameplayContractError(f"{path} is invalid")
     target, rate = _number(raw["target"], f"{path}.target"), _number(raw["rate"], f"{path}.rate")
-    if rate < 0 or raw["curve"] not in CURVES:
-        raise GameplayContractError(f"{path} rate/curve is invalid")
+    try:
+        validate_curve_policy(raw["curve"], rate)
+    except GameplayContractError as exc:
+        raise GameplayContractError(f"{path}: {exc}") from exc
     return EcologyBaseline(_identifier(raw["field_id"], f"{path}.field_id"), target, rate, raw["curve"])
 
 

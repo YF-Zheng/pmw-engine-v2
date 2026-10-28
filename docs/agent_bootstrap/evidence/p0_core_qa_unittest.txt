@@ -1,0 +1,295 @@
+P0 QA evidence: core native unittest
+Command: $env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; python -m unittest discover -s tests -t . -p "test_*.py" -v
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\__main__.py", line 18, in <module>
+    main(module=None)
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 104, in __init__
+    self.parseArgs(argv)
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 130, in parseArgs
+    self._do_discovery(argv[2:])
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 253, in _do_discovery
+    self.createTests(from_discovery=True, Loader=Loader)
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 160, in createTests
+    self.test = loader.discover(self.start, self.pattern, self.top)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 308, in discover
+    raise ImportError('Start directory is not importable: %r' % start_dir)
+ImportError: Start directory is not importable: 'C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\tests'
+EXIT_CODE=1
+ELAPSED_SECONDS=0.463
+
+RETRY: env PYTHONPATH=<repo>\src; python -m unittest discover -s . -p "test_*.py" -v
+test_97_percent_input_cache_math_preserves_recorded_cache (test_agent_cost_ledger.AgentCostLedgerTest.test_97_percent_input_cache_math_preserves_recorded_cache) ... ok
+test_cumulative_usage_ignored_and_records_deduplicated (test_agent_cost_ledger.AgentCostLedgerTest.test_cumulative_usage_ignored_and_records_deduplicated) ... ok
+test_long_context_multipliers_and_reasoning_not_added (test_agent_cost_ledger.AgentCostLedgerTest.test_long_context_multipliers_and_reasoning_not_added) ... ok
+test_missing_model_becomes_unknown (test_agent_cost_ledger.AgentCostLedgerTest.test_missing_model_becomes_unknown) ... ok
+test_mixed_model_attribution (test_agent_cost_ledger.AgentCostLedgerTest.test_mixed_model_attribution) ... ok
+test_output_is_idempotent_and_exports_only_allowlisted_metadata (test_agent_cost_ledger.AgentCostLedgerTest.test_output_is_idempotent_and_exports_only_allowlisted_metadata) ... ok
+test_project_turn_filter_and_child_full_include (test_agent_cost_ledger.AgentCostLedgerTest.test_project_turn_filter_and_child_full_include) ... ok
+test_unknown_pricing_fails_closed_in_budget_check (test_agent_cost_ledger.AgentCostLedgerTest.test_unknown_pricing_fails_closed_in_budget_check) ... ok
+test_add_remove_tag_conflict_is_deterministic (test_engine.EngineTest.test_add_remove_tag_conflict_is_deterministic) ... ok
+test_arithmetic_comparator_rhs_uses_value_dsl (test_engine.EngineTest.test_arithmetic_comparator_rhs_uses_value_dsl) ... ok
+test_batch_preflight_detects_internal_duplicate_without_world_mutation (test_engine.EngineTest.test_batch_preflight_detects_internal_duplicate_without_world_mutation) ... ok
+test_binding_key_order_has_identical_trace_semantics (test_engine.EngineTest.test_binding_key_order_has_identical_trace_semantics) ... ok
+test_canonical_serialization_ignores_insertion_order (test_engine.EngineTest.test_canonical_serialization_ignores_insertion_order) ... ok
+test_comparator_rhs_reference_preserves_literal_behavior (test_engine.EngineTest.test_comparator_rhs_reference_preserves_literal_behavior) ... ok
+test_component_field_mutation_patches_without_posting_change (test_engine.EngineTest.test_component_field_mutation_patches_without_posting_change) ... ok
+test_condition_ast_and_value_arity_fail_at_parse_boundary (test_engine.EngineTest.test_condition_ast_and_value_arity_fail_at_parse_boundary) ... ok
+test_cow_commit_differential_500_transactions (test_engine.EngineTest.test_cow_commit_differential_500_transactions) ... ok
+test_cow_commit_matches_full_copy_reference_for_500_transactions (test_engine.EngineTest.test_cow_commit_matches_full_copy_reference_for_500_transactions) ... ok
+test_delta_trace_and_result_keep_all_source_laws (test_engine.EngineTest.test_delta_trace_and_result_keep_all_source_laws) ... ok
+test_deltas_aggregate_independently_of_law_order (test_engine.EngineTest.test_deltas_aggregate_independently_of_law_order) ... ok
+test_dependency_plan_includes_effect_value_and_target (test_engine.EngineTest.test_dependency_plan_includes_effect_value_and_target) ... ok
+test_dependency_plan_tracks_relation_effect_target (test_engine.EngineTest.test_dependency_plan_tracks_relation_effect_target) ... ok
+test_dependency_plan_tracks_static_and_dynamic_tag_effects (test_engine.EngineTest.test_dependency_plan_tracks_static_and_dynamic_tag_effects) ... ok
+test_dependency_plan_walks_recursive_value_expression (test_engine.EngineTest.test_dependency_plan_walks_recursive_value_expression) ... ok
+test_derived_events_and_proposal_ids_are_unique (test_engine.EngineTest.test_derived_events_and_proposal_ids_are_unique) ... ok
+test_differential_property_suite_500_cases (test_engine.EngineTest.test_differential_property_suite_500_cases) ... ok
+test_dynamic_component_predicate_change_matches_full_semantics (test_engine.EngineTest.test_dynamic_component_predicate_change_matches_full_semantics) ... ok
+test_dynamic_has_component_uses_value_dsl (test_engine.EngineTest.test_dynamic_has_component_uses_value_dsl) ... ok
+test_dynamic_has_tag_uses_value_dsl (test_engine.EngineTest.test_dynamic_has_tag_uses_value_dsl) ... ok
+test_dynamic_predicate_change_matches_full_semantics (test_engine.EngineTest.test_dynamic_predicate_change_matches_full_semantics) ... ok
+test_dynamic_predicate_operand_dependency_plan (test_engine.EngineTest.test_dynamic_predicate_operand_dependency_plan) ... ok
+test_dynamic_tag_value_change_reactivates_law (test_engine.EngineTest.test_dynamic_tag_value_change_reactivates_law) ... ok
+test_early_pruning_avoids_independent_cartesian_product (test_engine.EngineTest.test_early_pruning_avoids_independent_cartesian_product) ... ok
+test_effect_dependencies_do_not_force_global_fallback (test_engine.EngineTest.test_effect_dependencies_do_not_force_global_fallback) ... ok
+test_effect_target_parent_child_overlap_is_reactive (test_engine.EngineTest.test_effect_target_parent_child_overlap_is_reactive) ... ok
+test_effect_target_restoration_matches_full_backend (test_engine.EngineTest.test_effect_target_restoration_matches_full_backend) ... ok
+test_effect_value_literal_text_is_not_false_dependency (test_engine.EngineTest.test_effect_value_literal_text_is_not_false_dependency) ... ok
+test_effect_value_propagation_matches_full_backend (test_engine.EngineTest.test_effect_value_propagation_matches_full_backend) ... ok
+test_emit_event_unknown_field_and_invalid_dynamic_value_fail (test_engine.EngineTest.test_emit_event_unknown_field_and_invalid_dynamic_value_fail) ... ok
+test_empty_runtime_avoids_snapshots_and_repeated_validation (test_engine.EngineTest.test_empty_runtime_avoids_snapshots_and_repeated_validation) ... ok
+test_engine_cow_matches_full_copy_commit_trace_and_nonconvergence (test_engine.EngineTest.test_engine_cow_matches_full_copy_commit_trace_and_nonconvergence) ... ok
+test_engine_trace_equivalence_with_reference_backend (test_engine.EngineTest.test_engine_trace_equivalence_with_reference_backend) ... ok
+test_entity_component_creation_patches_persistent_index (test_engine.EngineTest.test_entity_component_creation_patches_persistent_index) ... ok
+test_event_law_only_fires_once_while_state_settles (test_engine.EngineTest.test_event_law_only_fires_once_while_state_settles) ... ok
+test_event_validation_and_engine_boundary (test_engine.EngineTest.test_event_validation_and_engine_boundary) ... ok
+test_exact_constraint_pushdown_differential_200_cases (test_engine.EngineTest.test_exact_constraint_pushdown_differential_200_cases) ... ok
+test_exact_entity_event_target_and_invalid_rhs_prune_without_index (test_engine.EngineTest.test_exact_entity_event_target_and_invalid_rhs_prune_without_index) ... ok
+test_exact_entity_id_literal_uses_snapshot_map_without_index (test_engine.EngineTest.test_exact_entity_id_literal_uses_snapshot_map_without_index) ... ok
+test_exact_entity_source_and_multiple_constraint_compatibility (test_engine.EngineTest.test_exact_entity_source_and_multiple_constraint_compatibility) ... ok
+test_exact_relation_id_uses_snapshot_map_without_index (test_engine.EngineTest.test_exact_relation_id_uses_snapshot_map_without_index) ... ok
+test_failed_direct_schedule_is_atomic_and_queue_remains_usable (test_engine.EngineTest.test_failed_direct_schedule_is_atomic_and_queue_remains_usable) ... ok
+test_failed_future_component_creation_preserves_index_coherence (test_engine.EngineTest.test_failed_future_component_creation_preserves_index_coherence) ... ok
+test_failed_future_preflight_keeps_scheduler_positions_consistent (test_engine.EngineTest.test_failed_future_preflight_keeps_scheduler_positions_consistent) ... ok
+test_fixed_100k_world_chain_keeps_warm_index_builds_constant (test_engine.EngineTest.test_fixed_100k_world_chain_keeps_warm_index_builds_constant) ... ok
+test_frontier_activation_is_not_cumulative (test_engine.EngineTest.test_frontier_activation_is_not_cumulative) ... ok
+test_full_incremental_nonconvergence_semantic_projection (test_engine.EngineTest.test_full_incremental_nonconvergence_semantic_projection) ... ok
+test_future_batch_preflight_checks_only_batch_membership (test_engine.EngineTest.test_future_batch_preflight_checks_only_batch_membership) ... ok
+test_future_duplicate_rejects_before_cow_state_publish (test_engine.EngineTest.test_future_duplicate_rejects_before_cow_state_publish) ... ok
+test_generated_state_program_differential_1000_cases (test_engine.EngineTest.test_generated_state_program_differential_1000_cases) ... ok
+test_global_state_law_falls_back_to_full_match (test_engine.EngineTest.test_global_state_law_falls_back_to_full_match) ... ok
+test_higher_priority_set_wins (test_engine.EngineTest.test_higher_priority_set_wins) ... ok
+test_immediate_run_event_does_not_change_scheduler_clock (test_engine.EngineTest.test_immediate_run_event_does_not_change_scheduler_clock) ... ok
+test_incremental_closure_differential_1000_cases (test_engine.EngineTest.test_incremental_closure_differential_1000_cases) ... ok
+test_incremental_local_chain_uses_constant_seeded_candidates (test_engine.EngineTest.test_incremental_local_chain_uses_constant_seeded_candidates) ... ok
+test_incremental_multi_binding_seeds_both_roles (test_engine.EngineTest.test_incremental_multi_binding_seeds_both_roles) ... ok
+test_incremental_nonconvergence_matches_full_backend (test_engine.EngineTest.test_incremental_nonconvergence_matches_full_backend) ... ok
+test_incremental_relation_neighborhood_reuses_seeded_matcher (test_engine.EngineTest.test_incremental_relation_neighborhood_reuses_seeded_matcher) ... ok
+test_incremental_relation_trace_matches_full_backend (test_engine.EngineTest.test_incremental_relation_trace_matches_full_backend) ... ok
+test_index_patch_failure_invalidates_cache_after_world_commit (test_engine.EngineTest.test_index_patch_failure_invalidates_cache_after_world_commit) ... ok
+test_indexed_relation_join_matches_reference_and_is_linearish (test_engine.EngineTest.test_indexed_relation_join_matches_reference_and_is_linearish) ... ok
+test_lazy_context_builds_one_index_or_zero_for_event_only_laws (test_engine.EngineTest.test_lazy_context_builds_one_index_or_zero_for_event_only_laws) ... ok
+test_lifecycle_create_entities_then_relation_same_transaction (test_engine.EngineTest.test_lifecycle_create_entities_then_relation_same_transaction) ... ok
+test_lifecycle_create_entity_and_exact_lookup (test_engine.EngineTest.test_lifecycle_create_entity_and_exact_lookup) ... ok
+test_lifecycle_create_relation_requires_existing_endpoints (test_engine.EngineTest.test_lifecycle_create_relation_requires_existing_endpoints) ... ok
+test_lifecycle_delete_entity_requires_explicit_relation_delete (test_engine.EngineTest.test_lifecycle_delete_entity_requires_explicit_relation_delete) ... ok
+test_lifecycle_delete_relation_then_entity_is_atomic (test_engine.EngineTest.test_lifecycle_delete_relation_then_entity_is_atomic) ... ok
+test_lifecycle_immediate_derived_observes_created_entity (test_engine.EngineTest.test_lifecycle_immediate_derived_observes_created_entity) ... ok
+test_lifecycle_namespace_collision_rejected (test_engine.EngineTest.test_lifecycle_namespace_collision_rejected) ... ok
+test_lifecycle_relation_topology_index_patches_without_rebuild (test_engine.EngineTest.test_lifecycle_relation_topology_index_patches_without_rebuild) ... ok
+test_lifecycle_snapshot_isolation (test_engine.EngineTest.test_lifecycle_snapshot_isolation) ... ok
+test_lifecycle_state_create_is_rejected (test_engine.EngineTest.test_lifecycle_state_create_is_rejected) ... ok
+test_lifecycle_state_law_can_delete_bound_entity (test_engine.EngineTest.test_lifecycle_state_law_can_delete_bound_entity) ... ok
+test_load_validation_rejects_duplicate_and_dangling_world_ids (test_engine.EngineTest.test_load_validation_rejects_duplicate_and_dangling_world_ids) ... ok
+test_load_validation_rejects_duplicate_law_and_invalid_references (test_engine.EngineTest.test_load_validation_rejects_duplicate_law_and_invalid_references) ... ok
+test_long_chain_frontier_activation_is_linearish (test_engine.EngineTest.test_long_chain_frontier_activation_is_linearish) ... ok
+test_match_plan_dependencies_do_not_parse_literal_references (test_engine.EngineTest.test_match_plan_dependencies_do_not_parse_literal_references) ... ok
+test_match_plan_is_cached_by_engine (test_engine.EngineTest.test_match_plan_is_cached_by_engine) ... ok
+test_membership_non_string_operand_is_false (test_engine.EngineTest.test_membership_non_string_operand_is_false) ... ok
+test_missing_runtime_path_is_explicit (test_engine.EngineTest.test_missing_runtime_path_is_explicit) ... ok
+test_missing_when_is_canonical_true_and_executes (test_engine.EngineTest.test_missing_when_is_canonical_true_and_executes) ... ok
+test_multilevel_derived_events_keep_parent_causality (test_engine.EngineTest.test_multilevel_derived_events_keep_parent_causality) ... ok
+test_no_state_laws_uses_one_evaluation_view_not_snapshot (test_engine.EngineTest.test_no_state_laws_uses_one_evaluation_view_not_snapshot) ... ok
+test_nonconvergent_state_rule_is_detected (test_engine.EngineTest.test_nonconvergent_state_rule_is_detected) ... ok
+test_noop_commit_does_not_patch_or_advance_runtime_index (test_engine.EngineTest.test_noop_commit_does_not_patch_or_advance_runtime_index) ... ok
+test_noop_state_set_converges (test_engine.EngineTest.test_noop_state_set_converges) ... ok
+test_noop_transaction_counter (test_engine.EngineTest.test_noop_transaction_counter) ... ok
+test_ordered_comparator_type_error_is_explicit (test_engine.EngineTest.test_ordered_comparator_type_error_is_explicit) ... ok
+test_parent_path_delta_overlaps_child_read_dependency (test_engine.EngineTest.test_parent_path_delta_overlaps_child_read_dependency) ... ok
+test_persistent_and_rebuild_each_view_match_for_1000_seeded_cases (test_engine.EngineTest.test_persistent_and_rebuild_each_view_match_for_1000_seeded_cases) ... ok
+test_persistent_index_survives_incremental_relation_chain (test_engine.EngineTest.test_persistent_index_survives_incremental_relation_chain) ... ok
+test_prepare_validates_all_clones_before_any_swap (test_engine.EngineTest.test_prepare_validates_all_clones_before_any_swap) ... ok
+test_production_commit_has_no_full_world_deepcopy (test_engine.EngineTest.test_production_commit_has_no_full_world_deepcopy) ... ok
+test_proposal_trace_links_derived_event (test_engine.EngineTest.test_proposal_trace_links_derived_event) ... ok
+test_public_snapshot_isolated_while_evaluation_view_is_zero_copy (test_engine.EngineTest.test_public_snapshot_isolated_while_evaluation_view_is_zero_copy) ... ok
+test_randomized_reactive_closure_differential_1000_cases (test_engine.EngineTest.test_randomized_reactive_closure_differential_1000_cases) ... ok
+test_raw_execution_trace_is_deterministic_per_backend (test_engine.EngineTest.test_raw_execution_trace_is_deterministic_per_backend) ... ok
+test_rebuild_each_view_backend_rebuilds_without_persistent_cache (test_engine.EngineTest.test_rebuild_each_view_backend_rebuilds_without_persistent_cache) ... ok
+test_relation_binding_and_invalid_effect_target_are_rejected_at_load (test_engine.EngineTest.test_relation_binding_and_invalid_effect_target_are_rejected_at_load) ... ok
+test_relation_component_creation_patches_persistent_index (test_engine.EngineTest.test_relation_component_creation_patches_persistent_index) ... ok
+test_relation_component_requires_is_indexed (test_engine.EngineTest.test_relation_component_requires_is_indexed) ... ok
+test_relation_delta_seeds_relation_binding (test_engine.EngineTest.test_relation_delta_seeds_relation_binding) ... ok
+test_relation_effect_dependencies_match_full_backend (test_engine.EngineTest.test_relation_effect_dependencies_match_full_backend) ... ok
+test_relation_source_target_type_constraints_use_indexed_query (test_engine.EngineTest.test_relation_source_target_type_constraints_use_indexed_query) ... ok
+test_revalidate_invalidates_index_and_rebuilds_from_live_state (test_engine.EngineTest.test_revalidate_invalidates_index_and_rebuilds_from_live_state) ... ok
+test_revalidate_invalidates_scheduler_cache (test_engine.EngineTest.test_revalidate_invalidates_scheduler_cache) ... ok
+test_run_event_does_not_advance_simulation_time (test_engine.EngineTest.test_run_event_does_not_advance_simulation_time) ... ok
+test_runtime_clones_once_and_noop_clones_zero (test_engine.EngineTest.test_runtime_clones_once_and_noop_clones_zero) ... ok
+test_runtime_index_exact_id_only_workload_builds_nothing (test_engine.EngineTest.test_runtime_index_exact_id_only_workload_builds_nothing) ... ok
+test_runtime_index_is_lazy_then_reused_between_events (test_engine.EngineTest.test_runtime_index_is_lazy_then_reused_between_events) ... ok
+test_runtime_noop_proposals_preserve_identity (test_engine.EngineTest.test_runtime_noop_proposals_preserve_identity) ... ok
+test_runtime_prepare_failure_is_atomic_and_revision_tracks_delta (test_engine.EngineTest.test_runtime_prepare_failure_is_atomic_and_revision_tracks_delta) ... ok
+test_runtime_rejects_invalid_generated_component_value_atomically (test_engine.EngineTest.test_runtime_rejects_invalid_generated_component_value_atomically) ... ok
+test_runtime_settle_and_revalidate_track_closure_knowledge (test_engine.EngineTest.test_runtime_settle_and_revalidate_track_closure_knowledge) ... ok
+test_runtime_snapshot_isolation_and_structural_sharing (test_engine.EngineTest.test_runtime_snapshot_isolation_and_structural_sharing) ... ok
+test_runtime_stats_counts_event_validation (test_engine.EngineTest.test_runtime_stats_counts_event_validation) ... ok
+test_runtime_stats_counts_transaction (test_engine.EngineTest.test_runtime_stats_counts_transaction) ... ok
+test_same_law_add_remove_authoring_conflict_fails (test_engine.EngineTest.test_same_law_add_remove_authoring_conflict_fails) ... ok
+test_same_law_conflicting_binding_sets_fail (test_engine.EngineTest.test_same_law_conflicting_binding_sets_fail) ... ok
+test_scheduled_event_requires_full_contract (test_engine.EngineTest.test_scheduled_event_requires_full_contract) ... ok
+test_scheduled_events_canonicalize_in_public_snapshot (test_engine.EngineTest.test_scheduled_events_canonicalize_in_public_snapshot) ... ok
+test_scheduler_advance_by (test_engine.EngineTest.test_scheduler_advance_by) ... ok
+test_scheduler_advance_to_is_inclusive (test_engine.EngineTest.test_scheduler_advance_to_is_inclusive) ... ok
+test_scheduler_consumes_root_when_root_execution_fails (test_engine.EngineTest.test_scheduler_consumes_root_when_root_execution_fails) ... ok
+test_scheduler_dynamic_future_event_due_in_same_advance (test_engine.EngineTest.test_scheduler_dynamic_future_event_due_in_same_advance) ... ok
+test_scheduler_external_provenance_becomes_scheduled (test_engine.EngineTest.test_scheduler_external_provenance_becomes_scheduled) ... ok
+test_scheduler_future_derived_event_is_persisted_then_dispatched (test_engine.EngineTest.test_scheduler_future_derived_event_is_persisted_then_dispatched) ... ok
+test_scheduler_keeps_runtime_index_across_time_mutations (test_engine.EngineTest.test_scheduler_keeps_runtime_index_across_time_mutations) ... ok
+test_scheduler_limit_leaves_next_event_pending (test_engine.EngineTest.test_scheduler_limit_leaves_next_event_pending) ... ok
+test_scheduler_payload_must_be_finite_json (test_engine.EngineTest.test_scheduler_payload_must_be_finite_json) ... ok
+test_scheduler_peek_returns_none_when_empty (test_engine.EngineTest.test_scheduler_peek_returns_none_when_empty) ... ok
+test_scheduler_pending_world_cannot_contain_past_event (test_engine.EngineTest.test_scheduler_pending_world_cannot_contain_past_event) ... ok
+test_scheduler_queue_is_lazy (test_engine.EngineTest.test_scheduler_queue_is_lazy) ... ok
+test_scheduler_rejects_duplicate_pending_id (test_engine.EngineTest.test_scheduler_rejects_duplicate_pending_id) ... ok
+test_scheduler_rejects_past_event (test_engine.EngineTest.test_scheduler_rejects_past_event) ... ok
+test_scheduler_same_time_derived_stays_in_causal_chain (test_engine.EngineTest.test_scheduler_same_time_derived_stays_in_causal_chain) ... ok
+test_scheduler_same_time_order_is_time_then_id (test_engine.EngineTest.test_scheduler_same_time_order_is_time_then_id) ... ok
+test_scheduler_save_reload_replay (test_engine.EngineTest.test_scheduler_save_reload_replay) ... ok
+test_scheduler_staged_advance_equivalence (test_engine.EngineTest.test_scheduler_staged_advance_equivalence) ... ok
+test_scheduler_step_dispatches_one_root (test_engine.EngineTest.test_scheduler_step_dispatches_one_root) ... ok
+test_scheduler_time_only_advance_does_not_evaluate_world (test_engine.EngineTest.test_scheduler_time_only_advance_does_not_evaluate_world) ... ok
+test_semantic_projection_excludes_noop_execution (test_engine.EngineTest.test_semantic_projection_excludes_noop_execution) ... ok
+test_set_conflict_is_deterministic (test_engine.EngineTest.test_set_conflict_is_deterministic) ... ok
+test_set_delta_is_a_hard_conflict (test_engine.EngineTest.test_set_delta_is_a_hard_conflict) ... ok
+test_snapshot_revision_is_captured (test_engine.EngineTest.test_snapshot_revision_is_captured) ... ok
+test_state_dependency_plan_extracts_paths_tags_and_requires (test_engine.EngineTest.test_state_dependency_plan_extracts_paths_tags_and_requires) ... ok
+test_state_law_event_and_emit_are_rejected_at_load (test_engine.EngineTest.test_state_law_event_and_emit_are_rejected_at_load) ... ok
+test_state_laws_reach_fixed_point (test_engine.EngineTest.test_state_laws_reach_fixed_point) ... ok
+test_static_law_literals_must_be_finite_json_values (test_engine.EngineTest.test_static_law_literals_must_be_finite_json_values) ... ok
+test_tag_delta_activates_matching_state_law (test_engine.EngineTest.test_tag_delta_activates_matching_state_law) ... ok
+test_tag_restoration_matches_full_backend (test_engine.EngineTest.test_tag_restoration_matches_full_backend) ... ok
+test_targeted_event_trace_equivalence_with_exact_binding (test_engine.EngineTest.test_targeted_event_trace_equivalence_with_exact_binding) ... ok
+test_ten_exact_id_laws_examine_ten_candidates (test_engine.EngineTest.test_ten_exact_id_laws_examine_ten_candidates) ... ok
+test_ten_touch_clones_at_most_ten_objects (test_engine.EngineTest.test_ten_touch_clones_at_most_ten_objects) ... ok
+test_trace_records_real_state_delta (test_engine.EngineTest.test_trace_records_real_state_delta) ... ok
+test_value_contract_rejects_bytes (test_engine.EngineTest.test_value_contract_rejects_bytes) ... ok
+test_value_contract_rejects_set (test_engine.EngineTest.test_value_contract_rejects_set) ... ok
+test_value_contract_rejects_tuple (test_engine.EngineTest.test_value_contract_rejects_tuple) ... ok
+test_warm_schedule_uses_single_queue_membership_check (test_engine.EngineTest.test_warm_schedule_uses_single_queue_membership_check) ... ok
+test_world_boundaries_reject_non_json_component_values (test_engine.EngineTest.test_world_boundaries_reject_non_json_component_values) ... ok
+test_world_roundtrip_preserves_semantics (test_engine.EngineTest.test_world_roundtrip_preserves_semantics) ... ok
+test_zero_binding_event_law_needs_no_index (test_engine.EngineTest.test_zero_binding_event_law_needs_no_index) ... ok
+test_creation_fields_resolve_through_existing_value_dsl (test_lifecycle.LifecycleTest.test_creation_fields_resolve_through_existing_value_dsl) ... ok
+test_creation_spec_contract_and_state_mode_restriction (test_lifecycle.LifecycleTest.test_creation_spec_contract_and_state_mode_restriction) ... ok
+test_delete_and_value_mutations_are_hard_conflicts (test_lifecycle.LifecycleTest.test_delete_and_value_mutations_are_hard_conflicts) ... ok
+test_delete_incident_batch_emits_three_explicit_deltas (test_lifecycle.LifecycleTest.test_delete_incident_batch_emits_three_explicit_deltas) ... ok
+test_deleted_exact_id_immediately_has_zero_candidates_without_index (test_lifecycle.LifecycleTest.test_deleted_exact_id_immediately_has_zero_candidates_without_index) ... ok
+test_deletion_does_not_rewrite_stale_scheduled_references (test_lifecycle.LifecycleTest.test_deletion_does_not_rewrite_stale_scheduled_references) ... ok
+test_duplicate_create_and_create_delete_are_hard_conflicts (test_lifecycle.LifecycleTest.test_duplicate_create_and_create_delete_are_hard_conflicts) ... ok
+test_duplicate_delete_merges_provenance (test_lifecycle.LifecycleTest.test_duplicate_delete_merges_provenance) ... ok
+test_dynamic_lifecycle_save_reload_is_exact (test_lifecycle.LifecycleTest.test_dynamic_lifecycle_save_reload_is_exact) ... ok
+test_exact_id_and_dynamic_topology_patch_without_rebuild (test_lifecycle.LifecycleTest.test_exact_id_and_dynamic_topology_patch_without_rebuild) ... ok
+test_future_event_and_lifecycle_commit_or_fail_atomically (test_lifecycle.LifecycleTest.test_future_event_and_lifecycle_commit_or_fail_atomically) ... ok
+test_immediate_derived_event_cannot_observe_deleted_entity (test_lifecycle.LifecycleTest.test_immediate_derived_event_cannot_observe_deleted_entity) ... ok
+test_lifecycle_closure_incremental_and_full_are_equivalent (test_lifecycle.LifecycleTest.test_lifecycle_closure_incremental_and_full_are_equivalent) ... ok
+test_lifecycle_delta_trace_is_deepcopied_and_has_provenance (test_lifecycle.LifecycleTest.test_lifecycle_delta_trace_is_deepcopied_and_has_provenance) ... ok
+test_lifecycle_full_copy_differential_500_transactions (test_lifecycle.LifecycleTest.test_lifecycle_full_copy_differential_500_transactions) ... ok
+test_persistent_rebuild_topology_differential_1000_cases (test_lifecycle.LifecycleTest.test_persistent_rebuild_topology_differential_1000_cases) ... ok
+test_relation_delete_updates_all_topology_postings (test_lifecycle.LifecycleTest.test_relation_delete_updates_all_topology_postings) ... ok
+test_created_entity_is_visible_to_created_relation_endpoint_check (test_lifecycle_locality.LifecycleLocalityTest.test_created_entity_is_visible_to_created_relation_endpoint_check) ... ok
+test_created_relation_cannot_target_deleted_entity (test_lifecycle_locality.LifecycleLocalityTest.test_created_relation_cannot_target_deleted_entity) ... ok
+test_duration_expiry_roots_do_not_scan_unrelated_entities (test_lifecycle_locality.LifecycleLocalityTest.test_duration_expiry_roots_do_not_scan_unrelated_entities) ... ok
+test_entity_delete_work_is_incident_degree_local (test_lifecycle_locality.LifecycleLocalityTest.test_entity_delete_work_is_incident_degree_local) ... ok
+test_many_small_relation_deletes_have_zero_global_work (test_lifecycle_locality.LifecycleLocalityTest.test_many_small_relation_deletes_have_zero_global_work) ... ok
+test_one_batch_relation_deletes_have_zero_global_work (test_lifecycle_locality.LifecycleLocalityTest.test_one_batch_relation_deletes_have_zero_global_work) ... ok
+test_single_entity_create_work_is_constant_across_world_sizes (test_lifecycle_locality.LifecycleLocalityTest.test_single_entity_create_work_is_constant_across_world_sizes) ... ok
+test_single_relation_create_work_is_constant_across_world_sizes (test_lifecycle_locality.LifecycleLocalityTest.test_single_relation_create_work_is_constant_across_world_sizes) ... ok
+test_single_relation_delete_is_world_size_local (test_lifecycle_locality.LifecycleLocalityTest.test_single_relation_delete_is_world_size_local) ... ok
+test_core_tag_and_component_redaction (test_observation.ObservationContractTest.test_core_tag_and_component_redaction) ... ok
+test_default_deny_including_self (test_observation.ObservationContractTest.test_default_deny_including_self) ... ok
+test_duplicate_match_paths_are_deduplicated (test_observation.ObservationContractTest.test_duplicate_match_paths_are_deduplicated) ... ok
+test_duration_relation_disappears_after_expiry (test_observation.ObservationContractTest.test_duration_relation_disappears_after_expiry) ... ok
+test_hidden_temporal_changes_do_not_leak (test_observation.ObservationContractTest.test_hidden_temporal_changes_do_not_leak) ... ok
+test_lifecycle_visibility_create_and_delete (test_observation.ObservationContractTest.test_lifecycle_visibility_create_and_delete) ... ok
+test_loader_and_canonical_rule (test_observation.ObservationContractTest.test_loader_and_canonical_rule) ... ok
+test_missing_and_list_traversal_paths_are_omitted (test_observation.ObservationContractTest.test_missing_and_list_traversal_paths_are_omitted) ... ok
+test_missing_observer_and_relation_observer_rejected (test_observation.ObservationContractTest.test_missing_observer_and_relation_observer_rejected) ... ok
+test_multiple_grants_are_monotonic_union (test_observation.ObservationContractTest.test_multiple_grants_are_monotonic_union) ... ok
+test_new_field_safety (test_observation.ObservationContractTest.test_new_field_safety) ... ok
+test_no_runtime_metadata_in_output (test_observation.ObservationContractTest.test_no_runtime_metadata_in_output) ... ok
+test_observe_has_no_runtime_semantic_side_effect (test_observation.ObservationContractTest.test_observe_has_no_runtime_semantic_side_effect) ... ok
+test_observer_specific_isolation (test_observation.ObservationContractTest.test_observer_specific_isolation) ... ok
+test_observer_view_is_narrow_facade (test_observation.ObservationContractTest.test_observer_view_is_narrow_facade) ... ok
+test_old_observation_stability (test_observation.ObservationContractTest.test_old_observation_stability) ... ok
+test_output_mutation_does_not_mutate_world_or_future_observation (test_observation.ObservationContractTest.test_output_mutation_does_not_mutate_world_or_future_observation) ... ok
+test_relation_core_and_components (test_observation.ObservationContractTest.test_relation_core_and_components) ... ok
+test_relation_endpoint_identity_protection (test_observation.ObservationContractTest.test_relation_endpoint_identity_protection) ... ok
+test_rule_order_invariance_500_permutations (test_observation.ObservationContractTest.test_rule_order_invariance_500_permutations) ... ok
+test_self_grant_uses_seed_without_index (test_observation.ObservationContractTest.test_self_grant_uses_seed_without_index) ... ok
+test_stats_contract (test_observation.ObservationContractTest.test_stats_contract) ... ok
+test_whole_component_dict_is_canonicalized (test_observation.ObservationContractTest.test_whole_component_dict_is_canonicalized) ... ok
+test_whole_component_is_deep_copied (test_observation.ObservationContractTest.test_whole_component_is_deep_copied) ... ok
+test_hidden_perturbation_noninterference_1000 (test_observation.ObservationPropertyTest.test_hidden_perturbation_noninterference_1000) ... ok
+test_indexed_reference_observation_differential_1000 (test_observation.ObservationPropertyTest.test_indexed_reference_observation_differential_1000) ... ok
+test_persistent_rebuild_mutation_equivalence_1000 (test_observation.ObservationPropertyTest.test_persistent_rebuild_mutation_equivalence_1000) ... ok
+test_duplicate_ids (test_observation.ObservationValidationTest.test_duplicate_ids) ... ok
+test_duplicate_reveal_fields_and_unknown_schema_fields (test_observation.ObservationValidationTest.test_duplicate_reveal_fields_and_unknown_schema_fields) ... ok
+test_event_is_forbidden_everywhere (test_observation.ObservationValidationTest.test_event_is_forbidden_everywhere) ... ok
+test_invalid_binding_kind_and_condition (test_observation.ObservationValidationTest.test_invalid_binding_kind_and_condition) ... ok
+test_invalid_component_paths_and_duplicates (test_observation.ObservationValidationTest.test_invalid_component_paths_and_duplicates) ... ok
+test_invalid_core_by_subject_kind (test_observation.ObservationValidationTest.test_invalid_core_by_subject_kind) ... ok
+test_invalid_subject_references (test_observation.ObservationValidationTest.test_invalid_subject_references) ... ok
+test_reserved_observer_binding (test_observation.ObservationValidationTest.test_reserved_observer_binding) ... ok
+test_cancel_direct_idempotence_and_revision (test_temporal_handles.TemporalHandleTest.test_cancel_direct_idempotence_and_revision) ... ok
+test_current_root_cancel_is_noop (test_temporal_handles.TemporalHandleTest.test_current_root_cancel_is_noop) ... ok
+test_different_reschedules_conflict (test_temporal_handles.TemporalHandleTest.test_different_reschedules_conflict) ... ok
+test_duplicate_cancel_and_same_reschedule_merge (test_temporal_handles.TemporalHandleTest.test_duplicate_cancel_and_same_reschedule_merge) ... ok
+test_duplicate_pending_schedule_is_atomic_with_cow (test_temporal_handles.TemporalHandleTest.test_duplicate_pending_schedule_is_atomic_with_cow) ... ok
+test_duration_status_and_refresh (test_temporal_handles.TemporalHandleTest.test_duration_status_and_refresh) ... ok
+test_early_cancel_and_channel_pattern (test_temporal_handles.TemporalHandleTest.test_early_cancel_and_channel_pattern) ... ok
+test_early_cancel_status_pattern (test_temporal_handles.TemporalHandleTest.test_early_cancel_status_pattern) ... ok
+test_event_id_reuse_ignores_stale_heap_entry (test_temporal_handles.TemporalHandleTest.test_event_id_reuse_ignores_stale_heap_entry) ... ok
+test_heap_compaction_equivalence (test_temporal_handles.TemporalHandleTest.test_heap_compaction_equivalence) ... ok
+test_insertion_history_independence (test_temporal_handles.TemporalHandleTest.test_insertion_history_independence) ... ok
+test_missing_reschedule_is_atomic_with_lifecycle (test_temporal_handles.TemporalHandleTest.test_missing_reschedule_is_atomic_with_lifecycle) ... ok
+test_queue_differential_2000_operations (test_temporal_handles.TemporalHandleTest.test_queue_differential_2000_operations) ... ok
+test_recurring_handle_reuses_consumed_id (test_temporal_handles.TemporalHandleTest.test_recurring_handle_reuses_consumed_id) ... ok
+test_reschedule_direct_contract_and_owned_event (test_temporal_handles.TemporalHandleTest.test_reschedule_direct_contract_and_owned_event) ... ok
+test_same_time_cancel_prevents_dispatch (test_temporal_handles.TemporalHandleTest.test_same_time_cancel_prevents_dispatch) ... ok
+test_same_time_reschedule_later_and_earlier (test_temporal_handles.TemporalHandleTest.test_same_time_reschedule_later_and_earlier) ... ok
+test_same_time_schedule_is_independent_root (test_temporal_handles.TemporalHandleTest.test_same_time_schedule_is_independent_root) ... ok
+test_save_reload_after_cancel_and_reschedule (test_temporal_handles.TemporalHandleTest.test_save_reload_after_cancel_and_reschedule) ... ok
+test_schedule_event_explicit_id_and_provenance (test_temporal_handles.TemporalHandleTest.test_schedule_event_explicit_id_and_provenance) ... ok
+test_schedule_rejects_non_json_static_values (test_temporal_handles.TemporalHandleTest.test_schedule_rejects_non_json_static_values) ... ok
+test_schedule_runtime_validation_rejections (test_temporal_handles.TemporalHandleTest.test_schedule_runtime_validation_rejections) ... ok
+test_schedule_schema_rejections (test_temporal_handles.TemporalHandleTest.test_schedule_schema_rejections) ... ok
+test_scheduler_effects_forbidden_in_state_laws (test_temporal_handles.TemporalHandleTest.test_scheduler_effects_forbidden_in_state_laws) ... ok
+test_snapshot_isolation_for_all_scheduler_mutations (test_temporal_handles.TemporalHandleTest.test_snapshot_isolation_for_all_scheduler_mutations) ... ok
+test_structural_warm_queue_gate (test_temporal_handles.TemporalHandleTest.test_structural_warm_queue_gate) ... ok
+test_temporal_conflict_matrix (test_temporal_handles.TemporalHandleTest.test_temporal_conflict_matrix) ... ok
+test_temporal_only_transaction_is_not_counted_as_noop (test_temporal_handles.TemporalHandleTest.test_temporal_only_transaction_is_not_counted_as_noop) ... ok
+test_temporal_order_rejected (test_temporal_handles.TemporalHandleTest.test_temporal_order_rejected) ... ok
+test_trace_and_semantic_projection_temporal_fields (test_temporal_handles.TemporalHandleTest.test_trace_and_semantic_projection_temporal_fields) ... ok
+
+----------------------------------------------------------------------
+Ran 262 tests in 35.221s
+
+OK
+{"artifact": "agent_cost_ledger.json", "estimated_usd": 0.0001157, "record_count": 1, "status": "complete", "unknown_record_count": 0}
+{"artifact": "agent_cost_ledger.json", "estimated_usd": 0.0001157, "record_count": 1, "status": "complete", "unknown_record_count": 0}
+{"artifact": "agent_cost_ledger.json", "estimated_usd": 0.0, "record_count": 1, "status": "partial", "unknown_record_count": 1}
+RETRY_EXIT_CODE=0
+RETRY_ELAPSED_SECONDS=35.925

@@ -1,0 +1,188 @@
+P0 QA evidence: alpha_storm_relay native unittest
+Command: $env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; python -m unittest discover -s examples/pmw_alpha/tests -t . -p "test_*.py" -v; python -m unittest discover -s examples/storm_relay/tests -t . -p "test_*.py" -v
+test_material_catalog_and_player_starting_inventory_are_initialized (examples.pmw_alpha.tests.test_content.AlphaContentTests.test_material_catalog_and_player_starting_inventory_are_initialized) ... ok
+test_player_and_enemy_identities_have_real_placements (examples.pmw_alpha.tests.test_content.AlphaContentTests.test_player_and_enemy_identities_have_real_placements) ... ok
+test_starting_map_contains_only_initially_traversable_edges (examples.pmw_alpha.tests.test_content.AlphaContentTests.test_starting_map_contains_only_initially_traversable_edges) ... ok
+test_world_has_five_independent_areas (examples.pmw_alpha.tests.test_content.AlphaContentTests.test_world_has_five_independent_areas) ... ok
+test_rejects_non_json_session_metadata_and_nested_slot_names (examples.pmw_alpha.tests.test_savegame.SaveGameTests.test_rejects_non_json_session_metadata_and_nested_slot_names) ... ok
+test_round_trip_delegates_world_and_registry_to_gameplay_checkpoint (examples.pmw_alpha.tests.test_savegame.SaveGameTests.test_round_trip_delegates_world_and_registry_to_gameplay_checkpoint) ... ok
+test_tampering_metadata_is_rejected_before_runtime_restore (examples.pmw_alpha.tests.test_savegame.SaveGameTests.test_tampering_metadata_is_rejected_before_runtime_restore) ... ok
+test_crafting_equipping_and_casting_use_the_gameplay_registry (examples.pmw_alpha.tests.test_session.AlphaSessionTests.test_crafting_equipping_and_casting_use_the_gameplay_registry) ... ok
+test_forest_restoration_changes_real_baseline_and_grows_root_route (examples.pmw_alpha.tests.test_session.AlphaSessionTests.test_forest_restoration_changes_real_baseline_and_grows_root_route) ... ok
+test_harvest_changes_real_material_inventory_and_stock (examples.pmw_alpha.tests.test_session.AlphaSessionTests.test_harvest_changes_real_material_inventory_and_stock) ... ok
+test_inspection_and_travel_advance_real_time (examples.pmw_alpha.tests.test_session.AlphaSessionTests.test_inspection_and_travel_advance_real_time) ... ok
+test_locked_observatory_is_not_a_travel_control (examples.pmw_alpha.tests.test_session.AlphaSessionTests.test_locked_observatory_is_not_a_travel_control) ... ok
+test_new_game_projects_five_area_player_safe_map (examples.pmw_alpha.tests.test_session.AlphaSessionTests.test_new_game_projects_five_area_player_safe_map) ... ok
+test_recipe_projection_explains_costs_and_lock_state (examples.pmw_alpha.tests.test_session.AlphaSessionTests.test_recipe_projection_explains_costs_and_lock_state) ... ok
+test_save_load_restores_world_and_registered_skill (examples.pmw_alpha.tests.test_session.AlphaSessionTests.test_save_load_restores_world_and_registered_skill) ... ok
+test_thunder_skill_opens_the_mine_lift_route (examples.pmw_alpha.tests.test_session.AlphaSessionTests.test_thunder_skill_opens_the_mine_lift_route) ... ok
+test_visible_world_objects_explain_their_actionable_leads (examples.pmw_alpha.tests.test_session.AlphaSessionTests.test_visible_world_objects_explain_their_actionable_leads) ... ok
+test_every_template_has_bounded_recipe_and_declared_uses (examples.pmw_alpha.tests.test_skills.AlphaSkillCatalogueTests.test_every_template_has_bounded_recipe_and_declared_uses) ... ok
+test_four_cores_by_three_glyphs_are_mechanically_distinct (examples.pmw_alpha.tests.test_skills.AlphaSkillCatalogueTests.test_four_cores_by_three_glyphs_are_mechanically_distinct) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 51.848s
+
+OK
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\__main__.py", line 18, in <module>
+    main(module=None)
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 104, in __init__
+    self.parseArgs(argv)
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 130, in parseArgs
+    self._do_discovery(argv[2:])
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 253, in _do_discovery
+    self.createTests(from_discovery=True, Loader=Loader)
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 160, in createTests
+    self.test = loader.discover(self.start, self.pattern, self.top)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 308, in discover
+    raise ImportError('Start directory is not importable: %r' % start_dir)
+ImportError: Start directory is not importable: 'C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\examples\\storm_relay\\tests'
+EXIT_CODE=1
+ELAPSED_SECONDS=52.990
+
+RETRY_STORM: env PYTHONPATH=<repo>\src; python -m unittest discover -s . -p "test_*.py" -v
+test_combat_transactions (unittest.loader._FailedTest.test_combat_transactions) ... ERROR
+test_content (unittest.loader._FailedTest.test_content) ... ERROR
+test_dynamics_weather (unittest.loader._FailedTest.test_dynamics_weather) ... ERROR
+test_http_ui (unittest.loader._FailedTest.test_http_ui) ... ERROR
+test_routes (unittest.loader._FailedTest.test_routes) ... ERROR
+test_skills_materials (unittest.loader._FailedTest.test_skills_materials) ... ERROR
+
+======================================================================
+ERROR: test_combat_transactions (unittest.loader._FailedTest.test_combat_transactions)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_combat_transactions
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\examples\storm_relay\tests\test_combat_transactions.py", line 5, in <module>
+    from examples.storm_relay.session import StormRelaySession
+ModuleNotFoundError: No module named 'examples'
+
+
+======================================================================
+ERROR: test_content (unittest.loader._FailedTest.test_content)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_content
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\examples\storm_relay\tests\test_content.py", line 5, in <module>
+    from examples.storm_relay.content import (
+ModuleNotFoundError: No module named 'examples'
+
+
+======================================================================
+ERROR: test_dynamics_weather (unittest.loader._FailedTest.test_dynamics_weather)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_dynamics_weather
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\examples\storm_relay\tests\test_dynamics_weather.py", line 5, in <module>
+    from examples.storm_relay.content import AREA_COMPONENT, GUARD_ID, SHALLOWS_ID, TOWER_ID, build_storm_relay_session
+ModuleNotFoundError: No module named 'examples'
+
+
+======================================================================
+ERROR: test_http_ui (unittest.loader._FailedTest.test_http_ui)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_http_ui
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\examples\storm_relay\tests\test_http_ui.py", line 8, in <module>
+    from examples.storm_relay.observations import project_public_state
+ModuleNotFoundError: No module named 'examples'
+
+
+======================================================================
+ERROR: test_routes (unittest.loader._FailedTest.test_routes)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_routes
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\examples\storm_relay\tests\test_routes.py", line 5, in <module>
+    from examples.storm_relay.routes import (direct_assault_route, fog_build_route,
+ModuleNotFoundError: No module named 'examples'
+
+
+======================================================================
+ERROR: test_skills_materials (unittest.loader._FailedTest.test_skills_materials)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_skills_materials
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\examples\storm_relay\tests\test_skills_materials.py", line 5, in <module>
+    from examples.storm_relay.session import StormRelaySession
+ModuleNotFoundError: No module named 'examples'
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+FAILED (errors=6)
+RETRY_STORM_EXIT_CODE=1
+RETRY_STORM_ELAPSED_SECONDS=0.681
+
+RETRY_STORM_WITH_REPO_ROOT: env PYTHONPATH=<repo>\src;<repo>; python -m unittest discover -s . -p "test_*.py" -v
+test_combat_projection_includes_both_visible_actors (test_combat_transactions.StormRelayCombatTransactionTests.test_combat_projection_includes_both_visible_actors) ... ok
+test_equipped_active_skill_is_a_full_combat_turn (test_combat_transactions.StormRelayCombatTransactionTests.test_equipped_active_skill_is_a_full_combat_turn) ... ok
+test_guard_is_source_owned_and_expires_without_touching_relay (test_combat_transactions.StormRelayCombatTransactionTests.test_guard_is_source_owned_and_expires_without_touching_relay) ... ok
+test_start_and_round_spend_exactly_one_tick (test_combat_transactions.StormRelayCombatTransactionTests.test_start_and_round_spend_exactly_one_tick) ... ok
+test_travel_changes_real_location_relation (test_combat_transactions.StormRelayCombatTransactionTests.test_travel_changes_real_location_relation) ... ok
+test_area_instances_are_independent (test_content.StormRelayContentTests.test_area_instances_are_independent) ... ok
+test_factory_returns_live_pmw_gameplay_session (test_content.StormRelayContentTests.test_factory_returns_live_pmw_gameplay_session) ... ok
+test_fresh_world_has_authoritative_two_area_content (test_content.StormRelayContentTests.test_fresh_world_has_authoritative_two_area_content) ... ok
+test_stock_is_not_dynamic_abundance (test_content.StormRelayContentTests.test_stock_is_not_dynamic_abundance) ... ok
+test_all_area_fields_advance_by_linear_recovery_and_clamp (test_dynamics_weather.StormRelayDynamicsWeatherTests.test_all_area_fields_advance_by_linear_recovery_and_clamp) ... ok
+test_exclusive_fog_and_storm_transition_table (test_dynamics_weather.StormRelayDynamicsWeatherTests.test_exclusive_fog_and_storm_transition_table) ... ok
+test_storm_pulse_is_local_and_only_hits_living_conductive_actor (test_dynamics_weather.StormRelayDynamicsWeatherTests.test_storm_pulse_is_local_and_only_hits_living_conductive_actor) ... ok
+test_weather_enter_keep_and_exit_emit_only_on_real_transitions (test_dynamics_weather.StormRelayDynamicsWeatherTests.test_weather_enter_keep_and_exit_emit_only_on_real_transitions) ... ok
+test_empty_new_game_post_is_accepted_for_browser_compatibility (test_http_ui.HttpUiTests.test_empty_new_game_post_is_accepted_for_browser_compatibility) ... ok
+test_malformed_action_never_calls_session (test_http_ui.HttpUiTests.test_malformed_action_never_calls_session) ... ok
+test_projection_rejects_unknown_top_level_fields (test_http_ui.HttpUiTests.test_projection_rejects_unknown_top_level_fields) ... ok
+test_state_is_allowlisted_projection (test_http_ui.HttpUiTests.test_state_is_allowlisted_projection) ... ok
+test_static_traversal_is_rejected (test_http_ui.HttpUiTests.test_static_traversal_is_rejected) ... ok
+test_valid_action_and_restart (test_http_ui.HttpUiTests.test_valid_action_and_restart) ... ok
+test_direct_assault_uses_exact_ten_tick_route (test_routes.StormRelayRouteTests.test_direct_assault_uses_exact_ten_tick_route) ... ok
+test_fog_build_can_close_core_on_last_tick (test_routes.StormRelayRouteTests.test_fog_build_can_close_core_on_last_tick) ... ok
+test_rejected_command_is_atomic (test_routes.StormRelayRouteTests.test_rejected_command_is_atomic) ... ok
+test_runner_is_only_public_commands (test_routes.StormRelayRouteTests.test_runner_is_only_public_commands) ... ok
+test_storm_build_uses_exact_nineteen_tick_route (test_routes.StormRelayRouteTests.test_storm_build_uses_exact_nineteen_tick_route) ... ok
+test_action_returns_player_facing_causal_feedback (test_skills_materials.StormRelaySkillsMaterialsTests.test_action_returns_player_facing_causal_feedback) ... ok
+test_craft_consumes_real_inventory_and_registers_skill (test_skills_materials.StormRelaySkillsMaterialsTests.test_craft_consumes_real_inventory_and_registers_skill) ... ok
+test_harvest_feedback_uses_player_facing_material_name (test_skills_materials.StormRelaySkillsMaterialsTests.test_harvest_feedback_uses_player_facing_material_name) ... ok
+test_recipe_view_explains_cost_effect_and_missing_materials (test_skills_materials.StormRelaySkillsMaterialsTests.test_recipe_view_explains_cost_effect_and_missing_materials) ... ok
+test_unavailable_recipe_does_not_change_world (test_skills_materials.StormRelaySkillsMaterialsTests.test_unavailable_recipe_does_not_change_world) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 81.436s
+
+OK
+RETRY_STORM_WITH_REPO_ROOT_EXIT_CODE=0
+RETRY_STORM_WITH_REPO_ROOT_ELAPSED_SECONDS=82.487

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "main_session": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+  "project_turns": [
+    "01a1826b-6e9a-7721-bd53-b5464c3829d4"
+  ],
+  "default_phase": "P0",
+  "agents": [
+    {
+      "id": "01a1826d-3c48-75f0-a79a-72bf9bd3f765",
+      "task": "Gameplay audit then Alpha authority",
+      "stage": "P0"
+    },
+    {
+      "id": "01a1826d-72b8-71e1-8984-7b959fea6deb",
+      "task": "Baseline QA then independent P1 review",
+      "stage": "P0"
+    },
+    {
+      "id": "01a1826e-c745-7983-9b4c-2235edafec34",
+      "task": "Cost ledger and governance",
+      "stage": "P0"
+    },
+    {
+      "id": "01a18275-f959-7031-83ce-490f718f59b0",
+      "task": "No-recovery dynamics and narrow repairs",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18276-d726-7163-ae31-de13d4d8ce96",
+      "task": "Generic Stock conversion Process",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18279-a1c5-7230-8187-0455ef821f0d",
+      "task": "Blind public-entry playtest",
+      "stage": "P0"
+    }
+  ],
+  "turn_stages": {
+    "01a18277-d61d-74a3-bb62-efe180b5a869": "P1",
+    "01a1827b-5f75-7382-aa6c-d3c8648d4518": "P1",
+    "01a18287-4573-71d1-bac9-9ebc1cfb6d33": "P1",
+    "01a18288-7f84-7a31-b52d-8f195ad52a4f": "P1",
+    "01a1828b-344f-78a0-82e5-2643c24fb45c": "P1",
+    "01a1828f-5862-7e61-9fa6-e20e0dbfd1ae": "P1",
+    "01a18291-11a7-75d1-9578-33edb3f9a7fb": "P1"
+  },
+  "bootstrap": {
+    "project_turn": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+    "agent_ids": [
+      "01a18262-6556-7e81-b0b9-8bc08afa246d",
+      "01a18264-312e-73b2-804b-6a488c0b1c67"
+    ],
+    "output": "docs/agent_bootstrap/evidence/bootstrap_repriced",
+    "included_in_project_budget": false
+  },
+  "automation": {
+    "id": "pmw-sandbox",
+    "stop_at": "2026-10-29T20:10:00+08:00"
+  },
+  "notes": [
+    "Append resumed project turn and child IDs before every ledger refresh.",
+    "Main P0/P1 shared planning is charged conservatively to P0 until exact turn-stage separation is available.",
+    "Covers managed project workload counters; not an account-wide bill or unrelated app-internal review activity."
+  ]
+}

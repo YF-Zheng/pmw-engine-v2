@@ -1,0 +1,16 @@
+[
+  {
+    "curve": "linear",
+    "old_laws": 46,
+    "new_laws": 54,
+    "old_law_mismatches": [],
+    "note": "Old imported CURVES frozen to HEAD two-curve catalog; extra new laws only none override."
+  },
+  {
+    "curve": "distance_squared",
+    "old_laws": 47,
+    "new_laws": 55,
+    "old_law_mismatches": [],
+    "note": "Old imported CURVES frozen to HEAD two-curve catalog; extra new laws only none override."
+  }
+]

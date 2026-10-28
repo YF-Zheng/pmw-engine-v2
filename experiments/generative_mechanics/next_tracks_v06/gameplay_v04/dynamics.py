@@ -9,7 +9,10 @@ from typing import Any, Iterable, Mapping
 
 from pmw import parse_law
 
-from .contracts import CURVES, DynamicsSource, FieldDefinition, FieldProfile, GameplayContractError
+from .contracts import (
+    CURVES, DynamicsSource, FieldDefinition, FieldProfile, GameplayContractError,
+    validate_curve_policy,
+)
 
 
 DYNAMICS_COMPONENT = "pmw_gameplay_dynamics"
@@ -69,6 +72,7 @@ def evaluate_field(
     persistent: Iterable[DynamicsSource] = (),
     temporary: Iterable[DynamicsSource] = (),
 ) -> DynamicsEvaluation:
+    _validate_field_policy(field)
     sources = tuple(persistent) + tuple(temporary)
     for item in persistent:
         validate_source(item, field, temporary=False)
@@ -89,11 +93,15 @@ def evaluate_field(
     rate = field.rate + sum(item.rate_add for item in sources)
     for item in sources:
         rate *= item.rate_multiplier
-    limit = 1.0 if curve == "linear" else 1.0 / field.width
+    limit = _curve_rate_limit(field, curve)
     rate = min(limit, max(0.0, rate))
     difference = target - value
-    delta = rate * difference if curve == "linear" else rate * difference * abs(difference)
-    raw = value + delta
+    if curve == "none":
+        rate = 0.0
+        raw = value
+    else:
+        delta = rate * difference if curve == "linear" else rate * difference * abs(difference)
+        raw = value + delta
     bounded = min(field.maximum, max(field.minimum, raw))
     return DynamicsEvaluation(bounded, target, rate, curve, raw, bounded - raw)
 
@@ -129,6 +137,7 @@ def build_dynamics_laws(profiles: Iterable[FieldProfile], *, clock_id: str = "pm
 
 def _field_tick_laws(profile: FieldProfile, clock_id: str) -> list[dict]:
     field = profile.field
+    _validate_field_policy(field)
     base = f"$subject.{DYNAMICS_COMPONENT}.fields.{field.id}"
     slots = _slot_paths(profile)
     target = _effective_target(base, slots)
@@ -155,21 +164,26 @@ def _field_tick_laws(profile: FieldProfile, clock_id: str) -> list[dict]:
             variants.append((f"slot_{index}_{curve}", curve, winner + [{"ref": f"{path}.curve", "eq": curve}]))
     laws: list[dict] = []
     for variant, curve, conditions in variants:
-        rate_limit = 1.0 if curve == "linear" else 1.0 / field.width
+        rate_limit = _curve_rate_limit(field, curve)
         rate = {"clamp": [raw_rate, 0.0, rate_limit]}
         difference = {"sub": [target, f"{base}.value"]}
-        directions = [("all", [])] if curve == "linear" else [
+        directions = [("all", [])] if curve in {"linear", "none"} else [
             ("up", [{"ref": f"{base}.value", "lte": target}]),
             ("down", [{"ref": f"{base}.value", "gt": target}]),
         ]
         for direction, sign_conditions in directions:
             if curve == "linear":
                 delta = {"mul": [rate, difference]}
+            elif curve == "none":
+                delta = 0.0
             elif direction == "up":
                 delta = _mul([rate, difference, difference])
             else:
                 delta = _mul([rate, difference, {"sub": [f"{base}.value", target]}])
-            raw = {"add": [f"{base}.value", delta]}
+            if curve == "none":
+                raw = f"{base}.value"
+            else:
+                raw = {"add": [f"{base}.value", delta]}
             bounded = {"clamp": [raw, field.minimum, field.maximum]}
             effects = [
                 {"op": "set", "target": f"{base}.diagnostics.effective_target", "value": target},
@@ -313,3 +327,17 @@ def _mul(values: list[object]) -> object:
     for item in values[1:]:
         result = {"mul": [result, item]}
     return result
+
+
+def _curve_rate_limit(field: FieldDefinition, curve: str) -> float:
+    if curve == "linear":
+        return 1.0
+    if curve == "distance_squared":
+        return 1.0 / field.width
+    if curve == "none":
+        return 0.0
+    raise GameplayContractError(f"unknown dynamics curve {curve!r}")
+
+
+def _validate_field_policy(field: FieldDefinition) -> None:
+    validate_curve_policy(field.curve, field.rate)

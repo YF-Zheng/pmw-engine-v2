@@ -1,0 +1,402 @@
+{
+  "metadata": {
+    "kind": "bounded_blind_playtest",
+    "status": "complete_sidecar_run",
+    "date": "2026-10-28",
+    "repo": "pmw-engine-v2",
+    "pythonpath": "src",
+    "import": "from examples.pmw_alpha.session import AlphaSession",
+    "allowed_api": [
+      "AlphaSession.new_game()",
+      "public_state()",
+      "perform(action, target=..., slot=...)"
+    ],
+    "execution": "one persistent interpreter; constructor imported once; public state and advertised controls only",
+    "source_revision": "not captured because the Alpha authority worker may edit concurrently",
+    "constraints_observed": [
+      "no game source/content/tests/hints or hidden WorldState/.state/private methods read",
+      "no code or source edits",
+      "player actions capped at 20"
+    ]
+  },
+  "session": {
+    "player_actions_used": 19,
+    "max_player_actions": 20,
+    "outcome": "playing",
+    "remaining_time": 44,
+    "public_time_field": 0,
+    "area": "frost_forest",
+    "player": {
+      "hp": 36.0,
+      "max_hp": 36.0,
+      "mana": 7.0,
+      "max_mana": 10.0,
+      "shield": 0,
+      "level": 1,
+      "xp": 0
+    },
+    "inventory": {
+      "ash_cinder": 0.0,
+      "ash_core": 0.0,
+      "echo_glyph": 1.0,
+      "instant_glyph": 0.0,
+      "spore_bud": 0.0,
+      "spore_core": 0.0,
+      "sustaining_glyph": 1.0,
+      "thunder_core": 0.0,
+      "thunder_crystal": 0.0,
+      "tide_core": 0.0,
+      "wet_moss": 1.0
+    },
+    "discovered_areas": [
+      "mist_camp",
+      "moss_shallows",
+      "frost_forest"
+    ],
+    "skills": [
+      {
+        "id": "tide_instant",
+        "name": "潮息瞬发纹",
+        "kind": "active",
+        "cost": "3 Mana",
+        "equipped": true
+      }
+    ],
+    "errors": [],
+    "constructor_or_api_blocker": null
+  },
+  "public_controls_observed": {
+    "mist_camp_initial": [
+      "travel:moss_shallows",
+      "travel:thunder_mine",
+      "inspect:insight_dais",
+      "inspect:supply_fire",
+      "inspect:survey_map",
+      "rest"
+    ],
+    "mist_camp_after_dais": [
+      "travel:moss_shallows",
+      "travel:thunder_mine",
+      "inspect:supply_fire",
+      "inspect:survey_map",
+      "rest",
+      "craft:tide_instant",
+      "craft:tide_sustain",
+      "craft:tide_echo",
+      "craft:thunder_instant",
+      "craft:thunder_sustain",
+      "craft:thunder_echo",
+      "craft:spore_instant",
+      "craft:spore_sustain",
+      "craft:spore_echo",
+      "craft:ash_instant",
+      "craft:ash_sustain",
+      "craft:ash_echo"
+    ],
+    "mist_camp_after_craft": [
+      "travel:moss_shallows",
+      "travel:thunder_mine",
+      "rest",
+      "craft:*",
+      "equip_active:tide_instant@slot=0"
+    ],
+    "mist_camp_after_equip": [
+      "travel:moss_shallows",
+      "travel:thunder_mine",
+      "rest",
+      "craft:*",
+      "cast:tide_instant"
+    ],
+    "moss_shallows": [
+      "travel:frost_forest",
+      "travel:mist_camp",
+      "inspect:hydrology_stele",
+      "inspect:moss_bed",
+      "harvest:moss_bed",
+      "inspect:fungal_grove",
+      "inspect:mist_beast",
+      "cast:tide_instant"
+    ],
+    "frost_forest": [
+      "travel:moss_shallows",
+      "inspect:forest_heart",
+      "inspect:spore_bed",
+      "harvest:spore_bed",
+      "inspect:withered_grove",
+      "inspect:root_bridge",
+      "cast:tide_instant"
+    ],
+    "frost_forest_after_forest_heart": [
+      "travel:moss_shallows",
+      "inspect:spore_bed",
+      "harvest:spore_bed",
+      "inspect:withered_grove",
+      "inspect:root_bridge",
+      "restore_forest",
+      "cast:tide_instant"
+    ],
+    "frost_forest_after_restore": [
+      "travel:moss_shallows",
+      "inspect:spore_bed",
+      "harvest:spore_bed",
+      "inspect:withered_grove",
+      "inspect:root_bridge",
+      "cast:tide_instant"
+    ]
+  },
+  "actions": [
+    {
+      "seq": 1,
+      "action": "inspect",
+      "target": "insight_dais",
+      "remaining_time_after": 71,
+      "area_after": "mist_camp",
+      "public_fields_after": {"humidity": 0.42, "temperature": 0.46, "charge": 0.05},
+      "feedback": "你记录了这个交互点的可观察特征。它或许会和别处的规律连在一起。",
+      "public_effect": "All 12 recipes visible; locked changed from true to false; tide instant/sustain/echo craftable."
+    },
+    {
+      "seq": 2,
+      "action": "inspect",
+      "target": "survey_map",
+      "remaining_time_after": 70,
+      "area_after": "mist_camp",
+      "public_fields_after": {"humidity": 0.42, "temperature": 0.46, "charge": 0.05},
+      "feedback": "北境地图标记了两条通向观测站的失落路线：矿井升降机与森林根桥。"
+    },
+    {
+      "seq": 3,
+      "action": "inspect",
+      "target": "supply_fire",
+      "remaining_time_after": 69,
+      "area_after": "mist_camp",
+      "public_fields_after": {"humidity": 0.42, "temperature": 0.46, "charge": 0.05},
+      "feedback": "你记录了这个交互点的可观察特征。它或许会和别处的规律连在一起。",
+      "finding": "Control promised a reusable rule clue, but no rule was disclosed."
+    },
+    {
+      "seq": 4,
+      "action": "craft",
+      "target": "tide_instant",
+      "remaining_time_after": 67,
+      "area_after": "mist_camp",
+      "public_fields_after": {"humidity": 0.42, "temperature": 0.46, "charge": 0.05},
+      "feedback": "制作了潮息瞬发纹。湿度 +0.28，使区域趋向浓雾；还需装备后才能施放。",
+      "inventory_delta_public": {"wet_moss": -1.0, "instant_glyph": -1.0}
+    },
+    {
+      "seq": 5,
+      "action": "equip_active",
+      "target": "tide_instant",
+      "slot": 0,
+      "remaining_time_after": 66,
+      "area_after": "mist_camp",
+      "public_fields_after": {"humidity": 0.42, "temperature": 0.46, "charge": 0.05},
+      "feedback": "潮息瞬发纹 已装备至槽位 1。",
+      "finding": "Control/API slot 0 is rendered as human-facing slot 1."
+    },
+    {
+      "seq": 6,
+      "action": "cast",
+      "target": "tide_instant",
+      "remaining_time_after": 65,
+      "area_after": "mist_camp",
+      "public_fields_after": {"humidity": 0.686, "temperature": 0.46, "charge": 0.05},
+      "player_mana_after": 7.0,
+      "feedback": "施放潮息瞬发纹：湿度 +0.28，使区域趋向浓雾"
+    },
+    {
+      "seq": 7,
+      "action": "travel",
+      "target": "moss_shallows",
+      "remaining_time_after": 63,
+      "area_after": "moss_shallows",
+      "public_fields_after": {"humidity": 0.69, "temperature": 0.407, "charge": 0.113, "biomass": 0.705, "moss_abundance": 0.817},
+      "feedback": "抵达雾苔浅滩。潮湿苔藓铺满浅滩，水文碑半沉在雾里。"
+    },
+    {
+      "seq": 8,
+      "action": "inspect",
+      "target": "hydrology_stele",
+      "remaining_time_after": 62,
+      "area_after": "moss_shallows",
+      "public_fields_after": {"humidity": 0.692, "temperature": 0.408, "charge": 0.112, "biomass": 0.704, "moss_abundance": 0.814},
+      "feedback": "水文碑指出：湿度越过阈值会生雾；雾既遮蔽物资，也会改变潮兽的狩猎。",
+      "finding": "Actionable qualitative hint; no numeric threshold shown."
+    },
+    {
+      "seq": 9,
+      "action": "harvest",
+      "target": "moss_bed",
+      "remaining_time_after": 60,
+      "area_after": "moss_shallows",
+      "public_fields_after": {"humidity": 0.697, "temperature": 0.409, "charge": 0.111, "biomass": 0.702, "moss_abundance": 0.809},
+      "feedback": "获得 1 潮湿苔藓。库存减少；持续采集会让环境恢复得更困难。",
+      "inventory_delta_public": {"wet_moss": 1.0}
+    },
+    {
+      "seq": 10,
+      "action": "inspect",
+      "target": "fungal_grove",
+      "remaining_time_after": 59,
+      "area_after": "moss_shallows",
+      "public_fields_after": {"humidity": 0.699, "temperature": 0.41, "charge": 0.11, "biomass": 0.701, "moss_abundance": 0.806},
+      "feedback": "你记录了这个交互点的可观察特征。它或许会和别处的规律连在一起。",
+      "finding": "Control promised a reusable rule clue, but no rule was disclosed."
+    },
+    {
+      "seq": 11,
+      "action": "inspect",
+      "target": "mist_beast",
+      "remaining_time_after": 58,
+      "area_after": "moss_shallows",
+      "public_fields_after": {"humidity": 0.701, "temperature": 0.41, "charge": 0.11, "biomass": 0.7, "moss_abundance": 0.804},
+      "feedback": "你记录了这个交互点的可观察特征。它或许会和别处的规律连在一起。",
+      "finding": "Control promised a reusable rule clue, but no rule was disclosed."
+    },
+    {
+      "seq": 12,
+      "action": "travel",
+      "target": "frost_forest",
+      "remaining_time_after": 56,
+      "area_after": "frost_forest",
+      "public_fields_after": {"humidity": 0.602, "temperature": 0.251, "charge": 0.069, "biomass": 0.414, "spore_abundance": 0.706},
+      "feedback": "抵达霜痕森林。霜痕压低了树林。生物量尚未恢复，根桥的残骸埋在林心。"
+    },
+    {
+      "seq": 13,
+      "action": "harvest",
+      "target": "spore_bed",
+      "remaining_time_after": 54,
+      "area_after": "frost_forest",
+      "public_fields_after": {"humidity": 0.604, "temperature": 0.252, "charge": 0.068, "biomass": 0.416, "spore_abundance": 0.704},
+      "feedback": "获得 1 孢芽。库存减少；持续采集会让环境恢复得更困难。",
+      "inventory_delta_public": {"spore_bud": 1.0}
+    },
+    {
+      "seq": 14,
+      "action": "harvest",
+      "target": "spore_bed",
+      "remaining_time_after": 52,
+      "area_after": "frost_forest",
+      "public_fields_after": {"humidity": 0.606, "temperature": 0.253, "charge": 0.067, "biomass": 0.418, "spore_abundance": 0.702},
+      "feedback": "获得 1 孢芽。库存减少；持续采集会让环境恢复得更困难。",
+      "inventory_delta_public": {"spore_bud": 1.0}
+    },
+    {
+      "seq": 15,
+      "action": "inspect",
+      "target": "forest_heart",
+      "remaining_time_after": 51,
+      "area_after": "frost_forest",
+      "public_fields_after": {"humidity": 0.606, "temperature": 0.253, "charge": 0.067, "biomass": 0.42, "spore_abundance": 0.7},
+      "feedback": "林心的生物量恢复得很慢。改变吸引子后离开几刻，根桥才可能真正生长。",
+      "public_effect": "restore_forest control appeared with an explicit cost of 2 孢芽 and 2 world ticks."
+    },
+    {
+      "seq": 16,
+      "action": "restore_forest",
+      "remaining_time_after": 49,
+      "area_after": "frost_forest",
+      "public_fields_after": {"humidity": 0.608, "temperature": 0.254, "charge": 0.066, "biomass": 0.475, "spore_abundance": 0.698},
+      "feedback": "孢芽融入林心。生物量的基础恢复目标已被改变；离开并让世界推进几刻，再回来观察根桥。",
+      "inventory_delta_public": {"spore_bud": -2.0},
+      "changed_world": true
+    },
+    {
+      "seq": 17,
+      "action": "travel",
+      "target": "moss_shallows",
+      "remaining_time_after": 47,
+      "area_after": "moss_shallows",
+      "public_fields_after": {"humidity": 0.718, "temperature": 0.414, "charge": 0.106, "biomass": 0.691, "moss_abundance": 0.785},
+      "feedback": "抵达雾苔浅滩。潮湿苔藓铺满浅滩，水文碑半沉在雾里。"
+    },
+    {
+      "seq": 18,
+      "action": "travel",
+      "target": "frost_forest",
+      "remaining_time_after": 45,
+      "area_after": "frost_forest",
+      "public_fields_after": {"humidity": 0.61, "temperature": 0.255, "charge": 0.065, "biomass": 0.561, "spore_abundance": 0.695},
+      "feedback": "抵达霜痕森林。霜痕压低了树林。生物量尚未恢复，根桥的残骸埋在林心。"
+    },
+    {
+      "seq": 19,
+      "action": "inspect",
+      "target": "root_bridge",
+      "remaining_time_after": 44,
+      "area_after": "frost_forest",
+      "public_fields_after": {"humidity": 0.61, "temperature": 0.255, "charge": 0.065, "biomass": 0.579, "spore_abundance": 0.694},
+      "feedback": "你记录了这个交互点的可观察特征。它或许会和别处的规律连在一起。",
+      "finding": "No visible bridge growth, pending deadline, completion state, or actionable rule after restoration and return."
+    }
+  ],
+  "clock_evidence": {
+    "remaining_time_start": 72,
+    "remaining_time_end": 44,
+    "elapsed_remaining_time": 28,
+    "public_time_after_every_action": 0,
+    "recent_event_tick_after_every_action": 0,
+    "repeated_public_event": "世界推进至第 0 刻。",
+    "status": "stale_inconsistent_clock",
+    "impact": "The player cannot verify that delayed world changes advanced the requested number of ticks."
+  },
+  "recipe_diversity_observation": {
+    "recipes_visible": 12,
+    "families": ["tide", "thunder", "spore", "ash"],
+    "patterns_per_family": ["instant", "sustain", "echo"],
+    "craftable_after_dais": ["tide_instant", "tide_sustain", "tide_echo"],
+    "available_materials_before_craft": {"wet_moss": 1.0, "instant_glyph": 1.0, "sustaining_glyph": 1.0, "echo_glyph": 1.0},
+    "diversity_assessment": "Only existing recipes were observed; the bounded run could afford only the tide family. No broader recipe diversity claim is made."
+  },
+  "ux_findings": [
+    {
+      "priority": 1,
+      "finding": "World clock is stale: remaining time advances but public time and event ticks remain 0."
+    },
+    {
+      "priority": 1,
+      "finding": "Rule-clue inspections often return generic recorded-feature text instead of a reusable rule."
+    },
+    {
+      "priority": 1,
+      "finding": "Delayed root-bridge growth has no visible pending state, due tick, or completion acknowledgement."
+    },
+    {
+      "priority": 2,
+      "finding": "Equip API/control uses slot 0 while feedback says slot 1."
+    },
+    {
+      "priority": 2,
+      "finding": "After dais discovery, craft controls are advertised for recipes whose public state is not craftable."
+    },
+    {
+      "priority": 2,
+      "finding": "Hydrology feedback gives a qualitative threshold but no numeric value despite the inspection promising an explanation."
+    }
+  ],
+  "comprehension": {
+    "understood": [
+      "camp actions and route choices",
+      "recipe costs and effect text after dais inspection",
+      "craft -> equip -> cast sequence",
+      "harvest effects and visible resource-abundance reduction",
+      "forest restoration cost and immediate biomass change"
+    ],
+    "confusing": [
+      "stale absolute clock and tick values",
+      "generic rule-clue inspection feedback",
+      "zero-based slot input versus one-based feedback",
+      "no visible resolution window for delayed root-bridge growth"
+    ]
+  },
+  "limitations": [
+    "Single bounded session; no complete win/loss run.",
+    "No boss defeat attempted or required.",
+    "No browser, visual, audio, or input-UX validation.",
+    "No second mechanically different area completed.",
+    "Source revision was intentionally not captured because another Alpha authority worker may be editing concurrently.",
+    "This evidence does not accept P4 or claim the complete game was tested."
+  ]
+}

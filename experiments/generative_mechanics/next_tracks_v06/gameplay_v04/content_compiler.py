@@ -11,7 +11,7 @@ from pmw import WorldState, parse_law
 
 from .action_compiler import build_action_laws
 from .actions import ACTOR_COMPONENT, ActionRegistry
-from .contracts import GameplayContractError
+from .contracts import GameplayContractError, validate_curve_policy
 from .ecology import ECOLOGY_COMPONENT, EcologyPlan, build_ecology_laws, ecology_component
 from .harvest import (MATERIAL_INVENTORY_COMPONENT, RESOURCE_COMPONENT, HarvestSpec,
                       build_harvest_laws, material_inventory_component, resource_component)
@@ -92,7 +92,13 @@ def initialize_content_world(world: WorldState, content: Gate3Content) -> WorldS
                 field = fields.get(baseline.field_id)
                 if field is None or not field["domain_min"] <= baseline.target <= field["domain_max"]:
                     raise GameplayContractError("Ecology baseline target is outside its Area Field domain")
-                limit = 1.0 if baseline.curve == "linear" else 1.0 / (field["domain_max"] - field["domain_min"])
+                validate_curve_policy(baseline.curve, baseline.rate)
+                if baseline.curve == "none":
+                    limit = 0.0
+                elif baseline.curve == "linear":
+                    limit = 1.0
+                else:
+                    limit = 1.0 / (field["domain_max"] - field["domain_min"])
                 if baseline.rate > limit:
                     raise GameplayContractError("Ecology baseline rate exceeds the stable curve limit")
         initial = next(item for item in plan.spec.regimes if item.id == plan.spec.initial_regime)

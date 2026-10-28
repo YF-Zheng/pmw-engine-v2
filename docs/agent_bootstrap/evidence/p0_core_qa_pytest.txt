@@ -1,0 +1,20 @@
+P0 QA evidence: core pytest
+Command: $env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; python -m pytest -q -ra --durations=10 -p no:cacheprovider tests
+........................................................................ [ 28%]
+........................................................................ [ 56%]
+........................................................................ [ 85%]
+......................................                                   [100%]
+============================ slowest 10 durations =============================
+3.22s call     tests/test_engine.py::EngineTest::test_generated_state_program_differential_1000_cases
+3.21s call     tests/test_engine.py::EngineTest::test_incremental_closure_differential_1000_cases
+2.92s call     tests/test_engine.py::EngineTest::test_randomized_reactive_closure_differential_1000_cases
+2.67s call     tests/test_engine.py::EngineTest::test_indexed_relation_join_matches_reference_and_is_linearish
+2.32s call     tests/test_engine.py::EngineTest::test_persistent_and_rebuild_each_view_match_for_1000_seeded_cases
+2.16s call     tests/test_lifecycle_locality.py::LifecycleLocalityTest::test_entity_delete_work_is_incident_degree_local
+1.60s call     tests/test_observation.py::ObservationPropertyTest::test_indexed_reference_observation_differential_1000
+1.43s call     tests/test_lifecycle.py::LifecycleTest::test_persistent_rebuild_topology_differential_1000_cases
+1.24s call     tests/test_temporal_handles.py::TemporalHandleTest::test_structural_warm_queue_gate
+1.20s call     tests/test_engine.py::EngineTest::test_fixed_100k_world_chain_keeps_warm_index_builds_constant
+254 passed in 32.75s
+EXIT_CODE=0
+ELAPSED_SECONDS=33.566

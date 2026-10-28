@@ -5,9 +5,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Mapping
 
+import math
+
 
 PROTOCOL_ID = "pmw-gameplay-v0.4"
-CURVES = ("linear", "distance_squared")
+CURVES = ("linear", "distance_squared", "none")
 SELECTOR_KINDS = (
     "self", "target_actor", "current_area", "linked_object", "adjacent_area",
 )
@@ -17,6 +19,17 @@ ATTRIBUTES = ("power", "control", "resilience", "agility")
 
 class GameplayContractError(ValueError):
     pass
+
+
+def validate_curve_policy(curve: str, rate: float) -> None:
+    if curve not in CURVES:
+        raise GameplayContractError(f"unknown dynamics curve {curve!r}")
+    if isinstance(rate, bool) or not isinstance(rate, (int, float)) or not math.isfinite(rate):
+        raise GameplayContractError("base rate must be finite")
+    if rate < 0.0:
+        raise GameplayContractError("base rate must be non-negative")
+    if curve == "none" and rate != 0.0:
+        raise GameplayContractError("curve none requires a zero base rate")
 
 
 @dataclass(frozen=True, slots=True)
@@ -37,7 +50,13 @@ class FieldDefinition:
 
     @property
     def stable_rate_limit(self) -> float:
-        return 1.0 if self.curve == "linear" else 1.0 / self.width
+        if self.curve == "linear":
+            return 1.0
+        if self.curve == "distance_squared":
+            return 1.0 / self.width
+        if self.curve == "none":
+            return 0.0
+        raise GameplayContractError(f"unknown dynamics curve {self.curve!r}")
 
 
 @dataclass(frozen=True, slots=True)

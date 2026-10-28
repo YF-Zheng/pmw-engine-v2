@@ -1,0 +1,192 @@
+........................................................................ [ 10%]
+........................................................................ [ 20%]
+........................................................................ [ 30%]
+.........................FFFF.F................................................. [ 42%]
+.................................................................................... [ 54%]
+................................................................. [ 63%]
+...................................................................... [ 73%]
+............................................................... [ 82%]
+...................................................F. [ 90%]
+....................................................... [ 97%]
+...............                                                          [100%]
+================================== FAILURES ===================================
+______ ProcessCompilationTests.test_conversion_is_one_event_commit_batch ______
+
+self = <test_sandbox_processes.ProcessCompilationTests testMethod=test_conversion_is_one_event_commit_batch>
+
+    def test_conversion_is_one_event_commit_batch(self):
+        profile = _profile("batch_line", _template(), "logs", "planks")
+        session = _session(
+            (profile,),
+            {
+                "logs": (10.0, 20.0, "wood"),
+                "planks": (0.0, 20.0, "board"),
+            },
+        )
+        controller = ProcessController((profile,))
+        controller.start(session, profile.id, owner="factory_owner")
+        tick = advance_world_tick(session)
+    
+        addresses = set()
+        for event_trace in tick.event_result.trace.events:
+            if event_trace.event.type != WORLD_TICK_EVENT:
+                continue
+            for commit in event_trace.commits:
+                current = {str(delta.address) for delta in commit.state_deltas}
+                if "entity:logs/stock/amount" in current and "entity:planks/stock/amount" in current:
+                    addresses = current
+                    break
+>       self.assertIn("entity:logs/stock/amount", addresses)
+E       AssertionError: 'entity:logs/stock/amount' not found in set()
+
+tests\test_sandbox_processes.py:171: AssertionError
+_ ProcessCompilationTests.test_two_named_profiles_share_one_generic_compiler_and_keep_ratios _
+
+self = <test_sandbox_processes.ProcessCompilationTests testMethod=test_two_named_profiles_share_one_generic_compiler_and_keep_ratios>
+
+    def test_two_named_profiles_share_one_generic_compiler_and_keep_ratios(self):
+        template = _template()
+        saw = _profile("saw_line", template, "logs", "planks")
+        press = _profile("press_line", template, "ore", "ingots")
+        laws = build_process_laws((press, saw))
+        ids = {law["id"] for law in laws}
+        self.assertIn("pmw.v04.sandbox.process.saw_line.convert", ids)
+        self.assertIn("pmw.v04.sandbox.process.press_line.convert", ids)
+    
+        session = _session(
+            (saw, press),
+            {
+                "logs": (10.0, 20.0, "wood"),
+                "planks": (0.0, 20.0, "board"),
+                "ore": (10.0, 20.0, "wood"),
+                "ingots": (0.0, 20.0, "board"),
+            },
+        )
+        controller = ProcessController((saw, press))
+        controller.start(session, saw.id, owner="factory_owner")
+        controller.start(session, press.id, owner="factory_owner")
+        tick = advance_world_tick(session)
+    
+        self.assertEqual(tick.step, 1)
+>       self.assertEqual(_amount(session, "logs"), 8.0)
+E       AssertionError: 10.0 != 8.0
+
+tests\test_sandbox_processes.py:142: AssertionError
+_ ProcessExecutionTests.test_expiry_precedes_the_tick_and_duration_one_never_converts _
+
+self = <test_sandbox_processes.ProcessExecutionTests testMethod=test_expiry_precedes_the_tick_and_duration_one_never_converts>
+
+    def test_expiry_precedes_the_tick_and_duration_one_never_converts(self):
+        two_tick = _profile(
+            "two_tick_line",
+            _template(duration=2, maximum_duration=2),
+            "feed_two",
+            "product_two",
+        )
+        session = _session(
+            (two_tick,),
+            {
+                "feed_two": (10.0, 20.0, "wood"),
+                "product_two": (0.0, 20.0, "board"),
+            },
+        )
+        controller = ProcessController((two_tick,))
+        controller.start(session, two_tick.id, owner="factory_owner")
+        advance_world_tick(session)
+>       self.assertEqual(_amount(session, "feed_two"), 8.0)
+E       AssertionError: 10.0 != 8.0
+
+tests\test_sandbox_processes.py:286: AssertionError
+_ ProcessExecutionTests.test_last_step_guard_blocks_duplicate_tick_application _
+
+self = <test_sandbox_processes.ProcessExecutionTests testMethod=test_last_step_guard_blocks_duplicate_tick_application>
+
+    def test_last_step_guard_blocks_duplicate_tick_application(self):
+        profile = _profile("guarded_line", _template(duration=5), "feed", "product")
+        session = _session(
+            (profile,),
+            {
+                "feed": (10.0, 20.0, "wood"),
+                "product": (0.0, 20.0, "board"),
+            },
+        )
+        controller = ProcessController((profile,))
+        controller.start(session, profile.id, owner="factory_owner")
+        advance_world_tick(session)
+>       self.assertEqual(_amount(session, "feed"), 8.0)
+E       AssertionError: 10.0 != 8.0
+
+tests\test_sandbox_processes.py:324: AssertionError
+_ ProcessExecutionTests.test_shortage_pauses_without_underflow_and_saturation_loses_nothing _
+
+self = <test_sandbox_processes.ProcessExecutionTests testMethod=test_shortage_pauses_without_underflow_and_saturation_loses_nothing>
+
+    def test_shortage_pauses_without_underflow_and_saturation_loses_nothing(self):
+        starved = _profile(
+            "starved_line",
+            _template(input_coefficient=2.0, output_coefficient=3.0, duration=4),
+            "feed",
+            "product",
+        )
+        starved_session = _session(
+            (starved,),
+            {
+                "feed": (2.0, 10.0, "wood"),
+                "product": (0.0, 10.0, "board"),
+            },
+        )
+        controller = ProcessController((starved,))
+        controller.start(starved_session, starved.id, owner="factory_owner")
+        advance_world_tick(starved_session)
+>       self.assertEqual(_amount(starved_session, "feed"), 0.0)
+E       AssertionError: 2.0 != 0.0
+
+tests\test_sandbox_processes.py:193: AssertionError
+_ ProcessConservationTests.test_one_full_output_makes_the_whole_conversion_atomic _
+
+self = <test_sandbox_independent_qa.ProcessConservationTests testMethod=test_one_full_output_makes_the_whole_conversion_atomic>
+
+    def test_one_full_output_makes_the_whole_conversion_atomic(self):
+        template = _process_template(
+            inputs=(ConversionPort("feed", 1.0, "wood"),),
+            outputs=(
+                ConversionPort("good", 1.0, "board"),
+                ConversionPort("full", 1.0, "panel"),
+            ),
+        )
+        profile = _process_profile(
+            "atomic_line",
+            template,
+            (("feed", "feed"), ("good", "good"), ("full", "full")),
+        )
+        session = _process_session(
+            (profile,),
+            {
+                "feed": (10.0, 20.0, "wood"),
+                "good": (0.0, 20.0, "board"),
+                "full": (20.0, 20.0, "panel"),
+            },
+        )
+        ProcessController((profile,)).start(
+            session, profile.id, owner="factory_owner"
+        )
+        advance_world_tick(session)
+    
+        self.assertEqual(_stock_amount(session, "feed"), 10.0)
+        self.assertEqual(_stock_amount(session, "good"), 0.0)
+        self.assertEqual(_stock_amount(session, "full"), 20.0)
+        component = _process_component(session, profile)
+        self.assertEqual(component["remaining_ticks"], 4)
+        self.assertEqual(component["elapsed_ticks"], 0)
+>       self.assertEqual(component["last_step"], 1)
+E       AssertionError: 0 != 1
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_independent_qa.py:407: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_sandbox_processes.py::ProcessCompilationTests::test_conversion_is_one_event_commit_batch
+FAILED tests/test_sandbox_processes.py::ProcessCompilationTests::test_two_named_profiles_share_one_generic_compiler_and_keep_ratios
+FAILED tests/test_sandbox_processes.py::ProcessExecutionTests::test_expiry_precedes_the_tick_and_duration_one_never_converts
+FAILED tests/test_sandbox_processes.py::ProcessExecutionTests::test_last_step_guard_blocks_duplicate_tick_application
+FAILED tests/test_sandbox_processes.py::ProcessExecutionTests::test_shortage_pauses_without_underflow_and_saturation_loses_nothing
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_independent_qa.py::ProcessConservationTests::test_one_full_output_makes_the_whole_conversion_atomic
+6 failed, 695 passed, 3130 subtests passed in 358.13s (0:05:58)

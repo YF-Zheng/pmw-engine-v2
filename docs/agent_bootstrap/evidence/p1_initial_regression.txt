@@ -1,0 +1,85 @@
+........................................................................ [ 10%]
+........................................................................ [ 20%]
+........................................................................ [ 31%]
+................................................................................ [ 42%]
+.................................................................................... [ 54%]
+................................................................. [ 64%]
+...................................................................... [ 74%]
+............................................................... [ 83%]
+.............................................F.F.... [ 90%]
+...............................................................       [100%]
+================================== FAILURES ===================================
+_ NoRecoveryEcologyIntegrationTests.test_none_ecology_baseline_honors_zero_rate_policy _
+
+self = <test_sandbox_independent_qa.NoRecoveryEcologyIntegrationTests testMethod=test_none_ecology_baseline_honors_zero_rate_policy>
+
+            "condition": {
+>               "field_id": "temperature",
+                "comparator": "gte",
+                "threshold": 0.5,
+            },
+            "window_ticks": 1,
+            "clue": "go",
+        }],
+    }
+E   AssertionError: GameplayContractError not raised
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_independent_qa.py:113: AssertionError
+_ NoRecoveryClampParityTests.test_out_of_range_none_state_is_clamped_by_formal_tick_and_reference _
+
+self = <test_sandbox_independent_qa.NoRecoveryClampParityTests testMethod=test_out_of_range_none_state_is_clamped_by_formal_tick_and_reference>
+
+        )
+    
+    
+    def _process_profile(
+        profile_id: str,
+        template: ProcessTemplate,
+        bindings: tuple[tuple[str, str], ...],
+    ) -> ProcessProfile:
+        input_names = {port.name for port in template.inputs}
+        inputs = tuple(
+            StockBinding(port, StockRef(stock_id))
+            for port, stock_id in bindings
+            if port in input_names
+        )
+        outputs = tuple(
+            StockBinding(port, StockRef(stock_id))
+            for port, stock_id in bindings
+            if port not in input_names
+        )
+        return ProcessProfile(
+            profile_id,
+            template,
+            f"process_{profile_id}",
+            "factory_owner",
+            inputs,
+            outputs,
+        )
+    
+    
+    def _process_session(
+        profiles: tuple[ProcessProfile, ...],
+        stocks: dict[str, tuple[float, float, str]],
+    ):
+>       entities = {
+            ^^^^^^^^^
+            "pmw:v04:clock": clock_entity(),
+            **{
+                profile.process_entity_id: instantiate_process(profile)
+                for profile in profiles
+            },
+            **{
+                stock_id: stock_entity(
+                    stock_id, amount=amount, capacity=capacity, unit=unit
+                )
+                for stock_id, (amount, capacity, unit) in stocks.items()
+            },
+        }
+E       AssertionError: 1.7 != 1.0
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_independent_qa.py:177: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_independent_qa.py::NoRecoveryEcologyIntegrationTests::test_none_ecology_baseline_honors_zero_rate_policy
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_independent_qa.py::NoRecoveryClampParityTests::test_out_of_range_none_state_is_clamped_by_formal_tick_and_reference
+2 failed, 691 passed, 3045 subtests passed in 317.75s (0:05:17)

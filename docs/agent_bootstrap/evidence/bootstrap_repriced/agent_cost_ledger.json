@@ -1,0 +1,1895 @@
+{
+  "assumptions": {
+    "cache_write_is_reported_separately": true,
+    "cache_write_not_added_to_cost": true,
+    "cumulative_usage_fields_ignored": [
+      "turn_token_usage",
+      "thread_token_usage",
+      "total_tokens"
+    ],
+    "input_cache_ratio_for_cost": 0.97,
+    "malformed_usage_fails_closed": true,
+    "reasoning_is_subset_of_output": true,
+    "reasoning_not_added_to_output": true,
+    "recorded_cache_is_not_used_for_cost": true,
+    "recorded_cache_is_preserved_separately": true,
+    "reference_estimates_not_actual_intranet_bills": true,
+    "unavailable_requested_source_fails_closed": true
+  },
+  "attribution_rule": "Attribute usage to the nearest preceding turn_context.payload.model; missing model metadata becomes unknown.",
+  "budget": {
+    "active_limit_cny": 100.0,
+    "active_reserved_cny": 3.02159088,
+    "active_stage_within_limit": true,
+    "all_stage_limits_within": true,
+    "basis": "known-priced reference USD converted at reserve FX",
+    "decision": "within_budget",
+    "incomplete_accounting": false,
+    "incomplete_reasons": [],
+    "max_limit_within": true,
+    "reference_fx_usd_cny": 6.6664,
+    "reserve_fx_usd_cny": 7.0,
+    "reserved_cny": 3.02159088,
+    "safety_multiplier": 1.2,
+    "stage": "P0",
+    "tiers": {
+      "MAX": {
+        "limit_cny": 2000.0,
+        "reserved_cny": 3.02159088,
+        "within_limit": true
+      },
+      "P0": {
+        "limit_cny": 100.0,
+        "reserved_cny": 3.02159088,
+        "within_limit": true
+      },
+      "P1": {
+        "limit_cny": 400.0,
+        "reserved_cny": 0.0,
+        "within_limit": true
+      },
+      "P2": {
+        "limit_cny": 350.0,
+        "reserved_cny": 0.0,
+        "within_limit": true
+      },
+      "P3": {
+        "limit_cny": 200.0,
+        "reserved_cny": 0.0,
+        "within_limit": true
+      },
+      "P4": {
+        "limit_cny": 400.0,
+        "reserved_cny": 0.0,
+        "within_limit": true
+      },
+      "P5": {
+        "limit_cny": 400.0,
+        "reserved_cny": 0.0,
+        "within_limit": true
+      },
+      "Reserve": {
+        "limit_cny": 150.0,
+        "reserved_cny": 0.0,
+        "within_limit": true
+      }
+    },
+    "unknown_pricing_present": false,
+    "within_budget": true
+  },
+  "dedupe_rule": "Deduplicate by thread_id + response_id; if either ID is missing, use a stable source-session and ordinal fallback so distinct calls remain distinct.",
+  "families": {
+    "DeepSeek": {
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1804928,
+        "input_tokens": 2188303,
+        "output_tokens": 46130,
+        "reasoning_output_tokens": 28273
+      },
+      "estimated_usd_json": 0.3597132,
+      "known_record_count": 33,
+      "models": {
+        "tencent/deepseek-v4-pro-ioa": 31,
+        "tencent/deepseek-v4.1-flash": 2
+      },
+      "record_count": 33,
+      "responses": [
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 221952,
+            "input_tokens": 223392,
+            "output_tokens": 5329,
+            "reasoning_output_tokens": 4250
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 216690.24,
+            "assumed_uncached_input_tokens": 6701.76,
+            "estimated_cny_reference": 0.26321303,
+            "estimated_usd": {
+              "cached_input": 0.00953437,
+              "output": 0.02110284,
+              "total": 0.03948353,
+              "uncached_input": 0.00884632
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-91785699d2c611f19fabb676a675bcad",
+          "source_ordinal": 910,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 223360,
+            "input_tokens": 226760,
+            "output_tokens": 2696,
+            "reasoning_output_tokens": 1824
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 219957.2,
+            "assumed_uncached_input_tokens": 6802.8,
+            "estimated_cny_reference": 0.195552,
+            "estimated_usd": {
+              "cached_input": 0.00967812,
+              "output": 0.01067616,
+              "total": 0.02933397,
+              "uncached_input": 0.0089797
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-b4b33787d2c611f1a11c56799e9b55a1",
+          "source_ordinal": 927,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 226688,
+            "input_tokens": 229838,
+            "output_tokens": 3310,
+            "reasoning_output_tokens": 2448
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 222942.86,
+            "assumed_uncached_input_tokens": 6895.14,
+            "estimated_cny_reference": 0.21344927,
+            "estimated_usd": {
+              "cached_input": 0.00980949,
+              "output": 0.0131076,
+              "total": 0.03201867,
+              "uncached_input": 0.00910158
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-c83cb63fd2c611f1b0f8168a3a4a2e66",
+          "source_ordinal": 942,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 0,
+            "input_tokens": 227318,
+            "output_tokens": 5617,
+            "reasoning_output_tokens": 3714
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 220498.46,
+            "assumed_uncached_input_tokens": 6819.54,
+            "estimated_cny_reference": 0.27296938,
+            "estimated_usd": {
+              "cached_input": 0.00970193,
+              "output": 0.02224332,
+              "total": 0.04094705,
+              "uncached_input": 0.00900179
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-e0360a39d2c611f18f143a2a31249af2",
+          "source_ordinal": 949,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 0,
+            "input_tokens": 30783,
+            "output_tokens": 620,
+            "reasoning_output_tokens": 406
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 29859.51,
+            "assumed_uncached_input_tokens": 923.49,
+            "estimated_cny_reference": 0.03325217,
+            "estimated_usd": {
+              "cached_input": 0.00131382,
+              "output": 0.0024552,
+              "total": 0.00498803,
+              "uncached_input": 0.00121901
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-10adc920d2c711f1a171068f0e7c089c",
+          "source_ordinal": 960,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 17792,
+            "input_tokens": 34819,
+            "output_tokens": 807,
+            "reasoning_output_tokens": 229
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 33774.43,
+            "assumed_uncached_input_tokens": 1044.57,
+            "estimated_cny_reference": 0.04040257,
+            "estimated_usd": {
+              "cached_input": 0.00148607,
+              "output": 0.00319572,
+              "total": 0.00606063,
+              "uncached_input": 0.00137883
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-1a39b1d8d2c711f1b6e122c13bf000a3",
+          "source_ordinal": 970,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 34816,
+            "input_tokens": 37995,
+            "output_tokens": 647,
+            "reasoning_output_tokens": 375
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 36855.15,
+            "assumed_uncached_input_tokens": 1139.85,
+            "estimated_cny_reference": 0.03792081,
+            "estimated_usd": {
+              "cached_input": 0.00162163,
+              "output": 0.00256212,
+              "total": 0.00568835,
+              "uncached_input": 0.0015046
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-24fdefbbd2c711f1a3b91a17d975cb0d",
+          "source_ordinal": 980,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 37888,
+            "input_tokens": 38410,
+            "output_tokens": 536,
+            "reasoning_output_tokens": 214
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 37257.7,
+            "assumed_uncached_input_tokens": 1152.3,
+            "estimated_cny_reference": 0.03521816,
+            "estimated_usd": {
+              "cached_input": 0.00163934,
+              "output": 0.00212256,
+              "total": 0.00528293,
+              "uncached_input": 0.00152104
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-2c7a62dcd2c711f1a62a8a517ba82613",
+          "source_ordinal": 986,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 38400,
+            "input_tokens": 38877,
+            "output_tokens": 407,
+            "reasoning_output_tokens": 284
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 37710.69,
+            "assumed_uncached_input_tokens": 1166.31,
+            "estimated_cny_reference": 0.03206885,
+            "estimated_usd": {
+              "cached_input": 0.00165927,
+              "output": 0.00161172,
+              "total": 0.00481052,
+              "uncached_input": 0.00153953
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-33939172d2c711f1a62a8a517ba82613",
+          "source_ordinal": 993,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 38784,
+            "input_tokens": 39046,
+            "output_tokens": 94,
+            "reasoning_output_tokens": 0
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 37874.62,
+            "assumed_uncached_input_tokens": 1171.38,
+            "estimated_cny_reference": 0.02389868,
+            "estimated_usd": {
+              "cached_input": 0.00166648,
+              "output": 0.00037224,
+              "total": 0.00358494,
+              "uncached_input": 0.00154622
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-379bc641d2c711f182af5274482abae0",
+          "source_ordinal": 999,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 0,
+            "input_tokens": 39288,
+            "output_tokens": 435,
+            "reasoning_output_tokens": 166
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 38109.36,
+            "assumed_uncached_input_tokens": 1178.64,
+            "estimated_cny_reference": 0.03303346,
+            "estimated_usd": {
+              "cached_input": 0.00167681,
+              "output": 0.0017226,
+              "total": 0.00495522,
+              "uncached_input": 0.0015558
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-3acbe1b2d2c711f18f143a2a31249af2",
+          "source_ordinal": 1009,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 39168,
+            "input_tokens": 40142,
+            "output_tokens": 528,
+            "reasoning_output_tokens": 109
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 38937.74,
+            "assumed_uncached_input_tokens": 1204.26,
+            "estimated_cny_reference": 0.03595699,
+            "estimated_usd": {
+              "cached_input": 0.00171326,
+              "output": 0.00209088,
+              "total": 0.00539376,
+              "uncached_input": 0.00158962
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-43a439e7d2c711f1a3c65e3296f1bbd2",
+          "source_ordinal": 1018,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 40064,
+            "input_tokens": 40646,
+            "output_tokens": 802,
+            "reasoning_output_tokens": 74
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 39426.62,
+            "assumed_uncached_input_tokens": 1219.38,
+            "estimated_cny_reference": 0.04346675,
+            "estimated_usd": {
+              "cached_input": 0.00173477,
+              "output": 0.00317592,
+              "total": 0.00652027,
+              "uncached_input": 0.00160958
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-4a63d8b4d2c711f1900ac6a5ff1c8342",
+          "source_ordinal": 1026,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 40576,
+            "input_tokens": 41534,
+            "output_tokens": 350,
+            "reasoning_output_tokens": 24
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 40287.98,
+            "assumed_uncached_input_tokens": 1246.02,
+            "estimated_cny_reference": 0.0320215,
+            "estimated_usd": {
+              "cached_input": 0.00177267,
+              "output": 0.001386,
+              "total": 0.00480342,
+              "uncached_input": 0.00164475
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-521eda7ed2c711f1b0f8168a3a4a2e66",
+          "source_ordinal": 1035,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 41472,
+            "input_tokens": 41953,
+            "output_tokens": 320,
+            "reasoning_output_tokens": 0
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 40694.41,
+            "assumed_uncached_input_tokens": 1258.59,
+            "estimated_cny_reference": 0.03145936,
+            "estimated_usd": {
+              "cached_input": 0.00179055,
+              "output": 0.0012672,
+              "total": 0.00471909,
+              "uncached_input": 0.00166134
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-5762d914d2c711f1a3b91a17d975cb0d",
+          "source_ordinal": 1040,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 41856,
+            "input_tokens": 42833,
+            "output_tokens": 599,
+            "reasoning_output_tokens": 249
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 41548.01,
+            "assumed_uncached_input_tokens": 1284.99,
+            "estimated_cny_reference": 0.03930736,
+            "estimated_usd": {
+              "cached_input": 0.00182811,
+              "output": 0.00237204,
+              "total": 0.00589634,
+              "uncached_input": 0.00169619
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-5db854bfd2c711f1955db6115804dfbf",
+          "source_ordinal": 1047,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 42752,
+            "input_tokens": 43359,
+            "output_tokens": 498,
+            "reasoning_output_tokens": 191
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 42058.23,
+            "assumed_uncached_input_tokens": 1300.77,
+            "estimated_cny_reference": 0.03692958,
+            "estimated_usd": {
+              "cached_input": 0.00185056,
+              "output": 0.00197208,
+              "total": 0.00553966,
+              "uncached_input": 0.00171702
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-64e745abd2c711f1a0b8ba0d4bfe6208",
+          "source_ordinal": 1054,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 43264,
+            "input_tokens": 44170,
+            "output_tokens": 1821,
+            "reasoning_output_tokens": 1539
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 42844.9,
+            "assumed_uncached_input_tokens": 1325.1,
+            "estimated_cny_reference": 0.07230023,
+            "estimated_usd": {
+              "cached_input": 0.00188518,
+              "output": 0.00721116,
+              "total": 0.01084547,
+              "uncached_input": 0.00174913
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-6b53ea71d2c711f1bf61aaa9f95e29fa",
+          "source_ordinal": 1061,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 44160,
+            "input_tokens": 45117,
+            "output_tokens": 669,
+            "reasoning_output_tokens": 100
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 43763.49,
+            "assumed_uncached_input_tokens": 1353.51,
+            "estimated_cny_reference": 0.04240808,
+            "estimated_usd": {
+              "cached_input": 0.00192559,
+              "output": 0.00264924,
+              "total": 0.00636147,
+              "uncached_input": 0.00178663
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-84a6f489d2c711f1b0f8168a3a4a2e66",
+          "source_ordinal": 1069,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 45056,
+            "input_tokens": 48189,
+            "output_tokens": 576,
+            "reasoning_output_tokens": 125
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 46743.33,
+            "assumed_uncached_input_tokens": 1445.67,
+            "estimated_cny_reference": 0.04163801,
+            "estimated_usd": {
+              "cached_input": 0.00205671,
+              "output": 0.00228096,
+              "total": 0.00624595,
+              "uncached_input": 0.00190828
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-8e7c0727d2c711f1bf814eea749bdb87",
+          "source_ordinal": 1078,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 48128,
+            "input_tokens": 49038,
+            "output_tokens": 1075,
+            "reasoning_output_tokens": 664
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 47566.86,
+            "assumed_uncached_input_tokens": 1471.14,
+            "estimated_cny_reference": 0.05527677,
+            "estimated_usd": {
+              "cached_input": 0.00209294,
+              "output": 0.004257,
+              "total": 0.00829185,
+              "uncached_input": 0.0019419
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-96595144d2c711f1bf814eea749bdb87",
+          "source_ordinal": 1085,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 49024,
+            "input_tokens": 49571,
+            "output_tokens": 399,
+            "reasoning_output_tokens": 0
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 48083.87,
+            "assumed_uncached_input_tokens": 1487.13,
+            "estimated_cny_reference": 0.03772344,
+            "estimated_usd": {
+              "cached_input": 0.00211569,
+              "output": 0.00158004,
+              "total": 0.00565874,
+              "uncached_input": 0.00196301
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-a2ca3fdbd2c711f1a3c65e3296f1bbd2",
+          "source_ordinal": 1090,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 49536,
+            "input_tokens": 50104,
+            "output_tokens": 375,
+            "reasoning_output_tokens": 0
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 48600.88,
+            "assumed_uncached_input_tokens": 1503.12,
+            "estimated_cny_reference": 0.03738222,
+            "estimated_usd": {
+              "cached_input": 0.00213844,
+              "output": 0.001485,
+              "total": 0.00560756,
+              "uncached_input": 0.00198412
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-a804fef9d2c711f1955db6115804dfbf",
+          "source_ordinal": 1094,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 50048,
+            "input_tokens": 50588,
+            "output_tokens": 406,
+            "reasoning_output_tokens": 97
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 49070.36,
+            "assumed_uncached_input_tokens": 1517.64,
+            "estimated_cny_reference": 0.03846607,
+            "estimated_usd": {
+              "cached_input": 0.0021591,
+              "output": 0.00160776,
+              "total": 0.00577014,
+              "uncached_input": 0.00200328
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-ae6e97f3d2c711f1bcb502173eca8d34",
+          "source_ordinal": 1101,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 50560,
+            "input_tokens": 51008,
+            "output_tokens": 364,
+            "reasoning_output_tokens": 0
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 49477.76,
+            "assumed_uncached_input_tokens": 1530.24,
+            "estimated_cny_reference": 0.03758768,
+            "estimated_usd": {
+              "cached_input": 0.00217702,
+              "output": 0.00144144,
+              "total": 0.00563838,
+              "uncached_input": 0.00201992
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-b4fb4fd3d2c711f19fabb676a675bcad",
+          "source_ordinal": 1106,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 50944,
+            "input_tokens": 51484,
+            "output_tokens": 537,
+            "reasoning_output_tokens": 215
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 49939.48,
+            "assumed_uncached_input_tokens": 1544.52,
+            "estimated_cny_reference": 0.04241579,
+            "estimated_usd": {
+              "cached_input": 0.00219734,
+              "output": 0.00212652,
+              "total": 0.00636262,
+              "uncached_input": 0.00203877
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-bb119133d2c711f19e2acae42046c68c",
+          "source_ordinal": 1113,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 51456,
+            "input_tokens": 57013,
+            "output_tokens": 3428,
+            "reasoning_output_tokens": 3176
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 55302.61,
+            "assumed_uncached_input_tokens": 1710.39,
+            "estimated_cny_reference": 0.12176786,
+            "estimated_usd": {
+              "cached_input": 0.00243331,
+              "output": 0.01357488,
+              "total": 0.01826591,
+              "uncached_input": 0.00225771
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-c24e01a1d2c711f1a171068f0e7c089c",
+          "source_ordinal": 1120,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 56960,
+            "input_tokens": 57353,
+            "output_tokens": 4237,
+            "reasoning_output_tokens": 3993
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 55632.41,
+            "assumed_uncached_input_tokens": 1720.59,
+            "estimated_cny_reference": 0.1433111,
+            "estimated_usd": {
+              "cached_input": 0.00244783,
+              "output": 0.01677852,
+              "total": 0.02149752,
+              "uncached_input": 0.00227118
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-dd572303d2c711f182af5274482abae0",
+          "source_ordinal": 1127,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 57344,
+            "input_tokens": 57647,
+            "output_tokens": 7408,
+            "reasoning_output_tokens": 3567
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 55917.59,
+            "assumed_uncached_input_tokens": 1729.41,
+            "estimated_cny_reference": 0.22718341,
+            "estimated_usd": {
+              "cached_input": 0.00246037,
+              "output": 0.02933568,
+              "total": 0.03407888,
+              "uncached_input": 0.00228282
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-fd1d5c0fd2c711f18f143a2a31249af2",
+          "source_ordinal": 1136,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 57600,
+            "input_tokens": 61545,
+            "output_tokens": 421,
+            "reasoning_output_tokens": 93
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 59698.65,
+            "assumed_uncached_input_tokens": 1846.35,
+            "estimated_cny_reference": 0.04487209,
+            "estimated_usd": {
+              "cached_input": 0.00262674,
+              "output": 0.00166716,
+              "total": 0.00673108,
+              "uncached_input": 0.00243718
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-2dab8d35d2c811f18f143a2a31249af2",
+          "source_ordinal": 1143,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 61440,
+            "input_tokens": 61929,
+            "output_tokens": 620,
+            "reasoning_output_tokens": 0
+          },
+          "inclusion": "main_project_turn",
+          "model": "tencent/deepseek-v4-pro-ioa",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 60071.13,
+            "assumed_uncached_input_tokens": 1857.87,
+            "estimated_cny_reference": 0.05033611,
+            "estimated_usd": {
+              "cached_input": 0.00264313,
+              "output": 0.0024552,
+              "total": 0.00755072,
+              "uncached_input": 0.00245239
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4-Pro (peak)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.044,
+              "output": 3.96,
+              "uncached_input": 1.32
+            }
+          },
+          "response_id": "resp_cmb-336c2b4ed2c811f18e4fd238dd833cc5",
+          "source_ordinal": 1149,
+          "source_role": "main",
+          "source_session_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "stage": "P0",
+          "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+          "turn_id": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 2304,
+            "input_tokens": 25249,
+            "output_tokens": 176,
+            "reasoning_output_tokens": 147
+          },
+          "inclusion": "agent_full",
+          "model": "tencent/deepseek-v4.1-flash",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 24491.53,
+            "assumed_uncached_input_tokens": 757.47,
+            "estimated_cny_reference": 0.00390245,
+            "estimated_usd": {
+              "cached_input": 0.00014695,
+              "output": 0.0002112,
+              "total": 0.00058539,
+              "uncached_input": 0.00022724
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4.1-Flash (peak standard)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.006,
+              "output": 1.2,
+              "uncached_input": 0.3
+            }
+          },
+          "response_id": "resp_cmb-38c15f31d2c711f1900ac6a5ff1c8342",
+          "source_ordinal": 13,
+          "source_role": "agent",
+          "source_session_id": "01a18262-6556-7e81-b0b9-8bc08afa246d",
+          "stage": "P0",
+          "thread_id": "01a18262-6556-7e81-b0b9-8bc08afa246d",
+          "turn_id": "01a18262-65e6-70a0-af8f-73302076aa4f",
+          "usage_complete": true,
+          "usage_issues": []
+        },
+        {
+          "actual_usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 1536,
+            "input_tokens": 11305,
+            "output_tokens": 23,
+            "reasoning_output_tokens": 0
+          },
+          "inclusion": "agent_full",
+          "model": "tencent/deepseek-v4.1-flash",
+          "model_family": "DeepSeek",
+          "pricing": {
+            "assumed_cache_ratio": 0.97,
+            "assumed_cached_input_tokens": 10965.85,
+            "assumed_uncached_input_tokens": 339.15,
+            "estimated_cny_reference": 0.00130088,
+            "estimated_usd": {
+              "cached_input": 6.58e-05,
+              "output": 2.76e-05,
+              "total": 0.00019514,
+              "uncached_input": 0.00010175
+            },
+            "long_context": {
+              "applied": false,
+              "input_multiplier": 1.0,
+              "output_multiplier": 1.0,
+              "threshold_input_tokens": null
+            },
+            "mapped_model": "DeepSeek-V4.1-Flash (peak standard)",
+            "model_family": "DeepSeek",
+            "priced": true,
+            "usage_complete": true,
+            "usd_per_million": {
+              "cached_input": 0.006,
+              "output": 1.2,
+              "uncached_input": 0.3
+            }
+          },
+          "response_id": "resp_cmb-7feb0507d2c711f1bf814eea749bdb87",
+          "source_ordinal": 11,
+          "source_role": "agent",
+          "source_session_id": "01a18264-312e-73b2-804b-6a488c0b1c67",
+          "stage": "P0",
+          "thread_id": "01a18264-312e-73b2-804b-6a488c0b1c67",
+          "turn_id": "01a18264-3275-7f90-beff-90044afbce7a",
+          "usage_complete": true,
+          "usage_issues": []
+        }
+      ],
+      "unknown_record_count": 0
+    },
+    "GPT": {
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": 0
+      },
+      "estimated_usd_json": 0.0,
+      "known_record_count": 0,
+      "models": {},
+      "record_count": 0,
+      "responses": [],
+      "unknown_record_count": 0
+    },
+    "Unknown": {
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": 0
+      },
+      "estimated_usd_json": null,
+      "known_record_count": 0,
+      "models": {},
+      "record_count": 0,
+      "responses": [],
+      "unknown_record_count": 0
+    }
+  },
+  "phase": "P0",
+  "pricing_sources": [
+    {
+      "name": "OpenAI Developers - GPT-6.1-Sol model reference",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+    },
+    {
+      "name": "DeepSeek API pricing",
+      "url": "https://api-docs.deepseek.com/quick_start/pricing"
+    },
+    {
+      "name": "Investing.com - USD/CNY historical data",
+      "url": "https://www.investing.com/currencies/usd-cny-historical-data"
+    }
+  ],
+  "reference_date": "2026-10-28",
+  "schema_version": 3,
+  "selection": {
+    "agent_ids": [
+      "01a18262-6556-7e81-b0b9-8bc08afa246d",
+      "01a18264-312e-73b2-804b-6a488c0b1c67"
+    ],
+    "agent_scope": "full",
+    "agent_stages": {},
+    "main_scope": "project_turn_only",
+    "main_session": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+    "phase": "P0",
+    "project_turn": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
+    "project_turns": [
+      "01a1825e-256e-7e92-93d0-a4e0a49ebfa8"
+    ],
+    "turn_stages": {}
+  },
+  "selection_rule": "Include token_usage_record.payload.usage from the main session only for selected project-turn records; include selected child sessions/threads in full. Repeated project turns are aggregated idempotently.",
+  "snapshot": {
+    "max_observed_usage_timestamp": "2026-10-28T12:07:59.151Z",
+    "note": "Observed usage snapshot only; status complete does not mean the session has no future charges.",
+    "source_max_ordinals": {
+      "01a181f1-8fad-7161-a01f-04678ebd7df0": 1149,
+      "01a18262-6556-7e81-b0b9-8bc08afa246d": 13,
+      "01a18264-312e-73b2-804b-6a488c0b1c67": 11
+    },
+    "usage_record_count": 33
+  },
+  "stage_attribution": {
+    "agent_stage_scope": "whole_child_history_approximate",
+    "exact_attribution_claimed": false,
+    "main_default": "P0",
+    "main_default_is_conservative": true,
+    "note": "Agent-stage mapping assigns a reused child's full history to one stage; treat it as approximate/shared. The default P0 charge is conservative for main turns spanning P0 architecture and P1 work.",
+    "precedence": "turn_stage > agent_stage > phase",
+    "reused_agents_may_span_stages": true
+  },
+  "stages": {
+    "P0": {
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 1804928,
+        "input_tokens": 2188303,
+        "output_tokens": 46130,
+        "reasoning_output_tokens": 28273
+      },
+      "known_estimated_usd": 0.3597132,
+      "limit_cny": 100.0,
+      "record_count": 33,
+      "reserved_cny": 3.02159088,
+      "within_limit": true
+    },
+    "P1": {
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": 0
+      },
+      "known_estimated_usd": 0.0,
+      "limit_cny": 400.0,
+      "record_count": 0,
+      "reserved_cny": 0.0,
+      "within_limit": true
+    },
+    "P2": {
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": 0
+      },
+      "known_estimated_usd": 0.0,
+      "limit_cny": 350.0,
+      "record_count": 0,
+      "reserved_cny": 0.0,
+      "within_limit": true
+    },
+    "P3": {
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": 0
+      },
+      "known_estimated_usd": 0.0,
+      "limit_cny": 200.0,
+      "record_count": 0,
+      "reserved_cny": 0.0,
+      "within_limit": true
+    },
+    "P4": {
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": 0
+      },
+      "known_estimated_usd": 0.0,
+      "limit_cny": 400.0,
+      "record_count": 0,
+      "reserved_cny": 0.0,
+      "within_limit": true
+    },
+    "P5": {
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": 0
+      },
+      "known_estimated_usd": 0.0,
+      "limit_cny": 400.0,
+      "record_count": 0,
+      "reserved_cny": 0.0,
+      "within_limit": true
+    },
+    "Reserve": {
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": 0
+      },
+      "known_estimated_usd": 0.0,
+      "limit_cny": 150.0,
+      "record_count": 0,
+      "reserved_cny": 0.0,
+      "within_limit": true
+    }
+  },
+  "status": "complete",
+  "totals": {
+    "actual_usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 1804928,
+      "input_tokens": 2188303,
+      "output_tokens": 46130,
+      "reasoning_output_tokens": 28273
+    },
+    "estimated_cny_reference": 2.39799208,
+    "estimated_usd": 0.3597132,
+    "incomplete_reasons": [],
+    "known_estimated_cny_reference": 2.39799208,
+    "known_estimated_usd": 0.3597132,
+    "known_record_count": 33,
+    "malformed_usage_record_count": 0,
+    "record_count": 33,
+    "unknown_models": [],
+    "unknown_record_count": 0
+  },
+  "warnings": [
+    "The final main-response usage may not be finalized; rerun after completion.",
+    "Reference estimates are not actual intranet bills.",
+    "Complete accounting describes the observed snapshot, not future charges.",
+    "Stage attribution is exact only for turn overrides; agent-stage and default phase mappings are approximate/shared and conservatively charged."
+  ]
+}

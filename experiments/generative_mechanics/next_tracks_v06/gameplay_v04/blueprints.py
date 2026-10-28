@@ -11,7 +11,7 @@ from pmw import Entity
 
 from .contracts import (
     ATTRIBUTES, CURVES, PROTOCOL_ID, ActorBlueprint, AreaBlueprint,
-    FieldDefinition, GameplayContractError,
+    FieldDefinition, GameplayContractError, validate_curve_policy,
 )
 from .shields import SHIELD_COMPONENT, shield_component
 
@@ -69,8 +69,10 @@ def parse_field_definition(raw: Any, path: str = "$.field") -> FieldDefinition:
     if curve not in CURVES:
         raise GameplayContractError(f"{path}.curve must be one of {CURVES}")
     rate = _number(data["rate"], f"{path}.rate")
-    if rate < 0.0:
-        raise GameplayContractError(f"{path}.rate must be non-negative")
+    try:
+        validate_curve_policy(curve, rate)
+    except GameplayContractError as exc:
+        raise GameplayContractError(f"{path}: {exc}") from exc
     width = high - low
     if curve == "linear" and rate > 1.0:
         raise GameplayContractError(f"{path}.rate exceeds linear stability limit")

@@ -1,0 +1,17 @@
+P0 QA evidence: Alpha and Storm Relay pytest
+Command: $env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; python -m pytest -q -ra --durations=10 -p no:cacheprovider examples/pmw_alpha/tests examples/storm_relay/tests
+................................................                         [100%]
+============================ slowest 10 durations =============================
+18.29s call     examples/storm_relay/tests/test_routes.py::StormRelayRouteTests::test_fog_build_can_close_core_on_last_tick
+15.64s call     examples/storm_relay/tests/test_routes.py::StormRelayRouteTests::test_storm_build_uses_exact_nineteen_tick_route
+8.41s call     examples/storm_relay/tests/test_routes.py::StormRelayRouteTests::test_direct_assault_uses_exact_ten_tick_route
+7.81s call     examples/pmw_alpha/tests/test_session.py::AlphaSessionTests::test_harvest_changes_real_material_inventory_and_stock
+7.59s call     examples/pmw_alpha/tests/test_session.py::AlphaSessionTests::test_save_load_restores_world_and_registered_skill
+7.40s call     examples/pmw_alpha/tests/test_session.py::AlphaSessionTests::test_inspection_and_travel_advance_real_time
+6.88s call     examples/storm_relay/tests/test_combat_transactions.py::StormRelayCombatTransactionTests::test_equipped_active_skill_is_a_full_combat_turn
+5.62s call     examples/pmw_alpha/tests/test_session.py::AlphaSessionTests::test_locked_observatory_is_not_a_travel_control
+5.45s call     examples/pmw_alpha/tests/test_session.py::AlphaSessionTests::test_visible_world_objects_explain_their_actionable_leads
+5.22s call     examples/pmw_alpha/tests/test_session.py::AlphaSessionTests::test_crafting_equipping_and_casting_use_the_gameplay_registry
+48 passed in 129.59s (0:02:09)
+EXIT_CODE=0
+ELAPSED_SECONDS=130.452

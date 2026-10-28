@@ -1,0 +1,595 @@
+P0 QA evidence: gameplay_v04 native unittest
+Command: $env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; python -m unittest discover -s experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests -t . -p "test_*.py" -v
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\__main__.py", line 18, in <module>
+    main(module=None)
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 104, in __init__
+    self.parseArgs(argv)
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 130, in parseArgs
+    self._do_discovery(argv[2:])
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 253, in _do_discovery
+    self.createTests(from_discovery=True, Loader=Loader)
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\main.py", line 160, in createTests
+    self.test = loader.discover(self.start, self.pattern, self.top)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 308, in discover
+    raise ImportError('Start directory is not importable: %r' % start_dir)
+ImportError: Start directory is not importable: 'C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\tests'
+EXIT_CODE=1
+ELAPSED_SECONDS=0.285
+
+RETRY: env PYTHONPATH=<repo>\src; python -m unittest discover -s . -p "test_*.py" -v
+test_gate1_blueprints (unittest.loader._FailedTest.test_gate1_blueprints) ... ERROR
+test_gate1_dynamics (unittest.loader._FailedTest.test_gate1_dynamics) ... ERROR
+test_gate2_actions (unittest.loader._FailedTest.test_gate2_actions) ... ERROR
+test_gate2_combat_status (unittest.loader._FailedTest.test_gate2_combat_status) ... ERROR
+test_gate2_effects_hooks (unittest.loader._FailedTest.test_gate2_effects_hooks) ... ERROR
+test_gate3_harvest_skills (unittest.loader._FailedTest.test_gate3_harvest_skills) ... ERROR
+test_gate3_loadout_integration (unittest.loader._FailedTest.test_gate3_loadout_integration) ... ERROR
+test_gate3_weather_ecology (unittest.loader._FailedTest.test_gate3_weather_ecology) ... ERROR
+test_gate4_ai_observation (unittest.loader._FailedTest.test_gate4_ai_observation) ... ERROR
+test_gate4_ai_planner (unittest.loader._FailedTest.test_gate4_ai_planner) ... ERROR
+test_gate4_ai_simulation (unittest.loader._FailedTest.test_gate4_ai_simulation) ... ERROR
+test_gate4_registry_checkpoint (unittest.loader._FailedTest.test_gate4_registry_checkpoint) ... ERROR
+test_gate51_combat_authority (unittest.loader._FailedTest.test_gate51_combat_authority) ... ERROR
+test_gate51_harvest_transaction (unittest.loader._FailedTest.test_gate51_harvest_transaction) ... ERROR
+test_gate51_independent_qa (unittest.loader._FailedTest.test_gate51_independent_qa) ... ERROR
+test_gate51_integration (unittest.loader._FailedTest.test_gate51_integration) ... ERROR
+test_gate51_shield_layers (unittest.loader._FailedTest.test_gate51_shield_layers) ... ERROR
+test_gate52_independent_qa (unittest.loader._FailedTest.test_gate52_independent_qa) ... ERROR
+test_gate52_integration (unittest.loader._FailedTest.test_gate52_integration) ... ERROR
+test_gate52_status_shield (unittest.loader._FailedTest.test_gate52_status_shield) ... ERROR
+test_gate52_time_transaction (unittest.loader._FailedTest.test_gate52_time_transaction) ... ERROR
+test_gate5_ai_contract (unittest.loader._FailedTest.test_gate5_ai_contract) ... ERROR
+test_gate5_end_to_end (unittest.loader._FailedTest.test_gate5_end_to_end) ... ERROR
+test_gate5_independent_qa (unittest.loader._FailedTest.test_gate5_independent_qa) ... ERROR
+
+======================================================================
+ERROR: test_gate1_blueprints (unittest.loader._FailedTest.test_gate1_blueprints)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate1_blueprints
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate1_blueprints.py", line 7, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.blueprints import (
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate1_dynamics (unittest.loader._FailedTest.test_gate1_dynamics)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate1_dynamics
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate1_dynamics.py", line 8, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.blueprints import instantiate_actor, instantiate_area, parse_actor_blueprint, parse_area_blueprint
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate2_actions (unittest.loader._FailedTest.test_gate2_actions)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate2_actions
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate2_actions.py", line 7, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.action_compiler import build_action_session
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate2_combat_status (unittest.loader._FailedTest.test_gate2_combat_status)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate2_combat_status
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate2_combat_status.py", line 6, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRequest, resolve_action
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate2_effects_hooks (unittest.loader._FailedTest.test_gate2_effects_hooks)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate2_effects_hooks
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate2_effects_hooks.py", line 6, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRegistry, ActionRequest, resolve_action
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate3_harvest_skills (unittest.loader._FailedTest.test_gate3_harvest_skills)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate3_harvest_skills
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate3_harvest_skills.py", line 5, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts import GameplayContractError
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate3_loadout_integration (unittest.loader._FailedTest.test_gate3_loadout_integration)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate3_loadout_integration
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate3_loadout_integration.py", line 5, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts import GameplayContractError
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate3_weather_ecology (unittest.loader._FailedTest.test_gate3_weather_ecology)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate3_weather_ecology
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate3_weather_ecology.py", line 5, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.basics import basic_registry
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate4_ai_observation (unittest.loader._FailedTest.test_gate4_ai_observation)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate4_ai_observation
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate4_ai_observation.py", line 6, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.ai_demo import ai_demo_registry, ai_demo_session
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate4_ai_planner (unittest.loader._FailedTest.test_gate4_ai_planner)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate4_ai_planner
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate4_ai_planner.py", line 3, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.ai_demo import ai_demo_registry, ai_demo_session, run_ai_demo
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate4_ai_simulation (unittest.loader._FailedTest.test_gate4_ai_simulation)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate4_ai_simulation
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate4_ai_simulation.py", line 6, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRegistry, ActionRequest
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate4_registry_checkpoint (unittest.loader._FailedTest.test_gate4_registry_checkpoint)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate4_registry_checkpoint
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate4_registry_checkpoint.py", line 9, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRequest, resolve_action
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate51_combat_authority (unittest.loader._FailedTest.test_gate51_combat_authority)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate51_combat_authority
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate51_combat_authority.py", line 8, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.action_compiler import build_action_laws
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate51_harvest_transaction (unittest.loader._FailedTest.test_gate51_harvest_transaction)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate51_harvest_transaction
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate51_harvest_transaction.py", line 12, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.content_compiler import (
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate51_independent_qa (unittest.loader._FailedTest.test_gate51_independent_qa)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate51_independent_qa
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate51_independent_qa.py", line 11, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.action_compiler import (
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate51_integration (unittest.loader._FailedTest.test_gate51_integration)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate51_integration
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate51_integration.py", line 8, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRequest
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate51_shield_layers (unittest.loader._FailedTest.test_gate51_shield_layers)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate51_shield_layers
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate51_shield_layers.py", line 6, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.action_compiler import build_action_session
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate52_independent_qa (unittest.loader._FailedTest.test_gate52_independent_qa)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate52_independent_qa
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate52_independent_qa.py", line 8, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04 import time_ledger
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate52_integration (unittest.loader._FailedTest.test_gate52_integration)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate52_integration
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate52_integration.py", line 8, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import (
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate52_status_shield (unittest.loader._FailedTest.test_gate52_status_shield)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate52_status_shield
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate52_status_shield.py", line 10, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.action_compiler import (
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate52_time_transaction (unittest.loader._FailedTest.test_gate52_time_transaction)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate52_time_transaction
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate52_time_transaction.py", line 13, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04 import time_ledger
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate5_ai_contract (unittest.loader._FailedTest.test_gate5_ai_contract)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate5_ai_contract
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate5_ai_contract.py", line 5, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRequest
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate5_end_to_end (unittest.loader._FailedTest.test_gate5_end_to_end)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate5_end_to_end
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate5_end_to_end.py", line 9, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions import ActionRequest, resolve_action
+ModuleNotFoundError: No module named 'experiments'
+
+
+======================================================================
+ERROR: test_gate5_independent_qa (unittest.loader._FailedTest.test_gate5_independent_qa)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_gate5_independent_qa
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_gate5_independent_qa.py", line 12, in <module>
+    from experiments.generative_mechanics.next_tracks_v06.gameplay_v04.action_compiler import build_action_session
+ModuleNotFoundError: No module named 'experiments'
+
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.002s
+
+FAILED (errors=24)
+RETRY_EXIT_CODE=1
+RETRY_ELAPSED_SECONDS=0.940
+
+RETRY_WITH_REPO_ROOT: env PYTHONPATH=<repo>\src;<repo>; python -m unittest discover -s . -p "test_*.py" -v
+test_actor_instances_are_isomorphic_except_controller (test_gate1_blueprints.BlueprintTests.test_actor_instances_are_isomorphic_except_controller) ... ok
+test_field_stability_contracts (test_gate1_blueprints.BlueprintTests.test_field_stability_contracts) ... ok
+test_one_area_blueprint_creates_independent_instances (test_gate1_blueprints.BlueprintTests.test_one_area_blueprint_creates_independent_instances) ... ok
+test_strict_recursive_schema (test_gate1_blueprints.BlueprintTests.test_strict_recursive_schema) ... ok
+test_adjacent_area_rejects_non_area_endpoint (test_gate1_blueprints.SelectorTests.test_adjacent_area_rejects_non_area_endpoint) ... ok
+test_all_typed_selectors (test_gate1_blueprints.SelectorTests.test_all_typed_selectors) ... ok
+test_selector_capability_and_schema_fail_closed (test_gate1_blueprints.SelectorTests.test_selector_capability_and_schema_fail_closed) ... ok
+test_multiple_active_area_actor_fields_advance_once_each (test_gate1_dynamics.LocalityTests.test_multiple_active_area_actor_fields_advance_once_each) ... ok
+test_structural_work_is_constant_through_100k_unrelated_entities (test_gate1_dynamics.LocalityTests.test_structural_work_is_constant_through_100k_unrelated_entities) ... ok
+test_randomized_two_curve_manual_oracle_600_cases (test_gate1_dynamics.ReferenceTests.test_randomized_two_curve_manual_oracle_600_cases) ... ok
+test_actor_mana_uses_same_dynamics_and_stays_synchronized (test_gate1_dynamics.RuntimeDynamicsTests.test_actor_mana_uses_same_dynamics_and_stays_synchronized) ... ok
+test_adjacent_areas_do_not_implicitly_diffuse (test_gate1_dynamics.RuntimeDynamicsTests.test_adjacent_areas_do_not_implicitly_diffuse) ... ok
+test_curve_override_priority_and_conflict (test_gate1_dynamics.RuntimeDynamicsTests.test_curve_override_priority_and_conflict) ... ok
+test_distance_squared_pmw_tick_matches_oracle (test_gate1_dynamics.RuntimeDynamicsTests.test_distance_squared_pmw_tick_matches_oracle) ... ok
+test_linear_tick_uses_pmw_law_and_advances_once (test_gate1_dynamics.RuntimeDynamicsTests.test_linear_tick_uses_pmw_law_and_advances_once) ... ok
+test_non_world_phases_do_not_advance_dynamics (test_gate1_dynamics.RuntimeDynamicsTests.test_non_world_phases_do_not_advance_dynamics) ... ok
+test_persistent_patch_is_weighted_and_removable (test_gate1_dynamics.RuntimeDynamicsTests.test_persistent_patch_is_weighted_and_removable) ... ok
+test_reproducible_demo_exposes_no_implicit_diffusion (test_gate1_dynamics.RuntimeDynamicsTests.test_reproducible_demo_exposes_no_implicit_diffusion) ... ok
+test_save_load_replay_equivalence (test_gate1_dynamics.RuntimeDynamicsTests.test_save_load_replay_equivalence) ... ok
+test_source_capacity_and_owner_checks_fail_closed (test_gate1_dynamics.RuntimeDynamicsTests.test_source_capacity_and_owner_checks_fail_closed) ... ok
+test_temporary_modifier_expires_exact_owner_slot (test_gate1_dynamics.RuntimeDynamicsTests.test_temporary_modifier_expires_exact_owner_slot) ... ok
+test_action_cost_modifiers_are_explicit_and_keep_positive_time (test_gate2_actions.RequestAndBasicActionTests.test_action_cost_modifiers_are_explicit_and_keep_positive_time) ... ok
+test_attack_explicit_power_scaling_and_shield_absorption (test_gate2_actions.RequestAndBasicActionTests.test_attack_explicit_power_scaling_and_shield_absorption) ... ok
+test_audit_is_backed_by_causal_trace (test_gate2_actions.RequestAndBasicActionTests.test_audit_is_backed_by_causal_trace) ... ok
+test_controller_request_cannot_inject_cost_or_effects (test_gate2_actions.RequestAndBasicActionTests.test_controller_request_cannot_inject_cost_or_effects) ... ok
+test_guard_is_bounded_refresh_not_additive (test_gate2_actions.RequestAndBasicActionTests.test_guard_is_bounded_refresh_not_additive) ... ok
+test_insufficient_mana_is_atomic (test_gate2_actions.RequestAndBasicActionTests.test_insufficient_mana_is_atomic) ... ok
+test_mana_action_updates_dynamics_mirror (test_gate2_actions.RequestAndBasicActionTests.test_mana_action_updates_dynamics_mirror) ... ok
+test_mana_cost_is_reserved_before_self_mana_effect (test_gate2_actions.RequestAndBasicActionTests.test_mana_cost_is_reserved_before_self_mana_effect) ... ok
+test_wait_has_explicit_mana_value_and_does_not_use_agility (test_gate2_actions.RequestAndBasicActionTests.test_wait_has_explicit_mana_value_and_does_not_use_agility) ... ok
+test_duplicate_effect_id_and_write_conflict_rejected (test_gate2_actions.SchemaTests.test_duplicate_effect_id_and_write_conflict_rejected) ... ok
+test_periodic_status_rejects_nonfinite (test_gate2_actions.SchemaTests.test_periodic_status_rejects_nonfinite) ... ok
+test_positive_duration_and_finite_numbers (test_gate2_actions.SchemaTests.test_positive_duration_and_finite_numbers) ... ok
+test_recursive_unknown_field_rejected (test_gate2_actions.SchemaTests.test_recursive_unknown_field_rejected) ... ok
+test_targeting_and_evasion_are_opt_in (test_gate2_actions.SchemaTests.test_targeting_and_evasion_are_opt_in) ... ok
+test_actor_count_does_not_accelerate_world_tick (test_gate2_combat_status.CombatTests.test_actor_count_does_not_accelerate_world_tick) ... ok
+test_demo_is_deterministic_and_advances_one_tick_per_round (test_gate2_combat_status.CombatTests.test_demo_is_deterministic_and_advances_one_tick_per_round) ... ok
+test_duplicate_actor_order_rejected (test_gate2_combat_status.CombatTests.test_duplicate_actor_order_rejected) ... ok
+test_human_and_ai_controllers_produce_same_request_type (test_gate2_combat_status.CombatTests.test_human_and_ai_controllers_produce_same_request_type) ... ok
+test_sequential_commit_changes_later_damage_resolution (test_gate2_combat_status.CombatTests.test_sequential_commit_changes_later_damage_resolution) ... ok
+test_guard_expires_at_next_owner_turn_and_clears_own_slot (test_gate2_combat_status.StatusLifecycleTests.test_guard_expires_at_next_owner_turn_and_clears_own_slot) ... ok
+test_other_owner_turn_does_not_expire_status (test_gate2_combat_status.StatusLifecycleTests.test_other_owner_turn_does_not_expire_status) ... ok
+test_status_capacity_failure_does_not_charge_or_shield (test_gate2_combat_status.StatusLifecycleTests.test_status_capacity_failure_does_not_charge_or_shield) ... ok
+test_attribute_check_failure_is_atomic_for_required_effect (test_gate2_effects_hooks.AttributeAndConditionTests.test_attribute_check_failure_is_atomic_for_required_effect) ... ok
+test_conditional_effect_skips_but_action_costs_mana (test_gate2_effects_hooks.AttributeAndConditionTests.test_conditional_effect_skips_but_action_costs_mana) ... ok
+test_four_explicit_term_types_have_stable_order (test_gate2_effects_hooks.AttributeAndConditionTests.test_four_explicit_term_types_have_stable_order) ... ok
+test_apply_status_periodic_and_cancel_exact_owner (test_gate2_effects_hooks.EffectTemplateTests.test_apply_status_periodic_and_cancel_exact_owner) ... ok
+test_duplicate_temporal_handle_failure_is_atomic (test_gate2_effects_hooks.EffectTemplateTests.test_duplicate_temporal_handle_failure_is_atomic) ... ok
+test_grant_trait_expires_by_owner_turn (test_gate2_effects_hooks.EffectTemplateTests.test_grant_trait_expires_by_owner_turn) ... ok
+test_heal_and_resource_clamp (test_gate2_effects_hooks.EffectTemplateTests.test_heal_and_resource_clamp) ... ok
+test_modify_field_is_a_pmw_traced_write (test_gate2_effects_hooks.EffectTemplateTests.test_modify_field_is_a_pmw_traced_write) ... ok
+test_status_add_stacks_is_bounded_and_refreshes_duration (test_gate2_effects_hooks.EffectTemplateTests.test_status_add_stacks_is_bounded_and_refreshes_duration) ... ok
+test_temporary_attractor_and_rate_use_owned_slots_and_expire (test_gate2_effects_hooks.EffectTemplateTests.test_temporary_attractor_and_rate_use_owned_slots_and_expire) ... ok
+test_hook_effect_executes_through_pmw_without_main_action_cost (test_gate2_effects_hooks.HookContractTests.test_hook_effect_executes_through_pmw_without_main_action_cost) ... ok
+test_hook_schema_and_cycle_budget (test_gate2_effects_hooks.HookContractTests.test_hook_schema_and_cycle_budget) ... ok
+test_compound_skill_uses_shared_budget (test_gate3_harvest_skills.HarvestSkillTests.test_compound_skill_uses_shared_budget) ... ok
+test_lucky_changes_time_and_yield_not_consumption (test_gate3_harvest_skills.HarvestSkillTests.test_lucky_changes_time_and_yield_not_consumption) ... ok
+test_material_tier_and_region_rarity_are_independent (test_gate3_harvest_skills.HarvestSkillTests.test_material_tier_and_region_rarity_are_independent) ... ok
+test_unauthorized_lucky_harvest_is_atomic (test_gate3_harvest_skills.HarvestSkillTests.test_unauthorized_lucky_harvest_is_atomic) ... ok
+test_active_move_is_reversible (test_gate3_loadout_integration.LoadoutIntegrationTests.test_active_move_is_reversible) ... ok
+test_demo_has_trace_and_no_scheduler_leak (test_gate3_loadout_integration.LoadoutIntegrationTests.test_demo_has_trace_and_no_scheduler_leak) ... ok
+test_empty_move_fails_without_mutation (test_gate3_loadout_integration.LoadoutIntegrationTests.test_empty_move_fails_without_mutation) ... ok
+test_loadout_locked_in_combat (test_gate3_loadout_integration.LoadoutIntegrationTests.test_loadout_locked_in_combat) ... ok
+test_demo_weather_is_selective_and_bounded (test_gate3_weather_ecology.WeatherEcologyTests.test_demo_weather_is_selective_and_bounded) ... ok
+test_ecology_sampling_is_deterministic_and_reachable (test_gate3_weather_ecology.WeatherEcologyTests.test_ecology_sampling_is_deterministic_and_reachable) ... ok
+test_status_granted_trait_compiles_runtime_slot_variants (test_gate3_weather_ecology.WeatherEcologyTests.test_status_granted_trait_compiles_runtime_slot_variants) ... ok
+test_sustained_threshold_changes_regime_and_baseline (test_gate3_weather_ecology.WeatherEcologyTests.test_sustained_threshold_changes_regime_and_baseline) ... ok
+test_gate3_skill_ref_loadout_is_understood_without_hash_exposure (test_gate4_ai_observation.ActorSafeObservationTests.test_gate3_skill_ref_loadout_is_understood_without_hash_exposure) ... ok
+test_hidden_skill_registry_addition_cannot_change_decision (test_gate4_ai_observation.ActorSafeObservationTests.test_hidden_skill_registry_addition_cannot_change_decision) ... ok
+test_observation_is_json_owned_and_ignores_hidden_world_surfaces (test_gate4_ai_observation.ActorSafeObservationTests.test_observation_is_json_owned_and_ignores_hidden_world_surfaces) ... ok
+test_stale_skill_ref_cannot_alias_a_new_registry_version (test_gate4_ai_observation.ActorSafeObservationTests.test_stale_skill_ref_cannot_alias_a_new_registry_version) ... ok
+test_unrevealed_opponent_skill_is_not_projected (test_gate4_ai_observation.ActorSafeObservationTests.test_unrevealed_opponent_skill_is_not_projected) ... ok
+test_build_analysis_finds_field_condition_without_names (test_gate4_ai_planner.BoundedPlannerTests.test_build_analysis_finds_field_condition_without_names) ... ok
+test_deadline_fallback_and_logs_are_deterministic (test_gate4_ai_planner.BoundedPlannerTests.test_deadline_fallback_and_logs_are_deterministic) ... ok
+test_demo_is_reproducible (test_gate4_ai_planner.BoundedPlannerTests.test_demo_is_reproducible) ... ok
+test_node_budget_has_complete_one_step_fallback (test_gate4_ai_planner.BoundedPlannerTests.test_node_budget_has_complete_one_step_fallback) ... ok
+test_two_action_search_beats_myopic_and_random_paths (test_gate4_ai_planner.BoundedPlannerTests.test_two_action_search_beats_myopic_and_random_paths) ... ok
+test_attack_guard_and_wait_use_production_resolver (test_gate4_ai_simulation.RealSandboxTests.test_attack_guard_and_wait_use_production_resolver) ... ok
+test_explicitly_visible_adjacent_scope_is_reconstructed (test_gate4_ai_simulation.RealSandboxTests.test_explicitly_visible_adjacent_scope_is_reconstructed) ... ok
+test_live_revalidation_rejects_unequipped_trusted_skill (test_gate4_ai_simulation.RealSandboxTests.test_live_revalidation_rejects_unequipped_trusted_skill) ... ok
+test_newest_state_revalidation_rejects_without_partial_commit (test_gate4_ai_simulation.RealSandboxTests.test_newest_state_revalidation_rejects_without_partial_commit) ... ok
+test_simple_skill_changes_projected_area_through_pmw (test_gate4_ai_simulation.RealSandboxTests.test_simple_skill_changes_projected_area_through_pmw) ... ok
+test_checkpoint_hash_rejects_corruption_before_rebuild (test_gate4_registry_checkpoint.RegistryCheckpointTests.test_checkpoint_hash_rejects_corruption_before_rebuild) ... ok
+test_checkpoint_restores_world_registry_scheduler_and_continuation_trace (test_gate4_registry_checkpoint.RegistryCheckpointTests.test_checkpoint_restores_world_registry_scheduler_and_continuation_trace) ... ok
+test_disable_blocks_new_use_but_retains_scheduled_expiry (test_gate4_registry_checkpoint.RegistryCheckpointTests.test_disable_blocks_new_use_but_retains_scheduled_expiry) ... ok
+test_failed_rebuild_preflight_does_not_publish_manifest (test_gate4_registry_checkpoint.RegistryCheckpointTests.test_failed_rebuild_preflight_does_not_publish_manifest) ... ok
+test_fractional_time_is_not_a_world_tick_boundary (test_gate4_registry_checkpoint.RegistryCheckpointTests.test_fractional_time_is_not_a_world_tick_boundary) ... ok
+test_install_is_formal_traced_and_once_per_world_tick_boundary (test_gate4_registry_checkpoint.RegistryCheckpointTests.test_install_is_formal_traced_and_once_per_world_tick_boundary) ... ok
+test_versions_are_monotonic_and_old_loadout_refs_cannot_alias_new_action (test_gate4_registry_checkpoint.RegistryCheckpointTests.test_versions_are_monotonic_and_old_loadout_refs_cannot_alias_new_action) ... ok
+test_builtin_flag_cannot_forge_a_privileged_basic_action (test_gate51_combat_authority.CombatActionAuthorityTests.test_builtin_flag_cannot_forge_a_privileged_basic_action) ... ok
+test_disabled_skill_is_rejected_even_with_stale_registry_object (test_gate51_combat_authority.CombatActionAuthorityTests.test_disabled_skill_is_rejected_even_with_stale_registry_object) ... ok
+test_equipped_skill_succeeds_but_stowed_or_other_owner_does_not (test_gate51_combat_authority.CombatActionAuthorityTests.test_equipped_skill_succeeds_but_stowed_or_other_owner_does_not) ... ok
+test_forged_version_or_hash_is_rejected (test_gate51_combat_authority.CombatActionAuthorityTests.test_forged_version_or_hash_is_rejected) ... ok
+test_public_resolve_action_cannot_bypass_equipment_authority (test_gate51_combat_authority.CombatActionAuthorityTests.test_public_resolve_action_cannot_bypass_equipment_authority) ... ok
+test_public_resolver_has_no_forgeable_hook_mode (test_gate51_combat_authority.CombatActionAuthorityTests.test_public_resolver_has_no_forgeable_hook_mode) ... ok
+test_three_basic_actions_need_no_slots (test_gate51_combat_authority.CombatActionAuthorityTests.test_three_basic_actions_need_no_slots) ... ok
+test_unequipped_skill_rejected_before_owner_turn (test_gate51_combat_authority.CombatActionAuthorityTests.test_unequipped_skill_rejected_before_owner_turn) ... ok
+test_actor_count_still_costs_exactly_one_tick (test_gate51_combat_authority.CombatTimeAuthorityTests.test_actor_count_still_costs_exactly_one_tick) ... ok
+test_checkpoint_restores_combat_budget_without_tick_drift (test_gate51_combat_authority.CombatTimeAuthorityTests.test_checkpoint_restores_combat_budget_without_tick_drift) ... ok
+test_finite_budget_allows_one_round_then_rejects_atomically (test_gate51_combat_authority.CombatTimeAuthorityTests.test_finite_budget_allows_one_round_then_rejects_atomically) ... ok
+test_guard_owner_turn_and_world_tick_share_the_time_lifecycle (test_gate51_combat_authority.CombatTimeAuthorityTests.test_guard_owner_turn_and_world_tick_share_the_time_lifecycle) ... ok
+test_unbudgeted_fixture_mode_must_be_explicit (test_gate51_combat_authority.CombatTimeAuthorityTests.test_unbudgeted_fixture_mode_must_be_explicit) ... ok
+test_checkpoint_replay_of_request_is_idempotent (test_gate51_harvest_transaction.HarvestTransactionRegression.test_checkpoint_replay_of_request_is_idempotent) ... ok
+test_condition_modified_final_duration_is_preflighted (test_gate51_harvest_transaction.HarvestTransactionRegression.test_condition_modified_final_duration_is_preflighted) ... ok
+test_exhausted_budget_rejects_before_any_harvest_write (test_gate51_harvest_transaction.HarvestTransactionRegression.test_exhausted_budget_rejects_before_any_harvest_write) ... ok
+test_lucky_final_duration_controls_budget_and_preserves_threshold_tolerance (test_gate51_harvest_transaction.HarvestTransactionRegression.test_lucky_final_duration_controls_budget_and_preserves_threshold_tolerance) ... ok
+test_mid_tick_failure_discards_harvest_time_and_scheduler_side_effects (test_gate51_harvest_transaction.HarvestTransactionRegression.test_mid_tick_failure_discards_harvest_time_and_scheduler_side_effects) ... ok
+test_overharvest_degradation_commits_with_yield (test_gate51_harvest_transaction.HarvestTransactionRegression.test_overharvest_degradation_commits_with_yield) ... ok
+test_two_tick_harvest_rejects_one_tick_and_accepts_exact_budget (test_gate51_harvest_transaction.HarvestTransactionRegression.test_two_tick_harvest_rejects_one_tick_and_accepts_exact_budget) ... ok
+test_validation_failures_are_atomic (test_gate51_harvest_transaction.HarvestTransactionRegression.test_validation_failures_are_atomic) ... ok
+test_committed_combat_and_harvest_keep_formal_trace_boundaries (test_gate51_independent_qa.Gate51IndependentQATests.test_committed_combat_and_harvest_keep_formal_trace_boundaries) ... ok
+test_exhausted_round_preserves_status_scheduler_and_budget (test_gate51_independent_qa.Gate51IndependentQATests.test_exhausted_round_preserves_status_scheduler_and_budget) ... ok
+test_failed_round_after_owner_turn_candidate_is_fully_atomic (test_gate51_independent_qa.Gate51IndependentQATests.test_failed_round_after_owner_turn_candidate_is_fully_atomic) ... ok
+test_pre_gate51_checkpoint_status_schema_is_migrated_safely (test_gate51_independent_qa.Gate51IndependentQATests.test_pre_gate51_checkpoint_status_schema_is_migrated_safely) ... ok
+test_public_caller_cannot_self_declare_hook_execution (test_gate51_independent_qa.Gate51IndependentQATests.test_public_caller_cannot_self_declare_hook_execution) ... ok
+test_public_primary_resolver_cannot_bypass_equipment (test_gate51_independent_qa.Gate51IndependentQATests.test_public_primary_resolver_cannot_bypass_equipment) ... ok
+test_request_cannot_claim_builtin_and_nonbasic_builtin_is_not_slot_free (test_gate51_independent_qa.Gate51IndependentQATests.test_request_cannot_claim_builtin_and_nonbasic_builtin_is_not_slot_free) ... ok
+test_second_tick_failure_rolls_back_harvest_and_scheduler (test_gate51_independent_qa.Gate51IndependentQATests.test_second_tick_failure_rolls_back_harvest_and_scheduler) ... ok
+test_shield_layers_checkpoint_and_trace_are_exact (test_gate51_independent_qa.Gate51IndependentQATests.test_shield_layers_checkpoint_and_trace_are_exact) ... ok
+test_two_owned_shields_expire_independently_in_both_orders (test_gate51_independent_qa.Gate51IndependentQATests.test_two_owned_shields_expire_independently_in_both_orders) ... ok
+test_combat_harvest_exhaustion_and_checkpoint_share_one_authority (test_gate51_integration.Gate51IntegratedTransactionScenario.test_combat_harvest_exhaustion_and_checkpoint_share_one_authority) ... ok
+test_damage_consumes_layers_in_stable_creation_order (test_gate51_shield_layers.ShieldOwnershipRegressionTests.test_damage_consumes_layers_in_stable_creation_order) ... ok
+test_guard_expiry_preserves_another_shield_source (test_gate51_shield_layers.ShieldOwnershipRegressionTests.test_guard_expiry_preserves_another_shield_source) ... ok
+test_legacy_checkpoint_shape_is_migrated_before_law_evaluation (test_gate51_shield_layers.ShieldOwnershipRegressionTests.test_legacy_checkpoint_shape_is_migrated_before_law_evaluation) ... ok
+test_migration_is_exactly_idempotent_for_current_worlds (test_gate51_shield_layers.ShieldOwnershipRegressionTests.test_migration_is_exactly_idempotent_for_current_worlds) ... ok
+test_same_source_refresh_does_not_restore_consumed_capacity (test_gate51_shield_layers.ShieldOwnershipRegressionTests.test_same_source_refresh_does_not_restore_consumed_capacity) ... ok
+test_same_source_refresh_is_bounded_and_reowned (test_gate51_shield_layers.ShieldOwnershipRegressionTests.test_same_source_refresh_is_bounded_and_reowned) ... ok
+test_damage_then_cross_source_refresh_never_restores_capacity (test_gate52_independent_qa.Gate52IndependentStatusShieldQA.test_damage_then_cross_source_refresh_never_restores_capacity) ... ok
+test_malformed_owner_and_source_lineage_fail_closed (test_gate52_independent_qa.Gate52IndependentStatusShieldQA.test_malformed_owner_and_source_lineage_fail_closed) ... ok
+test_migration_drops_corrupt_temporary_layer_but_keeps_persistent (test_gate52_independent_qa.Gate52IndependentStatusShieldQA.test_migration_drops_corrupt_temporary_layer_but_keeps_persistent) ... ok
+test_failure_after_each_tick_position_never_publishes (test_gate52_independent_qa.Gate52IndependentTimeTransactionQA.test_failure_after_each_tick_position_never_publishes) ... ok
+test_status_modified_harvest_consumes_final_duration (test_gate52_independent_qa.Gate52IndependentTimeTransactionQA.test_status_modified_harvest_consumes_final_duration) ... ok
+test_full_authoritative_limited_world_chain (test_gate52_integration.Gate52FinalIntegration.test_full_authoritative_limited_world_chain) ... ok
+test_cancel_one_source_then_expire_the_other_in_both_orders (test_gate52_status_shield.CrossSourceStatusShieldTests.test_cancel_one_source_then_expire_the_other_in_both_orders) ... ok
+test_checkpoint_then_refresh_cancel_and_expire_preserves_ownership (test_gate52_status_shield.CrossSourceStatusShieldTests.test_checkpoint_then_refresh_cancel_and_expire_preserves_ownership) ... ok
+test_different_sources_sharing_spec_expire_without_orphan (test_gate52_status_shield.CrossSourceStatusShieldTests.test_different_sources_sharing_spec_expire_without_orphan) ... ok
+test_legacy_scalar_migration_remains_idempotent_and_unowned (test_gate52_status_shield.CrossSourceStatusShieldTests.test_legacy_scalar_migration_remains_idempotent_and_unowned) ... ok
+test_malformed_temporary_ownership_is_rejected_before_action_commit (test_gate52_status_shield.CrossSourceStatusShieldTests.test_malformed_temporary_ownership_is_rejected_before_action_commit) ... ok
+test_mismatched_layer_caster_is_rejected_before_action_commit (test_gate52_status_shield.CrossSourceStatusShieldTests.test_mismatched_layer_caster_is_rejected_before_action_commit) ... ok
+test_mismatched_layer_source_lineage_is_rejected_before_action_commit (test_gate52_status_shield.CrossSourceStatusShieldTests.test_mismatched_layer_source_lineage_is_rejected_before_action_commit) ... ok
+test_persistent_and_temporary_layers_do_not_share_lifecycle (test_gate52_status_shield.CrossSourceStatusShieldTests.test_persistent_and_temporary_layers_do_not_share_lifecycle) ... ok
+test_pre_gate52_orphan_migration_is_idempotent (test_gate52_status_shield.CrossSourceStatusShieldTests.test_pre_gate52_orphan_migration_is_idempotent) ... ok
+test_reject_policy_blocks_cross_source_without_partial_layer (test_gate52_status_shield.CrossSourceStatusShieldTests.test_reject_policy_blocks_cross_source_without_partial_layer) ... ok
+test_replace_policy_releases_replaced_source_layer (test_gate52_status_shield.CrossSourceStatusShieldTests.test_replace_policy_releases_replaced_source_layer) ... ok
+test_same_source_refresh_reowns_without_restoring_damage (test_gate52_status_shield.CrossSourceStatusShieldTests.test_same_source_refresh_reowns_without_restoring_damage) ... ok
+test_staggered_lifecycles_expire_independently_in_both_orders (test_gate52_status_shield.CrossSourceStatusShieldTests.test_staggered_lifecycles_expire_independently_in_both_orders) ... ok
+test_active_status_modifies_final_harvest_duration_after_checkpoint (test_gate52_time_transaction.TimeTransactionRegression.test_active_status_modifies_final_harvest_duration_after_checkpoint) ... ok
+test_checkpoint_restores_budget_and_scheduler_continuation (test_gate52_time_transaction.TimeTransactionRegression.test_checkpoint_restores_budget_and_scheduler_continuation) ... ok
+test_combat_and_harvest_nested_transactions_do_not_double_charge (test_gate52_time_transaction.TimeTransactionRegression.test_combat_and_harvest_nested_transactions_do_not_double_charge) ... ok
+test_duration_one_and_three_commit_exactly_once (test_gate52_time_transaction.TimeTransactionRegression.test_duration_one_and_three_commit_exactly_once) ... ok
+test_insufficient_budget_has_no_runtime_or_trace_side_effect (test_gate52_time_transaction.TimeTransactionRegression.test_insufficient_budget_has_no_runtime_or_trace_side_effect) ... ok
+test_move_rest_and_offline_share_identical_accounting (test_gate52_time_transaction.TimeTransactionRegression.test_move_rest_and_offline_share_identical_accounting) ... ok
+test_scheduler_dispatch_failure_restores_pending_queue_and_ledger (test_gate52_time_transaction.TimeTransactionRegression.test_scheduler_dispatch_failure_restores_pending_queue_and_ledger) ... ok
+test_second_tick_failure_rolls_back_complete_time_request (test_gate52_time_transaction.TimeTransactionRegression.test_second_tick_failure_rolls_back_complete_time_request) ... ok
+test_ai_plan_beats_one_step_and_average_bounded_paths (test_gate5_ai_contract.ActorAndAIContractTests.test_ai_plan_beats_one_step_and_average_bounded_paths) ... ok
+test_repeated_planning_is_bounded_and_never_emits_an_illegal_request (test_gate5_ai_contract.ActorAndAIContractTests.test_repeated_planning_is_bounded_and_never_emits_an_illegal_request) ... ok
+test_forest_sustained_threshold_changes_ecology_and_attractor (test_gate5_end_to_end.EndToEndScenarios.test_forest_sustained_threshold_changes_ecology_and_attractor) ... ok
+test_harvest_time_yield_consumption_and_ecology_are_separate (test_gate5_end_to_end.EndToEndScenarios.test_harvest_time_yield_consumption_and_ecology_are_separate) ... ok
+test_integrated_demo_is_deterministic (test_gate5_end_to_end.EndToEndScenarios.test_integrated_demo_is_deterministic) ... ok
+test_one_blueprint_two_area_instances_remain_independent (test_gate5_end_to_end.EndToEndScenarios.test_one_blueprint_two_area_instances_remain_independent) ... ok
+test_runtime_registration_disable_and_checkpoint_continuation (test_gate5_end_to_end.EndToEndScenarios.test_runtime_registration_disable_and_checkpoint_continuation) ... ok
+test_weather_trait_and_combat_share_the_same_world (test_gate5_end_to_end.EndToEndScenarios.test_weather_trait_and_combat_share_the_same_world) ... ok
+test_combat_round_costs_one_world_tick_regardless_of_actor_count (test_gate5_end_to_end.TimeAndTraceLedger.test_combat_round_costs_one_world_tick_regardless_of_actor_count) ... ok
+test_deterministic_formal_replay_and_readable_causal_sources (test_gate5_end_to_end.TimeAndTraceLedger.test_deterministic_formal_replay_and_readable_causal_sources) ... ok
+test_exploration_and_offline_time_use_the_same_finite_world_ticks (test_gate5_end_to_end.TimeAndTraceLedger.test_exploration_and_offline_time_use_the_same_finite_world_ticks) ... ok
+test_zero_time_or_infinite_harvest_is_impossible (test_gate5_end_to_end.TimeAndTraceLedger.test_zero_time_or_infinite_harvest_is_impossible) ... ok
+test_hidden_ability_and_hidden_law_cannot_change_observation_or_plan (test_gate5_independent_qa.IndependentAIInformationBoundaryTests.test_hidden_ability_and_hidden_law_cannot_change_observation_or_plan) ... ok
+test_true_conditional_before_failed_required_effect_is_fully_atomic (test_gate5_independent_qa.IndependentAtomicityTests.test_true_conditional_before_failed_required_effect_is_fully_atomic) ... ok
+test_lethal_earlier_commit_prevents_later_actor_action_in_same_round (test_gate5_independent_qa.IndependentCombatOrderTests.test_lethal_earlier_commit_prevents_later_actor_action_in_same_round) ... ok
+test_linear_and_distance_squared_match_closed_form_oracles (test_gate5_independent_qa.IndependentDynamicsOracleTests.test_linear_and_distance_squared_match_closed_form_oracles) ... ok
+test_scheduler_restores_pending_expiry_at_exact_time (test_gate5_independent_qa.IndependentLifecycleTests.test_scheduler_restores_pending_expiry_at_exact_time) ... ok
+test_status_expiry_after_registry_checkpoint_matches_manual_oracle (test_gate5_independent_qa.IndependentLifecycleTests.test_status_expiry_after_registry_checkpoint_matches_manual_oracle) ... ok
+
+----------------------------------------------------------------------
+Ran 172 tests in 91.653s
+
+OK
+RETRY_WITH_REPO_ROOT_EXIT_CODE=0
+RETRY_WITH_REPO_ROOT_ELAPSED_SECONDS=92.587
