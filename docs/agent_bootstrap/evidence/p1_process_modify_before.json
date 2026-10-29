@@ -1,0 +1,16 @@
+{
+  "checkpoint": "14cf16d",
+  "candidate": {
+    "id": "adjust",
+    "kind": "process_modify",
+    "target": {
+      "kind": "current_area"
+    },
+    "commitment": "required",
+    "process_template_id": "refine_material",
+    "process_rate": 1.5,
+    "process_remaining_ticks": 2
+  },
+  "error_type": "GameplayContractError",
+  "error": "$.effect.kind is invalid"
+}

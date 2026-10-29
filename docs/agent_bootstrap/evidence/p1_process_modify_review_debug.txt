@@ -1,0 +1,651 @@
+F....F                                                         [100%]
+================================== FAILURES ===================================
+_ ProcessModificationIndependentReviewTests.test_checkpoint_continuation_and_projection_keep_private_authority_hidden _
+
+self = <test_sandbox_process_modify_review.ProcessModificationIndependentReviewTests testMethod=test_checkpoint_continuation_and_projection_keep_private_authority_hidden>
+
+    def test_checkpoint_continuation_and_projection_keep_private_authority_hidden(self):
+        template = replace(_template(), duration_ticks=6, max_duration_ticks=8)
+        saved_profile = replace(
+            _profile("checkpoint_saved_modify", PLAYER_ID),
+            template=template,
+            rate=0.5,
+        )
+        future_profile = replace(
+            _profile("checkpoint_future_modify", PLAYER_ID),
+            template=template,
+            rate=0.5,
+        )
+        runtime, compiled, _, _ = _setup_modifier(
+            (saved_profile,), time_budget=20
+        )
+        submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("checkpoint_start", PLAYER_ID, SKILL_ID),
+        )
+        submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("checkpoint_modify", PLAYER_ID, MODIFY_SKILL_ID),
+        )
+        modified = _component(runtime.session, saved_profile)
+        self.assertEqual(modified["rate"], 1.5)
+        self.assertEqual(modified["remaining_ticks"], 2)
+        expected_expiry = next(
+            event
+            for event in runtime.session.state.scheduled_events
+            if event.id == modified["expiry_handle"]
+        )
+        self.assertEqual(expected_expiry.time, 5.0)
+    
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "process_modify_checkpoint.json"
+            save_registry_checkpoint(path, runtime)
+            restored = load_registry_checkpoint(path, compiled)
+            self.assertEqual(restored.session.state.to_dict(), runtime.session.state.to_dict())
+            self.assertEqual(restored.manifest, runtime.manifest)
+            self.assertIn(MODIFY_SKILL_ID, restored.action_registry.actions)
+    
+            changed_profile = _profile(
+                saved_profile.id,
+                PLAYER_ID,
+                stock_prefix="changed_checkpoint_profile",
+            )
+            changed_profile = replace(
+                changed_profile,
+                template=template,
+                rate=0.5,
+            )
+            changed_controller = ProcessController(
+                (changed_profile,),
+                ProcessLimits(max_instances=8, max_active=8),
+            )
+            changed_laws = (
+                *(
+                    law
+                    for law in compiled.laws
+                    if not law["id"].startswith("pmw.v04.sandbox.process.")
+                ),
+                *changed_controller.laws,
+            )
+            changed_compiled = type(compiled)(
+                compiled.content,
+                tuple(sorted(changed_laws, key=lambda law: law["id"])),
+            )
+            with self.assertRaisesRegex(
+                GameplayContractError, "static Law configuration"
+            ):
+                load_registry_checkpoint(path, changed_compiled)
+    
+        for _ in range(2):
+            left = advance_world_tick(runtime.session)
+            right = advance_world_tick(restored.session)
+>           self.assertEqual(left.result.processed_event_ids, right.result.processed_event_ids)
+                             ^^^^^^^^^^^
+E           AttributeError: 'TickResult' object has no attribute 'result'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_modify_review.py:805: AttributeError
+_ ProcessModificationIndependentReviewTests.test_data_skill_settles_player_and_npc_after_real_paid_ticks (actor_id='player_actor') _
+
+self = <test_sandbox_process_modify_review.ProcessModificationIndependentReviewTests testMethod=test_data_skill_settles_player_and_npc_after_real_paid_ticks>
+
+    def test_data_skill_settles_player_and_npc_after_real_paid_ticks(self):
+        template = replace(_template(), duration_ticks=6, max_duration_ticks=8)
+        cases = (
+            (PLAYER_ID, "player_rate_review", 0.5, 8.0, 1.0, 6.5, 2.5),
+            (NPC_ID, "npc_rate_review", 0.75, 7.0, 1.5, 5.5, 3.0),
+        )
+        for (
+            actor_id,
+            profile_id,
+            initial_rate,
+            start_input,
+            start_output,
+            expected_input,
+            expected_output,
+        ) in cases:
+            with self.subTest(actor_id=actor_id):
+                profile = replace(
+                    _profile(profile_id, actor_id),
+                    template=template,
+                    rate=initial_rate,
+                )
+                runtime, _, _, _ = _setup_modifier(
+                    (profile,), time_budget=8
+                )
+                start = submit_timed_primary_action(
+                    runtime.session,
+                    runtime.action_registry,
+                    ActionRequest(f"{actor_id}_start", actor_id, SKILL_ID),
+                )
+                self.assertEqual(start.time.duration, 2)
+                before = _component(runtime.session, profile)
+                self.assertEqual(before["rate"], initial_rate)
+                self.assertEqual(before["remaining_ticks"], 1)
+                self.assertEqual(
+                    _amount(runtime.session, profile.inputs[0].stock.entity_id),
+                    start_input,
+                )
+                self.assertEqual(
+                    _amount(runtime.session, profile.outputs[0].stock.entity_id),
+                    start_output,
+                )
+    
+                modified = submit_timed_primary_action(
+                    runtime.session,
+                    runtime.action_registry,
+                    ActionRequest(f"{actor_id}_modify", actor_id, MODIFY_SKILL_ID),
+                )
+                after = _component(runtime.session, profile)
+                self.assertEqual(modified.time.duration, 1)
+                self.assertEqual(after["rate"], 1.5)
+                self.assertEqual(after["remaining_ticks"], 2)
+>               self.assertEqual(
+                    _amount(runtime.session, profile.inputs[0].stock.entity_id),
+                    expected_input,
+                )
+E               AssertionError: 5.0 != 6.5
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_modify_review.py:403: AssertionError
+_ ProcessModificationIndependentReviewTests.test_data_skill_settles_player_and_npc_after_real_paid_ticks (actor_id='npc_actor') _
+
+self = <test_sandbox_process_modify_review.ProcessModificationIndependentReviewTests testMethod=test_data_skill_settles_player_and_npc_after_real_paid_ticks>
+
+    def test_data_skill_settles_player_and_npc_after_real_paid_ticks(self):
+        template = replace(_template(), duration_ticks=6, max_duration_ticks=8)
+        cases = (
+            (PLAYER_ID, "player_rate_review", 0.5, 8.0, 1.0, 6.5, 2.5),
+            (NPC_ID, "npc_rate_review", 0.75, 7.0, 1.5, 5.5, 3.0),
+        )
+        for (
+            actor_id,
+            profile_id,
+            initial_rate,
+            start_input,
+            start_output,
+            expected_input,
+            expected_output,
+        ) in cases:
+            with self.subTest(actor_id=actor_id):
+                profile = replace(
+                    _profile(profile_id, actor_id),
+                    template=template,
+                    rate=initial_rate,
+                )
+                runtime, _, _, _ = _setup_modifier(
+                    (profile,), time_budget=8
+                )
+                start = submit_timed_primary_action(
+                    runtime.session,
+                    runtime.action_registry,
+                    ActionRequest(f"{actor_id}_start", actor_id, SKILL_ID),
+                )
+                self.assertEqual(start.time.duration, 2)
+                before = _component(runtime.session, profile)
+                self.assertEqual(before["rate"], initial_rate)
+                self.assertEqual(before["remaining_ticks"], 1)
+                self.assertEqual(
+                    _amount(runtime.session, profile.inputs[0].stock.entity_id),
+                    start_input,
+                )
+                self.assertEqual(
+                    _amount(runtime.session, profile.outputs[0].stock.entity_id),
+                    start_output,
+                )
+    
+                modified = submit_timed_primary_action(
+                    runtime.session,
+                    runtime.action_registry,
+                    ActionRequest(f"{actor_id}_modify", actor_id, MODIFY_SKILL_ID),
+                )
+                after = _component(runtime.session, profile)
+                self.assertEqual(modified.time.duration, 1)
+                self.assertEqual(after["rate"], 1.5)
+                self.assertEqual(after["remaining_ticks"], 2)
+>               self.assertEqual(
+                    _amount(runtime.session, profile.inputs[0].stock.entity_id),
+                    expected_input,
+                )
+E               AssertionError: 4.0 != 5.5
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_modify_review.py:403: AssertionError
+_ ProcessModificationIndependentReviewTests.test_locality_owner_and_ambiguity_denials_are_atomic (case='multiple_local') _
+
+self = <test_sandbox_process_modify_review.ProcessModificationIndependentReviewTests testMethod=test_locality_owner_and_ambiguity_denials_are_atomic>
+
+    def test_locality_owner_and_ambiguity_denials_are_atomic(self):
+        def assert_denied(runtime, actor_id: str, request_id: str, pattern: str):
+            before = _snapshot(runtime)
+            with self.assertRaisesRegex(GameplayContractError, pattern):
+                submit_timed_primary_action(
+                    runtime.session,
+                    runtime.action_registry,
+                    ActionRequest(request_id, actor_id, MODIFY_SKILL_ID),
+                )
+            self.assertEqual(_snapshot(runtime), before)
+    
+        with self.subTest(case="remote_stock"):
+            profile = _profile("remote_stock_modify", PLAYER_ID)
+            runtime, _, _, _ = _setup_modifier((profile,), time_budget=6)
+            _start_equipped(runtime, PLAYER_ID, "remote_stock_start")
+            _add_area(runtime.session, "remote_area")
+            _relocate(runtime.session, profile.inputs[0].stock.entity_id, "remote_area")
+            runtime.session.runtime.revalidate()
+            assert_denied(
+                runtime,
+                PLAYER_ID,
+                "remote_stock_modify",
+                "missing, ambiguous, or remote",
+            )
+    
+        with self.subTest(case="owner"):
+            profile = _profile("npc_only_modify", NPC_ID)
+            runtime, _, _, _ = _setup_modifier((profile,), time_budget=6)
+            _start_equipped(runtime, NPC_ID, "owner_npc_start")
+            assert_denied(
+                runtime,
+                PLAYER_ID,
+                "wrong_owner_modify",
+                "no Process profile",
+            )
+    
+        with self.subTest(case="multiple_local"):
+            primary = _profile("primary_local_modify", PLAYER_ID)
+            secondary = _profile("secondary_local_modify", PLAYER_ID)
+            runtime, _, _, _ = _setup_modifier(
+                (primary, secondary), time_budget=6
+            )
+            _add_area(runtime.session, "secondary_remote_area")
+            _relocate(runtime.session, primary.process_entity_id, "primary_local_area")
+            _add_area(runtime.session, "primary_local_area")
+            for entity_id in _stock_ids(secondary):
+                _relocate(runtime.session, entity_id, "secondary_remote_area")
+            runtime.session.runtime.revalidate()
+>           _start_equipped(runtime, PLAYER_ID, "primary_start")
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_modify_review.py:526: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_modify_review.py:335: in _start_equipped
+    return resolve_action(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:200: in resolve_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:246: in _resolve_action
+    outcome = _simulate_effect(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:450: in _simulate_effect
+    return _simulate_process_start(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:547: in _simulate_process_start
+    profile = _resolve_process_profile(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x000001EF24E5C530>, profiles=(FieldProfile(entity...l=1.0, target=1.0, rate=0.1, curve='linear', max_persistent_patches=2, max_temporary_modifiers=2), mirror_path=None),))
+controller = ProcessController(profiles=(ProcessProfile(id='primary_local_modify', template=ProcessTemplate(id='refine_material', i...32d7fe6e5')), limits=ProcessLimits(max_instances=8, max_active=8), clock_id='pmw:v04:clock', external_stock_writers={})
+template_id = 'refine_material', owner = 'player_actor'
+area_id = 'workshop_area'
+
+    def _resolve_process_profile(session, controller, template_id, owner, area_id):
+        """Resolve exactly one trusted profile whose complete endpoint scope is local.
+    
+        Remote profiles may coexist in the catalog but cannot supply local authority.
+        Zero or multiple valid local profiles reject instead of choosing arbitrarily.
+        """
+        matches = [
+            profile for profile in controller.profiles
+            if profile.template.id == template_id and profile.owner == owner
+        ]
+        if not matches:
+            raise GameplayContractError("no Process profile matches the requested template and owner")
+        area = session.state.entities.get(area_id)
+        if area is None or "pmw_gameplay_area" not in area.components:
+            raise GameplayContractError("process_start target is not an Area")
+        located = []
+        for profile in matches:
+            endpoints = (profile.process_entity_id, *(item.stock.entity_id for item in (*profile.inputs, *profile.outputs)))
+            resolved = [_endpoint_area(session, entity_id) for entity_id in endpoints]
+            if all(item == area_id for item in resolved):
+                located.append(profile)
+        if len(located) != 1:
+>           raise GameplayContractError(
+                "Process profile scope is missing, ambiguous, or remote for this Area"
+            )
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: Process profile scope is missing, ambiguous, or remote for this Area
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:628: GameplayContractError
+_ ProcessModificationIndependentReviewTests.test_real_modify_cascade_and_late_tick_failures_roll_back_everything (case='late_tick') _
+
+self = <test_sandbox_process_modify_review.ProcessModificationIndependentReviewTests testMethod=test_real_modify_cascade_and_late_tick_failures_roll_back_everything>
+
+    def test_real_modify_cascade_and_late_tick_failures_roll_back_everything(self):
+        template = replace(_template(), duration_ticks=6, max_duration_ticks=8)
+        profile = _profile("cascade_modify", PLAYER_ID)
+        profile = replace(profile, template=template)
+        runtime, _, _, _ = _setup_modifier((profile,), time_budget=10)
+        source = runtime.session
+        cascade_laws = (
+            {
+                "id": "pmw.v04.review.aa_modify_bridge",
+                "mode": "event",
+                "priority": 100,
+                "bindings": {
+                    "process": {
+                        "kind": "entity",
+                        "requires": [PROCESS_COMPONENT],
+                    }
+                },
+                "when": {"all": [
+                    {"event.type": {"eq": PROCESS_MODIFY_EVENT}},
+                    {"ref": "$process.id", "eq": profile.process_entity_id},
+                    {"ref": f"$process.{PROCESS_COMPONENT}.state", "eq": "running"},
+                ]},
+                "effects": [{
+                    "op": "emit_event",
+                    "event": {
+                        "type": "pmw.v04.review.after_modify",
+                        "time": "$event.time",
+                        "source": "$event.source",
+                        "target": "$process.id",
+                        "payload": {"after_rate": "$event.payload.after_rate"},
+                    },
+                }],
+            },
+            {
+                "id": "pmw.v04.review.zz_modify_failure",
+                "mode": "event",
+                "priority": 100,
+                "bindings": {
+                    "process": {
+                        "kind": "entity",
+                        "requires": [PROCESS_COMPONENT],
+                    }
+                },
+                "when": {"all": [
+                    {"event.type": {"eq": "pmw.v04.review.after_modify"}},
+                    {"ref": "$process.id", "eq": "$event.target"},
+                ]},
+                "effects": [{
+                    "op": "set",
+                    "target": f"$process.{PROCESS_COMPONENT}.last_failure",
+                    "value": {"div": [1, 0]},
+                }],
+            },
+        )
+        runtime.session = build_runtime(
+            source.state,
+            source.profiles,
+            (
+                *runtime.static_laws,
+                *build_action_laws(runtime.action_registry),
+                *cascade_laws,
+            ),
+        )
+        submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("cascade_start", PLAYER_ID, SKILL_ID),
+        )
+        before_cascade = _snapshot(runtime)
+        with self.assertRaises(ZeroDivisionError):
+            submit_timed_primary_action(
+                runtime.session,
+                runtime.action_registry,
+                ActionRequest("cascade_modify", PLAYER_ID, MODIFY_SKILL_ID),
+            )
+        self.assertEqual(_snapshot(runtime), before_cascade)
+    
+        with self.subTest(case="late_tick"):
+            profile = replace(_profile("late_tick_modify", PLAYER_ID), template=template)
+            runtime, _, _, _ = _setup_modifier((profile,), time_budget=10)
+            submit_timed_primary_action(
+                runtime.session,
+                runtime.action_registry,
+                ActionRequest("late_tick_start", PLAYER_ID, SKILL_ID),
+            )
+            before_tick_failure = _snapshot(runtime)
+            real_tick = time_ledger.advance_world_tick
+            calls = 0
+    
+            def fail_second_tick(working, **kwargs):
+                nonlocal calls
+                calls += 1
+                result = real_tick(working, **kwargs)
+                if calls == 2:
+                    raise RuntimeError("review injected late modify tick failure")
+                return result
+    
+            slow_document = _modify_document(
+                rate=1.5, remaining_ticks=3, duration=2
+            )
+            _unload_modify_from_all(runtime)
+>           _replace_modify_version(runtime, slow_document)
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_modify_review.py:635: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_modify_review.py:194: in _replace_modify_version
+    runtime.install_blueprint(_parse_modify(document))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MechanismRegistryRuntime(session=GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x000001EF2613C68... effect_kinds=('process_modify',), selectors=('current_area',), budget_points=5.0))}, status_slots=8, dynamics_slots=2)
+blueprint = SkillBlueprint(id='adjust_refining', version=1, kind='skill_blueprint', trigger='on_use', condition=ConditionSpec(kind...y(material_ids=('process_crystal',), effect_kinds=('process_modify',), selectors=('current_area',), budget_points=5.0))
+
+    def install_blueprint(self, blueprint: SkillBlueprint) -> RegistryChangeResult:
+        before = self.manifest
+        existing = [item for item in before.entries if item.skill_id == blueprint.id]
+        expected = max((item.version for item in existing), default=0) + 1
+        if blueprint.version != expected:
+>           raise GameplayContractError(f"skill version must be the next monotonic version ({expected})")
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: skill version must be the next monotonic version (2)
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\registry.py:150: GameplayContractError
+_ ProcessModificationIndependentReviewTests.test_real_modify_cascade_and_late_tick_failures_roll_back_everything (case='missing_modify_law') _
+
+self = <test_sandbox_process_modify_review.ProcessModificationIndependentReviewTests testMethod=test_real_modify_cascade_and_late_tick_failures_roll_back_everything>
+
+    def test_real_modify_cascade_and_late_tick_failures_roll_back_everything(self):
+        template = replace(_template(), duration_ticks=6, max_duration_ticks=8)
+        profile = _profile("cascade_modify", PLAYER_ID)
+        profile = replace(profile, template=template)
+        runtime, _, _, _ = _setup_modifier((profile,), time_budget=10)
+        source = runtime.session
+        cascade_laws = (
+            {
+                "id": "pmw.v04.review.aa_modify_bridge",
+                "mode": "event",
+                "priority": 100,
+                "bindings": {
+                    "process": {
+                        "kind": "entity",
+                        "requires": [PROCESS_COMPONENT],
+                    }
+                },
+                "when": {"all": [
+                    {"event.type": {"eq": PROCESS_MODIFY_EVENT}},
+                    {"ref": "$process.id", "eq": profile.process_entity_id},
+                    {"ref": f"$process.{PROCESS_COMPONENT}.state", "eq": "running"},
+                ]},
+                "effects": [{
+                    "op": "emit_event",
+                    "event": {
+                        "type": "pmw.v04.review.after_modify",
+                        "time": "$event.time",
+                        "source": "$event.source",
+                        "target": "$process.id",
+                        "payload": {"after_rate": "$event.payload.after_rate"},
+                    },
+                }],
+            },
+            {
+                "id": "pmw.v04.review.zz_modify_failure",
+                "mode": "event",
+                "priority": 100,
+                "bindings": {
+                    "process": {
+                        "kind": "entity",
+                        "requires": [PROCESS_COMPONENT],
+                    }
+                },
+                "when": {"all": [
+                    {"event.type": {"eq": "pmw.v04.review.after_modify"}},
+                    {"ref": "$process.id", "eq": "$event.target"},
+                ]},
+                "effects": [{
+                    "op": "set",
+                    "target": f"$process.{PROCESS_COMPONENT}.last_failure",
+                    "value": {"div": [1, 0]},
+                }],
+            },
+        )
+        runtime.session = build_runtime(
+            source.state,
+            source.profiles,
+            (
+                *runtime.static_laws,
+                *build_action_laws(runtime.action_registry),
+                *cascade_laws,
+            ),
+        )
+        submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("cascade_start", PLAYER_ID, SKILL_ID),
+        )
+        before_cascade = _snapshot(runtime)
+        with self.assertRaises(ZeroDivisionError):
+            submit_timed_primary_action(
+                runtime.session,
+                runtime.action_registry,
+                ActionRequest("cascade_modify", PLAYER_ID, MODIFY_SKILL_ID),
+            )
+        self.assertEqual(_snapshot(runtime), before_cascade)
+    
+        with self.subTest(case="late_tick"):
+            profile = replace(_profile("late_tick_modify", PLAYER_ID), template=template)
+            runtime, _, _, _ = _setup_modifier((profile,), time_budget=10)
+            submit_timed_primary_action(
+                runtime.session,
+                runtime.action_registry,
+                ActionRequest("late_tick_start", PLAYER_ID, SKILL_ID),
+            )
+            before_tick_failure = _snapshot(runtime)
+            real_tick = time_ledger.advance_world_tick
+            calls = 0
+    
+            def fail_second_tick(working, **kwargs):
+                nonlocal calls
+                calls += 1
+                result = real_tick(working, **kwargs)
+                if calls == 2:
+                    raise RuntimeError("review injected late modify tick failure")
+                return result
+    
+            slow_document = _modify_document(
+                rate=1.5, remaining_ticks=3, duration=2
+            )
+            _unload_modify_from_all(runtime)
+            _replace_modify_version(runtime, slow_document)
+            before_tick_failure = _snapshot(runtime)
+            with patch.object(
+                time_ledger,
+                "advance_world_tick",
+                side_effect=fail_second_tick,
+            ):
+                with self.assertRaisesRegex(RuntimeError, "late modify tick"):
+                    submit_timed_primary_action(
+                        runtime.session,
+                        runtime.action_registry,
+                        ActionRequest("late_tick_modify", PLAYER_ID, MODIFY_SKILL_ID),
+                    )
+            self.assertEqual(calls, 2)
+            self.assertEqual(_snapshot(runtime), before_tick_failure)
+    
+        with self.subTest(case="missing_modify_law"):
+            profile = replace(_profile("missing_law_modify", PLAYER_ID), template=template)
+            runtime, _, _, _ = _setup_modifier((profile,), time_budget=10)
+            _unload_modify_from_all(runtime)
+>           runtime.disable(MODIFY_SKILL_ID)
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_modify_review.py:655: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\registry.py:182: in disable
+    return self._commit_change("disable", before, MechanismRegistryManifest(before.epoch + 1, entries))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\registry.py:187: in _commit_change
+    boundary = self._assert_boundary(current)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MechanismRegistryRuntime(session=GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x000001EF2632C59... effect_kinds=('process_modify',), selectors=('current_area',), budget_points=5.0))}, status_slots=8, dynamics_slots=2)
+component = {'epoch': 1, 'last_boundary_step': 0, 'entries': [{'skill_id': 'adjust_refining', 'version': 1, 'canonical_hash': 'c37...'canonical_hash': '7356ee0212890dc1ea8816df2edb4d757e437cc31c38abedf1aaffebd9ef7f49', 'kind': 'skill_blueprint', ...}]}
+
+    def _assert_boundary(self, component: Mapping[str, Any]) -> int:
+        registry_id, _ = self._registry_entity()
+        clock = self.session.state.entities[registry_id].components["pmw_gameplay_clock"]
+        completed = clock.get("last_completed_step")
+        if (isinstance(completed, bool) or not isinstance(completed, int) or
+                clock.get("next_step") != completed + 1 or
+                abs(float(self.session.state.sim_time) - float(completed)) > 1e-9 or
+                float(clock.get("next_time", -1)) <= self.session.state.sim_time):
+            raise GameplayContractError("registry changes require a complete World Tick boundary")
+        if component["last_boundary_step"] == completed:
+>           raise GameplayContractError("only one registry transaction is allowed per World Tick boundary")
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: only one registry transaction is allowed per World Tick boundary
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\registry.py:213: GameplayContractError
+_ ProcessModificationIndependentReviewTests.test_repeated_modification_keeps_hard_deadline_and_exact_expiry _
+
+self = <test_sandbox_process_modify_review.ProcessModificationIndependentReviewTests testMethod=test_repeated_modification_keeps_hard_deadline_and_exact_expiry>
+
+    def test_repeated_modification_keeps_hard_deadline_and_exact_expiry(self):
+        template = replace(_template(), duration_ticks=3, max_duration_ticks=5)
+        profile = replace(
+            _profile("bounded_modify", PLAYER_ID),
+            template=template,
+            rate=0.5,
+        )
+        runtime, _, _, _ = _setup_modifier((profile,), time_budget=12)
+        _start_equipped(runtime, PLAYER_ID, "bounded_start")
+        started = _component(runtime.session, profile)
+        hard_deadline = started["hard_deadline"]
+        self.assertEqual(hard_deadline, 5.0)
+    
+        first_document = _modify_document(rate=1.5, remaining_ticks=2)
+>       _replace_modify_at_boundary(runtime, first_document)
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_modify_review.py:436: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_modify_review.py:249: in _replace_modify_at_boundary
+    runtime.disable(MODIFY_SKILL_ID)
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\registry.py:182: in disable
+    return self._commit_change("disable", before, MechanismRegistryManifest(before.epoch + 1, entries))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\registry.py:187: in _commit_change
+    boundary = self._assert_boundary(current)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MechanismRegistryRuntime(session=GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x000001EF264AB98... effect_kinds=('process_modify',), selectors=('current_area',), budget_points=5.0))}, status_slots=8, dynamics_slots=2)
+component = {'epoch': 1, 'last_boundary_step': 0, 'entries': [{'skill_id': 'adjust_refining', 'version': 1, 'canonical_hash': 'c37...'canonical_hash': '7356ee0212890dc1ea8816df2edb4d757e437cc31c38abedf1aaffebd9ef7f49', 'kind': 'skill_blueprint', ...}]}
+
+    def _assert_boundary(self, component: Mapping[str, Any]) -> int:
+        registry_id, _ = self._registry_entity()
+        clock = self.session.state.entities[registry_id].components["pmw_gameplay_clock"]
+        completed = clock.get("last_completed_step")
+        if (isinstance(completed, bool) or not isinstance(completed, int) or
+                clock.get("next_step") != completed + 1 or
+                abs(float(self.session.state.sim_time) - float(completed)) > 1e-9 or
+                float(clock.get("next_time", -1)) <= self.session.state.sim_time):
+            raise GameplayContractError("registry changes require a complete World Tick boundary")
+        if component["last_boundary_step"] == completed:
+>           raise GameplayContractError("only one registry transaction is allowed per World Tick boundary")
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: only one registry transaction is allowed per World Tick boundary
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\registry.py:213: GameplayContractError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py::ProcessModificationIndependentReviewTests::test_checkpoint_continuation_and_projection_keep_private_authority_hidden
+SUBFAILED(actor_id='player_actor') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py::ProcessModificationIndependentReviewTests::test_data_skill_settles_player_and_npc_after_real_paid_ticks
+SUBFAILED(actor_id='npc_actor') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py::ProcessModificationIndependentReviewTests::test_data_skill_settles_player_and_npc_after_real_paid_ticks
+SUBFAILED(case='multiple_local') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py::ProcessModificationIndependentReviewTests::test_locality_owner_and_ambiguity_denials_are_atomic
+SUBFAILED(case='late_tick') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py::ProcessModificationIndependentReviewTests::test_real_modify_cascade_and_late_tick_failures_roll_back_everything
+SUBFAILED(case='missing_modify_law') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py::ProcessModificationIndependentReviewTests::test_real_modify_cascade_and_late_tick_failures_roll_back_everything
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py::ProcessModificationIndependentReviewTests::test_repeated_modification_keeps_hard_deadline_and_exact_expiry
+7 failed, 4 passed, 5 subtests passed in 3.19s

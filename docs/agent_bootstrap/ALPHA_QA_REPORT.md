@@ -124,3 +124,51 @@ bridge. No Alpha UI/inventory/Process planner, reagent-debit, dynamic template,
 full P1/P2 or generation-provider acceptance follows from this regression.
 Next independent target: typed Process modification through the same material,
 local owner, registry and transaction boundaries.
+
+## 2026-10-29 Bounded Process Modification Increment
+
+Owner tests: 11 passed in 2.40s; existing native controller tests: 11 passed
+in 0.40s; existing start Action tests: 18 passed in 2.95s. Independent owner
+rerun: 11 passed in 2.30s. Main focused cross-regression: 42 passed / 80 subtests
+in 7.45s (`evidence/p1_process_modify_main_focused.txt`). Owner setup partly uses
+privileged native start; this alone does not establish the formal Skill bridge.
+
+Independent frozen final QA: **6 passed, 11 subtests passed in 1.92s**.
+The cold trusted initial catalog holds normally parsed start/modify Skills,
+equipped with change_loadout, used through formal Actions and real paid ticks.
+Player/NPC quantitative conversion, bounded shorten/extend, exact expiry,
+locality/owner/ambiguity, real emitted-event and late-tick rollback, unrelated
+.modify Law spoof denial, checkpoint continuation and actor-safe projection
+are covered. No loadout/manifest hash rewriting authorizes positive acceptance.
+Source/report: `P1_PROCESS_MODIFY_REVIEW.md`; exact output:
+`evidence/p1_process_modify_review_final.txt`.
+
+Earlier red QA drafts remain in `p1_process_modify_review_focused.txt` and
+`p1_process_modify_review_debug.txt`: illegal hot registry fixture/version
+operations, malformed mixed-effect shape, ambiguous normal start, incorrect
+1:1 Stock conservation oracle and fixture property/local-variable errors.
+The final suite uses the actual 2 ore -> 1 ingot rule and cold setup; production
+guards and all old test assertions remain intact. These red drafts are not
+relabeled as passing production acceptance. Main caught and required repair of
+the initial suffix-only modification Law check before final QA/source freeze.
+
+Both workers were closed before Main's complete frozen regression, with
+TEMP=TMP=TMPDIR inside PMW and bytecode/pytest cache disabled. Same full
+Core/v06/Gameplay/Alpha/M0 command as earlier sections:
+**759 passed, 3,152 subtests passed in 332.41s (0:05:32)**, exit code 0.
+All **273 Python source/test hashes** unchanged, no added Python paths during
+execution. Exact log: `evidence/p1_process_modify_frozen_full_regression.txt`;
+command/timestamps/before-after hashes:
+`evidence/p1_process_modify_full_regression_meta.json`.
+
+Original pytest log bytes are preserved, including Windows CRLF and traceback
+indentation-only lines. They naturally trigger Git whitespace warnings, not
+test/source failures. Staged whitespace checking covers code, tests, reports
+and JSON; raw logs are separately hash-verified and warnings retained in the
+precommit verification metadata rather than sanitizing failed-run evidence.
+
+Accept only typed running Process rate/remaining-duration modification. Real
+prior-checkpoint saturated-tick native rate-only false rejection remains open;
+do not change deadline/progress policy silently. No pause/resume/progress-write
+Skill, Alpha UI, full P1/P2 or generation acceptance follows. No new public
+browser playtest was performed in this engine increment.

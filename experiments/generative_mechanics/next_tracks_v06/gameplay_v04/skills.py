@@ -22,7 +22,8 @@ _ID = re.compile(r"[a-z][a-z0-9_]{1,63}\Z")
 _EFFECT_COST = {
     "damage": 2.0, "heal": 2.0, "shield": 2.0, "add_resource": 2.0,
     "apply_status": 3.0, "modify_field": 2.0, "modify_attractor": 3.0,
-    "modify_rate": 3.0, "grant_trait": 3.0, "process_start": 5.0,
+    "modify_rate": 3.0, "grant_trait": 3.0,
+    "process_start": 5.0, "process_modify": 5.0,
 }
 
 
@@ -87,10 +88,20 @@ def parse_skill_blueprint(raw: Any, statuses: Mapping[str, StatusSpec], authorit
     effects = tuple(parse_effect(item, statuses, f"{path}.effects[{i}]") for i, item in enumerate(raw["effects"]))
     if len({item.id for item in effects}) != len(effects):
         raise GameplayContractError(f"{path}.effects contains duplicate IDs")
-    if sum(item.kind == "process_start" for item in effects) > 1:
+    process_controls = sum(
+        item.kind in {"process_start", "process_modify"} for item in effects
+    )
+    if process_controls > 1 and sum(item.kind == "process_start" for item in effects) > 1:
         raise GameplayContractError(f"{path}.effects permits at most one process_start")
-    if kind == "passive_blueprint" and any(item.kind == "process_start" for item in effects):
-        raise GameplayContractError(f"{path}.effects permits process_start only on active on_use skills")
+    if process_controls > 1:
+        raise GameplayContractError(
+            f"{path}.effects permits at most one Process control operation"
+        )
+    if kind == "passive_blueprint" and any(
+            item.kind in {"process_start", "process_modify"} for item in effects):
+        raise GameplayContractError(
+            f"{path}.effects permits Process control only on active on_use skills"
+        )
     if any(item.kind not in authority.effect_kinds for item in effects):
         raise GameplayContractError(f"{path}.effects exceeds material effect authorization")
     if any(item.target.kind not in authority.selectors for item in effects):

@@ -87,3 +87,12 @@ Full allowlisted public observations and controls are in
 6. Re-run this exact public path after clock fixes and verify that restoration
    can be observed reaching a stable world-state outcome. This remains required
    before claiming completion or P4 acceptance.
+
+## 2026-10-29 Process Modification Boundary
+
+This increment adds typed running-Process rate/remaining-duration control to
+formal Gameplay Skills, not to the Alpha UI/inventory. Independent player/NPC
+paid Action tests and the complete Alpha/M0 regression pass (759 total tests /
+3,152 subtests across all modules). They are mechanics/regression evidence,
+not a new public browser playtest or proof of the recommendations above.
+No new recipe diversity, completed game or P4 acceptance is claimed.

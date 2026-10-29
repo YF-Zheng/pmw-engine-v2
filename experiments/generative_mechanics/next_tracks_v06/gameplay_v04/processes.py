@@ -281,6 +281,26 @@ class ProcessController:
     def start(self, session: GameplaySession, process_id: str, *, owner: str) -> Any:
         return _start_process(self, session, process_id, owner=owner)
 
+    def prepare_modify(
+        self,
+        session: GameplaySession,
+        process_id: str,
+        *,
+        owner: str,
+        rate: float | None = None,
+        remaining_ticks: int | None = None,
+    ) -> dict[str, Any]:
+        """Validate and calculate a modification without mutating session state."""
+        profile = self._profile(process_id)
+        return _prepare_modify(
+            self,
+            session,
+            profile,
+            owner=owner,
+            rate=rate,
+            remaining_ticks=remaining_ticks,
+        )
+
     def modify(
         self,
         session: GameplaySession,
@@ -836,14 +856,48 @@ def _modify_process(
     remaining_ticks: int | None,
 ) -> Any:
     profile = controller._profile(process_id)
-    if rate is None and remaining_ticks is None:
-        raise GameplayContractError("Process modification requires rate or remaining_ticks")
     staged = stage_gameplay_session(session)
-    component = _preflight(
-        controller, staged, profile, owner=owner, states={"running"}, require_inputs=True
+    payload = _prepare_modify(
+        controller,
+        staged,
+        profile,
+        owner=owner,
+        rate=rate,
+        remaining_ticks=remaining_ticks,
     )
-    _assert_writer_exclusivity(controller, staged, profile)
     now = _boundary_time(staged, controller.clock_id)
+    result = staged.runtime.run_event(Event(
+        _event_id(PROCESS_MODIFY_EVENT, profile.id, payload),
+        PROCESS_MODIFY_EVENT,
+        now,
+        owner,
+        profile.process_entity_id,
+        payload,
+    ))
+    if not result.changed:
+        raise GameplayContractError("Process modification did not match its trusted Law")
+    publish_gameplay_session(session, staged)
+    return result
+
+
+def _prepare_modify(
+    controller: ProcessController,
+    session: GameplaySession,
+    profile: ProcessProfile,
+    *,
+    owner: str,
+    rate: float | None,
+    remaining_ticks: int | None,
+) -> dict[str, Any]:
+    if rate is None and remaining_ticks is None:
+        raise GameplayContractError(
+            "Process modification requires rate or remaining_ticks"
+        )
+    component = _preflight(
+        controller, session, profile, owner=owner, states={"running"}, require_inputs=True
+    )
+    _assert_writer_exclusivity(controller, session, profile)
+    now = _boundary_time(session, controller.clock_id)
     hard_deadline = _deadline(component, "hard_deadline")
     after_rate = component["rate"] if rate is None else _positive(
         rate, "Process rate", maximum=profile.template.max_rate
@@ -860,9 +914,9 @@ def _modify_process(
     if after_duration > profile.template.max_duration_ticks:
         raise GameplayContractError("Process duration exceeds the trusted template maximum")
     if remaining_ticks is None:
-        deadline = _scheduled_time(staged, component["expiry_handle"])
+        deadline = _scheduled_time(session, component["expiry_handle"])
     after_progress = min(1.0, elapsed / after_duration)
-    payload = {
+    return {
         "profile_id": profile.id,
         "profile_hash": profile.profile_hash,
         "expiry_handle": component["expiry_handle"],
@@ -875,18 +929,6 @@ def _modify_process(
         "after_progress": after_progress,
         "deadline": deadline,
     }
-    result = staged.runtime.run_event(Event(
-        _event_id(PROCESS_MODIFY_EVENT, profile.id, payload),
-        PROCESS_MODIFY_EVENT,
-        now,
-        owner,
-        profile.process_entity_id,
-        payload,
-    ))
-    if not result.changed:
-        raise GameplayContractError("Process modification did not match its trusted Law")
-    publish_gameplay_session(session, staged)
-    return result
 
 
 def _pause_process(

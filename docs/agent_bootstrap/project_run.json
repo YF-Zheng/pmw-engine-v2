@@ -12,7 +12,8 @@
     "01a185b4-78df-7611-89e8-48a10fd96d97",
     "01a185b4-fabf-7270-bef0-ec609363ff91",
     "01a185b7-8aea-7512-9311-d7516cb86eb1",
-    "01a18599-6592-7d72-99a5-5d5ce3eab591"
+    "01a18599-6592-7d72-99a5-5d5ce3eab591",
+    "01a185ea-111c-7ec1-a028-48c2a86e82d8"
   ],
   "default_phase": "P0",
   "agents": [
@@ -75,6 +76,16 @@
       "id": "01a185b8-f938-7c30-a361-695eaec72b36",
       "task": "Independent bounded resumed Process Action five-case review",
       "stage": "P1"
+    },
+    {
+      "id": "01a185ed-22f2-7db0-b56b-c6b3f1e87508",
+      "task": "Typed Process rate/remaining-duration modification Action bridge",
+      "stage": "P1"
+    },
+    {
+      "id": "01a185ed-76c5-79b0-8351-2fa4ff4f9a37",
+      "task": "Independent Process modification scope/deadline/transaction QA",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -94,7 +105,8 @@
     "01a185b4-78df-7611-89e8-48a10fd96d97": "P1",
     "01a185b4-fabf-7270-bef0-ec609363ff91": "P1",
     "01a185b7-8aea-7512-9311-d7516cb86eb1": "P1",
-    "01a18599-6592-7d72-99a5-5d5ce3eab591": "P1"
+    "01a18599-6592-7d72-99a5-5d5ce3eab591": "P1",
+    "01a185ea-111c-7ec1-a028-48c2a86e82d8": "P1"
   },
   "bootstrap": {
     "project_turn": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",

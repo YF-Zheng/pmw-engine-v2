@@ -137,8 +137,15 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
     if not isinstance(raw["effects"], list) or not raw["effects"]: raise GameplayContractError(f"{path}.effects must be non-empty")
     effects = tuple(parse_effect(item, statuses, f"{path}.effects[{i}]") for i, item in enumerate(raw["effects"]))
     if len({x.id for x in effects}) != len(effects): raise GameplayContractError(f"{path}.effects contains duplicate IDs")
-    if sum(effect.kind == "process_start" for effect in effects) > 1:
+    process_controls = sum(
+        effect.kind in {"process_start", "process_modify"} for effect in effects
+    )
+    if process_controls > 1 and sum(effect.kind == "process_start" for effect in effects) > 1:
         raise GameplayContractError(f"{path}.effects permits at most one process_start")
+    if process_controls > 1:
+        raise GameplayContractError(
+            f"{path}.effects permits at most one Process control operation"
+        )
     footprints = []
     for effect in effects:
         if effect.target.kind not in selectors: raise GameplayContractError(f"{path}.effects target exceeds action scope")
@@ -146,7 +153,10 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
                 "add_resource": (effect.resource,), "modify_field": (f"field:{effect.field_id}:value",),
                 "modify_attractor": (f"field:{effect.field_id}:target",), "modify_rate": (f"field:{effect.field_id}:rate",)}.get(effect.kind, ())
         if effect.kind in {"apply_status", "grant_trait"}: keys = ("status_component",)
-        if effect.kind == "process_start": keys = (f"process:{effect.process_template_id}:state",)
+        if effect.kind == "process_start":
+            keys = (f"process:{effect.process_template_id}:state",)
+        if effect.kind == "process_modify":
+            keys = (f"process:{effect.process_template_id}:configuration",)
         for key in keys:
             footprint = (effect.target.kind, effect.target.relation_type, key)
             if footprint in footprints: raise GameplayContractError(f"{path}.effects contains conflicting writes")
@@ -223,8 +233,8 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
     outcomes = []
     reservations: list[tuple[str, str, dict]] = []
     for effect in definition.effects:
-        if effect.kind == "process_start" and execution_kind != "primary":
-            raise GameplayContractError("process_start is supported only for active primary execution")
+        if effect.kind in {"process_start", "process_modify"} and execution_kind != "primary":
+            raise GameplayContractError(f"{effect.kind} is supported only for active primary execution")
         targets = resolve_selector(session.state, effect.target, context, definition.capability)
         if len(targets) != 1: raise GameplayContractError("Gate 2 effects require exactly one resolved target")
         target_id = targets[0]
@@ -262,26 +272,67 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
     if not matched:
         if session.state.to_dict() != before: raise GameplayContractError("failed action mutated state")
         raise GameplayContractError("action did not match installed definition")
-    process_rows = [row for row in outcomes if row["kind"] == "process_start" and row["status"] == "applied"]
+    process_rows = [
+        row for row in outcomes
+        if row["kind"] in {"process_start", "process_modify"} and row["status"] == "applied"
+    ]
     if process_rows:
-        from .processes import PROCESS_COMPONENT, PROCESS_START_EVENT
+        from .processes import (
+            PROCESS_COMPONENT, PROCESS_MODIFY_EVENT, PROCESS_START_EVENT,
+        )
         row = process_rows[0]
-        target_id = row["values"]["process_target_id"]
+        values = row["values"]
+        target_id = values["process_target_id"]
         target = session.state.entities.get(target_id)
         component = None if target is None else target.components.get(PROCESS_COMPONENT)
-        process_matched = any(
-            event.event.type == PROCESS_START_EVENT
-            and event.event.target == target_id
-            and any(law.law_id.endswith(".start") for law in event.event_law_matches)
-            for event in result.trace.events
-        )
-        if (
-            not process_matched
-            or not isinstance(component, dict)
-            or component.get("state") != "running"
-            or component.get("profile_hash") != row["values"]["process_profile_hash"]
-        ):
-            raise GameplayContractError("process_start cascade did not activate the validated Process")
+        if row["kind"] == "process_start":
+            process_matched = any(
+                event.event.type == PROCESS_START_EVENT
+                and event.event.target == target_id
+                and any(law.law_id.endswith(".start") for law in event.event_law_matches)
+                for event in result.trace.events
+            )
+            if (
+                not process_matched
+                or not isinstance(component, dict)
+                or component.get("state") != "running"
+                or component.get("profile_hash") != values["process_profile_hash"]
+            ):
+                raise GameplayContractError(
+                    "process_start cascade did not activate the validated Process"
+                )
+        else:
+            prepared = values["process_prepared"]
+            expected_law_id = (
+                f"pmw.v04.sandbox.process.{values['process_profile_id']}.modify"
+            )
+            process_matched = any(
+                event.event.type == PROCESS_MODIFY_EVENT
+                and event.event.target == target_id
+                and any(
+                    law.law_id == expected_law_id for law in event.event_law_matches
+                )
+                for event in result.trace.events
+            )
+            scheduled = [
+                event for event in session.state.scheduled_events
+                if event.id == prepared["expiry_handle"]
+            ]
+            if (
+                not process_matched
+                or not isinstance(component, dict)
+                or component.get("state") != "running"
+                or component.get("profile_hash") != values["process_profile_hash"]
+                or component.get("rate") != prepared["after_rate"]
+                or component.get("duration_ticks") != prepared["after_duration"]
+                or component.get("remaining_ticks") != prepared["after_remaining"]
+                or component.get("progress") != prepared["after_progress"]
+                or len(scheduled) != 1
+                or scheduled[0].time != prepared["deadline"]
+            ):
+                raise GameplayContractError(
+                    "process_modify cascade did not update and reschedule the validated Process"
+                )
     return ActionOutcome(request, definition, quote, tuple(outcomes), result)
 
 
@@ -399,6 +450,10 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
         return _simulate_process_start(
             session, registry, request, definition, effect, target_id, execution_kind
         )
+    if effect.kind == "process_modify":
+        return _simulate_process_modify(
+            session, registry, request, effect, target_id, execution_kind
+        )
     if effect.kind in {"damage", "heal", "shield", "add_resource"}:
         if actor_state is None: raise GameplayContractError(f"{effect.kind} target must be Actor")
         row = writes.setdefault(target_id, {})
@@ -506,6 +561,43 @@ def _simulate_process_start(session, registry, request, definition, effect, targ
             "process_profile_id": profile.id,
             "process_profile_hash": profile.profile_hash,
             "process_target_id": profile.process_entity_id,
+        },
+        "attribute_terms": (),
+    }
+
+
+def _simulate_process_modify(session, registry, request, effect, target_id, execution_kind):
+    controller = registry.process_controller
+    if controller is None:
+        raise GameplayContractError("process_modify requires a trusted ProcessController")
+    if execution_kind != "primary":
+        raise GameplayContractError(
+            "process_modify is supported only for active primary execution"
+        )
+    profile = _resolve_process_profile(
+        session, controller, effect.process_template_id, request.actor_id, target_id
+    )
+    prepared = controller.prepare_modify(
+        session,
+        profile.id,
+        owner=request.actor_id,
+        rate=effect.process_rate,
+        remaining_ticks=effect.process_remaining_ticks,
+    )
+    if prepared["profile_hash"] != profile.profile_hash:
+        raise GameplayContractError("Process profile changed during preflight")
+    return {
+        "effect_id": effect.id,
+        "kind": effect.kind,
+        "status": "applied",
+        "target_id": target_id,
+        "amount": 0.0,
+        "values": {
+            "process_template_id": profile.template.id,
+            "process_profile_id": profile.id,
+            "process_profile_hash": profile.profile_hash,
+            "process_target_id": profile.process_entity_id,
+            "process_prepared": prepared,
         },
         "attribute_terms": (),
     }

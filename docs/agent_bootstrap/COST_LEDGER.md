@@ -189,3 +189,53 @@ Workers were closed before the 742-test frozen regression. Remaining closing
 tool/final-response usage is not yet represented by this cutoff; append/refresh
 the next resumed turn before further spending. Per-response records remain in
 `evidence/agent_cost_ledger.json`; no credentials or prompts are copied.
+
+## 2026-10-29 Bounded Process Modification Snapshot
+
+Observed cutoff: **2026-10-29T05:29:13.804Z**. 1583 deduplicated project responses; status `complete`, Unknown 0, malformed 0.
+
+Official-reference prices/FX remain pinned to the verified 2026-10-28 sources,
+not a fresh price query or an intranet invoice. Cost assumes 97% cache only;
+actual cached input is preserved. Historical QA fixture repairs and all resumed
+main contexts/actual child IDs are selected; Bootstrap remains separate.
+
+### Project Cumulative
+
+| Family | Responses | Actual input | Actual cache | Actual output | Reasoning (included) | Reference USD |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| GPT | 373 | 55,156,511 | 51,959,997 | 227,018 | 86,622 | 10.92975247 |
+| DeepSeek | 1210 | 176,634,559 | 171,925,120 | 1,114,788 | 347,855 | 3.95546983 |
+| Unknown | 0 | 0 | 0 | 0 | 0 | N/A (no records) |
+
+Project reference total: **USD 14.88522230 / CNY 99.23084594**. Safety-reserved: **CNY 125.03586732 / 2,000**; decision `within_budget`.
+
+### Current Increment Subset
+
+Exact selection and per-response keys: `evidence/p1_process_modify_cost_snapshot.json`.
+This subset is already in cumulative totals; do not add it again.
+
+| Family | Responses | Actual input | Actual cache | Actual output | Reasoning (included) | Reference USD |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| GPT | 65 | 10,002,870 | 9,597,170 | 64,014 | 33,575 | 2.21059064 |
+| DeepSeek | 280 | 42,560,721 | 41,320,576 | 232,543 | 76,516 | 0.90980146 |
+| Unknown | 0 | 0 | 0 | 0 | 0 | N/A (no records) |
+
+Increment reference: **USD 3.12039210 / CNY 20.80178190**.
+
+| Stage | Reserved CNY | Limit CNY | Gate |
+| --- | ---: | ---: | --- |
+| MAX | 125.03586732 | 2000.00 | within |
+| P0 | 37.64993266 | 100.00 | within |
+| P1 | 87.38593466 | 400.00 | within |
+| P2 | 0E-8 | 350.00 | within |
+| P3 | 0E-8 | 200.00 | within |
+| P4 | 0E-8 | 400.00 | within |
+| P5 | 0E-8 | 400.00 | within |
+| Reserve | 0E-8 | 150.00 | within |
+
+Separate Bootstrap remains 33 responses, USD 0.35971320 / CNY 2.39799208;
+excluded from project totals. Workers were closed before the frozen full
+759-test / 3,152-subtest regression. This cutoff excludes not-yet-finalized
+closing tool/final response usage; refresh it on the next continuation before
+spending. Complete means the observed selection, not zero future charges.
+No prompts, credentials or raw configuration are copied into the ledger.

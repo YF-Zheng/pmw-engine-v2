@@ -6,7 +6,7 @@ from typing import Any, Iterable
 
 from .actions import ACTION_EVENT, ACTOR_COMPONENT, ActionRegistry
 from .contracts import GameplayContractError
-from .processes import PROCESS_START_EVENT
+from .processes import PROCESS_MODIFY_EVENT, PROCESS_START_EVENT
 from .runtime import GameplaySession, build_runtime
 from .status import DurationSpec, STATUS_CANCEL_EVENT, STATUS_COMPONENT, StatusSpec, neutral_status_slot
 from .shields import SHIELD_COMPONENT, SHIELD_SLOTS, neutral_shield_layer
@@ -175,6 +175,45 @@ def _effect_laws(action_id, action_version, action_hash, effect, status_slots, d
                         "profile_id": f"{value_root}.process_profile_id",
                         "profile_hash": f"{value_root}.process_profile_hash",
                         "process_template_id": f"{value_root}.process_template_id",
+                    },
+                },
+            }],
+        }]
+    if effect.kind == "process_modify":
+        if effect.process_template_id is None:
+            raise GameplayContractError(
+                "compiled process_modify requires process_template_id"
+            )
+        process_conditions = [
+            *conditions,
+            {"ref": "$event.payload.execution_kind", "eq": "primary"},
+        ]
+        payload_root = f"{value_root}.process_prepared"
+        return [{
+            "id": prefix,
+            "mode": "event",
+            "priority": 100,
+            "bindings": identity,
+            "when": {"all": process_conditions},
+            "effects": [{
+                "op": "emit_event",
+                "event": {
+                    "type": PROCESS_MODIFY_EVENT,
+                    "time": "$event.time",
+                    "source": "$event.source",
+                    "target": f"{value_root}.process_target_id",
+                    "payload": {
+                        "profile_id": f"{payload_root}.profile_id",
+                        "profile_hash": f"{payload_root}.profile_hash",
+                        "expiry_handle": f"{payload_root}.expiry_handle",
+                        "before_rate": f"{payload_root}.before_rate",
+                        "before_duration_ticks": f"{payload_root}.before_duration_ticks",
+                        "before_remaining_ticks": f"{payload_root}.before_remaining_ticks",
+                        "after_rate": f"{payload_root}.after_rate",
+                        "after_duration": f"{payload_root}.after_duration",
+                        "after_remaining": f"{payload_root}.after_remaining",
+                        "after_progress": f"{payload_root}.after_progress",
+                        "deadline": f"{payload_root}.deadline",
                     },
                 },
             }],

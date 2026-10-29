@@ -1,0 +1,73 @@
+{
+  "source": "allowlisted current turn_context plus actual per-response usage records, not identity prose or global configuration",
+  "cutoff_utc": "2026-10-29T05:29:13.804Z",
+  "ledger_sha256": "798b2a0a6994848437007ccd616bce89f5b77cf5baa818bb79c8ede13feace72",
+  "sessions": [
+    {
+      "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+      "turn_contexts": [
+        {
+          "timestamp": "2026-10-29T04:27:52.072Z",
+          "turn_id": "01a185ea-111c-7ec1-a028-48c2a86e82d8",
+          "model": "tencent/gpt-6.1-sol"
+        },
+        {
+          "timestamp": "2026-10-29T05:18:19.785Z",
+          "turn_id": "01a185ea-111c-7ec1-a028-48c2a86e82d8",
+          "model": "tencent/gpt-6.1-sol"
+        }
+      ],
+      "source_last_observed_ordinal": 3211,
+      "usage_response_count": 65,
+      "usage_models": [
+        "tencent/gpt-6.1-sol"
+      ],
+      "first_response_id": "resp_cmb-1b19878dd35111f1a1dcbe035ae7439b",
+      "last_response_id": "resp_cmb-8ac73db8d35911f1baf0a2aefefa53cf"
+    },
+    {
+      "thread_id": "01a185ed-22f2-7db0-b56b-c6b3f1e87508",
+      "turn_contexts": [
+        {
+          "timestamp": "2026-10-29T04:31:15.184Z",
+          "turn_id": "01a185ed-2316-7553-8d5e-62cf901ed2ad",
+          "model": "tencent/deepseek-v4.1-flash"
+        }
+      ],
+      "source_last_observed_ordinal": 595,
+      "usage_response_count": 65,
+      "usage_models": [
+        "tencent/deepseek-v4.1-flash"
+      ],
+      "first_response_id": "resp_cmb-93f61895d35111f1bb6372573c261e6d",
+      "last_response_id": "resp_cmb-6b70940fd35311f18af88e97456c5b53"
+    },
+    {
+      "thread_id": "01a185ed-76c5-79b0-8351-2fa4ff4f9a37",
+      "turn_contexts": [
+        {
+          "timestamp": "2026-10-29T04:31:35.636Z",
+          "turn_id": "01a185ed-76e5-72c0-be8d-de6d902c5bec",
+          "model": "tencent/deepseek-v4.1-flash"
+        },
+        {
+          "timestamp": "2026-10-29T04:55:51.013Z",
+          "turn_id": "01a185ed-76e5-72c0-be8d-de6d902c5bec",
+          "model": "tencent/deepseek-v4.1-flash"
+        },
+        {
+          "timestamp": "2026-10-29T05:12:39.625Z",
+          "turn_id": "01a185ed-76e5-72c0-be8d-de6d902c5bec",
+          "model": "tencent/deepseek-v4.1-flash"
+        }
+      ],
+      "source_last_observed_ordinal": 1524,
+      "usage_response_count": 215,
+      "usage_models": [
+        "tencent/deepseek-v4.1-flash"
+      ],
+      "first_response_id": "resp_cmb-a021fcdbd35111f1946322f532e936e4",
+      "last_response_id": "resp_cmb-e45a9851d35711f18349aaa8aa0e20b0"
+    }
+  ]
+}

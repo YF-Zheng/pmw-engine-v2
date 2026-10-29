@@ -1,0 +1,30 @@
+{
+  "checkpoint": "14cf16d",
+  "accepted_processes_sha256": "c7550a9fac98381685d38633e48746e941ad66c69a1fa3ad6151850a12c43590",
+  "scenario": "Initial output Stock is full in a detached trusted fixture; normal equipped start and real saturated world tick; rate-only native modification has no intended expiry extension.",
+  "clock_time": 1.0,
+  "process_state": {
+    "profile_id": "saturated_rate_probe",
+    "profile_hash": "16bd578ec534cfb0c3c0ffbd36c81c41829d5553706ddd9fe0aced160b552cb1",
+    "template_id": "refine_material",
+    "owner": "player_actor",
+    "state": "running",
+    "rate": 1.0,
+    "max_rate": 2.0,
+    "duration_ticks": 3,
+    "remaining_ticks": 3,
+    "elapsed_ticks": 0,
+    "progress": 0.0,
+    "started_at": 0.0,
+    "hard_deadline": 3.0,
+    "expiry_handle": "pmw:v04:sandbox.process.expiry:saturated_rate_probe",
+    "last_step": 1,
+    "last_failure": null
+  },
+  "outcome": {
+    "error_type": "GameplayContractError",
+    "error": "Process duration cannot extend the hard deadline"
+  },
+  "world_unchanged_after_rejection": true,
+  "classification": "pre-existing native controller limitation, not Process modification Action acceptance or new regression"
+}

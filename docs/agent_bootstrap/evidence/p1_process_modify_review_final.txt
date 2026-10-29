@@ -1,0 +1,34 @@
+Repository: C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2
+Branch: feature/alpha-v02-seventh-night
+Contract phase: P1
+Test file: experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py
+
+Environment:
+  TEMP  = <repo>/docs/agent_bootstrap/evidence/test_tmp
+  TMP   = <repo>/docs/agent_bootstrap/evidence/test_tmp
+  TMPDIR = <repo>/docs/agent_bootstrap/evidence/test_tmp
+  PYTHONPATH = src
+  PYTHONDONTWRITEBYTECODE = 1
+  PYTHONIOENCODING = utf-8
+
+Command:
+  python -m pytest -p no:cacheprovider experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py -q
+
+Exact output:
+......                                                        [100%]
+6 passed, 11 subtests passed in 1.92s
+
+Frozen implementation confirmation:
+  actions.py sha256   = b2f6ce57781ecf9b84cc00e9d564c363483b13cab35d4225cbb59ac352e62fbd
+  effects.py sha256   = 67b82427b6f739895b009d34c8efdba83eb87387663f0fa12d29753f8d439e9e
+  processes.py sha256 = 3a5f8ea2338c791b092b04b0c1a5c52a76bcd44baeb32a6c3bc1a533872bd761
+
+Owner test equivalent-run output:
+...........                                                    [100%]
+11 passed in 2.30s
+
+Red history retained:
+  evidence/p1_process_modify_review_focused.txt
+  evidence/p1_process_modify_review_debug.txt
+
+Result: PASS within the frozen P1 scope.

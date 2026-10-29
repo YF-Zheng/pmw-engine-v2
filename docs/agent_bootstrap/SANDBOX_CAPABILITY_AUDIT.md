@@ -146,6 +146,27 @@ local Area/owner checks and checkpoint comparison, never candidate JSON.
 Latest frozen full regression: 742 tests / 3,141 subtests passed, 271 unchanged
 Python hashes. Evidence and independent review: `P1_PROCESS_ACTION_INCREMENT.md`
 and `P1_PROCESS_ACTION_REVIEW.md`. No old baseline tests were discarded.
-Still missing: data-authored Process modification/drive/Relation bridges,
+Still missing at that start checkpoint: data-authored Process modification/drive/Relation bridges,
 full multi-trigger IR/global resource budgets, dynamic template generation,
 Alpha inventory/UI and Process Observation/planning. Full P1 remains open.
+
+### Subsequent Bounded Process Modification Update
+
+Verified data-authored `process_modify` now parses and capability/budget checks
+rate and remaining duration, registers/equips normally and runs through the same
+player/NPC staged Action and existing Process Laws/expiry. All endpoints remain
+owner-local. Exact trusted modification Law, after-values and scheduler time
+are confirmed; real event and late-tick failures roll back completely.
+
+Owner tests include privileged native start setup, so they are supporting
+coverage, not formal-start evidence by themselves. Independent cold-catalog,
+normal-equipment paid Action tests provide that formal evidence, quantitative
+2 ore -> 1 ingot conversion, hard deadline, replay and Observation boundaries.
+Full frozen regression: 759 passed / 3,152 subtests, 273 unchanged Python hashes.
+Reports: `P1_PROCESS_MODIFY_INCREMENT.md`, `P1_PROCESS_MODIFY_REVIEW.md`.
+
+Still open: rate-only false rejection after saturated native ticks (real prior
+checkpoint reproduction in `evidence/p1_process_modify_saturation_baseline.json`),
+Skill pause/resume/progress writes, drive/Relation bridges, full multi-trigger IR,
+global budgets/locality and Alpha Stock UI/Process Observation/planning.
+No dynamic templates, generator calls, full P1 or P2 acceptance is claimed.

@@ -247,7 +247,10 @@ def _registry_projection(registry: ActionRegistry, document: dict[str, Any]) -> 
     actions = tuple(
         registry.actions[key] for key in sorted(action_ids)
         if key in registry.actions
-        and not any(effect.kind == "process_start" for effect in registry.actions[key].effects)
+        and not any(
+            effect.kind in {"process_start", "process_modify"}
+            for effect in registry.actions[key].effects
+        )
     )
     status_ids = set(document["status_polarities"])
     for action in actions:

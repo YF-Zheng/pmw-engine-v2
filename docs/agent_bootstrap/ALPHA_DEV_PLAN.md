@@ -31,9 +31,13 @@
    canonical formula IDs; 719 full tests and 3,141 subtests passed. The bounded
    P1.3 slice is now accepted: typed Stock/Process start through existing staged
    Action/material authority with player/NPC, mana/time, rollback and registry
-   checkpoint replay; 742 tests/3,141 subtests pass. Next: one typed Process
-   modification action using existing controller rate/duration/pause/resume and
-   the same local owner/capability/transaction gates. Then bridge remaining
+   checkpoint replay; 742 tests/3,141 subtests pass. The subsequent bounded
+   rate/remaining-duration Process modification bridge is also accepted:
+   759 tests/3,152 subtests, exact Law/expiry confirmation and independent QA.
+   Pause/resume/progress writes are not part of this Skill language slice.
+   Next: narrowly repair the verified native rate-only hard-deadline rejection
+   after saturated ticks, preserving stored progress, actual expiry and the
+   existing clock. Then bridge remaining
    catalog operators into Action/Registry;
    reuse material capabilities and topology validator, add bounded event/query
    budgets and lifecycle ownership. Run all ten scenarios including player/NPC.
@@ -58,8 +62,9 @@ to GPT root-cause analysis. Three ineffective iterations stop that direction.
 Never delete tests, bypass validation or modify victory flags to pass gates.
 No remote pushes or global Codex/Magpie configuration changes are required.
 
-Checkpoint verification: latest frozen full regression **742 passed, 3,141
-subtests passed in 343.03s** (previous checkpoint: 719/3,141). P0 accepted;
+Checkpoint verification: latest frozen full regression **759 passed, 3,152
+subtests passed in 332.41s**, all 273 Python hashes unchanged (previous
+checkpoint: 742/3,141). P0 accepted;
 only bounded P1 increments accepted, not the
 full ten-scenario gate. No generation batch or P2 reference corpus was started.
 

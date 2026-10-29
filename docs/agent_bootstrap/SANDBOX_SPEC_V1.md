@@ -82,6 +82,43 @@ source layering and expiry are unchanged. Historical byte-parity evidence
 above belongs to the first increment; it is not a claim about this expanded
 catalog. One Field with 2+2 source slots plus clock grows from 28/29 to 31 Laws.
 
+## Bounded Process Modification Skill Contract
+
+The accepted `process_modify` Effect controls rate and/or remaining ticks on
+exactly one already-running trusted Process belonging to the acting player/NPC.
+The Process and every input/output Stock endpoint must be in current_area.
+Data includes process_template_id and at least one of process_rate (finite,
+positive, non-bool) or process_remaining_ticks (positive integer, non-bool).
+Explicit nulls reject. Runtime template maximums, completed Tick boundary,
+input-domain/availability, owner/writer checks and fixed hard deadline remain
+authoritative. Paused/stopped/expired modification is denied.
+
+This is required-commitment active on_use only, with no attribute/sensing/
+evadability bypass. It costs five material capability-budget points, not a new
+inventory debit. One Action may contain at most one Process control operation:
+start OR modify; valid mixed operations and duplicate controls reject.
+
+Read-only ProcessController.prepare_modify shares native controller calculation.
+The Action compiler emits PROCESS_MODIFY_EVENT; existing trusted Process Laws
+perform every write and expiry reschedule. Acceptance requires the exact
+`pmw.v04.sandbox.process.<profile_id>.modify` match, expected component after
+values and the exact scheduled expiry, not an arbitrary Law ending in .modify.
+Existing staged Action plus timed submission rolls back the complete cascade
+and every paid tick on failure. No second world simulator or clock is added.
+
+Expiry at T still precedes conversion at T. Productive elapsed/remaining ticks
+can diverge from wall time on saturated ticks. The pre-existing native rate-only
+hard-deadline false rejection is preserved and documented in
+`evidence/p1_process_modify_saturation_baseline.json`; this slice does not claim
+rate modification in all saturated states. Native pause/resume/progress policy
+and broader Skill exposure require separate acceptance.
+
+Public semantic footprint is `process:<template>:configuration`. Actor-safe
+projection excludes both Process control Actions and private controller/Stock
+authority; basic_wait still works. It is not a Process forecasting/planning gate.
+Frozen acceptance evidence: `P1_PROCESS_MODIFY_INCREMENT.md` and independent
+`P1_PROCESS_MODIFY_REVIEW.md`, 759 tests / 3,152 subtests.
+
 ## Remaining P1 Gates
 
 The generic Process has bounded conversion, modification and expiry tests on
@@ -91,7 +128,7 @@ mana/time payment for player/NPC. Process and all Stock endpoints must be local
 to the acting Area. Controller Laws are trusted static checkpoint configuration,
 never candidate JSON. Material capability is not one-off inventory consumption.
 It is NOT exposed in Alpha inventory/UI or automatic NPC Observation/planning;
-Process modification, global event/query/process budgets and seven-operator
+Process pause/resume/progress controls, global event/query/process budgets and seven-operator
 exposure still require integration. Controller activation scans entity maps for active
 writer/instance checks; reducing this privileged preflight's global work is a
 future locality task, not an already-proved constant-work guarantee. A subset

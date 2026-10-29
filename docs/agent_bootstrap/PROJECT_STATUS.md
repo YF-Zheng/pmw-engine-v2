@@ -16,10 +16,40 @@
   719 passed, 3,141 subtests passed in 373.46s; 269 source/test hashes unchanged.
 - 2026-10-29 bounded typed Process Action bridge: ACCEPTED. Frozen full
   regression: 742 passed, 3,141 subtests passed in 343.03s; 271 hashes unchanged.
+- 2026-10-29 bounded typed Process modification bridge: ACCEPTED. Frozen full
+  regression: 759 passed, 3,152 subtests passed in 332.41s; 273 hashes unchanged.
 - P2-P5: not started/accepted. No 30-skill IR corpus or 200-500 generated batch.
 - Existing Alpha playable baseline retained. No remote push/global config edit.
 
-## Current Iteration
+## Latest Accepted Iteration
+
+2026-10-29 manual continuation, starting clean `14cf16d`: bounded typed
+process_modify rate/remaining-duration bridge. Architecture:
+`P1_PROCESS_MODIFY_INCREMENT.md`. Planck implementation child
+`01a185ed-22f2-7db0-b56b-c6b3f1e87508` owns seven Gameplay files/new owner
+test; Beauvoir independent QA child `01a185ed-76c5-79b0-8351-2fa4ff4f9a37`
+owns new independent test/review/evidence only. Main owns source review,
+governance, accounting and final frozen gate. ACCEPTED for rate and bounded
+remaining duration only. Both children are closed and their current rollout
+contexts and actual per-response counters attribute them to
+`tencent/deepseek-v4.1-flash`; Main remains `tencent/gpt-6.1-sol`.
+Owner tests: 11 passed. Main focused regression: 42 passed / 80 subtests.
+Independent final QA: 6 passed / 11 subtests. Final frozen full regression:
+759 passed / 3,152 subtests, all 273 Python hashes unchanged, exit code 0.
+Quantitative formal paid-tick start/modify, exact expiry, real cascade and late
+tick rollback, checkpoint continuation and private projection are covered.
+Owner tests partly use privileged controller setup; only the independent cold
+catalog/normal equipment/Action runs establish the formal-start acceptance.
+Evidence and residual: `P1_PROCESS_MODIFY_INCREMENT.md` and
+`P1_PROCESS_MODIFY_REVIEW.md`. Actual cost cutoff and exact current subset:
+`evidence/p1_process_modify_cost_snapshot.json`; totals in COST_LEDGER.md.
+Cutoff 2026-10-29T05:29:13.804Z: cumulative reference CNY 99.23084594;
+safety-reserved CNY 125.03586732, Unknown 0, all stage limits within budget.
+Current increment CNY 20.80178190 is already part of cumulative totals.
+All temporary files/writes remain in pmw-engine-v2; automatic runs stay paused.
+Pause/resume/progress writes and full P1/P2/generation are outside this slice.
+
+## Previous Typed Start Iteration
 
 2026-10-29 heartbeat increment, starting clean `fda6557`: typed process_start
 through existing SkillBlueprint/material capability/Action/Registry, with
@@ -90,10 +120,11 @@ records to verify these main/child routes. Bootstrap expenses stay separate.
    not removing assertions in this patch.
 4. Core Event cascades can partially commit before later failure. Full action
    safety must use existing Gameplay staging. Bare runtime remains privileged.
-5. Current SkillBlueprint now exposes bounded trusted-template process_start;
-   Process modification, Relation/drive and multi-trigger IR remain missing.
-6. The Process start Action/Registry bridge is verified; Alpha stock/UI,
-   Process modification and full IR/generator gates remain open. Reference prices are estimates,
+5. Current SkillBlueprint exposes bounded trusted-template process_start and
+   running process_modify rate/remaining duration. Pause/resume/progress writes,
+   Relation/drive and multi-trigger IR remain missing from this skill language.
+6. The Process start/modify Action/Registry bridges are verified; Alpha stock/UI,
+   wider Process controls and full IR/generator gates remain open. Reference prices are estimates,
    not verified provider account bills.
 7. Independent QA rejected the first no-recovery patch for formal domain-clamp
    and ecology zero-rate-policy gaps (first combined run 2 failed/691 passed).
@@ -110,17 +141,25 @@ records to verify these main/child routes. Bootstrap expenses stay separate.
 10. Process controller preflight scans entity maps for active/writer checks;
     formal tick remains existing Law execution, but constant-work action
     validation is not established. Full P1 budgets/locality gates remain open.
+11. Pre-existing native Process modification limitation verified at `14cf16d`:
+    after a saturated Tick, stored remaining/elapsed conversion time can differ
+    from wall-clock expiry. A rate-only modification can reject a safe unchanged
+    expiry as a hard-deadline extension. Evidence:
+    `evidence/p1_process_modify_saturation_baseline.json`. Not silently repaired
+    or disguised as a new bridge regression; broader Tick policy remains open.
 
 ## Recovery
 
 Current reviewed checkpoint: the local commit with subject
-`feat: bridge typed process starts through staged actions` (resolve with
-`git log -1`). Previous accepted checkpoint: `fda6557`; earlier `e57b3c0`.
-The current checkpoint includes the bounded Process start/transaction bridge,
+`feat: bridge bounded process modification through staged actions` (resolve with
+`git log -1`). Previous accepted checkpoint: `14cf16d`; earlier `fda6557`.
+The current checkpoint includes the bounded Process rate/duration bridge,
 independent QA and frozen regression, not full P1 acceptance. No remote push.
-Next independent task: one typed Process modification action through the same
-owner/locality/registry/material/time gates, using existing bounded controller
-rate/duration/pause/resume semantics. Then complete the remaining Operator
+Next independent task: reproduce and narrowly repair rate-only native rejection
+after saturated ticks, retaining the actual expiry and hard deadline. First
+freeze the stored productive-progress versus wall-clock policy; add native and
+formal Action regressions without introducing a second clock or extending
+lifetime. Then complete the remaining Operator
 bridges and ten scenarios; do not jump to generated skills.
 
 Read status, audit, QA, spec, cost ledger and `project_run.json` first. The run

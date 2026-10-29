@@ -1,0 +1,11 @@
+{
+  "checkpoint": "14cf16d",
+  "source_sha256": {
+    "effects.py": "67b82427b6f739895b009d34c8efdba83eb87387663f0fa12d29753f8d439e9e",
+    "actions.py": "b2f6ce57781ecf9b84cc00e9d564c363483b13cab35d4225cbb59ac352e62fbd",
+    "processes.py": "3a5f8ea2338c791b092b04b0c1a5c52a76bcd44baeb32a6c3bc1a533872bd761",
+    "tests/test_sandbox_process_modify.py": "a12bb6bab8f4c3c30f598db7cb9d33dbf2dd57d9c2dc0e900382ac20b55df5d5"
+  },
+  "owner_reported_tests": "11 passed in 2.40s",
+  "independent_acceptance": "pending"
+}
