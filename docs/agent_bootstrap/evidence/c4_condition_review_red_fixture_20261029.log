@@ -1,0 +1,21 @@
+C4.1 independent QA red fixture run
+Time: 2026-10-29 Asia/Shanghai
+Source: in-progress Descartes conditions.py
+Command: python -B -m unittest ...test_sandbox_condition_limits_review -v
+Result: Ran 16 tests; FAILED (failures=7, errors=4)
+
+Limits exercised successfully during this red run:
+- depth1500 -> GameplayContractError (not RecursionError)
+- children100 -> GameplayContractError max_children
+- cyclic dict -> GameplayContractError depth
+- exact default depth/children boundaries passed
+
+Red attribution:
+- QA fixture error: node boundary used >16 direct children.
+- QA fixture error: ProcessTemplate omitted mandatory input/output ports.
+- QA fixture error: all-node mix expected 10, actual 11 leaves.
+- QA fixture pin mismatch: expected hashes belonged to a different document
+  (wrong skill IDs/process effect), not a product canonical regression.
+
+No product defect is inferred from these red results. Fixture corrections
+were made only in the QA-owned review file.

@@ -1,0 +1,21 @@
+{
+  "checkpoint": "d613cc9391b828d764a5df6f83f9473bd72b93dc",
+  "branch": "feature/alpha-v02-seventh-night",
+  "reviewed_conditions_sha256": "138b73a3ccaa12878028955afcbb5788b6ed5b59b66793f0b0701b4b513fafb4",
+  "owner_test_sha256": "5bc6d2cbaad49aa0f59130afa1fa6e1fdffbf0c85f8c7b8eaf8b747fefd9ff78",
+  "review_test_sha256": "a2cc8eba6a48de0831c3897eaa5a07ae2794d2ae2a0a117251a19c8ca44a8791",
+  "report_sha256": "73c9511bd36648692c4eee9562b35d72a5f34852a7ab5987f081c9309cc85eba",
+  "focused_log_sha256": "904e8ae8bb3edcbb563f6c66732778922f3408beafbd7ab10969d2e5bae2c612",
+  "red_fixture_log_sha256": "4a38075813314425f2aa5621dae8040bfe98f0e95399b0972eb5e1223639696c",
+  "baseline_evidence_sha256": "180d8d9ce922208e9e0a2750355b202132fd4235964ebc3dda9b67217f4dbef6",
+  "main_ast_parity_sha256": "000f235babee9e12228473bcea82f01a5afb39852e67f2f0461e3c51622e42b6",
+  "active_condition_omission_evidence_sha256": "714f2170139aa8fa0089d9f8166b45c960d9e4bc896a3d878b22c8c46ca8aa89",
+  "focused_command": "python -B -m unittest experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_condition_limits_review -v",
+  "focused_result": "Ran 17 tests in 0.569s; OK; exit 0",
+  "focused_started": "2026-10-29T16:25:41.3136642+08:00",
+  "focused_finished": "2026-10-29T16:25:43.0718731+08:00",
+  "cross_module_result": "Ran 328 tests in 98.806s; OK; exit 0",
+  "cross_module_log": "docs/agent_bootstrap/evidence/c4_condition_review_cross_module_20261029.log",
+  "cross_module_log_sha256": "e5e88c0ad2902dfef87b44771df5452617bfcf926b91d9bbb2c36a78f35a83f6",
+  "open_gap": "C4.3 active top-level false-condition gate omission; C4.1 does not fix or claim fixed"
+}

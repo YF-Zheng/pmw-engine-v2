@@ -1,0 +1,22 @@
+{
+  "status": "OPEN_C4_3_STANDALONE_PROBE",
+  "collected_as_test": false,
+  "source_conditions_sha256": "138b73a3ccaa12878028955afcbb5788b6ed5b59b66793f0b0701b4b513fafb4",
+  "review_test_before_cleanup_sha256": "a2cc8eba6a48de0831c3897eaa5a07ae2794d2ae2a0a117251a19c8ca44a8791",
+  "review_test_after_cleanup_sha256": "6705f76f5f254fa571ba66676a37f25e4c5aac95f265f2e34c331e0c089a6092",
+  "main_reproduction_evidence": "docs/agent_bootstrap/evidence/c4_active_condition_before.json",
+  "main_reproduction_sha256": "714f2170139aa8fa0089d9f8166b45c960d9e4bc896a3d878b22c8c46ca8aa89",
+  "probe_name": "probe_top_level_false_gate_omission",
+  "probe_result": {
+    "action_duration": 2,
+    "condition_evaluated_false": true,
+    "player_mana_after": 16.0,
+    "player_mana_before": 20.0,
+    "player_mana_delta": -4.0,
+    "process_state_after_action": "running",
+    "skill_id": "condition_skill",
+    "spent_ticks_delta": 2,
+    "time_duration": 2
+  },
+  "interpretation": "The C4.1 parser and canonical hashes are accepted. This separate observation records the C4.3 active top-level false-condition omission; it is not a regression oracle and must not assert that the defect persists."
+}

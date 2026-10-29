@@ -1,0 +1,24 @@
+{
+  "utc": "2026-10-29T08:20:28.454321+00:00",
+  "checkpoint": "d613cc9391b828d764a5df6f83f9473bd72b93dc",
+  "status": "actual_gap_reproduced",
+  "raw_top_level_condition": {
+    "not": null
+  },
+  "evaluated_condition": false,
+  "normal_parsed_equipped_timed_action": true,
+  "relation_active_after": true,
+  "mana_before": 20.0,
+  "mana_after": 19.0,
+  "paid_duration": 1,
+  "remaining_before": 20,
+  "remaining_after": 19,
+  "source_hashes": {
+    "actions.py": "e3a2b989a317a15f204a8d8a71297e1d4cee70962571dd655cd5ce24cf823c87",
+    "skills.py": "5e6569c1ad5bbe3304077f8dcdc0e54349f9a75140a470059fa09d5d32b1102a",
+    "action_compiler.py": "ff278ecbb9a7354f7bb925867e9497432f19facc3ace6012d3d24b783bff13d9",
+    "relations.py": "16d2be0aa61cc8716de76f166a9ace2b7e9660b5e6cb84ac2da1e0f016bdbd88"
+  },
+  "source_unchanged": true,
+  "scope": "Supporting real formal Gameplay gap, not browser/playtest/generation evidence; C4.1 does not claim to fix active top-level semantics."
+}

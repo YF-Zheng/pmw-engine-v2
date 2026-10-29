@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "utc": "2026-10-29T08:36:11.910281+00:00",
+  "condition_sha256": "138b73a3ccaa12878028955afcbb5788b6ed5b59b66793f0b0701b4b513fafb4",
+  "source_unchanged": true,
+  "trusted_caps": {
+    "max_depth": 64,
+    "max_nodes": 4096,
+    "max_children": 256
+  },
+  "max_depth_accepted": 64,
+  "over_depth_rejection": "$.condition.not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not.any[0].all[0].not exceeds condition max_depth 64",
+  "max_nodes_accepted": 4096,
+  "over_nodes_rejection": "$.condition.all[15].all[254] exceeds condition max_nodes 4096",
+  "elapsed_seconds": 0.014999999999417923,
+  "scope": "Main complementary trusted-cap execution, not a CPU/wall-time guarantee or candidate default budget increase."
+}

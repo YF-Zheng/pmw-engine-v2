@@ -122,6 +122,16 @@
       "id": "01a18692-6567-7d50-ac18-c35fb2a1ba13",
       "task": "C3 independent Relation current-base/expiry/transaction/replay QA",
       "stage": "P1"
+    },
+    {
+      "id": "01a186ba-2deb-7013-b293-45e654163f43",
+      "task": "C4.1 shared condition parser bounds implementation",
+      "stage": "P1"
+    },
+    {
+      "id": "01a186ba-7643-72e2-8115-51eda8976e71",
+      "task": "C4.1 independent condition boundary/formal QA",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -183,9 +193,15 @@
         "task": "c3",
         "main_end_ordinal": 4281,
         "snapshot": "docs\\agent_bootstrap\\evidence\\c3_cost_snapshot.json"
+      },
+      {
+        "task": "c4_1",
+        "main_end_ordinal": 4558,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\c4_1_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 4281,
-    "current_task": "c3"
+    "main_ordinal_cursor": 4558,
+    "current_task": "c4_1",
+    "latest_checkpoint": "d613cc9391b828d764a5df6f83f9473bd72b93dc"
   }
 }

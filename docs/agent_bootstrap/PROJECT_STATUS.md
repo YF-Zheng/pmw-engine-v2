@@ -44,6 +44,10 @@ and the 20:10 cutoff still apply. The paused heartbeat is not modified.
 
 ## Latest Accepted Iteration
 
+C4.1 bounded shared raw-condition parsing is ACCEPTED. Frozen full regression **835 passed,3,304 subtests passed in381.12s**, exit0,284 Python hashes unchanged; all91 old test files atd613cc9 remain byte-identical. Owner15/14, independent FINAL16 methods, Main89/53 pass. AST parity preserves every typed leaf branch and evaluator; Main trusted-cap depth64/nodes4096 accepts and one-over rejects. Defaults depth16/nodes64/children16 are fresh/shared per parse, root1 and every operator/leaf counts, with path-bearing GameplayContractError before over-deep/over-wide traversal. Candidate JSON cannot raise budgets; trusted callers may choose bounded caps64/4096/256. Reports:C4_CONDITION_LIMITS_INCREMENT.md/C4_CONDITION_LIMITS_REVIEW.md; full metadata/log:evidence/c4_condition_frozen_full_regression_meta.json/c4_condition_frozen_full_regression.txt. Initial17-method defect-persistence assertion moved to a non-collected actual probe before acceptance; original source/report/meta/log preserved,16 real requirement tests unchanged. No old tests/Engine/clock/Observation/Alpha change. No Status condition ingress, new typed leaves, aggregate per-Skill/per-Tick/CPU/query/active-source or full P1/P2 claim. Next actual damage-passive dispatch (C4_PASSIVE_DISPATCH_DESIGN.md), then verified active top-level false-condition gate defect (C4_ACTIVE_CONDITION_DESIGN.md). No game-generation call until full P1/P2, continue sequentially until20:10 +08:00 or real stop/account/budget/blocker.
+
+## Previous C3 Iteration
+
 C3 bounded existing typed Relation enable/disable overlay is ACCEPTED. Full frozen regression: **804 passed, 3,226 subtests passed in415.43s**, exit0; all282 Python hashes unchanged. Independent QA six methods, owner five methods, Main cross-focus64/48 pass. Main complementary timed parsed/equipped enable player/NPC actually match .modify.on, pay Mana1/Tick1, change opt-in downstream availability false->true, and expire to current disabled base. Independent QA formal disable/current-base/expiry/cascade/late-tick/replay remains separately attributed. Reports: C3_RELATION_MODIFIER_INCREMENT.md / C3_RELATION_MODIFIER_REVIEW.md. Metadata/log: evidence/c3_relation_frozen_full_regression_meta.json / c3_relation_frozen_full_regression.txt. All89 previously tracked test files at9f75122 remain byte-for-byte unchanged. Engine/clock/Observation/Alpha are untouched. No graph creation/deletion/retarget, generic travel/locality availability integration, Alpha UI, full P1/P2 or generation claim. Next independent target: C4_CONDITION_BUDGET_DESIGN.md, then C4_PASSIVE_DISPATCH_DESIGN.md and remaining P1. Deadline20:10 +08:00 and all accounting/stop rules remain in force.
 
 ## Previous C2 Iteration
@@ -244,3 +248,11 @@ these baseline gaps are not silently fixed or mislabeled as new C3 defects.
 ## C3 Current Cost Cutoff
 
 At16:05:07 +08:00: project CNY159.69897245, safety reserve201.22875444/2000, P1 reserve163.57882178/400. Complete attribution, Unknown0. Closing usage awaits next refresh; c3_cost_snapshot.json subset included once. Continue C4.1 then automatic damage passive.
+
+## C4.1 Active Target
+
+C3 clean local checkpoint d613cc9391b828d764a5df6f83f9473bd72b93dc. Descartes/Mencius actual child IDs registered P1, both verified DeepSeek Flash. C4.1 shared parser safety implementation and independent QA active; C4_CONDITION_LIMITS_INCREMENT.md. C4.2 actual damage passive interface prepared only; no concurrent production edits. Complete budget refresh Unknown0; full P1/P2 remain open.
+
+## C4.1 Acceptance And Next
+
+Full835/3,304,284 hashes,91 old tests verified. Complete cost cutoff16:35:31: projectCNY170.13511286,safety214.37881735/2000,P1reserve176.72888470/400,Unknown0. Closing overhead pending next ordinal boundary. Both workers closed before freeze. Immediately start C4.2 only after local checkpoint, then C4.3; full P1/P2 remain open.

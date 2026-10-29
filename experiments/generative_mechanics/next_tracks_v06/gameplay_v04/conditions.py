@@ -19,7 +19,68 @@ class ConditionSpec:
     children: tuple["ConditionSpec", ...] = ()
 
 
-def parse_condition(raw: Any, path: str = "$.condition") -> ConditionSpec:
+@dataclass(frozen=True, slots=True)
+class ConditionLimits:
+    """Trusted parse budgets for one raw condition tree."""
+
+    max_depth: int = 16
+    max_nodes: int = 64
+    max_children: int = 16
+
+    def __post_init__(self) -> None:
+        for name, value, maximum in (
+            ("max_depth", self.max_depth, 64),
+            ("max_nodes", self.max_nodes, 4096),
+            ("max_children", self.max_children, 256),
+        ):
+            if (
+                isinstance(value, bool)
+                or not isinstance(value, int)
+                or not 1 <= value <= maximum
+            ):
+                raise GameplayContractError(
+                    f"ConditionLimits.{name} must be an integer in [1, {maximum}]"
+                )
+
+
+@dataclass(slots=True)
+class _ConditionParseState:
+    limits: ConditionLimits
+    nodes: int = 0
+
+
+def parse_condition(
+    raw: Any,
+    path: str = "$.condition",
+    *,
+    limits: ConditionLimits | None = None,
+) -> ConditionSpec:
+    """Parse one condition using a fresh shared traversal budget."""
+    if limits is None:
+        limits = ConditionLimits()
+    elif not isinstance(limits, ConditionLimits):
+        raise GameplayContractError(
+            "condition limits must be a trusted ConditionLimits"
+        )
+    return _parse_condition(raw, path, 1, _ConditionParseState(limits))
+
+
+def _parse_condition(
+    raw: Any,
+    path: str,
+    depth: int,
+    state: _ConditionParseState,
+) -> ConditionSpec:
+    limits = state.limits
+    if depth > limits.max_depth:
+        raise GameplayContractError(
+            f"{path} exceeds condition max_depth {limits.max_depth}"
+        )
+    state.nodes += 1
+    if state.nodes > limits.max_nodes:
+        raise GameplayContractError(
+            f"{path} exceeds condition max_nodes {limits.max_nodes}"
+        )
     if raw is None:
         return ConditionSpec("always")
     if not isinstance(raw, dict) or len(raw) != 1:
@@ -28,9 +89,23 @@ def parse_condition(raw: Any, path: str = "$.condition") -> ConditionSpec:
     if kind in {"all", "any"}:
         if not isinstance(value, list) or not value:
             raise GameplayContractError(f"{path}.{kind} must be a non-empty list")
-        return ConditionSpec(kind, children=tuple(parse_condition(item, f"{path}.{kind}[{i}]") for i, item in enumerate(value)))
+        if len(value) > limits.max_children:
+            raise GameplayContractError(
+                f"{path}.{kind} exceeds condition max_children "
+                f"{limits.max_children}"
+            )
+        return ConditionSpec(
+            kind,
+            children=tuple(
+                _parse_condition(item, f"{path}.{kind}[{i}]", depth + 1, state)
+                for i, item in enumerate(value)
+            ),
+        )
     if kind == "not":
-        return ConditionSpec(kind, children=(parse_condition(value, f"{path}.not"),))
+        return ConditionSpec(
+            kind,
+            children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+        )
     if kind in {"attribute", "resource", "field"}:
         if not isinstance(value, dict):
             raise GameplayContractError(f"{path}.{kind} must be an object")

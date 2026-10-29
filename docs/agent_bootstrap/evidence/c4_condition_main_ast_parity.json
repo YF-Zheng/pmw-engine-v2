@@ -1,0 +1,14 @@
+{
+  "status": "source_parity_passed",
+  "utc": "2026-10-29T08:22:03.177680+00:00",
+  "baseline": "d613cc9391b828d764a5df6f83f9473bd72b93dc",
+  "baseline_sha256": "e7fa4a27596c3709fd9f159b6332e0e270d2827f2ea721a0506d5f71572b5748",
+  "current_sha256": "138b73a3ccaa12878028955afcbb5788b6ed5b59b66793f0b0701b4b513fafb4",
+  "unchanged_ast_functions": [
+    "evaluate_condition",
+    "effective_traits"
+  ],
+  "unchanged_ast_parser_tail": "all typed numeric/trait/status branches and unknown rejection",
+  "scope": "Main structural compatibility evidence only; independent execution/frozen regression still pending.",
+  "bounded_budget_review": "Root1, fresh local state; count node before leaf; check depth before descent; width before child tuple; sibling shared state; trusted depth cap64."
+}
