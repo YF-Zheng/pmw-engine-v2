@@ -1,0 +1,17 @@
+{
+  "checkpoint": "fda6557",
+  "scope": "actual frozen Effect parser call, not current concurrently edited source",
+  "source_sha256_lf": "260b9269bb664f2edd56a73a711b94f30f003b2dc1fdc28d094ee3905a66affd",
+  "requested_effect": {
+    "id": "start_conversion",
+    "kind": "process_start",
+    "target": {
+      "kind": "current_area"
+    },
+    "commitment": "required",
+    "process_template_id": "timber_conversion"
+  },
+  "supported": false,
+  "error_type": "GameplayContractError",
+  "error": "$.effect.kind is invalid"
+}

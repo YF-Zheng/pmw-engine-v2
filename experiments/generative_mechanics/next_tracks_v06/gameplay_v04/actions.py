@@ -81,7 +81,8 @@ class ActionOutcome:
 
 
 class ActionRegistry:
-    def __init__(self, actions: Iterable[ActionDefinition], statuses: Iterable[StatusSpec] = (), hooks: Iterable[Any] = ()):
+    def __init__(self, actions: Iterable[ActionDefinition], statuses: Iterable[StatusSpec] = (), hooks: Iterable[Any] = (),
+                 *, process_controller: Any = None):
         action_items, status_items, hook_items = tuple(actions), tuple(statuses), tuple(hooks)
         if len({x.id for x in action_items}) != len(action_items): raise GameplayContractError("duplicate action id")
         if len({x.id for x in status_items}) != len(status_items): raise GameplayContractError("duplicate status id")
@@ -89,6 +90,11 @@ class ActionRegistry:
         self.statuses = MappingProxyType({x.id: x for x in status_items})
         if len({x.id for x in hook_items}) != len(hook_items): raise GameplayContractError("duplicate hook id")
         self.hooks = MappingProxyType({x.id: x for x in hook_items})
+        if process_controller is not None:
+            from .processes import ProcessController
+            if not isinstance(process_controller, ProcessController):
+                raise GameplayContractError("process_controller must be a trusted ProcessController")
+        self.process_controller = process_controller
         for hook in hook_items:
             action = self.actions.get(hook.action_id)
             if action is None or tuple(effect.id for effect in action.effects) != hook.effect_ids:
@@ -131,6 +137,8 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
     if not isinstance(raw["effects"], list) or not raw["effects"]: raise GameplayContractError(f"{path}.effects must be non-empty")
     effects = tuple(parse_effect(item, statuses, f"{path}.effects[{i}]") for i, item in enumerate(raw["effects"]))
     if len({x.id for x in effects}) != len(effects): raise GameplayContractError(f"{path}.effects contains duplicate IDs")
+    if sum(effect.kind == "process_start" for effect in effects) > 1:
+        raise GameplayContractError(f"{path}.effects permits at most one process_start")
     footprints = []
     for effect in effects:
         if effect.target.kind not in selectors: raise GameplayContractError(f"{path}.effects target exceeds action scope")
@@ -138,6 +146,7 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
                 "add_resource": (effect.resource,), "modify_field": (f"field:{effect.field_id}:value",),
                 "modify_attractor": (f"field:{effect.field_id}:target",), "modify_rate": (f"field:{effect.field_id}:rate",)}.get(effect.kind, ())
         if effect.kind in {"apply_status", "grant_trait"}: keys = ("status_component",)
+        if effect.kind == "process_start": keys = (f"process:{effect.process_template_id}:state",)
         for key in keys:
             footprint = (effect.target.kind, effect.target.relation_type, key)
             if footprint in footprints: raise GameplayContractError(f"{path}.effects contains conflicting writes")
@@ -176,7 +185,11 @@ def parse_action_request(raw: Any) -> ActionRequest:
 def resolve_action(session, registry: ActionRegistry, request: ActionRequest) -> ActionOutcome:
     """Resolve an external primary request after authoritative authorization."""
     authorize_primary_action(session, registry, request)
-    return _resolve_action(session, registry, request)
+    from .transactions import publish_gameplay_session, stage_gameplay_session
+    staged = stage_gameplay_session(session)
+    outcome = _resolve_action(staged, registry, request)
+    publish_gameplay_session(session, staged)
+    return outcome
 
 
 def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *, execution_kind: str = "primary",
@@ -210,6 +223,8 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
     outcomes = []
     reservations: list[tuple[str, str, dict]] = []
     for effect in definition.effects:
+        if effect.kind == "process_start" and execution_kind != "primary":
+            raise GameplayContractError("process_start is supported only for active primary execution")
         targets = resolve_selector(session.state, effect.target, context, definition.capability)
         if len(targets) != 1: raise GameplayContractError("Gate 2 effects require exactly one resolved target")
         target_id = targets[0]
@@ -218,7 +233,10 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
         if effect.commitment == "required" and not enabled: raise GameplayContractError(f"required effect {effect.id!r} condition failed")
         if not enabled:
             outcomes.append({"effect_id": effect.id, "kind": effect.kind, "status": "skipped", "target_id": target_id, "values": {}}); continue
-        outcome = _simulate_effect(session, registry, request, definition, effect, target_id, shadow, writes, reservations)
+        outcome = _simulate_effect(
+            session, registry, request, definition, effect, target_id, shadow, writes, reservations,
+            execution_kind=execution_kind,
+        )
         outcomes.append(outcome)
     for outcome in outcomes:
         final_actor = shadow.get(outcome["target_id"])
@@ -244,6 +262,26 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
     if not matched:
         if session.state.to_dict() != before: raise GameplayContractError("failed action mutated state")
         raise GameplayContractError("action did not match installed definition")
+    process_rows = [row for row in outcomes if row["kind"] == "process_start" and row["status"] == "applied"]
+    if process_rows:
+        from .processes import PROCESS_COMPONENT, PROCESS_START_EVENT
+        row = process_rows[0]
+        target_id = row["values"]["process_target_id"]
+        target = session.state.entities.get(target_id)
+        component = None if target is None else target.components.get(PROCESS_COMPONENT)
+        process_matched = any(
+            event.event.type == PROCESS_START_EVENT
+            and event.event.target == target_id
+            and any(law.law_id.endswith(".start") for law in event.event_law_matches)
+            for event in result.trace.events
+        )
+        if (
+            not process_matched
+            or not isinstance(component, dict)
+            or component.get("state") != "running"
+            or component.get("profile_hash") != row["values"]["process_profile_hash"]
+        ):
+            raise GameplayContractError("process_start cascade did not activate the validated Process")
     return ActionOutcome(request, definition, quote, tuple(outcomes), result)
 
 
@@ -316,6 +354,26 @@ def submit_primary_action(session, registry: ActionRegistry, request: ActionRequ
     return resolve_action(session, registry, request)
 
 
+@dataclass(frozen=True, slots=True)
+class TimedActionOutcome:
+    action: ActionOutcome
+    time: Any
+
+
+def submit_timed_primary_action(session, registry: ActionRegistry, request: ActionRequest, *,
+                                reason: str = "exploration") -> TimedActionOutcome:
+    """Submit one primary action and charge its final quoted duration atomically."""
+    from .time_ledger import spend_world_time
+    from .transactions import publish_gameplay_session, stage_gameplay_session
+
+    staged = stage_gameplay_session(session)
+    authorize_primary_action(staged, registry, request)
+    outcome = _resolve_action(staged, registry, request)
+    time_result = spend_world_time(staged, outcome.cost.duration, reason=reason)
+    publish_gameplay_session(session, staged)
+    return TimedActionOutcome(outcome, time_result)
+
+
 def _condition_context(session, request, shadow):
     actor = shadow[request.actor_id]
     target = shadow.get(request.target_actor_id) if request.target_actor_id else None
@@ -327,7 +385,8 @@ def _condition_context(session, request, shadow):
     return {"self": actor, "target_actor": target or {}, "current_area": area or {}}
 
 
-def _simulate_effect(session, registry, request, definition, effect, target_id, shadow, writes, reservations):
+def _simulate_effect(session, registry, request, definition, effect, target_id, shadow, writes, reservations,
+                     *, execution_kind: str):
     target_entity = session.state.entities[target_id]
     actor_state = shadow.get(target_id)
     source_actor = shadow[request.actor_id]
@@ -336,6 +395,10 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
         if effect.commitment == "required": raise GameplayContractError(f"required effect {effect.id!r} attribute check failed")
         return {"effect_id": effect.id, "kind": effect.kind, "status": "skipped", "target_id": target_id,
                 "values": {}, "attribute_terms": term_trace}
+    if effect.kind == "process_start":
+        return _simulate_process_start(
+            session, registry, request, definition, effect, target_id, execution_kind
+        )
     if effect.kind in {"damage", "heal", "shield", "add_resource"}:
         if actor_state is None: raise GameplayContractError(f"{effect.kind} target must be Actor")
         row = writes.setdefault(target_id, {})
@@ -418,6 +481,78 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
                       "expiry_time": session.state.sim_time + effect.duration}
     return {"effect_id": effect.id, "kind": effect.kind, "status": "applied", "target_id": target_id,
             "amount": amount, "values": values, "attribute_terms": term_trace}
+
+
+def _simulate_process_start(session, registry, request, definition, effect, target_id, execution_kind):
+    controller = registry.process_controller
+    if controller is None:
+        raise GameplayContractError("process_start requires a trusted ProcessController")
+    if execution_kind != "primary":
+        raise GameplayContractError("process_start is supported only for active primary execution")
+    profile = _resolve_process_profile(
+        session, controller, effect.process_template_id, request.actor_id, target_id
+    )
+    prepared = controller.prepare_start(session, profile.id, owner=request.actor_id)
+    if prepared.profile_hash != profile.profile_hash:
+        raise GameplayContractError("Process profile changed during preflight")
+    return {
+        "effect_id": effect.id,
+        "kind": effect.kind,
+        "status": "applied",
+        "target_id": target_id,
+        "amount": 0.0,
+        "values": {
+            "process_template_id": profile.template.id,
+            "process_profile_id": profile.id,
+            "process_profile_hash": profile.profile_hash,
+            "process_target_id": profile.process_entity_id,
+        },
+        "attribute_terms": (),
+    }
+
+
+def _resolve_process_profile(session, controller, template_id, owner, area_id):
+    """Resolve exactly one trusted profile whose complete endpoint scope is local.
+
+    Remote profiles may coexist in the catalog but cannot supply local authority.
+    Zero or multiple valid local profiles reject instead of choosing arbitrarily.
+    """
+    matches = [
+        profile for profile in controller.profiles
+        if profile.template.id == template_id and profile.owner == owner
+    ]
+    if not matches:
+        raise GameplayContractError("no Process profile matches the requested template and owner")
+    area = session.state.entities.get(area_id)
+    if area is None or "pmw_gameplay_area" not in area.components:
+        raise GameplayContractError("process_start target is not an Area")
+    located = []
+    for profile in matches:
+        endpoints = (profile.process_entity_id, *(item.stock.entity_id for item in (*profile.inputs, *profile.outputs)))
+        resolved = [_endpoint_area(session, entity_id) for entity_id in endpoints]
+        if all(item == area_id for item in resolved):
+            located.append(profile)
+    if len(located) != 1:
+        raise GameplayContractError(
+            "Process profile scope is missing, ambiguous, or remote for this Area"
+        )
+    return located[0]
+
+
+def _endpoint_area(session, entity_id):
+    entity = session.state.entities.get(entity_id)
+    if entity is None:
+        return None
+    areas = sorted(
+        relation.target for relation in session.state.relations.values()
+        if relation.type == "located_in" and relation.source == entity_id
+    )
+    if len(areas) != 1:
+        return None
+    area = session.state.entities.get(areas[0])
+    if area is None or "pmw_gameplay_area" not in area.components:
+        return None
+    return area.id
 
 
 def _actor_view(entity) -> dict[str, Any]:

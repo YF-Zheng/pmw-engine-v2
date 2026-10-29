@@ -3,7 +3,16 @@
   "main_session": "01a181f1-8fad-7161-a01f-04678ebd7df0",
   "project_turns": [
     "01a1826b-6e9a-7721-bd53-b5464c3829d4",
-    "01a18562-f9dc-7a00-a1aa-0f145ce7a7b8"
+    "01a18562-f9dc-7a00-a1aa-0f145ce7a7b8",
+    "01a1857c-aa3a-7783-ae31-740b99d42604",
+    "01a1859b-9e9e-7d02-9bae-b6e1ef43f609",
+    "01a1859d-6eff-7d91-8bb9-6bce3b07913c",
+    "01a1859b-597d-7201-bed0-7c5ec6553f89",
+    "01a185b2-ee8a-7473-b991-5763464078f6",
+    "01a185b4-78df-7611-89e8-48a10fd96d97",
+    "01a185b4-fabf-7270-bef0-ec609363ff91",
+    "01a185b7-8aea-7512-9311-d7516cb86eb1",
+    "01a18599-6592-7d72-99a5-5d5ce3eab591"
   ],
   "default_phase": "P0",
   "agents": [
@@ -46,6 +55,26 @@
       "id": "01a18565-131e-7971-8c7d-43ae60831ffc",
       "task": "Independent ecology curve transition/replay review",
       "stage": "P1"
+    },
+    {
+      "id": "01a18581-8caf-7910-92db-6e552a966b80",
+      "task": "Typed process_start SkillBlueprint and staged timed Action bridge",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18581-f149-7cc0-8b4f-313b5abb8910",
+      "task": "Independent Process Action scope/transaction/checkpoint QA",
+      "stage": "P1"
+    },
+    {
+      "id": "01a185a0-453a-7b93-b3e4-e131a35d920e",
+      "task": "Independent resumed Process Action scope/transaction/checkpoint QA",
+      "stage": "P1"
+    },
+    {
+      "id": "01a185b8-f938-7c30-a361-695eaec72b36",
+      "task": "Independent bounded resumed Process Action five-case review",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -56,7 +85,16 @@
     "01a1828b-344f-78a0-82e5-2643c24fb45c": "P1",
     "01a1828f-5862-7e61-9fa6-e20e0dbfd1ae": "P1",
     "01a18291-11a7-75d1-9578-33edb3f9a7fb": "P1",
-    "01a18562-f9dc-7a00-a1aa-0f145ce7a7b8": "P1"
+    "01a18562-f9dc-7a00-a1aa-0f145ce7a7b8": "P1",
+    "01a1857c-aa3a-7783-ae31-740b99d42604": "P1",
+    "01a1859b-9e9e-7d02-9bae-b6e1ef43f609": "P1",
+    "01a1859d-6eff-7d91-8bb9-6bce3b07913c": "P1",
+    "01a1859b-597d-7201-bed0-7c5ec6553f89": "P1",
+    "01a185b2-ee8a-7473-b991-5763464078f6": "P1",
+    "01a185b4-78df-7611-89e8-48a10fd96d97": "P1",
+    "01a185b4-fabf-7270-bef0-ec609363ff91": "P1",
+    "01a185b7-8aea-7512-9311-d7516cb86eb1": "P1",
+    "01a18599-6592-7d72-99a5-5d5ce3eab591": "P1"
   },
   "bootstrap": {
     "project_turn": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",

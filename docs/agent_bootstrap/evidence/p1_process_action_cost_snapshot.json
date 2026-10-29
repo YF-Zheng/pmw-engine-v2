@@ -1,0 +1,58 @@
+{
+  "cutoff": "2026-10-29T04:00:23.233Z",
+  "main_turns": [
+    "01a1857c-aa3a-7783-ae31-740b99d42604",
+    "01a18599-6592-7d72-99a5-5d5ce3eab591",
+    "01a1859b-597d-7201-bed0-7c5ec6553f89",
+    "01a1859b-9e9e-7d02-9bae-b6e1ef43f609",
+    "01a1859d-6eff-7d91-8bb9-6bce3b07913c",
+    "01a185b2-ee8a-7473-b991-5763464078f6",
+    "01a185b4-78df-7611-89e8-48a10fd96d97",
+    "01a185b4-fabf-7270-bef0-ec609363ff91",
+    "01a185b7-8aea-7512-9311-d7516cb86eb1"
+  ],
+  "child_ids": [
+    "01a18581-8caf-7910-92db-6e552a966b80",
+    "01a18581-f149-7cc0-8b4f-313b5abb8910",
+    "01a185a0-453a-7b93-b3e4-e131a35d920e",
+    "01a185b8-f938-7c30-a361-695eaec72b36"
+  ],
+  "families": {
+    "DeepSeek": {
+      "responses": 316,
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 49206400,
+        "input_tokens": 50322952,
+        "output_tokens": 251940,
+        "reasoning_output_tokens": 85456
+      },
+      "estimated_usd": 1.0481142
+    },
+    "GPT": {
+      "responses": 123,
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 16376732,
+        "input_tokens": 17391876,
+        "output_tokens": 62967,
+        "reasoning_output_tokens": 24482
+      },
+      "estimated_usd": 3.36019459
+    },
+    "Unknown": {
+      "responses": 0,
+      "actual_usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_output_tokens": 0
+      },
+      "estimated_usd": null
+    }
+  },
+  "note": "Subset of project ledger, never add again to cumulative total; aborted worker/resume overhead included; actual cache unchanged.",
+  "estimated_usd": 4.40830879,
+  "estimated_cny": 29.387549717656
+}

@@ -28,10 +28,13 @@
 4. Accepted: fix the audited Alpha stale-time/flag-only-route defects through existing
    Gameplay clock and real PMW Relation Laws; preserve current game outcomes.
 5. Accepted 2026-10-29: ecology baseline-curve dispatch uses live state with
-   canonical formula IDs; 719 full tests and 3,141 subtests passed. Next bounded
-   P1.3 slice: one typed Stock/Process conversion action through existing staged
-   Action/material authority with player/NPC, costs, rollback and registry
-   checkpoint replay. Then bridge seven catalog operators into Action/Registry;
+   canonical formula IDs; 719 full tests and 3,141 subtests passed. The bounded
+   P1.3 slice is now accepted: typed Stock/Process start through existing staged
+   Action/material authority with player/NPC, mana/time, rollback and registry
+   checkpoint replay; 742 tests/3,141 subtests pass. Next: one typed Process
+   modification action using existing controller rate/duration/pause/resume and
+   the same local owner/capability/transaction gates. Then bridge remaining
+   catalog operators into Action/Registry;
    reuse material capabilities and topology validator, add bounded event/query
    budgets and lifecycle ownership. Run all ten scenarios including player/NPC.
 6. P2: versioned multi-trigger IR, typed conditions and bounded selectors;
@@ -55,8 +58,8 @@ to GPT root-cause analysis. Three ineffective iterations stop that direction.
 Never delete tests, bypass validation or modify victory flags to pass gates.
 No remote pushes or global Codex/Magpie configuration changes are required.
 
-Checkpoint verification: latest frozen full regression **719 passed, 3,141
-subtests passed in 373.46s** (previous checkpoint: 701/3,130). P0 accepted;
+Checkpoint verification: latest frozen full regression **742 passed, 3,141
+subtests passed in 343.03s** (previous checkpoint: 719/3,141). P0 accepted;
 only bounded P1 increments accepted, not the
 full ten-scenario gate. No generation batch or P2 reference corpus was started.
 

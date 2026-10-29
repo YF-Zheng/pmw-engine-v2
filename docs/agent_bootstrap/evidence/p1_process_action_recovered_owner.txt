@@ -1,0 +1,46 @@
+.........F........                                                       [100%]
+================================== FAILURES ===================================
+_ TrustedLifecycleTests.test_disabling_keeps_retired_lifecycle_laws_with_controller_context _
+
+self = <test_sandbox_process_action.TrustedLifecycleTests testMethod=test_disabling_keeps_retired_lifecycle_laws_with_controller_context>
+
+    def test_disabling_keeps_retired_lifecycle_laws_with_controller_context(self):
+        player = _profile("disabled_refining", PLAYER_ID)
+        runtime, _, _ = _runtime((player,))
+        change_loadout(
+            runtime.session,
+            runtime.manifest,
+            actor_id=PLAYER_ID,
+            operation="unload_active",
+            slot=0,
+        )
+>       result = runtime.disable(SKILL_ID)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_action.py:667: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\registry.py:177: in disable
+    self._assert_no_loadout_refs(selected.skill_id, selected.version)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = MechanismRegistryRuntime(session=GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x0000027F5CF983B..., effect_kinds=('process_start',), selectors=('current_area',), budget_points=5.0))}, status_slots=8, dynamics_slots=2)
+skill_id = 'start_refining', version = 1
+
+    def _assert_no_loadout_refs(self, skill_id: str, version: int | None = None) -> None:
+        for entity in self.session.state.entities.values():
+            actor = entity.components.get("pmw_gameplay_actor")
+            if not isinstance(actor, dict):
+                continue
+            for container in ("active_equipped", "active_stowed", "passive_equipped"):
+                for row in actor.get(container, ()):
+                    if (isinstance(row, dict) and row.get("id") == skill_id and
+                            (version is None or row.get("version") == version)):
+>                       raise GameplayContractError(
+                            "skill must be removed from every loadout before version or disable changes"
+                        )
+E                       experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: skill must be removed from every loadout before version or disable changes
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\registry.py:235: GameplayContractError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_action.py::TrustedLifecycleTests::test_disabling_keeps_retired_lifecycle_laws_with_controller_context
+1 failed, 17 passed in 3.50s

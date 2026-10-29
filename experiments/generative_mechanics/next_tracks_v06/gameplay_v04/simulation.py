@@ -241,7 +241,14 @@ def _registry_projection(registry: ActionRegistry, document: dict[str, Any]) -> 
     action_ids = {
         action_id for values in document["known_actions"].values() for action_id in values
     }
-    actions = tuple(registry.actions[key] for key in sorted(action_ids) if key in registry.actions)
+    # Process activation requires trusted profiles, Stock bindings, and the
+    # trusted ProcessController.  Never copy that hidden authority into an
+    # actor-safe projection or claim a Process/Stock forecast.
+    actions = tuple(
+        registry.actions[key] for key in sorted(action_ids)
+        if key in registry.actions
+        and not any(effect.kind == "process_start" for effect in registry.actions[key].effects)
+    )
     status_ids = set(document["status_polarities"])
     for action in actions:
         status_ids.update(

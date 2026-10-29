@@ -268,6 +268,16 @@ class ProcessController:
     def instantiate(self, process_id: str) -> Entity:
         return instantiate_process(self._profile(process_id))
 
+    def prepare_start(
+        self, session: GameplaySession, process_id: str, *, owner: str
+    ) -> ProcessProfile:
+        """Validate a start without changing controller, session, or scheduler state."""
+        profile = self._profile(process_id)
+        _preflight(self, session, profile, owner=owner, states={"stopped"}, require_inputs=True)
+        _assert_active_limits(self, session, profile, activation=True)
+        _assert_writer_exclusivity(self, session, profile)
+        return profile
+
     def start(self, session: GameplaySession, process_id: str, *, owner: str) -> Any:
         return _start_process(self, session, process_id, owner=owner)
 
@@ -800,11 +810,8 @@ def _advance_time_effects(subject: str) -> list[dict[str, Any]]:
 def _start_process(
     controller: ProcessController, session: GameplaySession, process_id: str, *, owner: str
 ) -> Any:
-    profile = controller._profile(process_id)
     staged = stage_gameplay_session(session)
-    _preflight(controller, staged, profile, owner=owner, states={"stopped"}, require_inputs=True)
-    _assert_active_limits(controller, staged, profile, activation=True)
-    _assert_writer_exclusivity(controller, staged, profile)
+    profile = controller.prepare_start(staged, process_id, owner=owner)
     result = staged.runtime.run_event(Event(
         f"pmw:v04:sandbox.process.start:{profile.id}",
         PROCESS_START_EVENT,

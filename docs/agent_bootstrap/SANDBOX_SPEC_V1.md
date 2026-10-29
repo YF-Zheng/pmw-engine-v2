@@ -84,11 +84,15 @@ catalog. One Field with 2+2 source slots plus clock grows from 28/29 to 31 Laws.
 
 ## Remaining P1 Gates
 
-The first generic Process sidecar has bounded conversion, modification and
-expiry tests on the existing clock; it is NOT yet exposed in Alpha inventory,
-Action costs or generated SkillBlueprints. Template trust, topology permissions,
-global event/query/process budgets and seven-operator exposure still require
-integration. Controller activation currently scans entity maps for active
+The generic Process has bounded conversion, modification and expiry tests on
+the existing clock. The 2026-10-29 typed start increment exposes one trusted
+template through data-only SkillBlueprint, formal equipment and staged Action
+mana/time payment for player/NPC. Process and all Stock endpoints must be local
+to the acting Area. Controller Laws are trusted static checkpoint configuration,
+never candidate JSON. Material capability is not one-off inventory consumption.
+It is NOT exposed in Alpha inventory/UI or automatic NPC Observation/planning;
+Process modification, global event/query/process budgets and seven-operator
+exposure still require integration. Controller activation scans entity maps for active
 writer/instance checks; reducing this privileged preflight's global work is a
 future locality task, not an already-proved constant-work guarantee. A subset
 passing does not close P1. Ten contract scenarios must use the formal runtime.

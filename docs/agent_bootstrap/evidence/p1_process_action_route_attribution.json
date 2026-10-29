@@ -1,0 +1,110 @@
+{
+  "source": "allowlisted rollout turn_context; no identity prose or global config",
+  "sessions": [
+    {
+      "thread_id": "01a181f1-8fad-7161-a01f-04678ebd7df0",
+      "turn_contexts": [
+        {
+          "turn_id": "01a1826b-6e9a-7721-bd53-b5464c3829d4",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-28T12:58:34.710Z"
+        },
+        {
+          "turn_id": "01a18562-f9dc-7a00-a1aa-0f145ce7a7b8",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-29T02:00:20.189Z"
+        },
+        {
+          "turn_id": "01a1857c-aa3a-7783-ae31-740b99d42604",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-29T02:28:22.281Z"
+        },
+        {
+          "turn_id": "01a18599-6592-7d72-99a5-5d5ce3eab591",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-29T02:59:46.179Z"
+        },
+        {
+          "turn_id": "01a1859b-597d-7201-bed0-7c5ec6553f89",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-29T03:01:53.207Z"
+        },
+        {
+          "turn_id": "01a1859b-9e9e-7d02-9bae-b6e1ef43f609",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-29T03:02:10.999Z"
+        },
+        {
+          "turn_id": "01a1859d-6eff-7d91-8bb9-6bce3b07913c",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-29T03:08:38.680Z"
+        },
+        {
+          "turn_id": "01a185b2-ee8a-7473-b991-5763464078f6",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-29T03:27:40.503Z"
+        },
+        {
+          "turn_id": "01a185b4-78df-7611-89e8-48a10fd96d97",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-29T03:29:19.643Z"
+        },
+        {
+          "turn_id": "01a185b4-fabf-7270-bef0-ec609363ff91",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-29T03:29:52.935Z"
+        },
+        {
+          "turn_id": "01a185b7-8aea-7512-9311-d7516cb86eb1",
+          "model": "tencent/gpt-6.1-sol",
+          "timestamp": "2026-10-29T03:32:40.920Z"
+        }
+      ]
+    },
+    {
+      "thread_id": "01a18581-8caf-7910-92db-6e552a966b80",
+      "turn_contexts": [
+        {
+          "turn_id": "01a18581-8cd8-7943-91e3-4ad486a25d65",
+          "model": "tencent/deepseek-v4.1-flash",
+          "timestamp": "2026-10-29T02:54:02.477Z"
+        }
+      ]
+    },
+    {
+      "thread_id": "01a18581-f149-7cc0-8b4f-313b5abb8910",
+      "turn_contexts": [
+        {
+          "turn_id": "01a18581-f1a1-7523-9fea-fd565dffb048",
+          "model": "tencent/deepseek-v4.1-flash",
+          "timestamp": "2026-10-29T02:34:09.316Z"
+        }
+      ]
+    },
+    {
+      "thread_id": "01a185a0-453a-7b93-b3e4-e131a35d920e",
+      "turn_contexts": [
+        {
+          "turn_id": "01a185a0-4562-7300-8a3b-7690dfaf57b3",
+          "model": "tencent/deepseek-v4.1-flash",
+          "timestamp": "2026-10-29T03:07:16.715Z"
+        }
+      ]
+    },
+    {
+      "thread_id": "01a185b8-f938-7c30-a361-695eaec72b36",
+      "turn_contexts": [
+        {
+          "turn_id": "01a185b8-f96e-78e3-ad68-9440e6becaa9",
+          "model": "tencent/deepseek-v4.1-flash",
+          "timestamp": "2026-10-29T03:34:15.675Z"
+        },
+        {
+          "turn_id": "01a185c5-0ee7-7b20-bd2c-7fdb7fe88839",
+          "model": "tencent/deepseek-v4.1-flash",
+          "timestamp": "2026-10-29T03:47:26.630Z"
+        }
+      ]
+    }
+  ]
+}

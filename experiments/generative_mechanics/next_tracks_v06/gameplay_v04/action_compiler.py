@@ -6,6 +6,7 @@ from typing import Any, Iterable
 
 from .actions import ACTION_EVENT, ACTOR_COMPONENT, ActionRegistry
 from .contracts import GameplayContractError
+from .processes import PROCESS_START_EVENT
 from .runtime import GameplaySession, build_runtime
 from .status import DurationSpec, STATUS_CANCEL_EVENT, STATUS_COMPONENT, StatusSpec, neutral_status_slot
 from .shields import SHIELD_COMPONENT, SHIELD_SLOTS, neutral_shield_layer
@@ -150,6 +151,34 @@ def _effect_laws(action_id, action_version, action_hash, effect, status_slots, d
         return [{"id": prefix, "mode": "event", "priority": 100, "bindings": identity,
                  "when": {"all": conditions}, "effects": [{"op": "set", "target": f"${binding}.{STATUS_COMPONENT}",
                                                                "value": f"{value_root}.status_component"}]}]
+    if effect.kind == "process_start":
+        if effect.process_template_id is None:
+            raise GameplayContractError("compiled process_start requires process_template_id")
+        process_conditions = [
+            *conditions,
+            {"ref": "$event.payload.execution_kind", "eq": "primary"},
+        ]
+        return [{
+            "id": prefix,
+            "mode": "event",
+            "priority": 100,
+            "bindings": identity,
+            "when": {"all": process_conditions},
+            "effects": [{
+                "op": "emit_event",
+                "event": {
+                    "type": PROCESS_START_EVENT,
+                    "time": "$event.time",
+                    "source": "$event.source",
+                    "target": f"{value_root}.process_target_id",
+                    "payload": {
+                        "profile_id": f"{value_root}.process_profile_id",
+                        "profile_hash": f"{value_root}.process_profile_hash",
+                        "process_template_id": f"{value_root}.process_template_id",
+                    },
+                },
+            }],
+        }]
     raise GameplayContractError(f"unsupported compiled effect {effect.kind}")
 
 

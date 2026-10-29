@@ -92,3 +92,35 @@ QA draft/source-overlap evidence is preserved, not mislabeled as frozen
 baseline evidence. Full P1 remains open; next is the typed Process Action and
 material/Registry bridge, followed by all ten scenarios and resource budgets.
 No new game generator calls, UI victory shortcuts or Engine/tick fork.
+
+## 2026-10-29 Typed Process Action Increment
+
+Owner test recovery retained the original all-zero file and successful patch
+call IDs. Recovered run: 17 passed / 1 failed due to the fixture equipping NPC
+while only unloading player before disable. Normal NPC unload repaired the
+test; no registry guard or assertion was weakened. Owner run: 18 passed.
+Resumed focused Process/time run: 31 passed / 5 subtests; existing Gameplay
+cross-run: 230 passed / 125 subtests. All intermediate evidence is retained.
+
+Independent QA's initial five passing tests were not accepted as formal-entry
+evidence: its compound fixture directly rewrote equip/registry references.
+Revised compound skill is parsed from raw Blueprint under seven-point material
+authority and normally registered/equipped. Final independent run: 5 passed
+in 1.58s. Real post-activation emitted-event exception, late tick rollback of
+state/scheduler/revisions/stats, changed compiled-profile checkpoint rejection
+and basic-action Observation simulation are covered. Cost-modifier testing is
+explicitly trusted action-level; current Blueprint JSON cannot author it.
+Independent source/report: `P1_PROCESS_ACTION_REVIEW.md`.
+
+Main's complete frozen regression used the same Core/v06/Gameplay/Alpha/M0
+command as the previous sections, with TEMP/TMP inside the PMW repository:
+**742 passed, 3,141 subtests passed in 343.03s (0:05:43)**, exit code 0.
+All **271 Python source/test hashes** were unchanged during the run; no old
+tests were removed. Evidence: `evidence/p1_process_action_frozen_full_regression.txt`;
+command/timestamps/hashes: `evidence/p1_process_action_full_regression_meta.json`.
+
+Accept only the bounded trusted-template Process start and staged action/time
+bridge. No Alpha UI/inventory/Process planner, reagent-debit, dynamic template,
+full P1/P2 or generation-provider acceptance follows from this regression.
+Next independent target: typed Process modification through the same material,
+local owner, registry and transaction boundaries.

@@ -48,12 +48,20 @@ def make_content(base_registry: ActionRegistry, *, skills: tuple[SkillBlueprint,
                  ecology_by_area: Mapping[str, EcologyPlan] | None = None,
                  harvest_by_area: Mapping[str, tuple[HarvestSpec, ...]] | None = None,
                  stock_amounts_by_area: Mapping[str, Mapping[str, float]] | None = None,
-                 material_ids: tuple[str, ...] = ()) -> Gate3Content:
+                 material_ids: tuple[str, ...] = (),
+                 process_controller: Any = None) -> Gate3Content:
     skill_actions = tuple(item.action for item in skills)
     if set(base_registry.actions) & {item.id for item in skill_actions}:
         raise GameplayContractError("skill ID collides with an installed Action")
     hooks = (*base_registry.hooks.values(), *(passive_hook(item) for item in skills if item.kind == "passive_blueprint"))
-    registry = ActionRegistry((*base_registry.actions.values(), *skill_actions), base_registry.statuses.values(), hooks)
+    registry = ActionRegistry(
+        (*base_registry.actions.values(), *skill_actions),
+        base_registry.statuses.values(), hooks,
+        process_controller=(
+            base_registry.process_controller
+            if process_controller is None else process_controller
+        ),
+    )
     return Gate3Content(registry, skills, registry_manifest(skills),
                         MappingProxyType(dict(weather_by_area or {})),
                         MappingProxyType(dict(ecology_by_area or {})),
@@ -131,6 +139,7 @@ def initialize_content_world(world: WorldState, content: Gate3Content) -> WorldS
 
 
 def compile_content(content: Gate3Content) -> CompiledGate3Content:
+    controller = content.action_registry.process_controller
     laws = [
         *build_action_laws(content.action_registry),
         *build_weather_laws(content.weather_by_area, content.action_registry.statuses),
@@ -139,6 +148,7 @@ def compile_content(content: Gate3Content) -> CompiledGate3Content:
         *build_loadout_laws(),
         *build_registry_laws(),
         *build_time_budget_laws(),
+        *(() if controller is None else controller.laws),
     ]
     ids = [item["id"] for item in laws]
     if len(ids) != len(set(ids)):

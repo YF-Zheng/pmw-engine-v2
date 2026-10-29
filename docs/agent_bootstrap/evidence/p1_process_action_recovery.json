@@ -1,0 +1,15 @@
+{
+  "source_child": "01a18581-8caf-7910-92db-6e552a966b80",
+  "restored_file": "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\tests\\test_sandbox_process_action.py",
+  "corrupt_size": 33112,
+  "corrupt_sha256": "3e0704a4ff64c63d59a2b292f192beefda19c4d563be93b042c88b71be387ba1",
+  "replayed_successful_call_ids": [
+    "call_00_q7VysOdkaJY5cA61pSok4083",
+    "call_00_Ri5UflJxG6PvEzTEBPBG4525",
+    "call_00_xaOUnYBMuhPaSgXh39qb4218",
+    "call_00_zTjUdKrr9G6LCNFDhxdk6432"
+  ],
+  "restored_sha256": "5235a091e4cecf8c590cb92360edd9c6ad4b0d4847b1b63cffe04ac1a91876e4",
+  "syntax_valid": true,
+  "note": "Successful patches only, ordered forward hunk matching as apply_patch with trailing whitespace normalized; corruption cause unknown; no rollout commands executed."
+}

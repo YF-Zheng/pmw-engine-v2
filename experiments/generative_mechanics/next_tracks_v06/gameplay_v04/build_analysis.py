@@ -119,6 +119,7 @@ def semantics_from_action(action: ActionDefinition) -> ActionSemantics:
             "modify_field": f"field:{effect.field_id}:value",
             "modify_attractor": f"field:{effect.field_id}:target",
             "modify_rate": f"field:{effect.field_id}:rate",
+            "process_start": f"process:{effect.process_template_id}:state",
         }[effect.kind]
         delay = 1 if effect.kind == "modify_rate" else 0
         writes.append(SemanticWrite(scope, path, effect.kind, delay, f"effect:{effect.id}"))

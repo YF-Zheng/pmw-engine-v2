@@ -2,7 +2,7 @@
 
 日期：2026-10-29。契约：`DEVELOPMENT_CONTRACT.md`。
 工作分支：`feature/alpha-v02-seventh-night`。
-最后已验证旧版本：`1433e957d5391b880b71e92da4b5cf2ebd9751cd`。
+审计时可玩基线：`1433e957d5391b880b71e92da4b5cf2ebd9751cd`。
 
 ## Gates
 
@@ -14,10 +14,38 @@
   all be authored as one generated Alpha skill. Ten scenarios are the full gate.
 - 2026-10-29 bounded ecology curve fix: ACCEPTED. Frozen full regression:
   719 passed, 3,141 subtests passed in 373.46s; 269 source/test hashes unchanged.
+- 2026-10-29 bounded typed Process Action bridge: ACCEPTED. Frozen full
+  regression: 742 passed, 3,141 subtests passed in 343.03s; 271 hashes unchanged.
 - P2-P5: not started/accepted. No 30-skill IR corpus or 200-500 generated batch.
 - Existing Alpha playable baseline retained. No remote push/global config edit.
 
 ## Current Iteration
+
+2026-10-29 heartbeat increment, starting clean `fda6557`: typed process_start
+through existing SkillBlueprint/material capability/Action/Registry, with
+generic whole-action timed staging. Architecture and explicit file ownership:
+`P1_PROCESS_ACTION_INCREMENT.md`. Helmholtz implemented; interrupted Fermat
+and Lorentz did not deliver completed reviews. Goodall's revised independent
+QA and Main's full frozen regression now ACCEPT this bounded increment. Material
+capability gating is distinguished from future one-off inventory reagent costs.
+No game generator calls, Alpha/Engine rewrite or new clock.
+
+Recovery/resume 2026-10-29: user authorized writes only inside pmw-engine-v2.
+Interrupted original/resumed QA has no completed report. Goodall child
+`01a185b8-f938-7c30-a361-695eaec72b36` now owns five bounded independent
+review cases only. Main recovered the all-zero-content owner test from
+successful patch records and fixed its normal NPC unload prerequisite;
+18 owner tests pass. Existing Gameplay cross-regression: 230 tests and
+125 subtests pass. These recovery checks preceded the final accepted run.
+Revised independent QA: 5 passed; Main rejected and retained the initial
+admin-reference fixture instead of accepting its passing result. Final full
+regression: 742 passed / 3,141 subtests, 271 unchanged Python hashes.
+All original tests remain. Recent interrupted/resumed main turns and children
+are in the manifest; accounting is complete/within with Unknown 0. Cutoff
+2026-10-29T04:00:23.233Z: project reference CNY 76.27228859; safety reserve
+CNY 96.10692790. Bootstrap remains separate; closing tokens refresh later.
+
+Previous accepted iteration:
 
 2026-10-29 resumed P1 increment: ecology live baseline-curve dispatch. Starting
 checkpoint `e57b3c0`, clean worktree at entry. Actual three-tick counterexample
@@ -30,7 +58,7 @@ regression. Source selects current baseline curve with canonical formula IDs;
 staged/rebuilt/loaded continuations and complete causal traces match. No game
 generator calls. See `P1_ECOLOGY_CURVE_INCREMENT.md` for exact evidence.
 
-Previous accepted iteration:
+Earlier accepted iteration:
 
 Goal: restore missing generic semantics without touching the frozen Core or
 introducing a second clock, and fix real Alpha state-authority mismatches.
@@ -62,9 +90,10 @@ records to verify these main/child routes. Bootstrap expenses stay separate.
    not removing assertions in this patch.
 4. Core Event cascades can partially commit before later failure. Full action
    safety must use existing Gameplay staging. Bare runtime remains privileged.
-5. Current SkillBlueprint omits Process/Relation/drive and multi-trigger IR.
-6. New generic Process increment needs a verified Action/Registry/Alpha stock
-   bridge before generated skills can use it. Reference prices are estimates,
+5. Current SkillBlueprint now exposes bounded trusted-template process_start;
+   Process modification, Relation/drive and multi-trigger IR remain missing.
+6. The Process start Action/Registry bridge is verified; Alpha stock/UI,
+   Process modification and full IR/generator gates remain open. Reference prices are estimates,
    not verified provider account bills.
 7. Independent QA rejected the first no-recovery patch for formal domain-clamp
    and ecology zero-rate-policy gaps (first combined run 2 failed/691 passed).
@@ -85,13 +114,14 @@ records to verify these main/child routes. Bootstrap expenses stay separate.
 ## Recovery
 
 Current reviewed checkpoint: the local commit with subject
-`fix: select live ecology dynamics curves` (resolve with `git log -1`).
-Previous accepted checkpoint: `e57b3c0`. The current checkpoint includes the
-accepted bounded curve fix and final regression evidence, not full P1
-acceptance. No remote push. Next independent task: one typed stock-conversion
-Process action through existing staged Action/material authority, usable by
-player and NPC, with costs/rollback/registry replay. Then continue the remaining
-seven-Operator bridge and ten scenarios; do not jump to generated skills.
+`feat: bridge typed process starts through staged actions` (resolve with
+`git log -1`). Previous accepted checkpoint: `fda6557`; earlier `e57b3c0`.
+The current checkpoint includes the bounded Process start/transaction bridge,
+independent QA and frozen regression, not full P1 acceptance. No remote push.
+Next independent task: one typed Process modification action through the same
+owner/locality/registry/material/time gates, using existing bounded controller
+rate/duration/pause/resume semantics. Then complete the remaining Operator
+bridges and ten scenarios; do not jump to generated skills.
 
 Read status, audit, QA, spec, cost ledger and `project_run.json` first. The run
 manifest holds the exact managed main/child/turn IDs and task-stage assignments;
@@ -103,12 +133,15 @@ not P3 generation until full P1/P2 gates pass.
 
 ## Autonomous Continuation
 
-A real thread heartbeat named **PMW Sandbox 自主迭代** is ACTIVE in Codex
+A real thread heartbeat named **PMW Sandbox 自主迭代** is currently PAUSED in Codex
 (automation ID `pmw-sandbox`). It resumes this existing chat hourly, skips
 concurrent editing, reads checkpoints/ledger first and remains quiet unless
 there is a verified milestone, failure or user action. It enforces the stage
 gates and safety-adjusted ¥2,000 cap; unknown accounting stops further spend.
 The requested one-day run ends at **2026-10-29 20:10 Asia/Shanghai**, or earlier
 on user stop/budget exhaustion. Completion pauses the heartbeat and preserves
-the final checkpoint. The app/execution host must remain available for runs;
-this is not a detached service or a guarantee of uninterrupted execution.
+the final checkpoint. User manually resumed the current iteration with writes
+restricted to pmw-engine-v2. No automation/global configuration outside that
+directory is changed in this resumed run; app-side recurring execution remains
+paused. The app/execution host must remain available for future runs; this is
+not a detached service or a guarantee of uninterrupted execution.

@@ -130,3 +130,22 @@ Alpha已具探索/战斗/路径/终局/存档和UI；M0 Storm Relay现有测试�
 首先实施 P1.1 explicit none recovery；随后通用Stock/Process与七Operator
 Action桥接。具体文件所有权/任务顺序见 `ALPHA_DEV_PLAN.md`。
 Gameplay独立细审与QA补充见 `P0_GAMEPLAY_AUDIT.md` / `P0_BASELINE_QA.md`。
+
+## 2026-10-29 Bounded Capability Updates
+
+The tables above remain the P0 audit baseline, not the current implementation
+matrix. Subsequent accepted increments add explicit bounded no-recovery and
+live baseline-curve dispatch, plus trusted Stock conversion on the Gameplay
+clock. The typed Process start bridge is now formally parsed as an Effect and
+SkillBlueprint, capability/budget checked, registered/equipped and dispatched
+through the same player/NPC Action entry. Quantitative paid ticks use existing
+Process Laws; failed cascade/time requests retain no partial staged state.
+Controller profiles and endpoint bindings are trusted static content with
+local Area/owner checks and checkpoint comparison, never candidate JSON.
+
+Latest frozen full regression: 742 tests / 3,141 subtests passed, 271 unchanged
+Python hashes. Evidence and independent review: `P1_PROCESS_ACTION_INCREMENT.md`
+and `P1_PROCESS_ACTION_REVIEW.md`. No old baseline tests were discarded.
+Still missing: data-authored Process modification/drive/Relation bridges,
+full multi-trigger IR/global resource budgets, dynamic template generation,
+Alpha inventory/UI and Process Observation/planning. Full P1 remains open.
