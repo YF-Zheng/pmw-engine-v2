@@ -1,0 +1,25 @@
+{
+  "source_sha256_before": "9788ffc6e8a2a5e007e1c66d4bca9b9708a0facc2409616f386ac2bc2d9f90ab",
+  "source_sha256_after": "9788ffc6e8a2a5e007e1c66d4bca9b9708a0facc2409616f386ac2bc2d9f90ab",
+  "source_unchanged_during_probe": true,
+  "cases": [
+    {
+      "operation": "pure_prepare",
+      "duration": 1,
+      "accepted": true,
+      "expires_at": 1.0
+    },
+    {
+      "operation": "pure_prepare",
+      "duration": 4,
+      "accepted": true,
+      "expires_at": 4.0
+    },
+    {
+      "operation": "native_modify",
+      "duration": 1,
+      "accepted": true
+    }
+  ],
+  "scope": "support native probe during C3 draft; no formal Skill/equipment/timing claim; no proxy-Relation placement edge"
+}

@@ -1,0 +1,36 @@
+{
+  "checkpoint": "9f7512279444dbf521fc32ea2734ebcde20564af",
+  "command": [
+    "C:\\Users\\orinzheng\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-ra",
+    "-p",
+    "no:cacheprovider",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\tests\\test_sandbox_relation_modifier.py",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\tests\\test_sandbox_drive_source.py",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\tests\\test_sandbox_drive_source_review.py",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\tests\\test_sandbox_process_action.py",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\tests\\test_sandbox_process_modify.py",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\tests\\test_sandbox_process_optional_fields.py",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\tests\\test_sandbox_process_rate_expiry.py"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 11.281,
+  "source_sha256": {
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/relations.py": "16d2be0aa61cc8716de76f166a9ace2b7e9660b5e6cb84ac2da1e0f016bdbd88",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/actions.py": "e3a2b989a317a15f204a8d8a71297e1d4cee70962571dd655cd5ce24cf823c87",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/effects.py": "f0f32975899665b8866d2b230275d73dfe7b75c8faf38a947120328929d339fd",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/action_compiler.py": "ff278ecbb9a7354f7bb925867e9497432f19facc3ace6012d3d24b783bff13d9",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skills.py": "5e6569c1ad5bbe3304077f8dcdc0e54349f9a75140a470059fa09d5d32b1102a",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/content_compiler.py": "93627111cb00dbd99f80bfb7996e6f4af1daf811f6431e24bc836d136b6c96c7",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/registry.py": "db47d0d085d6d00e5804d67353f06db6ec81543ded193ffff236695f151f093d",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/build_analysis.py": "59b79bda3a1015863f9a01d1f7fdb32df1aacf5d87c0522b91d99f4845a9c5c3",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/simulation.py": "1d50fa0eba3b1527ccb1d3b1618b78bebca3f9c69a6f7404acadf0e294a0f1f0",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_relation_modifier.py": "ad668488f83796a955cc48771b2f9016816213415e80f247386d46a6c92e19bc"
+  },
+  "changed_focused_source_paths": [],
+  "status": "passed",
+  "independent_qa_pending": true
+}

@@ -112,6 +112,16 @@
       "id": "01a18663-0625-7c61-b1da-3dd878a44cca",
       "task": "C2 independent Drive source/expiry/transaction/replay QA",
       "stage": "P1"
+    },
+    {
+      "id": "01a18692-00dc-75f0-abd1-b649e9e0d2e2",
+      "task": "C3 typed owned existing-Relation overlay implementation",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18692-6567-7d50-ac18-c35fb2a1ba13",
+      "task": "C3 independent Relation current-base/expiry/transaction/replay QA",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -168,9 +178,14 @@
         "task": "c2",
         "main_end_ordinal": 3974,
         "snapshot": "docs\\agent_bootstrap\\evidence\\c2_cost_snapshot.json"
+      },
+      {
+        "task": "c3",
+        "main_end_ordinal": 4281,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\c3_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 3974,
-    "current_task": "c2"
+    "main_ordinal_cursor": 4281,
+    "current_task": "c3"
   }
 }

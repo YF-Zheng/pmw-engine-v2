@@ -1,0 +1,19 @@
+test_atomic_activation_denials_owner_type_marker_scope_limit_and_staleness (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_atomic_activation_denials_owner_type_marker_scope_limit_and_staleness) ... ok
+test_checkpoint_static_profile_mismatch_projection_and_basic_wait (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_checkpoint_static_profile_mismatch_projection_and_basic_wait) ... ok
+test_effect_schema_budget_scope_and_static_identity (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_effect_schema_budget_scope_and_static_identity) ... ok
+test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change) ... ok
+test_formal_player_npc_duration4_paid_ticks_and_downstream_state (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_formal_player_npc_duration4_paid_ticks_and_downstream_state) ... FAIL
+test_isolated_real_cascade_and_late_paid_tick_rollback (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_isolated_real_cascade_and_late_paid_tick_rollback) ... ok
+
+======================================================================
+FAIL: test_formal_player_npc_duration4_paid_ticks_and_downstream_state (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_formal_player_npc_duration4_paid_ticks_and_downstream_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 601, in test_formal_player_npc_duration4_paid_ticks_and_downstream_state
+    self.assertIs(component["effective_enabled"], expected_effective)
+AssertionError: True is not False
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.969s
+
+FAILED (failures=1)

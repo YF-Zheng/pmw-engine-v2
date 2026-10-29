@@ -44,6 +44,10 @@ and the 20:10 cutoff still apply. The paused heartbeat is not modified.
 
 ## Latest Accepted Iteration
 
+C3 bounded existing typed Relation enable/disable overlay is ACCEPTED. Full frozen regression: **804 passed, 3,226 subtests passed in415.43s**, exit0; all282 Python hashes unchanged. Independent QA six methods, owner five methods, Main cross-focus64/48 pass. Main complementary timed parsed/equipped enable player/NPC actually match .modify.on, pay Mana1/Tick1, change opt-in downstream availability false->true, and expire to current disabled base. Independent QA formal disable/current-base/expiry/cascade/late-tick/replay remains separately attributed. Reports: C3_RELATION_MODIFIER_INCREMENT.md / C3_RELATION_MODIFIER_REVIEW.md. Metadata/log: evidence/c3_relation_frozen_full_regression_meta.json / c3_relation_frozen_full_regression.txt. All89 previously tracked test files at9f75122 remain byte-for-byte unchanged. Engine/clock/Observation/Alpha are untouched. No graph creation/deletion/retarget, generic travel/locality availability integration, Alpha UI, full P1/P2 or generation claim. Next independent target: C4_CONDITION_BUDGET_DESIGN.md, then C4_PASSIVE_DISPATCH_DESIGN.md and remaining P1. Deadline20:10 +08:00 and all accounting/stop rules remain in force.
+
+## Previous C2 Iteration
+
 C2 bounded finite Stock-to-Field source is ACCEPTED: frozen full regression793 passed/3,195 subtests in388.43s, exit0, all279 Python hashes unchanged. Owner11/7, independent6 methods, Main focused53/30 and complementary8 denials pass. Reports: C2_STOCK_FIELD_DRIVE_INCREMENT.md / C2_STOCK_FIELD_DRIVE_REVIEW.md; complete metadata/log: evidence/c2_drive_frozen_full_regression_meta.json / c2_drive_frozen_full_regression.txt. Existing clock, Engine, staged Action, Observation, Alpha and all87 tracked test files at a4ad912 remain protected. Positive finite source only; no sinks/open source/universal Field units, Alpha UI, complete P1/P2 or generation claim. Local checkpoint subject: feat: add bounded stock-fed field sources. Next independent task C3_RELATION_MODIFIER_DESIGN.md, then C4_CONDITION_BUDGET_DESIGN.md and remaining P1 gates.
 
 ## Previous C1 Iteration
@@ -221,3 +225,22 @@ restricted to pmw-engine-v2. No automation/global configuration outside that
 directory is changed in this resumed run; app-side recurring execution remains
 paused. The app/execution host must remain available for future runs; this is
 not a detached service or a guarantee of uninterrupted execution.
+
+## C3 Current Target
+
+C2 checkpoint9f7512279444dbf521fc32ea2734ebcde20564af is saved locally, clean before C3 dispatch. Darwin/Copernicus actual child IDs are registered P1 in project_run.json. C3 existing typed Relation owned overlay is now implementation/independent-QA active, not accepted. Separate real Relation components and current-base expiry semantics per C3_RELATION_MODIFIER_DESIGN.md; no travel-selector/full-P1 claim. Main continues without changing the paused heartbeat or global configuration.
+
+### Verified Remaining C4 Gaps
+
+Deep condition input produces RecursionError and a100-child logical tree is
+accepted without a complexity ceiling at9f75122. Separately, a normal parsed/
+registered/equipped damage_resolved shield passive does not auto-dispatch on a
+real paid NPC basic_attack: ownerHP40->30,shield0->0; Action trace lacks a
+semantic notification. Evidence: c4_condition_budget_before.json and
+c4_passive_dispatch_before.json. Helper HookLineage/execute_hook tests are not
+the formal automatic passive scenario6 gate. C4 designs are queued after C3;
+these baseline gaps are not silently fixed or mislabeled as new C3 defects.
+
+## C3 Current Cost Cutoff
+
+At16:05:07 +08:00: project CNY159.69897245, safety reserve201.22875444/2000, P1 reserve163.57882178/400. Complete attribution, Unknown0. Closing usage awaits next refresh; c3_cost_snapshot.json subset included once. Continue C4.1 then automatic damage passive.

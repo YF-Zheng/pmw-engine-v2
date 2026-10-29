@@ -1,0 +1,86 @@
+{
+  "status": "initial_fixture_assertion_failed",
+  "root_cause": "Inspect staged-session identity and postconditions; initial command exited1 before saving evidence.",
+  "rows": [
+    {
+      "actor": "player_actor",
+      "before": {
+        "profile_id": "supply_modifier",
+        "profile_hash": "4941697308c8948044f090d5cded38f5f138d829de6237f527427c9a20324c34",
+        "owner": "player_actor",
+        "base_enabled": false,
+        "effective_enabled": false,
+        "active": false,
+        "enabled": null,
+        "started_at": null,
+        "expires_at": null,
+        "expiry_handle": null
+      },
+      "after": {
+        "profile_id": "supply_modifier",
+        "profile_hash": "4941697308c8948044f090d5cded38f5f138d829de6237f527427c9a20324c34",
+        "owner": "player_actor",
+        "base_enabled": false,
+        "effective_enabled": true,
+        "active": true,
+        "enabled": true,
+        "started_at": 0.0,
+        "expires_at": 4.0,
+        "expiry_handle": "pmw:v04:relation-expiry:supply_modifier:cd3abd6ec3f44912d85e3d1e"
+      },
+      "available": true,
+      "matched": [
+        "pmw.v04.action.enable_supply_modifier.v1.4f66825f8c1d.cost",
+        "pmw.v04.action.enable_supply_modifier.v1.4f66825f8c1d.effect.change_link",
+        "pmw.v04.sandbox.relation.supply_modifier.modify.on"
+      ],
+      "mana": 19.0,
+      "time": {
+        "duration": 1,
+        "before": 20,
+        "after": 19
+      },
+      "original_session_same": false
+    },
+    {
+      "actor": "npc_actor",
+      "before": {
+        "profile_id": "npc_supply_modifier",
+        "profile_hash": "495f98918635d98186a26d5a52d31a9dabfebf11bc17ea174054e08eb23ee208",
+        "owner": "npc_actor",
+        "base_enabled": false,
+        "effective_enabled": false,
+        "active": false,
+        "enabled": null,
+        "started_at": null,
+        "expires_at": null,
+        "expiry_handle": null
+      },
+      "after": {
+        "profile_id": "npc_supply_modifier",
+        "profile_hash": "495f98918635d98186a26d5a52d31a9dabfebf11bc17ea174054e08eb23ee208",
+        "owner": "npc_actor",
+        "base_enabled": false,
+        "effective_enabled": true,
+        "active": true,
+        "enabled": true,
+        "started_at": 1.0,
+        "expires_at": 5.0,
+        "expiry_handle": "pmw:v04:relation-expiry:npc_supply_modifier:b42a51aa5e4e2e46bfcfdd1a"
+      },
+      "available": true,
+      "matched": [
+        "pmw.v04.action.enable_npc_supply_modifier.v1.b1df2b6844a9.cost",
+        "pmw.v04.action.enable_npc_supply_modifier.v1.b1df2b6844a9.effect.change_link",
+        "pmw.v04.sandbox.relation.npc_supply_modifier.modify.on"
+      ],
+      "mana": 19.0,
+      "time": {
+        "duration": 1,
+        "before": 19,
+        "after": 18
+      },
+      "original_session_same": false
+    }
+  ]
+}

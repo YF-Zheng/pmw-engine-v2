@@ -82,7 +82,8 @@ class ActionOutcome:
 
 class ActionRegistry:
     def __init__(self, actions: Iterable[ActionDefinition], statuses: Iterable[StatusSpec] = (), hooks: Iterable[Any] = (),
-                 *, process_controller: Any = None, drive_controller: Any = None):
+                 *, process_controller: Any = None, drive_controller: Any = None,
+                 relation_controller: Any = None):
         action_items, status_items, hook_items = tuple(actions), tuple(statuses), tuple(hooks)
         if len({x.id for x in action_items}) != len(action_items): raise GameplayContractError("duplicate action id")
         if len({x.id for x in status_items}) != len(status_items): raise GameplayContractError("duplicate status id")
@@ -98,8 +99,15 @@ class ActionRegistry:
             from .drives import DriveController
             if not isinstance(drive_controller, DriveController):
                 raise GameplayContractError("drive_controller must be a trusted DriveController")
+        if relation_controller is not None:
+            from .relations import RelationController
+            if not isinstance(relation_controller, RelationController):
+                raise GameplayContractError(
+                    "relation_controller must be a trusted RelationController"
+                )
         self.process_controller = process_controller
         self.drive_controller = drive_controller
+        self.relation_controller = relation_controller
         for hook in hook_items:
             action = self.actions.get(hook.action_id)
             if action is None or tuple(effect.id for effect in action.effects) != hook.effect_ids:
@@ -143,7 +151,7 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
     effects = tuple(parse_effect(item, statuses, f"{path}.effects[{i}]") for i, item in enumerate(raw["effects"]))
     if len({x.id for x in effects}) != len(effects): raise GameplayContractError(f"{path}.effects contains duplicate IDs")
     control_effects = {
-        "process_start", "process_modify", "drive_source",
+        "process_start", "process_modify", "drive_source", "relation_modifier",
     }
     controls = sum(effect.kind in control_effects for effect in effects)
     process_controls = sum(
@@ -172,6 +180,8 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
             keys = (f"process:{effect.process_template_id}:configuration",)
         if effect.kind == "drive_source":
             keys = (f"drive:{effect.drive_profile_id}:source",)
+        if effect.kind == "relation_modifier":
+            keys = (f"relation:{effect.relation_profile_id}:enabled",)
         for key in keys:
             footprint = (effect.target.kind, effect.target.relation_type, key)
             if footprint in footprints: raise GameplayContractError(f"{path}.effects contains conflicting writes")
@@ -248,7 +258,8 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
     outcomes = []
     reservations: list[tuple[str, str, dict]] = []
     for effect in definition.effects:
-        if (effect.kind in {"process_start", "process_modify", "drive_source"}
+        if (effect.kind in {"process_start", "process_modify", "drive_source",
+                           "relation_modifier"}
                 and execution_kind != "primary"):
             raise GameplayContractError(f"{effect.kind} is supported only for active primary execution")
         targets = resolve_selector(session.state, effect.target, context, definition.capability)
@@ -400,6 +411,61 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
             raise GameplayContractError(
                 "drive_source cascade did not activate the validated Drive"
             )
+    relation_rows = [
+        row for row in outcomes
+        if row["kind"] == "relation_modifier" and row["status"] == "applied"
+    ]
+    if relation_rows:
+        from .relations import (
+            RELATION_COMPONENT, RELATION_EXPIRE_EVENT, RELATION_MODIFY_EVENT,
+        )
+        row = relation_rows[0]
+        values = row["values"]
+        prepared = values["relation_prepared"]
+        relation_id = values["relation_target_id"]
+        expected_law_id = (
+            f"pmw.v04.sandbox.relation.{values['relation_profile_id']}.modify."
+            f"{'on' if prepared['enabled'] else 'off'}"
+        )
+        relation_matched = any(
+            event.event.type == RELATION_MODIFY_EVENT
+            and event.event.target == relation_id
+            and any(
+                law.law_id == expected_law_id
+                for law in event.event_law_matches
+            )
+            for event in result.trace.events
+        )
+        relation = session.state.relations.get(relation_id)
+        component = (
+            relation.components.get(RELATION_COMPONENT)
+            if relation is not None else None
+        )
+        scheduled = [
+            event for event in session.state.scheduled_events
+            if event.id == prepared["expiry_handle"]
+        ]
+        if (
+            not relation_matched
+            or not isinstance(component, dict)
+            or component.get("profile_id") != prepared["profile_id"]
+            or component.get("profile_hash") != prepared["profile_hash"]
+            or component.get("owner") != prepared["owner"]
+            or not isinstance(component.get("base_enabled"), bool)
+            or component.get("effective_enabled") is not prepared["enabled"]
+            or component.get("active") is not True
+            or component.get("enabled") is not prepared["enabled"]
+            or component.get("started_at") != prepared["started_at"]
+            or component.get("expires_at") != prepared["expires_at"]
+            or component.get("expiry_handle") != prepared["expiry_handle"]
+            or len(scheduled) != 1
+            or scheduled[0].type != RELATION_EXPIRE_EVENT
+            or scheduled[0].time != prepared["expires_at"]
+            or scheduled[0].target != relation_id
+        ):
+            raise GameplayContractError(
+                "relation_modifier cascade did not activate the validated Relation"
+            )
     return ActionOutcome(request, definition, quote, tuple(outcomes), result)
 
 
@@ -523,6 +589,10 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
         )
     if effect.kind == "drive_source":
         return _simulate_drive_source(
+            session, registry, request, effect, target_id, execution_kind
+        )
+    if effect.kind == "relation_modifier":
+        return _simulate_relation_modifier(
             session, registry, request, effect, target_id, execution_kind
         )
     if effect.kind in {"damage", "heal", "shield", "add_resource"}:
@@ -736,6 +806,77 @@ def _resolve_drive_profile(session, controller, profile_id, owner, area_id):
     if len(local) != 1:
         raise GameplayContractError(
             "Drive profile scope is missing, ambiguous, or remote for this Area"
+        )
+    return local[0]
+
+
+def _simulate_relation_modifier(
+    session, registry, request, effect, target_id, execution_kind
+):
+    controller = registry.relation_controller
+    if controller is None:
+        raise GameplayContractError(
+            "relation_modifier requires a trusted RelationController"
+        )
+    if execution_kind != "primary":
+        raise GameplayContractError(
+            "relation_modifier is supported only for active primary execution"
+        )
+    profile = _resolve_relation_profile(
+        session, controller, effect.relation_profile_id,
+        request.actor_id, target_id,
+    )
+    if profile.relation_type not in registry.actions[request.action_id].capability.relation_types:
+        raise GameplayContractError(
+            "relation_modifier action capability does not authorize the trusted Relation type"
+        )
+    prepared = controller.prepare_modify(
+        session,
+        profile.id,
+        owner=request.actor_id,
+        enabled=effect.relation_enabled,
+        duration_ticks=effect.duration,
+    )
+    if prepared["profile_hash"] != profile.profile_hash:
+        raise GameplayContractError("Relation profile changed during preflight")
+    return {
+        "effect_id": effect.id,
+        "kind": effect.kind,
+        "status": "applied",
+        "target_id": target_id,
+        "amount": 0.0,
+        "values": {
+            "relation_profile_id": profile.id,
+            "relation_profile_hash": profile.profile_hash,
+            "relation_target_id": profile.relation_id,
+            "relation_area_id": profile.area_id,
+            "relation_prepared": prepared,
+        },
+        "attribute_terms": (),
+    }
+
+
+def _resolve_relation_profile(session, controller, profile_id, owner, area_id):
+    matches = [
+        profile for profile in controller.profiles
+        if profile.id == profile_id and profile.owner == owner
+    ]
+    if not matches:
+        raise GameplayContractError(
+            "no Relation profile matches the requested profile and owner"
+        )
+    area = session.state.entities.get(area_id)
+    if area is None or "pmw_gameplay_area" not in area.components:
+        raise GameplayContractError("relation_modifier target is not an Area")
+    local = [
+        profile for profile in matches
+        if profile.area_id == area_id
+        and _endpoint_area(session, profile.source_entity_id) == area_id
+        and _endpoint_area(session, profile.target_entity_id) == area_id
+    ]
+    if len(local) != 1:
+        raise GameplayContractError(
+            "Relation profile scope is missing, ambiguous, or remote for this Area"
         )
     return local[0]
 

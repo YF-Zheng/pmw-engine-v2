@@ -1,0 +1,58 @@
+test_atomic_activation_denials_owner_type_marker_scope_limit_and_staleness (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_atomic_activation_denials_owner_type_marker_scope_limit_and_staleness) ... ok
+test_checkpoint_static_profile_mismatch_projection_and_basic_wait (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_checkpoint_static_profile_mismatch_projection_and_basic_wait) ... FAIL
+test_effect_schema_budget_scope_and_static_identity (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_effect_schema_budget_scope_and_static_identity) ... FAIL
+test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change) ... ERROR
+test_formal_player_npc_duration4_paid_ticks_and_downstream_state (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_formal_player_npc_duration4_paid_ticks_and_downstream_state) ... FAIL
+test_isolated_real_cascade_and_late_paid_tick_rollback (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_isolated_real_cascade_and_late_paid_tick_rollback) ... ok
+
+======================================================================
+ERROR: test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 610, in test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change
+    _modify(session, controller, profile, enabled=True, duration=2)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 260, in _modify
+    return controller.modify(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\relations.py", line 197, in modify
+    prepared = self.prepare_modify(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\relations.py", line 157, in prepare_modify
+    _preflight(self, session, profile, owner=owner)
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\relations.py", line 527, in _preflight
+    raise GameplayContractError("trusted Relation source markers changed")
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: trusted Relation source markers changed
+
+======================================================================
+FAIL: test_checkpoint_static_profile_mismatch_projection_and_basic_wait (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_checkpoint_static_profile_mismatch_projection_and_basic_wait)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 894, in test_checkpoint_static_profile_mismatch_projection_and_basic_wait
+    self.assertFalse(_component(restored.session, profile)["active"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_effect_schema_budget_scope_and_static_identity (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_effect_schema_budget_scope_and_static_identity)
+----------------------------------------------------------------------
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: $.skill.budget.limit exceeds material authority
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 659, in test_effect_schema_budget_scope_and_static_identity
+    with self.assertRaisesRegex(GameplayContractError, "authorization"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "authorization" does not match "$.skill.budget.limit exceeds material authority"
+
+======================================================================
+FAIL: test_formal_player_npc_duration4_paid_ticks_and_downstream_state (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_formal_player_npc_duration4_paid_ticks_and_downstream_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 502, in test_formal_player_npc_duration4_paid_ticks_and_downstream_state
+    self.assertIs(component["base_enabled"], False)
+AssertionError: True is not False
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.915s
+
+FAILED (failures=3, errors=1)

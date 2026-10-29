@@ -1,0 +1,55 @@
+test_atomic_activation_denials_owner_type_marker_scope_limit_and_staleness (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_atomic_activation_denials_owner_type_marker_scope_limit_and_staleness) ... ok
+test_checkpoint_static_profile_mismatch_projection_and_basic_wait (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_checkpoint_static_profile_mismatch_projection_and_basic_wait) ... ok
+test_effect_schema_budget_scope_and_static_identity (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_effect_schema_budget_scope_and_static_identity) ... ok
+test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change) ... ok
+test_formal_player_npc_duration4_paid_ticks_and_downstream_state (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_formal_player_npc_duration4_paid_ticks_and_downstream_state) ... ERROR
+test_isolated_real_cascade_and_late_paid_tick_rollback (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_isolated_real_cascade_and_late_paid_tick_rollback) ... ok
+
+======================================================================
+ERROR: test_formal_player_npc_duration4_paid_ticks_and_downstream_state (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_formal_player_npc_duration4_paid_ticks_and_downstream_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 517, in test_formal_player_npc_duration4_paid_ticks_and_downstream_state
+    runtime, _ = _runtime(
+                 ^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 485, in _runtime
+    change_loadout(
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\loadout.py", line 105, in change_loadout
+    result = session.runtime.run_event(Event(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\runtime\session.py", line 132, in run_event
+    return self.engine._run_runtime(self, event)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\engine.py", line 182, in _run_runtime
+    proposal_serial, event_serial, microstep, settled_events = self._settle_state(
+                                                               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\engine.py", line 207, in _settle_state
+    proposals, proposal_serial, event_serial = self._collect("state", runtime, event, root_id, proposal_serial, event_serial, event_trace, trace)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\engine.py", line 244, in _collect
+    for bindings in self._matcher(law, snapshot, event, context=context, plan=self.match_plans[law.law_id]):
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\matching\matcher.py", line 84, in match_law
+    walk(seeds); out.sort(key=lambda row: tuple(row[name].id for name in sorted(law.bindings))); stats.matches_returned=len(out); return out
+    ^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\matching\matcher.py", line 77, in walk
+    stats.candidate_rows_examined += 1; bindings[name]=candidate; stats.partial_bindings_created += 1; walk(bindings, checked); del bindings[name]
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\matching\matcher.py", line 81, in walk
+    stats.candidate_rows_examined += 1; bindings[name]=candidate; stats.partial_bindings_created += 1; walk(bindings, checked); del bindings[name]
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\matching\matcher.py", line 46, in walk
+    if not evaluate(clause.expression, world, event, bindings): stats.early_predicate_prunes += 1; return
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\dsl.py", line 102, in evaluate
+    left = _resolve(expression["ref"], world, event, bindings)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\dsl.py", line 148, in _resolve
+    if part not in current.components: raise DSLResolutionError(f"reference={reference} missing component={part}")
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pmw.dsl.DSLResolutionError: reference=$area.pmw_gameplay_relation_review.available missing component=pmw_gameplay_relation_review
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.111s
+
+FAILED (errors=1)

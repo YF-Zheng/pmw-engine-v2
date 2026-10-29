@@ -15,7 +15,7 @@ from .status import StatusSpec
 
 EFFECT_KINDS = ("damage", "heal", "shield", "add_resource", "apply_status", "modify_field",
                 "modify_attractor", "modify_rate", "grant_trait", "process_start",
-                "process_modify", "drive_source")
+                "process_modify", "drive_source", "relation_modifier")
 
 
 @dataclass(frozen=True, slots=True)
@@ -39,6 +39,8 @@ class EffectSpec:
     process_remaining_ticks: int | None = None
     drive_profile_id: str | None = None
     drive_rate: float | None = None
+    relation_profile_id: str | None = None
+    relation_enabled: bool | None = None
 
 
 def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.effect") -> EffectSpec:
@@ -55,6 +57,7 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
         "process_start": {"process_template_id"},
         "process_modify": {"process_template_id"} | process_modify_optional,
         "drive_source": {"drive_profile_id", "drive_rate", "duration"},
+        "relation_modifier": {"relation_profile_id", "relation_enabled", "duration"},
     }
     if kind not in fields: raise GameplayContractError(f"{path}.kind is invalid")
     allowed = common | optional | fields[kind]
@@ -118,6 +121,46 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
                 or not isinstance(raw["duration"], int)
                 or raw["duration"] < 1):
             raise GameplayContractError(f"{path}.duration must be a positive integer")
+    relation_profile_id = raw.get("relation_profile_id")
+    relation_enabled = None
+    if kind == "relation_modifier":
+        if target.kind != "current_area":
+            raise GameplayContractError(
+                f"{path}.target must be current_area for relation_modifier"
+            )
+        if raw["commitment"] != "required":
+            raise GameplayContractError(
+                f"{path}.commitment must be required for relation_modifier"
+            )
+        if terms:
+            raise GameplayContractError(
+                f"{path}.attribute_terms are not allowed for relation_modifier"
+            )
+        if targeting != {"sensing": "none", "evadable": False}:
+            raise GameplayContractError(
+                f"{path}.targeting is not allowed for relation_modifier"
+            )
+        if (
+            not isinstance(relation_profile_id, str)
+            or not relation_profile_id
+            or len(relation_profile_id) > 128
+        ):
+            raise GameplayContractError(
+                f"{path}.relation_profile_id is invalid"
+            )
+        relation_enabled = raw["relation_enabled"]
+        if not isinstance(relation_enabled, bool):
+            raise GameplayContractError(
+                f"{path}.relation_enabled must be a strict boolean"
+            )
+        if (
+            isinstance(raw["duration"], bool)
+            or not isinstance(raw["duration"], int)
+            or raw["duration"] < 1
+        ):
+            raise GameplayContractError(
+                f"{path}.duration must be a positive integer"
+            )
     process_rate = None
     process_remaining_ticks = None
     if kind == "process_modify":
@@ -163,4 +206,5 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
     return EffectSpec(raw["id"], kind, target, raw["commitment"], condition, amount, resource,
                       field_id, trait, status_id, duration, terms, targeting["sensing"],
                       targeting["evadable"], process_template_id, process_rate,
-                      process_remaining_ticks, drive_profile_id, drive_rate)
+                      process_remaining_ticks, drive_profile_id, drive_rate,
+                      relation_profile_id, relation_enabled)

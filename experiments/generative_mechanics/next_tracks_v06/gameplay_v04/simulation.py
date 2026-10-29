@@ -248,7 +248,10 @@ def _registry_projection(registry: ActionRegistry, document: dict[str, Any]) -> 
         registry.actions[key] for key in sorted(action_ids)
         if key in registry.actions
         and not any(
-            effect.kind in {"process_start", "process_modify", "drive_source"}
+            effect.kind in {
+                "process_start", "process_modify", "drive_source",
+                "relation_modifier",
+            }
             for effect in registry.actions[key].effects
         )
     )

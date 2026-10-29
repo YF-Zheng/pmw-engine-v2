@@ -1,0 +1,14 @@
+test_formal_player_npc_duration4_paid_ticks_and_downstream_state (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_formal_player_npc_duration4_paid_ticks_and_downstream_state) ... FAIL
+
+======================================================================
+FAIL: test_formal_player_npc_duration4_paid_ticks_and_downstream_state (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_formal_player_npc_duration4_paid_ticks_and_downstream_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 502, in test_formal_player_npc_duration4_paid_ticks_and_downstream_state
+    self.assertIs(component["base_enabled"], False)
+AssertionError: True is not False
+
+----------------------------------------------------------------------
+Ran 1 test in 0.125s
+
+FAILED (failures=1)

@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "observed_utc": "2026-10-29T08:11:42.654191+00:00",
+  "cases": [
+    {
+      "actor": "player_actor",
+      "skill": "enable_supply_modifier",
+      "profile": "supply_modifier",
+      "before_effective": false,
+      "after_effective": true,
+      "base": false,
+      "started_at": 0.0,
+      "expires_at": 4.0,
+      "matched": [
+        "pmw.v04.action.enable_supply_modifier.v1.4f66825f8c1d.cost",
+        "pmw.v04.action.enable_supply_modifier.v1.4f66825f8c1d.effect.change_link",
+        "pmw.v04.sandbox.relation.supply_modifier.modify.on"
+      ],
+      "mana_after": 19.0,
+      "paid_duration": 1
+    },
+    {
+      "actor": "npc_actor",
+      "skill": "enable_npc_supply_modifier",
+      "profile": "npc_supply_modifier",
+      "before_effective": false,
+      "after_effective": true,
+      "base": false,
+      "started_at": 1.0,
+      "expires_at": 5.0,
+      "matched": [
+        "pmw.v04.action.enable_npc_supply_modifier.v1.b1df2b6844a9.cost",
+        "pmw.v04.action.enable_npc_supply_modifier.v1.b1df2b6844a9.effect.change_link",
+        "pmw.v04.sandbox.relation.npc_supply_modifier.modify.on"
+      ],
+      "mana_after": 19.0,
+      "paid_duration": 1
+    }
+  ],
+  "expiry_current_base": false,
+  "scheduled_after": [],
+  "source_unchanged": true,
+  "python_hash_count": 282,
+  "provenance": "Main complementary formal timed enable player/NPC. Detached trusted setup disables bases, opt-in downstream World Laws read effective. Independent QA covers formal off/shared bridge, not this standalone enable probe.",
+  "initial_failed_fixture": "Original check referenced pre-registry session; from_compiled_content creates an independent session. Debug evidence preserves this error, not a production defect."
+}

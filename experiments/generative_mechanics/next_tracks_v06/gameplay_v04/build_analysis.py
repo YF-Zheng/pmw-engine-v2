@@ -122,6 +122,7 @@ def semantics_from_action(action: ActionDefinition) -> ActionSemantics:
             "process_start": f"process:{effect.process_template_id}:state",
             "process_modify": f"process:{effect.process_template_id}:configuration",
             "drive_source": f"drive:{effect.drive_profile_id}:source",
+            "relation_modifier": f"relation:{effect.relation_profile_id}:enabled",
         }[effect.kind]
         delay = 1 if effect.kind == "modify_rate" else 0
         writes.append(SemanticWrite(scope, path, effect.kind, delay, f"effect:{effect.id}"))

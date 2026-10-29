@@ -1,0 +1,33 @@
+{
+  "checkpoint": "9f7512279444dbf521fc32ea2734ebcde20564af",
+  "source_sha256_before": {
+    "actions.py": "c708f4f593c9ce4b81115457f55891c4304b1e5f838b462bc30587e4f56dc78b",
+    "action_compiler.py": "d2b0f2a80e3044ee96875c189c08c4ac0720f4bc549b48ccc8f7b26bf1bc2e1c",
+    "hooks.py": "f4f4426d3593e3d2ac3ebbc12e87e2970e79d8e98124c78e18735d38382a161d"
+  },
+  "normal_registry_install_and_passive_equipment": true,
+  "passive_skill_id": "probe_protective_echo",
+  "installed_hook_ids": [
+    "passive_probe_protective_echo_v1"
+  ],
+  "before": {
+    "hp": 40.0,
+    "shield": 0
+  },
+  "after": {
+    "hp": 30.0,
+    "shield": 0
+  },
+  "paid_ticks": 1,
+  "remaining_after": 99,
+  "action_trace_event_types": [
+    "pmw.v04.action.resolve"
+  ],
+  "scope": "offline formal Gameplay probe, not browser playtest/game-generation call",
+  "expected_gap": "Equipped damage_resolved shield passive does not auto-dispatch when real basic_attack damages owner.",
+  "source_sha256_after": {
+    "actions.py": "c708f4f593c9ce4b81115457f55891c4304b1e5f838b462bc30587e4f56dc78b",
+    "action_compiler.py": "d2b0f2a80e3044ee96875c189c08c4ac0720f4bc549b48ccc8f7b26bf1bc2e1c",
+    "hooks.py": "f4f4426d3593e3d2ac3ebbc12e87e2970e79d8e98124c78e18735d38382a161d"
+  }
+}

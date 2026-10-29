@@ -1,0 +1,37 @@
+test_atomic_activation_denials_owner_type_marker_scope_limit_and_staleness (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_atomic_activation_denials_owner_type_marker_scope_limit_and_staleness) ... ok
+test_checkpoint_static_profile_mismatch_projection_and_basic_wait (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_checkpoint_static_profile_mismatch_projection_and_basic_wait) ... ok
+test_effect_schema_budget_scope_and_static_identity (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_effect_schema_budget_scope_and_static_identity) ... ok
+test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_exact_expiry_recast_stale_handle_current_base_and_support_marker_change) ... ok
+test_formal_player_npc_duration4_paid_ticks_and_downstream_state (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_formal_player_npc_duration4_paid_ticks_and_downstream_state) ... ERROR
+test_isolated_real_cascade_and_late_paid_tick_rollback (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_isolated_real_cascade_and_late_paid_tick_rollback) ... ok
+
+======================================================================
+ERROR: test_formal_player_npc_duration4_paid_ticks_and_downstream_state (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_relation_modifier_review.RelationModifierIndependentReviewTests.test_formal_player_npc_duration4_paid_ticks_and_downstream_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 532, in test_formal_player_npc_duration4_paid_ticks_and_downstream_state
+    player_result = _cast(runtime, "player_relation_cast", PLAYER, player_skill)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_relation_modifier_review.py", line 276, in _cast
+    return submit_timed_primary_action(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 555, in submit_timed_primary_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 296, in _resolve_action
+    result = session.runtime.run_event(Event(f"pmw:v04:action:{request.request_id}", ACTION_EVENT,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\runtime\session.py", line 132, in run_event
+    return self.engine._run_runtime(self, event)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\engine.py", line 182, in _run_runtime
+    proposal_serial, event_serial, microstep, settled_events = self._settle_state(
+                                                               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\src\pmw\engine.py", line 231, in _settle_state
+    raise NonConvergentWorldError(self.max_settle_iterations, sorted(settling_law_ids), sorted(settling_addresses), trace)
+pmw.engine.NonConvergentWorldError: State settling did not converge after 100 iterations; laws=['pmw.v04.review.relation.downstream_availability.npc_supply_modifier', 'pmw.v04.review.relation.downstream_availability.supply_modifier'], targets=['entity:workshop_area/pmw_gameplay_relation_review/available']
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.048s
+
+FAILED (errors=1)

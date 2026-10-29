@@ -50,7 +50,8 @@ def make_content(base_registry: ActionRegistry, *, skills: tuple[SkillBlueprint,
                  stock_amounts_by_area: Mapping[str, Mapping[str, float]] | None = None,
                  material_ids: tuple[str, ...] = (),
                  process_controller: Any = None,
-                 drive_controller: Any = None) -> Gate3Content:
+                 drive_controller: Any = None,
+                 relation_controller: Any = None) -> Gate3Content:
     skill_actions = tuple(item.action for item in skills)
     if set(base_registry.actions) & {item.id for item in skill_actions}:
         raise GameplayContractError("skill ID collides with an installed Action")
@@ -65,6 +66,10 @@ def make_content(base_registry: ActionRegistry, *, skills: tuple[SkillBlueprint,
         drive_controller=(
             base_registry.drive_controller
             if drive_controller is None else drive_controller
+        ),
+        relation_controller=(
+            base_registry.relation_controller
+            if relation_controller is None else relation_controller
         ),
     )
     if registry.drive_controller is not None and registry.process_controller is not None:
@@ -150,6 +155,7 @@ def initialize_content_world(world: WorldState, content: Gate3Content) -> WorldS
 def compile_content(content: Gate3Content) -> CompiledGate3Content:
     controller = content.action_registry.process_controller
     drive_controller = content.action_registry.drive_controller
+    relation_controller = content.action_registry.relation_controller
     if drive_controller is not None and controller is not None:
         _assert_drive_process_stock_exclusion(drive_controller, controller)
     laws = [
@@ -162,6 +168,7 @@ def compile_content(content: Gate3Content) -> CompiledGate3Content:
         *build_time_budget_laws(),
         *(() if controller is None else controller.laws),
         *(() if drive_controller is None else drive_controller.laws),
+        *(() if relation_controller is None else relation_controller.laws),
     ]
     ids = [item["id"] for item in laws]
     if len(ids) != len(set(ids)):

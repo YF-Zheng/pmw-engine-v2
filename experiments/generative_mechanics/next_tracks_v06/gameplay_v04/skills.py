@@ -24,7 +24,7 @@ _EFFECT_COST = {
     "apply_status": 3.0, "modify_field": 2.0, "modify_attractor": 3.0,
     "modify_rate": 3.0, "grant_trait": 3.0,
     "process_start": 5.0, "process_modify": 5.0,
-    "drive_source": 5.0,
+    "drive_source": 5.0, "relation_modifier": 5.0,
 }
 
 
@@ -89,7 +89,9 @@ def parse_skill_blueprint(raw: Any, statuses: Mapping[str, StatusSpec], authorit
     effects = tuple(parse_effect(item, statuses, f"{path}.effects[{i}]") for i, item in enumerate(raw["effects"]))
     if len({item.id for item in effects}) != len(effects):
         raise GameplayContractError(f"{path}.effects contains duplicate IDs")
-    control_effects = {"process_start", "process_modify", "drive_source"}
+    control_effects = {
+        "process_start", "process_modify", "drive_source", "relation_modifier",
+    }
     controls = sum(item.kind in control_effects for item in effects)
     process_controls = sum(
         item.kind in {"process_start", "process_modify"} for item in effects

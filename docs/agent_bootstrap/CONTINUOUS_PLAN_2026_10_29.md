@@ -31,8 +31,8 @@ heartbeat remains paused; this is continuous work in the current active turn.
 | --- | --- | --- |
 | C1 | Fix rate-only Process false rejection and genuine optional-schema defect; native/formal timed player/NPC, rollback/replay; 776 tests/3,180 subtests, 276 immutable hashes | accepted a4ad912 |
 | C2 | Bounded finite Stock-fed Field source on existing clock; explicit source/conservation, local authority, duration/ownership and staged Action tests | accepted:793/3,195,279 immutable hashes; local checkpoint |
-| C3 | Typed Relation modification using existing topology/lifecycle Laws; endpoint/type/scope/material rejection and actual downstream behavior | queued after C2 |
-| C4 | First bound shared condition parsing (actual depth1500 RecursionError/width100 accepted baseline); then close remaining P1 Operator/condition/lifecycle/resource-budget gaps and ten formal player/NPC scenarios | queued after C3; P1 not accepted |
+| C3 | Typed Relation modification using existing topology/lifecycle Laws; endpoint/type/scope/material rejection and actual downstream behavior | accepted804/3,226,282 immutable hashes; local checkpoint |
+| C4 | Bound shared condition parsing, then fix actual equipped damage-passive auto-dispatch gap; continue remaining P1 Operator/condition/lifecycle/budget gaps and ten formal player/NPC scenarios | C4.1 next after accepted C3; P1 not accepted |
 | C5 | Only after P1: versioned multi-trigger IR/typed selectors/conditions, one compiler/runtime and 30 data-only reference skills with adversarial/replay gates | gated by P1 |
 | C6 | Only after P2: real bounded Flash generation/evaluation, then Alpha generated-skill slice and public playtest-driven iteration | gated by P1 and P2 |
 
@@ -49,6 +49,13 @@ C4 condition design/baseline: C4_CONDITION_BUDGET_DESIGN.md and
 evidence/c4_condition_budget_before.json. Architecture/evidence preparation
 can run while C2 workers implement, but no C3/C4 production edits begin before
 the preceding source freeze, independent review, full regression and checkpoint.
+
+Further real C4 follow-up: a normally registered/equipped damage_resolved
+shield passive did not respond to a paid NPC attack (HP40->30,shield0->0,
+one paidTick, only Action resolve event). Existing manual Hook helpers are
+not automatic scenario6 proof. See evidence/c4_passive_dispatch_before.json
+and C4_PASSIVE_DISPATCH_DESIGN.md. This is queued architecture, not a new
+accepted capability, Alpha browser playtest or game-generation call.
 
 ## C1 Frozen Policy
 
