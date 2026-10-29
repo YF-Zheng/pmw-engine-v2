@@ -1,0 +1,56 @@
+[
+  {
+    "step": 1,
+    "regime": "beta",
+    "baseline": {
+      "target": 0.2,
+      "target_weight": 1.0,
+      "rate": 0.0,
+      "curve": "none"
+    },
+    "diagnostics": {
+      "effective_target": 0.2,
+      "effective_rate": 0.0,
+      "effective_curve": "linear",
+      "unclamped": 0.5,
+      "clamp_loss": 0.0
+    },
+    "value": 0.5
+  },
+  {
+    "step": 2,
+    "regime": "beta",
+    "baseline": {
+      "target": 0.2,
+      "target_weight": 1.0,
+      "rate": 0.0,
+      "curve": "none"
+    },
+    "diagnostics": {
+      "effective_target": 0.2,
+      "effective_rate": 0.0,
+      "effective_curve": "linear",
+      "unclamped": 0.5,
+      "clamp_loss": 0.0
+    },
+    "value": 0.5
+  },
+  {
+    "step": 3,
+    "regime": "beta",
+    "baseline": {
+      "target": 0.2,
+      "target_weight": 1.0,
+      "rate": 0.0,
+      "curve": "none"
+    },
+    "diagnostics": {
+      "effective_target": 0.2,
+      "effective_rate": 0.0,
+      "effective_curve": "linear",
+      "unclamped": 0.5,
+      "clamp_loss": 0.0
+    },
+    "value": 0.5
+  }
+]

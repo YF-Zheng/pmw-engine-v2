@@ -69,3 +69,26 @@ Action/material/Registry access, global budgets/locality, and ecology base-curve
 transition semantics. No P2/P3/P4/P5 acceptance or new generation-provider
 calls follow from a green regression. Alpha save v0.3 deliberately rejects old
 v0.2 saves; compatibility migration remains an explicit future decision.
+
+## 2026-10-29 Ecology Curve Increment
+
+Independent QA: 9 tests and 5 subtests passed against frozen source hash
+`d057121d008fa5a1d4057fbf838fe4018a8d0386a72c7348664bb0ebe7d67dcb`.
+Owner tests: 9 tests and 6 subtests passed after correcting its contradictory
+two-Area draft assertion. Existing independent limitation test was strengthened
+to require the new curve from the next tick; its genuine pre-fix failure is
+retained in `evidence/p1_ecology_main_before.txt`.
+
+Main's complete frozen regression (same command as previous section):
+**719 passed, 3,141 subtests passed in 373.46s (0:06:13)**, exit code 0.
+All 269 recorded Python source/test hashes were unchanged during execution.
+Output: `evidence/p1_ecology_frozen_full_regression.txt`; hashes/timestamps:
+`evidence/p1_ecology_full_regression_meta.json`.
+
+This accepts the bounded live-baseline curve fix and canonical causal Law IDs.
+Actual before/after ticks, quantitative two-Area behavior, source layering,
+expiry and full-trace/stage/rebuild/load consistency are covered. Intermediate
+QA draft/source-overlap evidence is preserved, not mislabeled as frozen
+baseline evidence. Full P1 remains open; next is the typed Process Action and
+material/Registry bridge, followed by all ten scenarios and resource budgets.
+No new game generator calls, UI victory shortcuts or Engine/tick fork.

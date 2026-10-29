@@ -1,6 +1,6 @@
 # Sandbox v1: Frozen Boundaries
 
-日期：2026-10-28。规范来源：`DEVELOPMENT_CONTRACT.md`。
+日期：2026-10-29。规范来源：`DEVELOPMENT_CONTRACT.md`。
 此文档冻结复用边界，不代表 P1 已验收。
 
 ## Architecture
@@ -31,9 +31,12 @@ Gameplay `clock.next_step` / `last_completed_step` are the player tick counter.
 3. For each requested world tick, dispatch due schedules in `(time, event_id)`
    order, completing each causal cascade and state closure before the next root.
 4. Validate active curve priorities; dispatch one `pmw.v04.world_tick` event.
-5. Existing compiled laws calculate dynamics from the event's read state;
-   proposal resolution and publication are deterministic. State closure settles
-   resulting ecology/Discrete/Derived transitions. Clock completion is a Law.
+5. Existing compiled laws calculate dynamics from the event's read state.
+   Ecology transition event Laws read that SAME pre-event state, not the newly
+   evolved value. Their baseline writes publish alongside the old-baseline
+   dynamics; the next world tick selects the new baseline. Proposal resolution,
+   subsequent state-Law closure and publication are deterministic. Clock
+   completion is a Law. This clarifies existing semantics, not a phase change.
 6. Gameplay processes/hooks MUST join these phases, not add another clock.
    Explicit later-phase events may be lowered through the same Engine, but any
    phase change requires a versioned contract and ordering regression tests.
@@ -69,6 +72,15 @@ but is not a substitute for declaring a no-recovery mode. Existing default
 Blueprints and both old curves remain compatible. Every pre-existing
 linear/squared Law data entry matches the original HEAD lowering; only new
 override variants are added (evidence/p1_old_law_comparison.json).
+
+The 2026-10-29 ecology routing fix deliberately expands base-formula Laws:
+live `baseline.curve` chooses linear, squared or none without rebuilding the
+session. Canonical IDs (`base`, `base_distance_squared`, `base_none`) depend on
+the formula, not construction-time profile curve, so staged and reconstructed
+sessions have identical causal traces. Numerical expressions, rate limits,
+source layering and expiry are unchanged. Historical byte-parity evidence
+above belongs to the first increment; it is not a claim about this expanded
+catalog. One Field with 2+2 source slots plus clock grows from 28/29 to 31 Laws.
 
 ## Remaining P1 Gates
 

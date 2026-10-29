@@ -1,6 +1,6 @@
 # PMW Generative Sandbox Project Status
 
-日期：2026-10-28。契约：`DEVELOPMENT_CONTRACT.md`。
+日期：2026-10-29。契约：`DEVELOPMENT_CONTRACT.md`。
 工作分支：`feature/alpha-v02-seventh-night`。
 最后已验证旧版本：`1433e957d5391b880b71e92da4b5cf2ebd9751cd`。
 
@@ -12,10 +12,25 @@
   independently accepted; frozen full regression: 701 passed, 3,130 subtests
   passed in 342.67s. Full P1 NOT accepted. Existing mechanisms cannot yet
   all be authored as one generated Alpha skill. Ten scenarios are the full gate.
+- 2026-10-29 bounded ecology curve fix: ACCEPTED. Frozen full regression:
+  719 passed, 3,141 subtests passed in 373.46s; 269 source/test hashes unchanged.
 - P2-P5: not started/accepted. No 30-skill IR corpus or 200-500 generated batch.
 - Existing Alpha playable baseline retained. No remote push/global config edit.
 
 ## Current Iteration
+
+2026-10-29 resumed P1 increment: ecology live baseline-curve dispatch. Starting
+checkpoint `e57b3c0`, clean worktree at entry. Actual three-tick counterexample
+and strengthened-test failure recorded in `P1_ECOLOGY_CURVE_INCREMENT.md`.
+Goodall owns the bounded implementation; Descartes owns independent new QA;
+Main owns architecture, prior limitation assertion, accounting and acceptance.
+Both children have rollout `turn_context.model = tencent/deepseek-v4.1-flash`.
+This bounded increment is accepted after independent QA and frozen full
+regression. Source selects current baseline curve with canonical formula IDs;
+staged/rebuilt/loaded continuations and complete causal traces match. No game
+generator calls. See `P1_ECOLOGY_CURVE_INCREMENT.md` for exact evidence.
+
+Previous accepted iteration:
 
 Goal: restore missing generic semantics without touching the frozen Core or
 introducing a second clock, and fix real Alpha state-authority mismatches.
@@ -57,8 +72,10 @@ records to verify these main/child routes. Bootstrap expenses stay separate.
    forged shared-writer gaps are also guarded and covered by unchanged
    independent assertions. Final frozen full regression passed; intermediate
    failed-run evidence is retained in ALPHA_QA_REPORT.md.
-8. Older ecology baseline-curve transitions are not reflected by cached Field
-   profiles/Law base variants. Fix this before the full P1 dynamics gate.
+8. FIXED 2026-10-29: ecology baseline-curve transitions now select live base
+   variants on the next tick. Canonical base Law IDs are independent of rebuilt
+   profiles. This intentionally expands the Law catalog; no global constant-work
+   or corrupted-administrator-state guarantee is established.
 9. Alpha topology save schema changes require an explicit compatibility decision;
    this increment rejects v0.2 saves rather than inventing links from flags.
 10. Process controller preflight scans entity maps for active/writer checks;
@@ -68,11 +85,13 @@ records to verify these main/child routes. Bootstrap expenses stay separate.
 ## Recovery
 
 Current reviewed checkpoint: the local commit with subject
-`feat: checkpoint audited P1 sandbox increments` (resolve with `git log -1`).
-It includes the accepted bounded increments and final regression evidence, not
-full P1 acceptance. No remote push. Next independent task: repair the older
-ecology baseline-curve/compiled-profile mismatch with a real formal-tick
-regression, then continue the seven-Operator Action/material/Registry bridge.
+`fix: select live ecology dynamics curves` (resolve with `git log -1`).
+Previous accepted checkpoint: `e57b3c0`. The current checkpoint includes the
+accepted bounded curve fix and final regression evidence, not full P1
+acceptance. No remote push. Next independent task: one typed stock-conversion
+Process action through existing staged Action/material authority, usable by
+player and NPC, with costs/rollback/registry replay. Then continue the remaining
+seven-Operator bridge and ten scenarios; do not jump to generated skills.
 
 Read status, audit, QA, spec, cost ledger and `project_run.json` first. The run
 manifest holds the exact managed main/child/turn IDs and task-stage assignments;

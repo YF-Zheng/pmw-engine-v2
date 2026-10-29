@@ -1,0 +1,42 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ NoRecoveryEcologyIntegrationTests.test_none_ecology_transition_selects_live_baseline_on_next_tick _
+
+self = <test_sandbox_independent_qa.NoRecoveryEcologyIntegrationTests testMethod=test_none_ecology_transition_selects_live_baseline_on_next_tick>
+
+    def test_none_ecology_transition_selects_live_baseline_on_next_tick(self):
+        spec = _ecology(rate=0.0)
+        plan = sample_ecology(spec, 7)
+        content = make_content(basic_registry(), ecology_by_area={"eco_area": plan})
+        world = initialize_content_world(_world(), content)
+        session = build_content_session(world, compile_content(content))
+    
+        advance_world_tick(session)
+        first_field = session.state.entities["eco_area"].components[
+            "pmw_gameplay_dynamics"
+        ]["fields"]["temperature"]
+        self.assertEqual(first_field["baseline"]["curve"], "none")
+        self.assertEqual(first_field["diagnostics"]["effective_curve"], "linear")
+        advance_world_tick(session)
+        field = session.state.entities["eco_area"].components[
+            "pmw_gameplay_dynamics"
+        ]["fields"]["temperature"]
+        self.assertEqual(
+            session.state.entities["eco_area"].components[
+                "pmw_gameplay_ecology"
+            ]["current"],
+            "beta",
+        )
+        self.assertEqual(field["baseline"]["curve"], "none")
+        self.assertEqual(field["value"], 0.5)
+        # Ecology closure follows the dynamics read-state update; its new
+        # baseline governs the next tick without rebuilding the session.
+>       self.assertEqual(field["diagnostics"]["effective_curve"], "none")
+E       AssertionError: 'linear' != 'none'
+E       - linear
+E       + none
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_independent_qa.py:238: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_independent_qa.py::NoRecoveryEcologyIntegrationTests::test_none_ecology_transition_selects_live_baseline_on_next_tick
+1 failed, 7 deselected in 0.81s

@@ -1,0 +1,53 @@
+{
+  "note": "Main probe against observed working source; acceptance waits for frozen workers/full regression",
+  "source_sha256": "d057121d008fa5a1d4057fbf838fe4018a8d0386a72c7348664bb0ebe7d67dcb",
+  "law_catalog_counts": [
+    {
+      "initial_curve": "linear",
+      "before_laws": 28,
+      "after_laws": 31,
+      "canonical_ids_equal_to_linear": true
+    },
+    {
+      "initial_curve": "distance_squared",
+      "before_laws": 29,
+      "after_laws": 31,
+      "canonical_ids_equal_to_linear": true
+    },
+    {
+      "initial_curve": "none",
+      "before_laws": 28,
+      "after_laws": 31,
+      "canonical_ids_equal_to_linear": true
+    }
+  ],
+  "ticks": [
+    {
+      "step": 1,
+      "baseline_curve": "none",
+      "effective_curve": "linear",
+      "value": 0.5,
+      "matched_field_laws": [
+        "pmw.v04.dynamics.200.eco_area.temperature.base.all"
+      ]
+    },
+    {
+      "step": 2,
+      "baseline_curve": "none",
+      "effective_curve": "none",
+      "value": 0.5,
+      "matched_field_laws": [
+        "pmw.v04.dynamics.200.eco_area.temperature.base_none.all"
+      ]
+    },
+    {
+      "step": 3,
+      "baseline_curve": "none",
+      "effective_curve": "none",
+      "value": 0.5,
+      "matched_field_laws": [
+        "pmw.v04.dynamics.200.eco_area.temperature.base_none.all"
+      ]
+    }
+  ]
+}

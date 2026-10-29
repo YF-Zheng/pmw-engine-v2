@@ -208,15 +208,20 @@ class NoRecoveryEcologyIntegrationTests(unittest.TestCase):
         with self.assertRaises(GameplayContractError):
             parse_ecology_spec(_ecology_raw(rate=0.5))
 
-    def test_none_ecology_transition_does_not_recompile_baseline_curve(self):
+    def test_none_ecology_transition_selects_live_baseline_on_next_tick(self):
         spec = _ecology(rate=0.0)
         plan = sample_ecology(spec, 7)
         content = make_content(basic_registry(), ecology_by_area={"eco_area": plan})
         world = initialize_content_world(_world(), content)
         session = build_content_session(world, compile_content(content))
 
-        for _ in range(2):
-            advance_world_tick(session)
+        advance_world_tick(session)
+        first_field = session.state.entities["eco_area"].components[
+            "pmw_gameplay_dynamics"
+        ]["fields"]["temperature"]
+        self.assertEqual(first_field["baseline"]["curve"], "none")
+        self.assertEqual(first_field["diagnostics"]["effective_curve"], "linear")
+        advance_world_tick(session)
         field = session.state.entities["eco_area"].components[
             "pmw_gameplay_dynamics"
         ]["fields"]["temperature"]
@@ -228,10 +233,9 @@ class NoRecoveryEcologyIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(field["baseline"]["curve"], "none")
         self.assertEqual(field["value"], 0.5)
-        # Profiles are frozen at session construction, so a baseline curve
-        # change is not a new dynamic override. This is pre-existing ecology
-        # behavior, not a P1.1 regression.
-        self.assertEqual(field["diagnostics"]["effective_curve"], "linear")
+        # Ecology and dynamics read the same pre-event state. The baseline
+        # published by that tick governs the next tick without a rebuild.
+        self.assertEqual(field["diagnostics"]["effective_curve"], "none")
         self.assertEqual(field["diagnostics"]["effective_rate"], 0.0)
 
 

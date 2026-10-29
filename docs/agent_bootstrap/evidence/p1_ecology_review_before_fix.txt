@@ -1,0 +1,46 @@
+.F....                                                              [100%]
+================================== FAILURES ===================================
+_ EcologyTransitionReadStateReview.test_override_expiry_precedes_dynamics_and_then_uses_live_baseline _
+
+self = <test_sandbox_ecology_curve_review.EcologyTransitionReadStateReview testMethod=test_override_expiry_precedes_dynamics_and_then_uses_live_baseline>
+
+    def test_override_expiry_precedes_dynamics_and_then_uses_live_baseline(self):
+        session = _content({
+            "expiry_area": (
+                _field(target=1.0, rate=0.5, curve="linear"),
+                _ecology(
+                    "expiry_ecology",
+                    initial={"target": 1.0, "rate": 0.5, "curve": "linear"},
+                    target={"target": 0.0, "rate": 1.0, "curve": "distance_squared"},
+                    comparator="lte",
+                    threshold=0.5,
+                ),
+            ),
+        })
+        apply_source(
+            session,
+            entity_id="expiry_area",
+            field_id=FIELD,
+            layer="temporary",
+            source=DynamicsSource(
+                "review_freeze",
+                "review_oracle",
+                curve="none",
+                curve_priority=7,
+                duration_ticks=2,
+            ),
+        )
+    
+        advance_world_tick(session)
+        frozen = _field_state(session, "expiry_area")
+        self.assertEqual(_regime(session, "expiry_area"), "beta")
+        self.assertEqual(frozen["baseline"]["curve"], "distance_squared")
+>       self.assertEqual(frozen["diagnostics"]["effective_curve"], "none")
+E       AssertionError: 'linear' != 'none'
+E       - linear
+E       + none
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_ecology_curve_review.py:288: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_ecology_curve_review.py::EcologyTransitionReadStateReview::test_override_expiry_precedes_dynamics_and_then_uses_live_baseline
+1 failed, 5 passed, 5 subtests passed in 1.33s

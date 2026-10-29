@@ -98,3 +98,44 @@ Project reference total: **USD 5.27792717 / CNY 35.18477369**. Safety-reserved a
 Separate bootstrap probe: 33 responses, USD 0.35971320 / CNY 2.39799208; excluded from project totals.
 
 This is a reproducible observed snapshot, not a final account bill. The remaining closing response and later heartbeat turns must be appended/refreshed when their counters become available. Actual cache counts above are untouched; only the reference-price estimate uses 97%.
+
+## 2026-10-29 Live Ecology Increment Snapshot
+
+Observed cutoff: **2026-10-29T02:26:58.358Z**. Project snapshot: 788 responses, Unknown 0, malformed 0; status `complete`.
+
+Prices and reference FX remain pinned to the verified 2026-10-28 sources above; this is not a fresh price or FX query. Actual recorded cache remains separate from the 97% reference-cost assumption.
+
+### Project Cumulative
+
+| Family | Responses | Actual input | Actual cache | Actual output | Reasoning (included) | Reference USD |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| GPT | 174 | 26,067,845 | 24,314,796 | 87,934 | 24,899 | 4.97199181 |
+| DeepSeek | 614 | 83,750,886 | 81,398,144 | 630,305 | 185,883 | 1.99755417 |
+| Unknown | 0 | 0 | 0 | 0 | 0 | N/A (no records) |
+
+Project total: **USD 6.96954598 / CNY 46.46178132**. Safety reserve: **CNY 58.54418623 / 2,000**. Budget decision: `within_budget`.
+
+### Current Increment Only
+
+Main turn `01a18562-f9dc-7a00-a1aa-0f145ce7a7b8` and the two explicitly recorded new P1 children; prior iteration closing responses stay in cumulative totals, not this increment.
+
+| Family | Responses | Actual input | Actual cache | Actual output | Reasoning (included) | Reference USD |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| GPT | 52 | 5,835,078 | 5,477,190 | 24,605 | 7,668 | 1.16215729 |
+| DeepSeek | 144 | 21,182,743 | 20,820,864 | 118,646 | 13,939 | 0.45630343 |
+| Unknown | 0 | 0 | 0 | 0 | 0 | 0.00000000 |
+
+Current increment reference: USD 1.61846072 / CNY 10.78930654.
+
+| Stage | Reserved CNY | Limit CNY | Gate |
+| --- | ---: | ---: | --- |
+| P0 | 37.64993266 | 100.00 | within |
+| P1 | 20.89425358 | 400.00 | within |
+| P2 | 0.00000000 | 350.00 | within |
+| P3 | 0.00000000 | 200.00 | within |
+| P4 | 0.00000000 | 400.00 | within |
+| P5 | 0.00000000 | 400.00 | within |
+| Reserve | 0.00000000 | 150.00 | within |
+| MAX | 58.54418623 | 2000.00 | within |
+
+Bootstrap remains separate: USD 0.35971320, not added to project cost. Workers are closed. This cutoff cannot include all remaining closing tool calls/final-response tokens; refresh those on the next turn. No actual intranet invoice or account-wide charge is claimed.

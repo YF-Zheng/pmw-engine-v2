@@ -151,7 +151,10 @@ def _field_tick_laws(profile: FieldProfile, clock_id: str) -> list[dict]:
     ]
     variants: list[tuple[str, str, list[dict]]] = []
     no_override = [{"ref": f"{path}.curve_priority", "lt": 0} for path in slots]
-    variants.append(("base", field.curve, no_override))
+    for curve in CURVES:
+        conditions = no_override + [{"ref": f"{base}.baseline.curve", "eq": curve}]
+        variant = "base" if curve == "linear" else f"base_{curve}"
+        variants.append((variant, curve, conditions))
     for index, path in enumerate(slots):
         winner = [
             {"ref": f"{path}.active", "eq": True},

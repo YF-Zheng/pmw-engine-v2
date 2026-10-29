@@ -2,7 +2,8 @@
   "schema_version": 1,
   "main_session": "01a181f1-8fad-7161-a01f-04678ebd7df0",
   "project_turns": [
-    "01a1826b-6e9a-7721-bd53-b5464c3829d4"
+    "01a1826b-6e9a-7721-bd53-b5464c3829d4",
+    "01a18562-f9dc-7a00-a1aa-0f145ce7a7b8"
   ],
   "default_phase": "P0",
   "agents": [
@@ -35,6 +36,16 @@
       "id": "01a18279-a1c5-7230-8187-0455ef821f0d",
       "task": "Blind public-entry playtest",
       "stage": "P0"
+    },
+    {
+      "id": "01a18564-d568-7943-8ffa-e6511f048239",
+      "task": "Live ecology baseline-curve Law lowering and regression",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18565-131e-7971-8c7d-43ae60831ffc",
+      "task": "Independent ecology curve transition/replay review",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -44,7 +55,8 @@
     "01a18288-7f84-7a31-b52d-8f195ad52a4f": "P1",
     "01a1828b-344f-78a0-82e5-2643c24fb45c": "P1",
     "01a1828f-5862-7e61-9fa6-e20e0dbfd1ae": "P1",
-    "01a18291-11a7-75d1-9578-33edb3f9a7fb": "P1"
+    "01a18291-11a7-75d1-9578-33edb3f9a7fb": "P1",
+    "01a18562-f9dc-7a00-a1aa-0f145ce7a7b8": "P1"
   },
   "bootstrap": {
     "project_turn": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",

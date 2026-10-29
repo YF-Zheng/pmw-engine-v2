@@ -27,9 +27,11 @@
    reject capacity overflow, forbidden sources and competing resource writers.
 4. Accepted: fix the audited Alpha stale-time/flag-only-route defects through existing
    Gameplay clock and real PMW Relation Laws; preserve current game outcomes.
-5. Next: fix ecology baseline-curve transitions so the compiled Field law
-   follows the current authoritative baseline, with real-tick/replay tests.
-   P1.3: bridge seven catalog operators into existing staged Action/Registry;
+5. Accepted 2026-10-29: ecology baseline-curve dispatch uses live state with
+   canonical formula IDs; 719 full tests and 3,141 subtests passed. Next bounded
+   P1.3 slice: one typed Stock/Process conversion action through existing staged
+   Action/material authority with player/NPC, costs, rollback and registry
+   checkpoint replay. Then bridge seven catalog operators into Action/Registry;
    reuse material capabilities and topology validator, add bounded event/query
    budgets and lifecycle ownership. Run all ten scenarios including player/NPC.
 6. P2: versioned multi-trigger IR, typed conditions and bounded selectors;
@@ -53,8 +55,9 @@ to GPT root-cause analysis. Three ineffective iterations stop that direction.
 Never delete tests, bypass validation or modify victory flags to pass gates.
 No remote pushes or global Codex/Magpie configuration changes are required.
 
-Checkpoint verification: frozen full regression **701 passed, 3,130 subtests
-passed in 342.67s**. P0 accepted; only bounded P1 increments accepted, not the
+Checkpoint verification: latest frozen full regression **719 passed, 3,141
+subtests passed in 373.46s** (previous checkpoint: 701/3,130). P0 accepted;
+only bounded P1 increments accepted, not the
 full ten-scenario gate. No generation batch or P2 reference corpus was started.
 
 Current playable startup (PowerShell, repository root):
