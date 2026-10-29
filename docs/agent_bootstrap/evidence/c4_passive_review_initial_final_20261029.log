@@ -1,0 +1,24 @@
+...F.................                                       [100%]
+================================== FAILURES ===================================
+_______ PassiveDispatchContractTests.test_auto_hook_request_id_contract _______
+
+self = <test_sandbox_passive_dispatch_review.PassiveDispatchContractTests testMethod=test_auto_hook_request_id_contract>
+
+    def test_auto_hook_request_id_contract(self):
+        passive = _parse_passive(_shield_passive("request_identity"))
+        fixture = _equipped_pair(passive)
+        outcome = resolve_action(
+            fixture["session"],
+            fixture["registry"],
+            ActionRequest("request_identity_hit", NPC, "basic_attack", PLAYER),
+        )
+        fired = _fired_records(outcome)
+        self.assertEqual(len(fired), 1)
+        request_id = fired[0].outcome.request.request_id
+>       self.assertRegex(request_id, REQUEST_ID)
+E       AssertionError: Regex didn't match: 'auto_hook_[a-z0-9_]{1,55}\\Z' not found in 'ahafa086d21776790f0d0e6191c01c16d3c2e777e0b16a02f2b8bd9cb6c32e3'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_passive_dispatch_review.py:793: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_passive_dispatch_review.py::PassiveDispatchContractTests::test_auto_hook_request_id_contract
+1 failed, 20 passed, 13 subtests passed in 5.85s

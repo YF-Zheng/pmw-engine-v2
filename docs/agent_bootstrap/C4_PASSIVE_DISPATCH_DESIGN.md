@@ -169,3 +169,52 @@ Non-claims: only Action-produced damage notifications are serviced before paid
 Ticks; arbitrary World/Tick notifications, other legacy trigger labels,
 multi-trigger IR, forecasting/private projection, all global query/CPU budgets
 and full P1/P2 are not established by this repair. No Alpha UI or provider call.
+
+## Main Concrete Binding Scope Extension (16:59)
+
+Read-only draft review establishes a genuine interface gap: the existing
+ActionRegistry exposes Action canonical hashes and Hooks, but not the parsed
+Blueprint Skillhash binding. A World manifest match plus action ID/version
+cannot independently validate the actual passive Action+Hook bundle against
+the formal Skill source. Skillhash/Actionhash inequality is NOT an authority
+rule; it wrongly prevents the other Actor with the SAME parsed counter passive
+from firing when descendant damage is produced by that very Action.
+
+Implementation owner is now explicitly granted ONLY content_compiler.py,
+registry.py and checkpoint.py in addition to hooks/actions/action_compiler/new
+owner test. No other production scope extension or new worker. QA scope remains
+new independent test/report/evidence, never production. No oldtests/Engine/
+clock/Observation/Alpha/globalconfig changes.
+
+A frozen trusted passive binding is created from parsed SkillBlueprint and
+passive_hook: exact id/version/Skillhash, Actionhash and exact HookSpec (including
+id/condition/trigger/effect bundle/budgets). Candidate ActionRegistry.parse JSON
+cannot author the binding. make_content generates it from real skills, runtime
+_active_registry regenerates it from enabled stored blueprints while preserving
+trusted base bindings, and registry_configuration removes dynamic Skill bindings
+from base configuration. Checkpoint base hash includes any NONEMPTY trusted
+base bindings; preserve legacy empty-base hash/document where possible. Normal
+canonical Skill documents/checkpoint schema and rebuild regenerate dynamic
+bindings; no new mutable World authorization map or raw metadata substitution.
+Projection defaults to no binding/hidden authority. Bare hooks remain manual.
+
+Current-stage authority is rechecked for each sibling firing, not merely once
+per notification. Core clone/publication makes saved Actor object references
+stale after a hook; re-fetch current owner/attacker resources/live/loadout/
+cooldown/condition before the next sibling. Reauthorize exact enabled formal
+binding, not an earlier captured candidate list that can outlive World changes.
+Per-notification passive order is ascending equipped slot, FIFO notifications.
+
+A valid self-target damage Effect can emit to Action source even when the parent
+Action's target is None/another Actor. Authenticate notification target against
+actual prepared Effect row/trusted selector, not equality to Action target.
+Only positive actual hp_loss+shield absorption emits; zero accepted damage does
+not create a notification that later fails delta validation. Accepted emitter
+and actual scalar commit deltas/provenance still remain required. World closure
+may change final state afterward; do not compare only final actor HP/shield.
+
+These are Main architecture/source-review findings on a transitional draft,
+not invented passing/red product executions or repeated failed fix counts.
+Inconsistent evolving draft helper signatures/tuple arities and QA's raw
+unprefixed SHA request regex are classified separately as incomplete integration
+or fixture errors. No budget validation/test is weakened to match the draft.

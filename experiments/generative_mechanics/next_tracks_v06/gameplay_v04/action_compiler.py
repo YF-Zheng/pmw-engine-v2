@@ -109,6 +109,31 @@ def _effect_laws(action_id, action_version, action_hash, effect, status_slots, d
         if effect.kind in {"damage", "shield"}:
             effects.append({"op": "set", "target": f"${binding}.{SHIELD_COMPONENT}",
                             "value": f"{value_root}.shield_component"})
+        if effect.kind == "damage":
+            conditions = [
+                *conditions,
+                {"ref": f"{value_root}.resolved_damage", "gt": 0},
+            ]
+            effects.append({
+                "op": "emit_event",
+                "event": {
+                    "type": "pmw.v04.hook.damage_resolved",
+                    "time": "$event.time",
+                    "source": "$event.source",
+                    "target": f"${binding}.id",
+                    "payload": {
+                        "protocol": "pmw-gameplay-v0.4",
+                        "action_id": action_id,
+                        "action_hash": action_hash,
+                        "effect_id": effect.id,
+                        "actor_id": "$event.source",
+                        "target_actor_id": f"${binding}.id",
+                        "resolved_damage": f"{value_root}.resolved_damage",
+                        "hp_loss": f"{value_root}.hp_loss",
+                        "shield_absorbed": f"{value_root}.shield_absorbed",
+                    },
+                },
+            })
         result = [{"id": prefix, "mode": "event", "priority": 100, "bindings": identity,
                    "when": {"all": conditions}, "effects": effects}]
         if effect.kind == "add_resource" and effect.resource == "mana":

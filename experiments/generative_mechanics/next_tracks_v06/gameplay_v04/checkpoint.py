@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from dataclasses import asdict
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -160,7 +161,42 @@ def _base_registry_hash(registry: Any) -> str:
         "hooks": [(item.id, item.trigger, item.action_id, list(item.effect_ids))
                   for item in sorted(registry.hooks.values(), key=lambda row: row.id)],
     }
+    if registry.passive_bindings:
+        document["passive_bindings"] = [
+            [
+                item.skill_id,
+                item.skill_version,
+                item.skill_hash,
+                item.skill_kind,
+                item.action_hash,
+                item.hook.id,
+                item.hook.trigger,
+                _canonical_condition(item.hook.condition),
+                list(item.hook.effect_ids),
+                item.hook.action_id,
+                item.hook.max_firings_per_root,
+                item.hook.cooldown,
+            ]
+            for item in sorted(
+                registry.passive_bindings.values(),
+                key=lambda row: (row.skill_id, row.skill_version),
+            )
+        ]
     return _digest(document)
+
+
+def _canonical_condition(spec: Any) -> Any:
+    document = asdict(spec)
+    children = document.get("children")
+    if isinstance(children, tuple):
+        document["children"] = [
+            _canonical_condition(child) for child in spec.children
+        ]
+    elif isinstance(children, list):
+        document["children"] = [
+            _canonical_condition(child) for child in spec.children
+        ]
+    return document
 
 
 def _bounded_integer(value: Any, name: str) -> int:

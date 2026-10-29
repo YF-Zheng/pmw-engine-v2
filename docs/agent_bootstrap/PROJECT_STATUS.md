@@ -256,3 +256,40 @@ C3 clean local checkpoint d613cc9391b828d764a5df6f83f9473bd72b93dc. Descartes/Me
 ## C4.1 Acceptance And Next
 
 Full835/3,304,284 hashes,91 old tests verified. Complete cost cutoff16:35:31: projectCNY170.13511286,safety214.37881735/2000,P1reserve176.72888470/400,Unknown0. Closing overhead pending next ordinal boundary. Both workers closed before freeze. Immediately start C4.2 only after local checkpoint, then C4.3; full P1/P2 remain open.
+
+## C4.2 Active Continuous Target
+
+Local C4.1 checkpoint718be652754c065b88d6d6cbf013c754f90c05c0 clean. Meitner/Nietzsche actual Flash child IDs registeredP1; source scopes disjoint. C4_PASSIVE_DISPATCH_INCREMENT.md and frozen design own next implementation; C4.3 active-condition gate remains queued. No concurrent unrelated edits or generation. Latest ledger complete, Unknown0; allstagebudget gates checked before continuing.
+
+## Continuous C4.2 Frozen Acceptance
+
+C4.2 automatic Action-produced damage_resolved passive dispatch is ACCEPTED.
+Full frozen regression869 passed,3,325 subtests in380.21s,exit0; all287 Python
+hashes unchanged. All93 accepted old test files,23 Core Python files and13
+Alpha Python files at718be65 retain exact blobs/SHA256. Owner13/8, independent
+FINAL21/13, Main cross46/8 pass. Main real finite combat:HP50->40,shield0->7,
+Mana20 unchanged,one paid Gameplay Tick,separate actual Engine Hook/root traces.
+Reports:C4_PASSIVE_DISPATCH_INCREMENT.md/C4_PASSIVE_DISPATCH_REVIEW.md. Full
+metadata/log:evidence/c4_passive_frozen_full_regression_meta.json and
+c4_passive_frozen_full_regression.txt; Main protected_after/review_acceptance/
+combat_timed evidence separately identifies Main versus independent results.
+Both actual Flash workers closed before freeze. Initial independent invented
+auto_hook_ prefix oracle is superseded, preserved byte-for-byte;19 other test
+ASTs identical and the second changed method only corrects grammar samples,
+retaining every PMW-local temp assertion. No production workaround or old-test
+weakening. Trusted exact equipped Skill/Action/Hook binding, current staged
+sibling state, positive real damage attribution,FIFO shared root caps/dedup,
+full rollback/checkpoint continuation verified.
+
+Only managed Action-produced damage notifications,not arbitrary World/Tick or
+other advertised legacy triggers. No multi-trigger IR,global CPU/query/per-Tick
+budget,full P1/P2,Alpha UI/browser playtest or game-generation claim. Cost cutoff
+17:50:19 +08:00:projectCNY198.89962770,safety250.62355584/2000,
+P1reserve212.97362318/400,Unknown0,complete. c4_2_cost_snapshot.json subset
+USD4.31484982/CNY28.76451484 already included once;97% is pricing only. Closing
+Main overhead awaits next ordinal boundary; bootstrap remains separate.
+Immediately continue C4.3 active top-level condition gate after scoped local
+checkpoint; latest actual stable Process gap pays2Ticks/4Mana despite false
+condition (c4_active_main_latest_before.json). C4.4 Dynamics bridge architecture
+is queued only,not implemented. All deadline20:10 +08:00/stop/accounting rules
+remain; current chat continues without altering paused automation/global config.

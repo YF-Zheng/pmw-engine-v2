@@ -1,0 +1,23 @@
+EF
+======================================================================
+ERROR: setUpClass (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_passive_dispatch_review.PassiveDispatchContractTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_passive_dispatch_review.py", line 505, in setUpClass
+    _require_dispatch_api()
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_passive_dispatch_review.py", line 115, in _require_dispatch_api
+    raise AssertionError(
+AssertionError: C4.2 frozen dispatch surface is not implemented: experiments.generative_mechanics.next_tracks_v06.gameplay_v04.hooks.HookDispatchLimits, experiments.generative_mechanics.next_tracks_v06.gameplay_v04.hooks.HookDispatchRecord, experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions.HookDispatchLimits, experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions.HookDispatchRecord
+
+======================================================================
+FAIL: test_review_file_and_environment_are_pmw_local (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_passive_dispatch_review.PassiveDispatchSourceReviewTests.test_review_file_and_environment_are_pmw_local)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_passive_dispatch_review.py", line 1137, in test_review_file_and_environment_are_pmw_local
+    self.assertEqual(
+AssertionError: False != True
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+FAILED (failures=1, errors=1)

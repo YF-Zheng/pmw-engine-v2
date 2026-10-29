@@ -23,6 +23,7 @@ from .status import (DurationSpec, STATUS_COMPONENT, StatusSpec, active_status_s
 from .shields import (SHIELD_COMPONENT, absorb_damage, bind_layer_to_status,
                       grant_shield, release_status_layer, shield_component,
                       validate_status_shield_ownership)
+from .hooks import HookDispatchLimits, HookDispatchRecord
 
 
 ACTION_EVENT = "pmw.v04.action.resolve"
@@ -78,12 +79,24 @@ class ActionOutcome:
     cost: ActionCost
     effect_outcomes: tuple[Mapping[str, Any], ...]
     event_result: Any
+    auto_hooks: tuple[HookDispatchRecord, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class PassiveSkillBinding:
+    skill_id: str
+    skill_version: int
+    skill_hash: str
+    skill_kind: str
+    action_hash: str
+    hook: Any
 
 
 class ActionRegistry:
     def __init__(self, actions: Iterable[ActionDefinition], statuses: Iterable[StatusSpec] = (), hooks: Iterable[Any] = (),
                  *, process_controller: Any = None, drive_controller: Any = None,
-                 relation_controller: Any = None):
+                 relation_controller: Any = None,
+                 _passive_bindings: Iterable[PassiveSkillBinding] = ()):
         action_items, status_items, hook_items = tuple(actions), tuple(statuses), tuple(hooks)
         if len({x.id for x in action_items}) != len(action_items): raise GameplayContractError("duplicate action id")
         if len({x.id for x in status_items}) != len(status_items): raise GameplayContractError("duplicate status id")
@@ -108,10 +121,38 @@ class ActionRegistry:
         self.process_controller = process_controller
         self.drive_controller = drive_controller
         self.relation_controller = relation_controller
+        bindings = tuple(_passive_bindings)
+        if any(not isinstance(item, PassiveSkillBinding) for item in bindings):
+            raise GameplayContractError("passive bindings must be trusted PassiveSkillBinding values")
+        keys = [(item.skill_id, item.skill_version) for item in bindings]
+        if len(keys) != len(set(keys)):
+            raise GameplayContractError("duplicate passive binding")
+        self.passive_bindings = MappingProxyType({
+            (item.skill_id, item.skill_version): item for item in bindings
+        })
         for hook in hook_items:
             action = self.actions.get(hook.action_id)
             if action is None or tuple(effect.id for effect in action.effects) != hook.effect_ids:
                 raise GameplayContractError("hook does not reference one exact trusted effect bundle")
+        for binding in bindings:
+            from .hooks import HookSpec
+            if not isinstance(binding.hook, HookSpec):
+                raise GameplayContractError(
+                    "passive binding hook must be a trusted HookSpec"
+                )
+            action = self.actions.get(binding.skill_id)
+            hook = self.hooks.get(binding.hook.id)
+            if (
+                binding.skill_kind != "passive_blueprint"
+                or action is None
+                or action.version != binding.skill_version
+                or action.canonical_hash != binding.action_hash
+                or hook != binding.hook
+                or hook.action_id != action.id
+            ):
+                raise GameplayContractError(
+                    "passive binding does not match one exact trusted Action and Hook"
+                )
 
     @classmethod
     def parse(cls, raw: Any) -> "ActionRegistry":
@@ -217,20 +258,25 @@ def parse_action_request(raw: Any) -> ActionRequest:
     return ActionRequest(raw["request_id"], raw["actor_id"], raw["action_id"], target)
 
 
-def resolve_action(session, registry: ActionRegistry, request: ActionRequest) -> ActionOutcome:
+def resolve_action(session, registry: ActionRegistry, request: ActionRequest, *,
+                   dispatch_limits: HookDispatchLimits | None = None) -> ActionOutcome:
     """Resolve an external primary request after authoritative authorization."""
     authorize_primary_action(session, registry, request)
     from .transactions import publish_gameplay_session, stage_gameplay_session
     staged = stage_gameplay_session(session)
     outcome = _resolve_action(staged, registry, request)
+    outcome = _dispatch_hooks(staged, registry, outcome, dispatch_limits)
     publish_gameplay_session(session, staged)
     return outcome
 
 
 def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *, execution_kind: str = "primary",
-                    hook_context: Mapping[str, Any] | None = None) -> ActionOutcome:
+                    hook_context: Mapping[str, Any] | None = None,
+                    parent_event_id: str | None = None) -> ActionOutcome:
     if execution_kind not in {"primary", "hook"}: raise GameplayContractError("invalid action execution kind")
     if (execution_kind == "hook") != (hook_context is not None): raise GameplayContractError("hook execution requires trusted hook context")
+    if parent_event_id is not None and execution_kind != "hook":
+        raise GameplayContractError("parent event is valid only for hook execution")
     definition = registry.actions.get(request.action_id)
     if definition is None: raise GameplayContractError("unknown registered action")
     actor_entity = session.state.entities.get(request.actor_id)
@@ -293,8 +339,14 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
     if hook_context is not None: payload["hook"] = dict(hook_context)
     payload = json.loads(json.dumps(payload, sort_keys=True, allow_nan=False))
     before = session.state.to_dict()
+    provenance = (
+        {"kind": "derived", "parent_event": parent_event_id}
+        if parent_event_id is not None
+        else {"kind": "external", "parent_event": None}
+    )
     result = session.runtime.run_event(Event(f"pmw:v04:action:{request.request_id}", ACTION_EVENT,
-                                              session.state.sim_time, request.actor_id, request.target_actor_id, payload))
+                                              session.state.sim_time, request.actor_id, request.target_actor_id, payload,
+                                              provenance))
     matched = any(event.event_law_matches for event in result.trace.events)
     if not matched:
         if session.state.to_dict() != before: raise GameplayContractError("failed action mutated state")
@@ -533,9 +585,10 @@ def authorize_primary_action(session, registry: ActionRegistry, request: ActionR
     return definition
 
 
-def submit_primary_action(session, registry: ActionRegistry, request: ActionRequest) -> ActionOutcome:
+def submit_primary_action(session, registry: ActionRegistry, request: ActionRequest, *,
+                          dispatch_limits: HookDispatchLimits | None = None) -> ActionOutcome:
     """Authoritative external action boundary for human and AI controllers."""
-    return resolve_action(session, registry, request)
+    return resolve_action(session, registry, request, dispatch_limits=dispatch_limits)
 
 
 @dataclass(frozen=True, slots=True)
@@ -545,7 +598,8 @@ class TimedActionOutcome:
 
 
 def submit_timed_primary_action(session, registry: ActionRegistry, request: ActionRequest, *,
-                                reason: str = "exploration") -> TimedActionOutcome:
+                                reason: str = "exploration",
+                                dispatch_limits: HookDispatchLimits | None = None) -> TimedActionOutcome:
     """Submit one primary action and charge its final quoted duration atomically."""
     from .time_ledger import spend_world_time
     from .transactions import publish_gameplay_session, stage_gameplay_session
@@ -553,9 +607,18 @@ def submit_timed_primary_action(session, registry: ActionRegistry, request: Acti
     staged = stage_gameplay_session(session)
     authorize_primary_action(staged, registry, request)
     outcome = _resolve_action(staged, registry, request)
+    outcome = _dispatch_hooks(staged, registry, outcome, dispatch_limits)
     time_result = spend_world_time(staged, outcome.cost.duration, reason=reason)
     publish_gameplay_session(session, staged)
     return TimedActionOutcome(outcome, time_result)
+
+
+def _dispatch_hooks(session, registry: ActionRegistry, outcome: ActionOutcome,
+                    limits: HookDispatchLimits | None) -> ActionOutcome:
+    from .hooks import dispatch_action_hooks
+    if limits is None:
+        limits = HookDispatchLimits()
+    return dispatch_action_hooks(session, registry, outcome, limits)
 
 
 def _condition_context(session, request, shadow):
@@ -601,9 +664,13 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
         shield_state = actor_state["_shield_component"]
         if effect.kind == "damage":
             absorbed = absorb_damage(actor_state, shield_state, amount)
+            hp_loss = min(float(actor_state["hp"]), max(0.0, amount - absorbed))
             actor_state["hp"] = max(0.0, actor_state["hp"] - (amount - absorbed))
             row.update({"shield": actor_state["shield"], "hp": actor_state["hp"],
-                        "shield_component": shield_state})
+                        "shield_component": shield_state,
+                        "hp_loss": hp_loss,
+                        "shield_absorbed": absorbed,
+                        "resolved_damage": hp_loss + absorbed})
         elif effect.kind == "heal": actor_state["hp"] = min(actor_state["max_hp"], actor_state["hp"] + amount); row["hp"] = actor_state["hp"]
         elif effect.kind == "shield":
             layer_slot = grant_shield(actor_state, shield_state,
@@ -621,6 +688,12 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
                 {"shield", "shield_component"} if effect.kind == "shield" else
                 {effect.resource})
         values = {key: row[key] for key in keys if key in row}
+        if effect.kind == "damage":
+            values.update({
+                "hp_loss": row["hp_loss"],
+                "shield_absorbed": row["shield_absorbed"],
+                "resolved_damage": row["resolved_damage"],
+            })
     elif effect.kind in {"apply_status", "grant_trait"}:
         if actor_state is None: raise GameplayContractError(f"{effect.kind} target must be Actor")
         slots = actor_state.setdefault("status_slots", {f"slot_{i}": neutral_status_slot() for i in range(8)})

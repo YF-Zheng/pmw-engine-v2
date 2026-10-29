@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-29T09:53:10.783679+00:00",
+  "actual_gap": {
+    "skill_id": "condition_skill",
+    "condition_evaluated_false": true,
+    "process_state_after_action": "running",
+    "action_duration": 2,
+    "time_duration": 2,
+    "spent_ticks_delta": 2,
+    "player_mana_before": 20.0,
+    "player_mana_after": 16.0,
+    "player_mana_delta": -4.0
+  },
+  "source_sha256_before": {
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\actions.py": "9e2d3589990d7dbf915af00a9a0434241f831903fa92d49ebc542cb8e1f89530",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\skills.py": "5e6569c1ad5bbe3304077f8dcdc0e54349f9a75140a470059fa09d5d32b1102a",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\processes.py": "4f5f3b6941913b68ff3badac0d57e1c0c24cadb6516b1ea17a23d6488b78815b"
+  },
+  "source_sha256_after": {
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\actions.py": "9e2d3589990d7dbf915af00a9a0434241f831903fa92d49ebc542cb8e1f89530",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\skills.py": "5e6569c1ad5bbe3304077f8dcdc0e54349f9a75140a470059fa09d5d32b1102a",
+    "experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\processes.py": "4f5f3b6941913b68ff3badac0d57e1c0c24cadb6516b1ea17a23d6488b78815b"
+  },
+  "scope": "Main executes accepted standalone probe on stable C4.2 draft; not collected defect-persistence oracle",
+  "initial_main_probe_error": "Mistakenly expected1tick/1mana. Actual legitimate Process Skill pays2ticks and4mana (20->16). No product edit."
+}

@@ -11,7 +11,7 @@ from typing import Any, Iterable, Mapping
 from pmw import Event, parse_law
 
 from .action_compiler import build_action_laws
-from .actions import ActionRegistry
+from .actions import ActionRegistry, PassiveSkillBinding
 from .contracts import GameplayContractError
 from .runtime import GameplaySession, build_runtime, discover_profiles
 from .skills import (MechanismRegistryManifest, RegistryEntry, SkillBlueprint,
@@ -94,6 +94,10 @@ def registry_configuration(compiled: Any) -> tuple[ActionRegistry, tuple[dict, .
         process_controller=registry.process_controller,
         drive_controller=registry.drive_controller,
         relation_controller=registry.relation_controller,
+        _passive_bindings=(
+            item for item in registry.passive_bindings.values()
+            if item.skill_id not in skill_ids
+        ),
     )
     static = tuple(dict(law) for law in compiled.laws if not _dynamic_action_law(law["id"]))
     if not any(law["id"] == "pmw.v04.registry.change" for law in static):
@@ -242,6 +246,13 @@ class MechanismRegistryRuntime:
         selected = manifest or self.manifest
         enabled = {(entry.skill_id, entry.version) for entry in selected.entries if entry.enabled}
         active = [self.blueprints[key] for key in sorted(enabled)]
+        bindings = (
+            *self.base_registry.passive_bindings.values(),
+            *(PassiveSkillBinding(
+                item.id, item.version, item.canonical_hash, item.kind,
+                item.action.canonical_hash, passive_hook(item),
+            ) for item in active if item.kind == "passive_blueprint"),
+        )
         return ActionRegistry(
             (*self.base_registry.actions.values(), *(item.action for item in active)),
             self.base_registry.statuses.values(),
@@ -250,6 +261,7 @@ class MechanismRegistryRuntime:
             process_controller=self.base_registry.process_controller,
             drive_controller=self.base_registry.drive_controller,
             relation_controller=self.base_registry.relation_controller,
+            _passive_bindings=bindings,
         )
 
     def _compiled_laws(self, manifest: MechanismRegistryManifest | None = None) -> tuple[dict, ...]:

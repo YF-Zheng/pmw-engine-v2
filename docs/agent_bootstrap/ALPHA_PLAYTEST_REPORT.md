@@ -121,3 +121,36 @@ Real Engine Gameplay evidence, not a new browser playtest. Public feedback/contr
 ## Continuous C4.1 Mechanics Boundary
 
 C4.1 bounded shared raw-condition parsing is ACCEPTED. Frozen full regression **835 passed,3,304 subtests passed in381.12s**, exit0,284 Python hashes unchanged; all91 old test files atd613cc9 remain byte-identical. Owner15/14, independent FINAL16 methods, Main89/53 pass. AST parity preserves every typed leaf branch and evaluator; Main trusted-cap depth64/nodes4096 accepts and one-over rejects. Defaults depth16/nodes64/children16 are fresh/shared per parse, root1 and every operator/leaf counts, with path-bearing GameplayContractError before over-deep/over-wide traversal. Candidate JSON cannot raise budgets; trusted callers may choose bounded caps64/4096/256. Reports:C4_CONDITION_LIMITS_INCREMENT.md/C4_CONDITION_LIMITS_REVIEW.md; full metadata/log:evidence/c4_condition_frozen_full_regression_meta.json/c4_condition_frozen_full_regression.txt. Initial17-method defect-persistence assertion moved to a non-collected actual probe before acceptance; original source/report/meta/log preserved,16 real requirement tests unchanged. No old tests/Engine/clock/Observation/Alpha change. No Status condition ingress, new typed leaves, aggregate per-Skill/per-Tick/CPU/query/active-source or full P1/P2 claim. Next actual damage-passive dispatch (C4_PASSIVE_DISPATCH_DESIGN.md), then verified active top-level false-condition gate defect (C4_ACTIVE_CONDITION_DESIGN.md). No game-generation call until full P1/P2, continue sequentially until20:10 +08:00 or real stop/account/budget/blocker.
+
+## Continuous C4.2 Frozen Acceptance
+
+C4.2 automatic Action-produced damage_resolved passive dispatch is ACCEPTED.
+Full frozen regression869 passed,3,325 subtests in380.21s,exit0; all287 Python
+hashes unchanged. All93 accepted old test files,23 Core Python files and13
+Alpha Python files at718be65 retain exact blobs/SHA256. Owner13/8, independent
+FINAL21/13, Main cross46/8 pass. Main real finite combat:HP50->40,shield0->7,
+Mana20 unchanged,one paid Gameplay Tick,separate actual Engine Hook/root traces.
+Reports:C4_PASSIVE_DISPATCH_INCREMENT.md/C4_PASSIVE_DISPATCH_REVIEW.md. Full
+metadata/log:evidence/c4_passive_frozen_full_regression_meta.json and
+c4_passive_frozen_full_regression.txt; Main protected_after/review_acceptance/
+combat_timed evidence separately identifies Main versus independent results.
+Both actual Flash workers closed before freeze. Initial independent invented
+auto_hook_ prefix oracle is superseded, preserved byte-for-byte;19 other test
+ASTs identical and the second changed method only corrects grammar samples,
+retaining every PMW-local temp assertion. No production workaround or old-test
+weakening. Trusted exact equipped Skill/Action/Hook binding, current staged
+sibling state, positive real damage attribution,FIFO shared root caps/dedup,
+full rollback/checkpoint continuation verified.
+
+Only managed Action-produced damage notifications,not arbitrary World/Tick or
+other advertised legacy triggers. No multi-trigger IR,global CPU/query/per-Tick
+budget,full P1/P2,Alpha UI/browser playtest or game-generation claim. Cost cutoff
+17:50:19 +08:00:projectCNY198.89962770,safety250.62355584/2000,
+P1reserve212.97362318/400,Unknown0,complete. c4_2_cost_snapshot.json subset
+USD4.31484982/CNY28.76451484 already included once;97% is pricing only. Closing
+Main overhead awaits next ordinal boundary; bootstrap remains separate.
+Immediately continue C4.3 active top-level condition gate after scoped local
+checkpoint; latest actual stable Process gap pays2Ticks/4Mana despite false
+condition (c4_active_main_latest_before.json). C4.4 Dynamics bridge architecture
+is queued only,not implemented. All deadline20:10 +08:00/stop/accounting rules
+remain; current chat continues without altering paused automation/global config.

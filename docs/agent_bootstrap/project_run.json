@@ -132,6 +132,16 @@
       "id": "01a186ba-7643-72e2-8115-51eda8976e71",
       "task": "C4.1 independent condition boundary/formal QA",
       "stage": "P1"
+    },
+    {
+      "id": "01a186d4-a55d-7280-8a64-5f4c94ce2e1f",
+      "task": "C4.2 actual equipped damage passive dispatch implementation",
+      "stage": "P1"
+    },
+    {
+      "id": "01a186d5-018d-7ff1-9bac-49853026dc96",
+      "task": "C4.2 independent passive authority/causal FIFO/rollback QA",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -198,10 +208,15 @@
         "task": "c4_1",
         "main_end_ordinal": 4558,
         "snapshot": "docs\\agent_bootstrap\\evidence\\c4_1_cost_snapshot.json"
+      },
+      {
+        "task": "c4_2",
+        "main_end_ordinal": 4979,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\c4_2_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 4558,
-    "current_task": "c4_1",
-    "latest_checkpoint": "d613cc9391b828d764a5df6f83f9473bd72b93dc"
+    "main_ordinal_cursor": 4979,
+    "current_task": "c4_2",
+    "latest_checkpoint": "718be652754c065b88d6d6cbf013c754f90c05c0"
   }
 }

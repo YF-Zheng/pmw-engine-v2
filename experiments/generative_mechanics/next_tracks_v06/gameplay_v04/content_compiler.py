@@ -10,7 +10,7 @@ from typing import Mapping
 from pmw import WorldState, parse_law
 
 from .action_compiler import build_action_laws
-from .actions import ACTOR_COMPONENT, ActionRegistry
+from .actions import ACTOR_COMPONENT, ActionRegistry, PassiveSkillBinding
 from .contracts import GameplayContractError, validate_curve_policy
 from .ecology import ECOLOGY_COMPONENT, EcologyPlan, build_ecology_laws, ecology_component
 from .harvest import (MATERIAL_INVENTORY_COMPONENT, RESOURCE_COMPONENT, HarvestSpec,
@@ -56,6 +56,13 @@ def make_content(base_registry: ActionRegistry, *, skills: tuple[SkillBlueprint,
     if set(base_registry.actions) & {item.id for item in skill_actions}:
         raise GameplayContractError("skill ID collides with an installed Action")
     hooks = (*base_registry.hooks.values(), *(passive_hook(item) for item in skills if item.kind == "passive_blueprint"))
+    bindings = (
+        *base_registry.passive_bindings.values(),
+        *(PassiveSkillBinding(
+            item.id, item.version, item.canonical_hash, item.kind,
+            item.action.canonical_hash, passive_hook(item),
+        ) for item in skills if item.kind == "passive_blueprint"),
+    )
     registry = ActionRegistry(
         (*base_registry.actions.values(), *skill_actions),
         base_registry.statuses.values(), hooks,
@@ -71,6 +78,7 @@ def make_content(base_registry: ActionRegistry, *, skills: tuple[SkillBlueprint,
             base_registry.relation_controller
             if relation_controller is None else relation_controller
         ),
+        _passive_bindings=bindings,
     )
     if registry.drive_controller is not None and registry.process_controller is not None:
         _assert_drive_process_stock_exclusion(

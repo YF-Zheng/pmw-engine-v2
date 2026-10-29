@@ -1,0 +1,881 @@
+{
+  "status": "passed",
+  "utc": "2026-10-29T09:03:23.959787+00:00",
+  "baseline": "718be652754c065b88d6d6cbf013c754f90c05c0",
+  "counts": {
+    "old_tests": 93,
+    "core_python": 23,
+    "alpha_python": 13
+  },
+  "protected_python_hashes": {
+    "examples/pmw_alpha/__init__.py": {
+      "git_blob": "df06e750622254a5f629fa833888a75855d3ee89",
+      "sha256": "19dcc5de10cf746481c86bf0fe07a58bbefc8d4a15e5a8a9ac8106bdc682e7a1",
+      "categories": [
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/commands.py": {
+      "git_blob": "1e7aa84dc12c419688b9f3b4a9fe70cff63c035c",
+      "sha256": "fade5237ff86d077f28916b706fc00184395dc84dd1188a977e0d93ea512b5ce",
+      "categories": [
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/content.py": {
+      "git_blob": "4bc7819b57701a90a94b5eaddf1c2798a4af71e9",
+      "sha256": "2b9a8f997f3e5e909505156b285efb5dfef72306bb6333098f17af8480f22139",
+      "categories": [
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/savegame.py": {
+      "git_blob": "94257888abca5c20e350b65ba9f0a5874d928992",
+      "sha256": "b46224d2b15c474beec00c175901b91607e10750e435d39689b85ef0b736389d",
+      "categories": [
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/server.py": {
+      "git_blob": "4b7bf5647793a74889a77661ed627dbe2b65953d",
+      "sha256": "153640f44517ad8e0d62575a1e98dc004dc53edb6310387bce13137c49e02650",
+      "categories": [
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/session.py": {
+      "git_blob": "4f195a8bd91f2a3aa9fda0b5373c70e34006cd76",
+      "sha256": "4c51dabdbe28d8d26dcc57badcdc54926e09c4e9b4b50ccc3e277f694008b85a",
+      "categories": [
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/skills.py": {
+      "git_blob": "4c02d2c57f90266670817492e13e533cd124a029",
+      "sha256": "2a5fc5dda1acf9471f74fc63ad51621b2fe7fdd991adc69d1db02439dd800833",
+      "categories": [
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/tests/__init__.py": {
+      "git_blob": "ec4f567fe44aaa59bc416b73b76aad3e80a84acf",
+      "sha256": "fa8f8af2916dcbc9379f00236ae80b951d76a02ce3b7fdebd08c8874d7684c33",
+      "categories": [
+        "old_tests",
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/tests/test_content.py": {
+      "git_blob": "92d47179abe0ed49d09eed2bddc8e457c30f08aa",
+      "sha256": "98ed45c799f69c97dd9a034ec9260b773790c35611dbad5d1e12fbf41a12de29",
+      "categories": [
+        "old_tests",
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/tests/test_sandbox_authority.py": {
+      "git_blob": "94396a9077e303eaee110ca2323e9312eae6930e",
+      "sha256": "b89a406fb61a4d8f9c2f9f0bdccbe7bc35a6a9e5a72e9e8e3c8f5a918dde342a",
+      "categories": [
+        "old_tests",
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/tests/test_savegame.py": {
+      "git_blob": "be3610a337ca5d0e468e47689cd93f6ea8e206bc",
+      "sha256": "dac5adec5dc5810f60122c66472320395139c5592a1709e1ad3be718c6c666b4",
+      "categories": [
+        "old_tests",
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/tests/test_session.py": {
+      "git_blob": "9f5227cf5c154f0304c302cd4d8f4bf814b2160f",
+      "sha256": "5683ec11ff60dea3be05e12081b947f9ca1bddd181c42d8e452ded524f01cb25",
+      "categories": [
+        "old_tests",
+        "alpha_python"
+      ]
+    },
+    "examples/pmw_alpha/tests/test_skills.py": {
+      "git_blob": "2eef874669728f2d65c46d2bb1b9cb2965c9a803",
+      "sha256": "4928f8440e9eb9c0f14c0f5258a6c8759fb95ce44c823d9dc03f39508b9b0d17",
+      "categories": [
+        "old_tests",
+        "alpha_python"
+      ]
+    },
+    "examples/storm_relay/tests/test_combat_transactions.py": {
+      "git_blob": "e350c8c5b08fadb1bcf8d122a651f07fff0b34b4",
+      "sha256": "dbf5301e4940e92ebdbbc55b89e6f507a21f962fad05df3bf78e5accb60e1968",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "examples/storm_relay/tests/test_content.py": {
+      "git_blob": "343d0c82a51f195f1faffe710f1cb5bc91e49f78",
+      "sha256": "8d193f98cfe308dbb3a146120b7c3de7e487efed0953ad0fac87297d8eb8a9d2",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "examples/storm_relay/tests/test_dynamics_weather.py": {
+      "git_blob": "db2736233335c7b5c25c840c8274418be72132ea",
+      "sha256": "479350bd1b66153ca5bbceaf36ddf2f014c5218c00aa0bf88d3f7b3f41a77daf",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "examples/storm_relay/tests/test_http_ui.py": {
+      "git_blob": "50e764e571bd0ac047be1b3f775ba8a9aebcf846",
+      "sha256": "5d14200d4c63825974f4e174aaf83d8ae6f0d6441f426165c45d7fd39b06d47b",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "examples/storm_relay/tests/test_routes.py": {
+      "git_blob": "110f19f5052383a3e3a34caeefef7f3e4fe003fa",
+      "sha256": "fe7a9505370d41b751cf73406ba4e057d83f161931a06fbcb2a54401600881ee",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "examples/storm_relay/tests/test_skills_materials.py": {
+      "git_blob": "7742b934d56bb2c752a8ec55e12aa01a1b150d7c",
+      "sha256": "6aaa09656ae502f85a4dbb37a534768838dfd10284586774c706bd44fc1d4338",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/gccp/f2_engine_pilot_v01/tests/__init__.py": {
+      "git_blob": "e380a93f582ead2279b025dfc767829017a311f0",
+      "sha256": "228c91a7d14752443413c80d4a3bc80f7cb2502d003803e7ea288847a77d2a2c",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/gccp/f2_engine_pilot_v01/tests/test_f2_engine.py": {
+      "git_blob": "40f5f9888b4523ffe1907b805e6297ee4e191355",
+      "sha256": "abe3b5010d2d498f120532f16a186b68d66607b0588ac50277d1f9aa4d889f7c",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate1_blueprints.py": {
+      "git_blob": "eeeac20dab4cebb83502d4b61ab91a00d258c504",
+      "sha256": "b5f19ba90bd3ffb088856b0e8316442b52f1e57e386465ab6b4302b051b148b8",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate1_dynamics.py": {
+      "git_blob": "65228c7c2d5c20b430b8b9eccc7165fe49f2ba84",
+      "sha256": "6e48be0c534c22b96dacc1d901ab811d7351748a54498646a41894f4e0abd413",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate2_actions.py": {
+      "git_blob": "a8eed5139f7c332cd248d826a606e2f1bff3729c",
+      "sha256": "ff89f2a8276caac7693a03cae919ab8c36242c8d8a85a1d44ac6386a9ef6598d",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate2_combat_status.py": {
+      "git_blob": "e2c9d0a5f3d1a300b21b770880eac03e9d4d813c",
+      "sha256": "530e9982b02e141f6d2caef95351cfe7a64a682269935a36970c89f414ab97a7",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate2_effects_hooks.py": {
+      "git_blob": "d4bf6dfe91edfbbd3704d603e97325299099e963",
+      "sha256": "d6a3179756f4817ce134d9d9f21b92d9f965fb2b1bfba10fe73594efdb446345",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate3_harvest_skills.py": {
+      "git_blob": "09596f1db44dbccd444e5d1a2ebe222648c0ddb8",
+      "sha256": "b21fe9ea695bffceb8eccc5beeae07d3b2cee42aa40e83defa6eafefd694fc8c",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate3_loadout_integration.py": {
+      "git_blob": "6bc5569f26170a5d27466457212ab2096a6af10a",
+      "sha256": "04a08a04bc73d16b56073558750de542cac2f655caa33083f497ce94c2dec14c",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate3_weather_ecology.py": {
+      "git_blob": "eef4d82fda28971fb62f8878d95456694203e890",
+      "sha256": "88a1f32a3a93cdb2362ced2f424498a4c2df832fe59da2daf49f24576e0de260",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_ai_observation.py": {
+      "git_blob": "d491f13bbce53534c0af1dd4e719dccdc9f98e4e",
+      "sha256": "8b23d10a056fae9e20089ada1ee131b1e6d045e7eb2331aecb90a9316b3933f6",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_ai_planner.py": {
+      "git_blob": "241b20aa9defd89b5c5c213fd82b01fdffeb8b52",
+      "sha256": "430a7247c6f2cae6b54f7cb861187fc439afcf849a2de7f1f4976319d69f4357",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_ai_simulation.py": {
+      "git_blob": "100bf331bc4fe16052c84746524d62b09217ba53",
+      "sha256": "42ce81119ebec804982e4c1fdd1598deb8b3c69fd945cfee9a2c7914f7b48128",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py": {
+      "git_blob": "511214207458a332ec3f658eb6452989018f7651",
+      "sha256": "682b69955a2dd4001a391111b6a9ba38a57f0f6a0cff872fea2b7b4e788168bd",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate51_combat_authority.py": {
+      "git_blob": "9dbff20efa187128e6c2dcf06b2a3478bb1a01e3",
+      "sha256": "7515e601e9a125027257fc218b096e43b99e83670e222bff8aa062b7b6c3d14f",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate51_harvest_transaction.py": {
+      "git_blob": "b54a58ef373ef534099e84d065305d142bd3299d",
+      "sha256": "6b5878483bda7c682786d0adada9fefb54527639a94ee1c2fe95e649394b44db",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate51_independent_qa.py": {
+      "git_blob": "45c72b4fc9380577b4f997e0fb9fefa089ab5586",
+      "sha256": "07cd374f96abb854636019fd6f52856c1c498e049e100f353be6525d6c98973b",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate51_integration.py": {
+      "git_blob": "3a679b0644b9ad34b867f2a6450d1b0afc762a34",
+      "sha256": "cceb1c246becd91f7cc36440a74d929fe338e0e0e3109af89667841f3ab72487",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate51_shield_layers.py": {
+      "git_blob": "f9f8872ba5dedb4574adc0e2efa04eb6195ef15d",
+      "sha256": "f52b0ebe11020544d269679cade3b2cd240338f511d0fafdf235e38b0d32c010",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate52_independent_qa.py": {
+      "git_blob": "d9f1c26590041d728d6937aa92186aab3530b52d",
+      "sha256": "f626298f239a163e87e32b5afce981729048593830dfa5735ae7a8e9bf363c0e",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate52_integration.py": {
+      "git_blob": "4d56c0c945536b1eff488cdc08340fed3628ebaf",
+      "sha256": "3a8af57fa72591b30ae6225ff0b76f407b5f57896478e575b951543ef43b3e2b",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate52_status_shield.py": {
+      "git_blob": "791d67ebf05e631e581c62148d78840472621d17",
+      "sha256": "2fe7ef92f24d80aaab0d687f193ef6a8819808cacad5c202f6e4f307c48cad84",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate52_time_transaction.py": {
+      "git_blob": "0783bf436f2f551c3bb45d5eb468eeea6a79edad",
+      "sha256": "73076de9dee95f546c1badf9fb1c0a795891e0e3d4c98b523b6c23fce7c25a5f",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate5_ai_contract.py": {
+      "git_blob": "d65313024ea777ac3b9b38920c6447b305cc673b",
+      "sha256": "4a36ba8e469d67bb058c142bfbafa5f21b2a3a60537910f6d9c929a0f3b326be",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate5_end_to_end.py": {
+      "git_blob": "141408d396dca096c9eb5be796987325523d055f",
+      "sha256": "34181490d922c46f1f6cbabc90237917176276f00f7d594fc2387efa3818e54a",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate5_independent_qa.py": {
+      "git_blob": "a7de8f006481f8e6773648ba42f6a0991648b67c",
+      "sha256": "f7403f99c4e6b7ef601aee01e0f4d36bfb3ad949e345e839ade68d84436e181d",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py": {
+      "git_blob": "d18bb467dec16c5905415c016ab967c490b48f5e",
+      "sha256": "5bc6d2cbaad49aa0f59130afa1fa6e1fdffbf0c85f8c7b8eaf8b747fefd9ff78",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits_review.py": {
+      "git_blob": "d6c394b7f523eeb4a301503aca775bb427d93193",
+      "sha256": "6705f76f5f254fa571ba66676a37f25e4c5aac95f265f2e34c331e0c089a6092",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_drive_source.py": {
+      "git_blob": "ef92c45b23f03513c914e05902ac5981edad56a6",
+      "sha256": "fc259a3059592a0503fe9766f6a6c1f6a21e618d1c9ad031f9554cb51e544324",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_drive_source_review.py": {
+      "git_blob": "1e9a3d15b493610cca33b6547aa69e94df0381c3",
+      "sha256": "561ece5cb6f7a53a2d9aafafd7058e72cde43250229b361705acf1cd939d5b8a",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_ecology_curve.py": {
+      "git_blob": "baa0dc58c4bd14802587256cc4d9dd06790392d1",
+      "sha256": "df8b86547f9ae463ceca0613e987234dbcc9d61c778ca9c29c7fec53894e0861",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_ecology_curve_review.py": {
+      "git_blob": "d1e6d994f15665575612b3dee706090133accd11",
+      "sha256": "e55d193658b4148086342b7872434a1ca96e5189da7741fc12f2223d735306a3",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_independent_qa.py": {
+      "git_blob": "3c7d31d61d6a21a0ab16fdb65e057a25fd3ebb27",
+      "sha256": "919fe256921d9806b09a5f32c6b4dffae49e5e8b97484ca657c42745ca987e66",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_no_recovery.py": {
+      "git_blob": "7d3326144769b9679471d5bc27a15b9a7d7528a9",
+      "sha256": "45d0ec7f0ec1fb1a264f8703df148c3bd6131c5f51ae334a341a7b21666a9f73",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_action.py": {
+      "git_blob": "a39e2de451b2b354a355ec5f7a8262b4a0b925e6",
+      "sha256": "6f8209e77960502cc9a4d3d9a63454e3f9cdb440a070a49fa5f1a4b93f4cd45c",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_action_review.py": {
+      "git_blob": "0b9f32e54d70fc240f278f0eff01001e7340c35e",
+      "sha256": "f66aed022dea38127f472fa5a39b7f0599616448ec350833511efadfa4ef75d8",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify.py": {
+      "git_blob": "c67dbf2bc01cefb15a312bc7486d32da0a33e46c",
+      "sha256": "a12bb6bab8f4c3c30f598db7cb9d33dbf2dd57d9c2dc0e900382ac20b55df5d5",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py": {
+      "git_blob": "ed3dbb77ab16df5ec5cc44a65a121fc51042ee0c",
+      "sha256": "da3107cbab987e02965e66d2aa64f7d67df0acbc95cf75ef52b73271e658c1bb",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_optional_fields.py": {
+      "git_blob": "11fed385326bbf41098486944b25a57576b683b2",
+      "sha256": "da5f3d7f90bb7be6829c8df24913fcbb3820931eefe62de56f91c71a5a79b2c9",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry.py": {
+      "git_blob": "a865a5ed3b4d148e39a5a090c978fc06cce0c831",
+      "sha256": "3c0d7bf7f7f8e6c44bb1b52f37fbdf066ab7b53ab68b6208e2354e785ddec7de",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py": {
+      "git_blob": "b6c80f5ae3cb98d0cf4f50dec8e2f904ecdb0c6d",
+      "sha256": "fcb243cdbfe6d55584f13f6b3cf945c9fbb2f80494dd38e61daeedbec115db23",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_relation_modifier.py": {
+      "git_blob": "0e69218ef0d1083e0bc9dfb6fd1a2e2c2b0f4d62",
+      "sha256": "ad668488f83796a955cc48771b2f9016816213415e80f247386d46a6c92e19bc",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_relation_modifier_review.py": {
+      "git_blob": "4ba6d88c4103e82413be9cacd0b8db6b709ec7e4",
+      "sha256": "ad76980f088d8c0323b40288e0b786af243f942639163ba807eecbf01825630f",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/tests/__init__.py": {
+      "git_blob": "90950669ce461ee8a09d600d6c1851e6487bb703",
+      "sha256": "47f3da84c669866a5a18b72d7031c2fedeff7d7006a83aacca71794a1cf172fe",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/tests/helpers.py": {
+      "git_blob": "c5d833de947f90e54b6945aa4e3c6eebefe1d5fb",
+      "sha256": "e319406d45a62baa457b2f3faed1669bcf02b28fef106833951c4664d7f9d111",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/tests/test_adversarial_qa.py": {
+      "git_blob": "52adbc1e0e18e7a0fbed08579281bedf2000b0a5",
+      "sha256": "ec9cc252c6752cced5eaa8f5c7a774a113f96ca8b4e680d8212c1dc7ea584efd",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/tests/test_compiler.py": {
+      "git_blob": "40eeb18e3cb76db6a6e1b4d90dcc791608fda379",
+      "sha256": "ab20c8e3e966f9fc8ffb8d6ac57bea8de1163085967fd32a0ea84d947e9c78c7",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/tests/test_differential.py": {
+      "git_blob": "4805d5e7063eb0d270c9949f5728f28152ffa309",
+      "sha256": "91d27c2126b287d72c3999c1fe18c1a0c367434dd5c9548b8c1d4f598385d173",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/tests/test_dynamics.py": {
+      "git_blob": "75228ead9ab848cac3d2c7cb7f9bbf40c26a97cf",
+      "sha256": "6aeda8313e47188ac3e2fbc8908ba8883e33de4e15e2a2f9720f88d8867325c7",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/tests/test_runtime.py": {
+      "git_blob": "a71af7f748279ea1bced65ed3acdceb37278d9a2",
+      "sha256": "5fa80b7ad2720d9c12e21c67e83b5a899d4e0186e0a0242f563e6990ccc9e403",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/tests/test_validator.py": {
+      "git_blob": "c0cc53dee78dfce0422657b32bab16cbbb988ff9",
+      "sha256": "42b54dd20b09c05625759b79bb8bae0bb4425b9f176b73707f3d6a9564eb639e",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/next_tracks_v06/tests/test_worlds_demos.py": {
+      "git_blob": "3b02a7548828df0871f755b7df0c021f97e83272",
+      "sha256": "3bbb0fabe2c8ef5b03ddb6b776d69b9addb1dc4185887d4441f43f0cd1dd5b4b",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/__init__.py": {
+      "git_blob": "a5090c4f7e2553d8225670d77a02ad6b3dd5e17b",
+      "sha256": "96f117ecc066a5cf48edf4d19080efb1a4ec6fc91b5dc3014de2692ba4ea5e0f",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_causal_depth_v04.py": {
+      "git_blob": "f1fdff51fc60b7bd4f5461b7f5e080dae245f9a4",
+      "sha256": "8ffb43915e8661abc646f2ff76c4482f1722d6f08b8587bc120ff2d31d4778b5",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_cross_environment_v04.py": {
+      "git_blob": "5d43f7413ef331fd60038337ad7fef1fa6c93767",
+      "sha256": "90e77edf9709e690ae51ef194055a1d78c9d2903e269a70171dd13f105b05ab6",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_evaluator.py": {
+      "git_blob": "881bdd073e4ed54fba5d89b39a7c9a9d7c2305aa",
+      "sha256": "746d5920955de925322aece9191b9908b56e4623c679b2e95b8e4d81ae48b6cc",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_exploit.py": {
+      "git_blob": "e3cd039e9b67527191bad16c117df4223596c46c",
+      "sha256": "d8811c9088b8a53fa7d3c4fe5d36f0880b806d75218b67f857c98159809244b1",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_formal_experiment.py": {
+      "git_blob": "a721d04cc3d5a85cbfbe92caf28a805b59162f00",
+      "sha256": "7ca427cc96bb3196ebe41e82ebf0e3d064b8c734a48d3356a95ca72b076d05c0",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_formal_statistics.py": {
+      "git_blob": "aa8e0cdf2c21587b0a5433c22daba79fb06ed689",
+      "sha256": "b7664f89373482bc77af805bd81bed5d425051ae1854745b36b13b53509ba3ac",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_free_evaluation_v04.py": {
+      "git_blob": "9d6d770fcdf0369ec36f3f212bd3718c21041113",
+      "sha256": "2572805eb8f6a06100441042e201f09014845468cb63117533f96d4e5d1032cb",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_free_evaluation_v05.py": {
+      "git_blob": "0f787b36117aad9517dba6e733254f02b0a68d12",
+      "sha256": "3edba3e5c11928a4c8e5a75b3554fd47d823c1f24b10a92dd734fe6536afb5d7",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_free_invention_v03.py": {
+      "git_blob": "632d8a712f7e9b2f75c20fbe0690ae577da7ae19",
+      "sha256": "398619547336708c8d0f80823a5ec4a23c7ca327175a223afea275b2d6cc3672",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_free_v05_dev_pilot.py": {
+      "git_blob": "fadfe44531bcf3b51aeaf42732fa0d4c1f0b4c6b",
+      "sha256": "e2150a201a221faac08c2a77fd15062664b672ca259037dab3ae3973a9504752",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_generation_v02.py": {
+      "git_blob": "e77740c5eb2f602a4f553001885fa429219e764b",
+      "sha256": "0f3e3fbdf67952c12dc9ea125271b232d4a406b13ba7374315e837eb7b5bbbf4",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_oracle.py": {
+      "git_blob": "2ec16cdda610c8111f3f75e8e52cda8783b1569f",
+      "sha256": "c1537ff03d64fcf4e43b4b9fc302363f96a9d1db145b480e0047e71a313f79ef",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_phase1.py": {
+      "git_blob": "5cf9c4fdc1b320a47683990ac49bec7ce8aa9c69",
+      "sha256": "1bc19bdeeac3bf7deabce2333d2161759a0c3b4a8e33cc21e0b883908cf85382",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_phase3.py": {
+      "git_blob": "dc323d5461434e545e3e4cb4c7d435725116f06e",
+      "sha256": "71ac559c925702a854aa2c7aa2044073b7c46a28eaf90b888e04b07101541e61",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_power_v02.py": {
+      "git_blob": "1dcaad099492b96620773e7dbc27cc20a12e2c95",
+      "sha256": "ea71f0bea12e67194385c95be05ef10ba6fd219ce4ebf52d07418eff2c1ec655",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_scenarios.py": {
+      "git_blob": "ad776f13c82ca095c9b0e439a9bea1ce7a2e9039",
+      "sha256": "b1b3946750fb6e960b12a34bfdfdf7bde29f5e7933ce3c8662b7a82027798622",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/generative_mechanics/tests/test_structural_novelty_v04.py": {
+      "git_blob": "57b749b8cd399438d8304c4be52b25f14852f19f",
+      "sha256": "48a844a3709ecb6003177b938071e8b1801af7e527de0d18828bbe592b76beea",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/pmw_creative_skilllab/build_synergy_v01/tests/__init__.py": {
+      "git_blob": "7a9e3689ac18b478cbb0162787732629e1c37691",
+      "sha256": "2c96d51e89aacab46f7dafb07933aa9449a5f0c8d3ef68c88dcb097693b1c107",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/pmw_creative_skilllab/build_synergy_v01/tests/test_build_synergy.py": {
+      "git_blob": "90c3d7735f76b47c9f0d45d06d945737c7454c58",
+      "sha256": "d448faf798d10d7be0c9d2e9e2122511f6b1e74ad03da57a085f83c82f4fa796",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/pmw_creative_skilllab/pilot_60/tests/__init__.py": {
+      "git_blob": "d443612ab7e139fa8c8b0eb8309b2bfe2acac144",
+      "sha256": "937364f18ca75e979b3baecd2f0d20b9544cf99c71a481164dde6c235e1dfa57",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "experiments/pmw_creative_skilllab/pilot_60/tests/test_pilot_60.py": {
+      "git_blob": "70d461eda7e6b9cc5112988c9693482a23498286",
+      "sha256": "3bf28f9eb4892f241a4c6fca682566407888b71b66bedf1b89fe208d5ad55587",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "src/pmw/__init__.py": {
+      "git_blob": "7867f2d0631a365f720d1c9d2d0d9ff62c3855fd",
+      "sha256": "d9626eb6a7bc8d4a7ae5bfc2638388d51d3f97deb8908ae55db34a544a5e0e0f",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/__main__.py": {
+      "git_blob": "9ae637f13cd528a1823ec240ed01b3bdaaa19967",
+      "sha256": "3129adff95e0f38b87ab34cddfc27082c7892bcaec267ff5d40f160fdf55b44a",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/cli.py": {
+      "git_blob": "f85629df7347faa1f40672a5733d7ded7fa6d4be",
+      "sha256": "1012846b9fc6ef03d61863d54cab7bbb332fd77b8839fddf089bbe839c3295c3",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/dsl.py": {
+      "git_blob": "683e38134a5364053cb6f4af97de2326b61905ec",
+      "sha256": "b2a8f9a8cdae02df27f321ce86142e7deba001720d4e52707b15dc811a61dc6d",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/engine.py": {
+      "git_blob": "087f6950c9e50cf267a72b368b6cdc64c5fba371",
+      "sha256": "6a3c437c90d9021166251f314c089b68a8317091ffc00bd02db3d76366054254",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/io.py": {
+      "git_blob": "fa9acbbe9f574790b8a908ce6a7c055dd8c630fb",
+      "sha256": "61fe14b0c3b47634df220c8fe012bcb8cece635851576956ceb448bb9d2ae251",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/matching/__init__.py": {
+      "git_blob": "825bce8a19895bea8f5221d18c9b4b96cea9462b",
+      "sha256": "c284fe9cd050f764710469c6d1f58d415cd5ebb1ec2d2ee5d9abb42a47a5bc13",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/matching/index.py": {
+      "git_blob": "c8e2734b8ed90ba86f56f8a8eb0722f01d49cd20",
+      "sha256": "9146feb58b3ae07712c15d98c8199bdaa7ad64cc757dbb027d865870d04a69f5",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/matching/matcher.py": {
+      "git_blob": "73571be95289c710b8019716e03f51f4ced8e049",
+      "sha256": "32d782c3b6a4bc1a18b15516e043282935be432574744591ee3acd4c7db4f4ec",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/matching/plan.py": {
+      "git_blob": "b22117699652893a489cd59e31c774ee1d0ee656",
+      "sha256": "226444a2e824f8f6994da02bf9980d7b7b0a689cf8d4c223afc65e6cafeb0ad6",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/matching/state_dependency.py": {
+      "git_blob": "cbd940df2f696626b1dcf656484823b6152bca81",
+      "sha256": "064f9b9aa06b7cdebff82ea1ce184c78a7c1166344b712a157b01d7e23bb39dd",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/observation.py": {
+      "git_blob": "776373b72ef9620541bb4175a5dc4a216c0cd847",
+      "sha256": "4ff2af9c44cece6ef56fc1112339fb7c6f536410a59ece50a221ab91fd335c9c",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/runtime/__init__.py": {
+      "git_blob": "4529fdb4f5aefd2aa798adf666fcf5321d3509b9",
+      "sha256": "a088699980c880079916f274ceaa284146c5532ae08547fcc2e5b2e6b417f007",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/runtime/scheduler.py": {
+      "git_blob": "84fcc9b4cb736abc6eca95e438d4ef1f8514c576",
+      "sha256": "5d46a3c285f7124367468367dba5f0e4075c1631e20544b2d6311b8b5697bb71",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/runtime/session.py": {
+      "git_blob": "2c67f1d8cdf6e424f0f55833046ccdb7d7b322af",
+      "sha256": "f8b84710144e0781e6f261ad893aae93ca8bf3724102fe74d2d4a92aa4ad7f13",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/runtime/snapshot.py": {
+      "git_blob": "2e7416b774462ef1961a865fafac0bf8b880c88a",
+      "sha256": "5629843b9b4b4fbeab889d4873f33353fe65d314be145c68de92c6bafd4c280c",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/types.py": {
+      "git_blob": "ad4f0e284397e5f3cf5d935b3e95acc5cfe04bbd",
+      "sha256": "728fd53e0931afef97897d5e9516a231deedc2d0b75b193f43b312bcf6cc63bc",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/validation/__init__.py": {
+      "git_blob": "a2870cfa24ed5bfdd64d84fc5ce1cd634802c780",
+      "sha256": "1d246fc0314c386c22f54292f9a1d84386d3004351628f2b9af96076f34ca89e",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/validation/errors.py": {
+      "git_blob": "2734f6e958e2c4b842ea61c6f4c0f6a47a5fb964",
+      "sha256": "b6d6dda35587e68933521302d514ba288bfe595274a6a652ddf73389e9cc5948",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/validation/event.py": {
+      "git_blob": "9b98cfa8c785a0abcd10701b2db89053688bbf4a",
+      "sha256": "3c27a49eaf2e40b988a308cb1958b4ac7cac9d7692296fc9260fab5838e3fc1c",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/validation/law.py": {
+      "git_blob": "bd74df5c9e5d4b97945609eb425ad07ad4d27b47",
+      "sha256": "2c9a6e8df0238252d3aedcb22c905ad2ffaa8137829d26affa39f0fa480abeec",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/validation/observation.py": {
+      "git_blob": "30b304695d42178c97593ed7ea52e3539c26917c",
+      "sha256": "1b5d9e1e06a20de57ac1c3d617df00948f6f4f32ed600648249b8cf2b919999b",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "src/pmw/validation/world.py": {
+      "git_blob": "5e1cac9b89418af83d7af192cc31d9da62fb7c75",
+      "sha256": "576661d806a9f417651a371a0e7e7e9a8fd903928a90e8b3a8c84abe4c4d5265",
+      "categories": [
+        "core_python"
+      ]
+    },
+    "tests/test_agent_cost_ledger.py": {
+      "git_blob": "3c74b39b8b6e6ead5ce342c0eef249c6a49161b8",
+      "sha256": "6a7d4908836ffe9ab0abf0fd36238985b60530af525586094ab155752f655ad7",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "tests/test_engine.py": {
+      "git_blob": "22a7ed656cd03782b6e3b37cc61f24f2b856bd7d",
+      "sha256": "fe647d7bf742d7e9d63e3474f5cbd9047917eb2402aaf1d7aee79ea852bc3196",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "tests/test_lifecycle.py": {
+      "git_blob": "c6037ed06fbd73e8bb536a09069541c6698d83df",
+      "sha256": "2d7b41db2cc97d83d6305010985184f0a0856143272c7c4945fd3dd3143a36df",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "tests/test_lifecycle_locality.py": {
+      "git_blob": "6f6bbc416f4f5e4cb3b65ed96fb106e48ea3ae9b",
+      "sha256": "50879087b6a41d47c57400f07ee749a1aa0ca0e8ae217c84ef7016d1b65c0b2e",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "tests/test_observation.py": {
+      "git_blob": "42c0e64041ffa1e77bd7aeeb32f030a02d82f0fe",
+      "sha256": "1e1226d02eb176de590a60c495382346e1901187b9a744df1684b0c9d18c13e1",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "tests/test_sandbox_processes.py": {
+      "git_blob": "c83f54886c5768efc6c201bb33b5d68aa3ff5a83",
+      "sha256": "a436797cd87e9992c334cc4ac419a2b1a09fcb14d1665bb833d79186dbff479c",
+      "categories": [
+        "old_tests"
+      ]
+    },
+    "tests/test_temporal_handles.py": {
+      "git_blob": "7b79a63e7dba1884a786274d0fe1c2ab2132bdaa",
+      "sha256": "b266d09b8f2be7ecbf6dbc5b202a5a92d749adfd7f7241d2a8700db51a03f6b1",
+      "categories": [
+        "old_tests"
+      ]
+    }
+  },
+  "all_protected_blobs_unchanged": true,
+  "scope": "Before C4.2 freeze; Main repeats at final acceptance. Existing Core/Alpha/oldtests remain protected during bounded worker changes."
+}
