@@ -15,7 +15,7 @@ from .status import StatusSpec
 
 EFFECT_KINDS = ("damage", "heal", "shield", "add_resource", "apply_status", "modify_field",
                 "modify_attractor", "modify_rate", "grant_trait", "process_start",
-                "process_modify")
+                "process_modify", "drive_source")
 
 
 @dataclass(frozen=True, slots=True)
@@ -37,6 +37,8 @@ class EffectSpec:
     process_template_id: str | None = None
     process_rate: float | None = None
     process_remaining_ticks: int | None = None
+    drive_profile_id: str | None = None
+    drive_rate: float | None = None
 
 
 def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.effect") -> EffectSpec:
@@ -52,6 +54,7 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
         "modify_rate": {"field_id", "amount", "duration"}, "grant_trait": {"trait_id", "duration"},
         "process_start": {"process_template_id"},
         "process_modify": {"process_template_id"} | process_modify_optional,
+        "drive_source": {"drive_profile_id", "drive_rate", "duration"},
     }
     if kind not in fields: raise GameplayContractError(f"{path}.kind is invalid")
     allowed = common | optional | fields[kind]
@@ -90,6 +93,31 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
         if (not isinstance(process_template_id, str) or not process_template_id
                 or len(process_template_id) > 128):
             raise GameplayContractError(f"{path}.process_template_id is invalid")
+    drive_profile_id = raw.get("drive_profile_id")
+    drive_rate = None
+    if kind == "drive_source":
+        if target.kind != "current_area":
+            raise GameplayContractError(f"{path}.target must be current_area for drive_source")
+        if raw["commitment"] != "required":
+            raise GameplayContractError(f"{path}.commitment must be required for drive_source")
+        if terms:
+            raise GameplayContractError(f"{path}.attribute_terms are not allowed for drive_source")
+        if targeting != {"sensing": "none", "evadable": False}:
+            raise GameplayContractError(f"{path}.targeting is not allowed for drive_source")
+        if (not isinstance(drive_profile_id, str) or not drive_profile_id
+                or len(drive_profile_id) > 128):
+            raise GameplayContractError(f"{path}.drive_profile_id is invalid")
+        drive_rate = raw["drive_rate"]
+        if (isinstance(drive_rate, bool)
+                or not isinstance(drive_rate, (int, float))
+                or not math.isfinite(drive_rate)
+                or drive_rate <= 0):
+            raise GameplayContractError(f"{path}.drive_rate must be finite positive")
+        drive_rate = float(drive_rate)
+        if (isinstance(raw["duration"], bool)
+                or not isinstance(raw["duration"], int)
+                or raw["duration"] < 1):
+            raise GameplayContractError(f"{path}.duration must be a positive integer")
     process_rate = None
     process_remaining_ticks = None
     if kind == "process_modify":
@@ -132,6 +160,7 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
     if trait is not None and (not isinstance(trait, str) or not trait): raise GameplayContractError(f"{path}.trait_id is invalid")
     duration = raw.get("duration")
     if duration is not None and (isinstance(duration, bool) or not isinstance(duration, int) or duration < 1): raise GameplayContractError(f"{path}.duration is invalid")
-    return EffectSpec(raw["id"], kind, target, raw["commitment"], condition, amount, resource, field_id,
-                      trait, status_id, duration, terms, targeting["sensing"], targeting["evadable"],
-                      process_template_id, process_rate, process_remaining_ticks)
+    return EffectSpec(raw["id"], kind, target, raw["commitment"], condition, amount, resource,
+                      field_id, trait, status_id, duration, terms, targeting["sensing"],
+                      targeting["evadable"], process_template_id, process_rate,
+                      process_remaining_ticks, drive_profile_id, drive_rate)

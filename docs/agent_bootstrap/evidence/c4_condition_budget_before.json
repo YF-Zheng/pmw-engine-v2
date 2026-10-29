@@ -1,0 +1,16 @@
+{
+  "checkpoint": "a4ad912c85f8c15f169c0826eea6c045e0ca2f7e",
+  "source_sha256": "e7fa4a27596c3709fd9f159b6332e0e270d2827f2ea721a0506d5f71572b5748",
+  "cases": [
+    {
+      "case": "depth_1500",
+      "outcome": "rejected",
+      "exception_type": "RecursionError"
+    },
+    {
+      "case": "children_100",
+      "outcome": "accepted",
+      "exception_type": null
+    }
+  ]
+}

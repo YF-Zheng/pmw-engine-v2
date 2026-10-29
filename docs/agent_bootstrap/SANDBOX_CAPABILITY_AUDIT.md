@@ -186,3 +186,9 @@ Complete frozen regression776/3,180, 276 immutable hashes; no old tests changed.
 Reports: C1_RATE_EXPIRY_INCREMENT.md and P1_PROCESS_RATE_EXPIRY_REVIEW.md.
 This closes those two bounded defects, not full P1 or the wider Process/Drive/
 Relation/global-budget/IR/Alpha UI gaps. C2 source design is not yet implementation.
+
+### C2 Finite Stock-To-Field Source Update
+
+C2 bounded finite Stock-to-Field source is ACCEPTED: frozen full regression793 passed/3,195 subtests in388.43s, exit0, all279 Python hashes unchanged. Owner11/7, independent6 methods, Main focused53/30 and complementary8 denials pass. Reports: C2_STOCK_FIELD_DRIVE_INCREMENT.md / C2_STOCK_FIELD_DRIVE_REVIEW.md; complete metadata/log: evidence/c2_drive_frozen_full_regression_meta.json / c2_drive_frozen_full_regression.txt. Existing clock, Engine, staged Action, Observation, Alpha and all87 tracked test files at a4ad912 remain protected. Positive finite source only; no sinks/open source/universal Field units, Alpha UI, complete P1/P2 or generation claim. Local checkpoint subject: feat: add bounded stock-fed field sources. Next independent task C3_RELATION_MODIFIER_DESIGN.md, then C4_CONDITION_BUDGET_DESIGN.md and remaining P1 gates.
+
+Capability limits are finite per trusted controller (defaults16 registered/8 active), not a proved global CPU/query bound. World root matches pre-dynamics; child executes after natural recovery and closure. Field units remain a documented catalog gap. Existing topology selectors are not altered by this source increment.

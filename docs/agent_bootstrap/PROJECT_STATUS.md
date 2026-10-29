@@ -33,13 +33,20 @@ real prior schema defect: both numeric Process fields were required despite the
 documented either/or contract. Linnaeus repaired disjoint effects.py/new schema
 tests; all three workers are frozen/closed. Previous both-parameter regression is
 not proof that pure-rate/remaining-only Skills were already usable. Accepted
-0e4e45b before evidence: c1_optional_fields_before.json. C2 finite Stock-to-Field source
-architecture is ready in `C2_STOCK_FIELD_DRIVE_DESIGN.md`, not implemented or
-accepted yet. Continue to the next independent target after each reviewed local
+0e4e45b before evidence: c1_optional_fields_before.json. C2 finite Stock-to-Field source is ACCEPTED. Maxwell/Schrodinger are closed;
+Main after-root headroom, paired-number and compile-boundary findings are fixed.
+Full frozen regression793/3,195 in388.43s, all279 Python hashes match.
+Reports: C2_STOCK_FIELD_DRIVE_INCREMENT.md / C2_STOCK_FIELD_DRIVE_REVIEW.md.
+Current complete cost cutoff15:22: project reference CNY139.49835831, safety
+reserve175.77496247/2000, P1 reserve138.12502981/400; Unknown0. Continue to the next independent target after each reviewed local
 checkpoint without requesting ordinary engineering decisions. Stop conditions
 and the 20:10 cutoff still apply. The paused heartbeat is not modified.
 
 ## Latest Accepted Iteration
+
+C2 bounded finite Stock-to-Field source is ACCEPTED: frozen full regression793 passed/3,195 subtests in388.43s, exit0, all279 Python hashes unchanged. Owner11/7, independent6 methods, Main focused53/30 and complementary8 denials pass. Reports: C2_STOCK_FIELD_DRIVE_INCREMENT.md / C2_STOCK_FIELD_DRIVE_REVIEW.md; complete metadata/log: evidence/c2_drive_frozen_full_regression_meta.json / c2_drive_frozen_full_regression.txt. Existing clock, Engine, staged Action, Observation, Alpha and all87 tracked test files at a4ad912 remain protected. Positive finite source only; no sinks/open source/universal Field units, Alpha UI, complete P1/P2 or generation claim. Local checkpoint subject: feat: add bounded stock-fed field sources. Next independent task C3_RELATION_MODIFIER_DESIGN.md, then C4_CONDITION_BUDGET_DESIGN.md and remaining P1 gates.
+
+## Previous C1 Iteration
 
 C1 fixes native rate-only expiry false rejection and genuine optional-key
 schema defect. Report: `C1_RATE_EXPIRY_INCREMENT.md`; independent review:
@@ -151,9 +158,10 @@ records to verify these main/child routes. Bootstrap expenses stay separate.
    safety must use existing Gameplay staging. Bare runtime remains privileged.
 5. Current SkillBlueprint exposes bounded trusted-template process_start and
    running process_modify rate/remaining duration. Pause/resume/progress writes,
-   Relation/drive and multi-trigger IR remain missing from this skill language.
+   Relation, broader Drive sinks/transfers and multi-trigger IR remain missing
+   from this skill language; C2 positive finite Stock-fed Field source is accepted.
 6. The Process start/modify Action/Registry bridges are verified; Alpha stock/UI,
-   wider Process controls and full IR/generator gates remain open. Reference prices are estimates,
+   wider Process controls, Relation and full IR/generator gates remain open. Reference prices are estimates,
    not verified provider account bills.
 7. Independent QA rejected the first no-recovery patch for formal domain-clamp
    and ecology zero-rate-policy gaps (first combined run 2 failed/691 passed).
@@ -183,15 +191,13 @@ records to verify these main/child routes. Bootstrap expenses stay separate.
 
 ## Recovery
 
-Current reviewed checkpoint: the local commit with subject
-`fix: preserve process expiry and accept optional controls` (resolve with
-`git log -1`). Previous accepted checkpoint: `0e4e45b`; earlier `14cf16d`.
-The current checkpoint includes bounded native expiry and optional-schema repairs,
-independent QA and frozen regression, not full P1 acceptance. No remote push.
-Next independent task: C2 finite Stock-fed Field source through existing Engine
-causal child events, local catalog/material authority, owned expiry and complete
-staged rollback, per C2_STOCK_FIELD_DRIVE_DESIGN.md. Then complete remaining Operator
-bridges and ten scenarios; do not jump to generated skills.
+Current reviewed checkpoint: local commit with subject
+`feat: add bounded stock-fed field sources` (resolve with git log). Previous
+accepted checkpoint a4ad912 (C1), then0e4e45b/14cf16d. C2 includes finite-source
+Laws and formal Skill bridge, independent QA, regression and accounting, not
+full P1. No remote push. Next: C3 existing typed Relation owned overlay, then
+C4 condition complexity limits and remaining Operator/ten-scenario gates.
+No game-generation call before P1 and P2 pass.
 
 Read status, audit, QA, spec, cost ledger and `project_run.json` first. The run
 manifest holds the exact managed main/child/turn IDs and task-stage assignments;

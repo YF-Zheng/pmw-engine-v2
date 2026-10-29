@@ -102,6 +102,16 @@
       "id": "01a18646-e1f3-77e1-a2c8-a5c860379fd2",
       "task": "C1 genuine optional Process parameter schema repair",
       "stage": "P1"
+    },
+    {
+      "id": "01a18662-9a71-74e0-aef5-69c6cbab991d",
+      "task": "C2 finite Stock-fed Field drive implementation",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18663-0625-7c61-b1da-3dd878a44cca",
+      "task": "C2 independent Drive source/expiry/transaction/replay QA",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -153,8 +163,14 @@
         "task": "c1",
         "main_end_ordinal": 3595,
         "snapshot": "docs\\agent_bootstrap\\evidence\\c1_cost_snapshot.json"
+      },
+      {
+        "task": "c2",
+        "main_end_ordinal": 3974,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\c2_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 3595
+    "main_ordinal_cursor": 3974,
+    "current_task": "c2"
   }
 }

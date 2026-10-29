@@ -1,0 +1,50 @@
+{
+  "checkpoint": "a4ad912c85f8c15f169c0826eea6c045e0ca2f7e",
+  "source_sha256": "48e639d21b752e6fb0e02f32fdb91d18774bea720b200ce0d82ac399c0b52727",
+  "cases": [
+    {
+      "case": "nan",
+      "rejected": true,
+      "error_type": "GameplayContractError"
+    },
+    {
+      "case": "positive_inf",
+      "rejected": true,
+      "error_type": "GameplayContractError"
+    },
+    {
+      "case": "negative_inf",
+      "rejected": true,
+      "error_type": "GameplayContractError"
+    },
+    {
+      "case": "zero",
+      "rejected": true,
+      "error_type": "GameplayContractError"
+    },
+    {
+      "case": "negative",
+      "rejected": true,
+      "error_type": "GameplayContractError"
+    },
+    {
+      "case": "unknown_profile",
+      "rejected": true,
+      "full_snapshot_unchanged": true,
+      "error_type": "GameplayContractError"
+    },
+    {
+      "case": "over_duration",
+      "rejected": true,
+      "full_snapshot_unchanged": true,
+      "error_type": "GameplayContractError"
+    },
+    {
+      "case": "wrong_owner",
+      "rejected": true,
+      "full_snapshot_unchanged": true,
+      "error_type": "GameplayContractError"
+    }
+  ],
+  "scope": "complementary parser/pure-native preflight probes; not normal equipment/timed Action proof"
+}

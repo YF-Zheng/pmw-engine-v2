@@ -75,6 +75,51 @@ expose trusted profile source influence, never private state.
 
 ## Write Ownership And Gates
 
+### Shared Interface For Disjoint Workers
+
+drives.py exports DRIVE_COMPONENT, DRIVE_START_EVENT, DRIVE_STEP_EVENT,
+DRIVE_EXPIRE_EVENT, DriveLimits(max_instances=16,max_active=8), DriveProfile,
+DriveController and instantiate_drive(profile)->Entity. Frozen profile field
+names: id, drive_entity_id, owner, area_id, field (existing FieldDefinition),
+stock (existing StockRef), stock_unit, field_per_stock, max_rate,
+max_duration_ticks. Controller constructor accepts profiles and optional limits;
+prepare_start(session,profile_id,owner=...,rate=...,duration_ticks=...) is pure.
+An optional native start with the same parameters stages through existing Laws.
+
+Initial Drive component is inactive, with profile_id/profile_hash/owner, rate0,
+started_at/expires_at/expiry_handle None, last_step=-1 and last_delta=0. Active
+rate is positive; each accepted cast owns a distinct expiry identity derived
+from trusted action/time identity, not a candidate field. Expired profile is
+inactive and reusable without stale-expiry interference. Raw Effect fields:
+id,kind=drive_source,target=current_area,commitment=required,drive_profile_id,
+drive_rate,duration (plus existing optional condition/targeting/attribute keys,
+with targeting/attribute bypass rejected). Unit/coefficient is profile-only.
+
+Use Field domains from the trusted FieldDefinition; source target is an Area
+Field only, not Actor Mana mirrors. Profile source/Drive entity must be local
+at activation. Active source continues in its own Area if the actor leaves.
+No negative/sink/open-source branch in C2. Supporting World fixture mutations
+must not be mistaken for normal equipment, registration or gameplay action.
+
+### Main Review Clarifications
+
+Root Tick matching uses the BEFORE-dynamics state. Emit the bounded child for
+an active valid profile even when that pre-state Field is full; the root's
+natural recovery may create headroom before the child executes. Stock/headroom
+and accepted paired conversion checks belong to the child. A full previous
+Field with recovery toward a lower target must still receive its same-Tick
+source contribution after recovery, with actual fuel debit.
+
+Float conversion must change both represented Field and Stock, or neither.
+Huge Stock/tiny rate and high Field/tiny rate may be unrepresentable; these
+cases are a conservative no-op, not free production or wasted fuel. Preserve
+ordinary proportional conversion and last-step duplicate prevention. This is
+a bounded numeric guarantee, not a universal dimensional arithmetic catalog.
+
+Do not extend make_content with unrelated materials or impose equality of all
+skill material sets merely to accommodate a new review fixture. Use existing
+parse/link/material authorization and the necessary controller integration.
+
 After C1 is accepted, one DeepSeek implementer owns new drives.py plus effects,
 actions, action_compiler, skills, content_compiler, registry, build_analysis,
 simulation and new test_sandbox_drive_source.py only. No old test or Engine,

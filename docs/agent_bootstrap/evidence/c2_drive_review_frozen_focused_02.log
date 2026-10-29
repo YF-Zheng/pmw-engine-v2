@@ -1,0 +1,32 @@
+test_capacity_fuel_owned_expiry_and_owner_departure (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_capacity_fuel_owned_expiry_and_owner_departure) ... FAIL
+test_checkpoint_changed_profile_projection_and_wait (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_checkpoint_changed_profile_projection_and_wait) ... ok
+test_denials_unknown_coefficient_and_mixed_control (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_denials_unknown_coefficient_and_mixed_control) ... ok
+test_formal_player_npc_timed_source_and_dynamics (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_formal_player_npc_timed_source_and_dynamics) ... ok
+test_real_cascade_and_late_tick_rollback (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_real_cascade_and_late_tick_rollback) ... ERROR
+test_sorted_overlap_and_none_vs_impulse (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_sorted_overlap_and_none_vs_impulse) ... ok
+
+======================================================================
+ERROR: test_real_cascade_and_late_tick_rollback (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_real_cascade_and_late_tick_rollback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_drive_source_review.py", line 936, in test_real_cascade_and_late_tick_rollback
+    submit_timed_primary_action(
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 489, in submit_timed_primary_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 290, in _resolve_action
+    raise GameplayContractError("action did not match installed definition")
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: action did not match installed definition
+
+======================================================================
+FAIL: test_capacity_fuel_owned_expiry_and_owner_departure (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_capacity_fuel_owned_expiry_and_owner_departure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_drive_source_review.py", line 703, in test_capacity_fuel_owned_expiry_and_owner_departure
+    self.assertEqual(_field_value(continued_session), 5.0)
+AssertionError: 3.0 != 5.0
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.350s
+
+FAILED (failures=1, errors=1)

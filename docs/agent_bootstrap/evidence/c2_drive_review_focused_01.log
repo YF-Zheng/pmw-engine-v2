@@ -1,0 +1,101 @@
+test_capacity_fuel_owned_expiry_and_owner_departure (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_capacity_fuel_owned_expiry_and_owner_departure) ... FAIL
+test_checkpoint_changed_profile_projection_and_wait (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_checkpoint_changed_profile_projection_and_wait) ... ERROR
+test_denials_unknown_coefficient_and_mixed_control (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_denials_unknown_coefficient_and_mixed_control) ... FAIL
+test_formal_player_npc_timed_source_and_dynamics (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_formal_player_npc_timed_source_and_dynamics) ... ERROR
+test_real_cascade_and_late_tick_rollback (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_real_cascade_and_late_tick_rollback) ... FAIL
+test_sorted_overlap_and_none_vs_impulse (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_sorted_overlap_and_none_vs_impulse) ... FAIL
+
+======================================================================
+ERROR: test_checkpoint_changed_profile_projection_and_wait (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_checkpoint_changed_profile_projection_and_wait)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_drive_source_review.py", line 925, in test_checkpoint_changed_profile_projection_and_wait
+    submit_timed_primary_action(
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 489, in submit_timed_primary_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 262, in _resolve_action
+    outcome = _simulate_effect(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 525, in _simulate_effect
+    return _simulate_drive_source(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 687, in _simulate_drive_source
+    profile = _resolve_drive_profile(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 723, in _resolve_drive_profile
+    raise GameplayContractError(
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: no Drive profile matches the requested profile and owner
+
+======================================================================
+ERROR: test_formal_player_npc_timed_source_and_dynamics (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_formal_player_npc_timed_source_and_dynamics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_drive_source_review.py", line 463, in test_formal_player_npc_timed_source_and_dynamics
+    second = submit_timed_primary_action(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 489, in submit_timed_primary_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 262, in _resolve_action
+    outcome = _simulate_effect(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 525, in _simulate_effect
+    return _simulate_drive_source(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 687, in _simulate_drive_source
+    profile = _resolve_drive_profile(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py", line 723, in _resolve_drive_profile
+    raise GameplayContractError(
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: no Drive profile matches the requested profile and owner
+
+======================================================================
+FAIL: test_capacity_fuel_owned_expiry_and_owner_departure (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_capacity_fuel_owned_expiry_and_owner_departure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_drive_source_review.py", line 570, in test_capacity_fuel_owned_expiry_and_owner_departure
+    self.assertEqual(_drive(recovered_session, recovered)["last_step"], 1)
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_denials_unknown_coefficient_and_mixed_control (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_denials_unknown_coefficient_and_mixed_control)
+----------------------------------------------------------------------
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: duplicate action id
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_drive_source_review.py", line 735, in test_denials_unknown_coefficient_and_mixed_control
+    with self.assertRaisesRegex(GameplayContractError, "active|budget|limit"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "active|budget|limit" does not match "duplicate action id"
+
+======================================================================
+FAIL: test_real_cascade_and_late_tick_rollback (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_real_cascade_and_late_tick_rollback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_drive_source_review.py", line 896, in test_real_cascade_and_late_tick_rollback
+    with self.assertRaises(ZeroDivisionError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ZeroDivisionError not raised
+
+======================================================================
+FAIL: test_sorted_overlap_and_none_vs_impulse (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_sorted_overlap_and_none_vs_impulse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_drive_source_review.py", line 702, in test_sorted_overlap_and_none_vs_impulse
+    self.assertEqual(
+AssertionError: Lists differ: [9.5, 9.0, 9.0] != [9.0, 9.0, 9.5]
+
+First differing element 0:
+9.5
+9.0
+
+- [9.5, 9.0, 9.0]
++ [9.0, 9.0, 9.5]
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.624s
+
+FAILED (failures=4, errors=2)

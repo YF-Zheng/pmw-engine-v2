@@ -1,0 +1,11 @@
+test_capacity_fuel_owned_expiry_and_owner_departure (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_capacity_fuel_owned_expiry_and_owner_departure) ... ok
+test_checkpoint_changed_profile_projection_and_wait (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_checkpoint_changed_profile_projection_and_wait) ... ok
+test_denials_unknown_coefficient_and_mixed_control (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_denials_unknown_coefficient_and_mixed_control) ... ok
+test_formal_player_npc_timed_source_and_dynamics (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_formal_player_npc_timed_source_and_dynamics) ... ok
+test_real_cascade_and_late_tick_rollback (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_real_cascade_and_late_tick_rollback) ... ok
+test_sorted_overlap_and_none_vs_impulse (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_drive_source_review.DriveSourceIndependentReviewTests.test_sorted_overlap_and_none_vs_impulse) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.459s
+
+OK

@@ -105,3 +105,9 @@ mechanics evidence, not a new public Alpha playtest. C2 finite Stock-fed Field
 source is selected to support sustained environmental investment identified by
 the existing playtest. Pending/completed UI feedback and full public-path rerun
 remain open; no generated skills or P4 acceptance are inferred.
+
+## Continuous C2 Mechanics Boundary
+
+C2 bounded finite Stock-to-Field source is ACCEPTED: frozen full regression793 passed/3,195 subtests in388.43s, exit0, all279 Python hashes unchanged. Owner11/7, independent6 methods, Main focused53/30 and complementary8 denials pass. Reports: C2_STOCK_FIELD_DRIVE_INCREMENT.md / C2_STOCK_FIELD_DRIVE_REVIEW.md; complete metadata/log: evidence/c2_drive_frozen_full_regression_meta.json / c2_drive_frozen_full_regression.txt. Existing clock, Engine, staged Action, Observation, Alpha and all87 tracked test files at a4ad912 remain protected. Positive finite source only; no sinks/open source/universal Field units, Alpha UI, complete P1/P2 or generation claim. Local checkpoint subject: feat: add bounded stock-fed field sources. Next independent task C3_RELATION_MODIFIER_DESIGN.md, then C4_CONDITION_BUDGET_DESIGN.md and remaining P1 gates.
+
+This is quantitative formal Gameplay engine evidence, not a new browser/public Alpha playtest. Sustained environmental investment now has a bounded finite-source mechanism. Existing public pending/completed feedback, locked crafting UX, recipe diversity and full playable-path recommendations remain unverified; no P4 or completed-game claim follows.

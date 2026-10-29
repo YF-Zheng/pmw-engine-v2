@@ -1,0 +1,45 @@
+{
+  "checkpoint": "a4ad912c85f8c15f169c0826eea6c045e0ca2f7e",
+  "branch": "feature/alpha-v02-seventh-night",
+  "status": "main_source_review_passed_pending_independent_qa_and_full_frozen_regression",
+  "implementation_agent_id": "01a18662-9a71-74e0-aef5-69c6cbab991d",
+  "actual_model": "tencent/deepseek-v4.1-flash",
+  "source_sha256": {
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/drives.py": "48e639d21b752e6fb0e02f32fdb91d18774bea720b200ce0d82ac399c0b52727",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/effects.py": "5ac63142229118590a31c140eef610368d6c16f9e9fa5674e850db8867b18304",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/actions.py": "c708f4f593c9ce4b81115457f55891c4304b1e5f838b462bc30587e4f56dc78b",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/action_compiler.py": "d2b0f2a80e3044ee96875c189c08c4ac0720f4bc549b48ccc8f7b26bf1bc2e1c",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skills.py": "3b664905d6c8e331f151b50c5f241c89f95042cbb2f041c8a65e70960c811973",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/content_compiler.py": "b2fb1b95710d0ddd2b0576054d76eb0939e0c5a1e437f33857893a466a3ef354",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/registry.py": "7fc6489d5d45bc30a5ef261ec953e62a552dc01257aebfe848188c4e55a12d50",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/build_analysis.py": "b044a311f9a88e2470dfaddf4cfe72c8f52bb3ff2e7a2f1b870dcc518b722d4d",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/simulation.py": "3889cc141b7cdfa53fbbd20e2d953681f1bf44d903795b9bccd39233dcc3b080",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_drive_source.py": "fc259a3059592a0503fe9766f6a6c1f6a21e618d1c9ad031f9554cb51e544324"
+  },
+  "resolved_main_findings": [
+    "after-root conversion does not prefilter headroom",
+    "representable field and stock paired changes or no-op",
+    "no unrelated make_content materials API expansion",
+    "static Process Stock exclusion at actual compile_content entry"
+  ],
+  "focused_regression": {
+    "log": "c2_drive_main_focus_retry.txt",
+    "passed": 53,
+    "subtests_passed": 30
+  },
+  "preserved_harness_failure": {
+    "log": "c2_drive_main_focus.txt",
+    "exit_code": 4,
+    "cause": "Main selected nonexistent test paths; no tests ran; not a product defect"
+  },
+  "full_p1_accepted": false,
+  "game_generation_calls": 0,
+  "final_acceptance": {
+    "status": "accepted_bounded_c2",
+    "full_regression_meta": "c2_drive_frozen_full_regression_meta.json",
+    "passed": 793,
+    "subtests": 3195,
+    "python_hashes_unchanged": 279,
+    "cost_snapshot": "c2_cost_snapshot.json"
+  }
+}

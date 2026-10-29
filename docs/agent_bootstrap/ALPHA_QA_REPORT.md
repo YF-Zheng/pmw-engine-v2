@@ -201,3 +201,9 @@ c1_rate_expiry_frozen_full_regression.txt / _full_regression_meta.json.
 Independent review: P1_PROCESS_RATE_EXPIRY_REVIEW.md; Main clarified its timing
 prose without modifying frozen test source. Full P1 remains open. Proceed to
 C2 finite Stock-fed Field source; no generator calls or Alpha UI claims.
+
+## Continuous C2 Frozen Acceptance
+
+C2 bounded finite Stock-to-Field source is ACCEPTED: frozen full regression793 passed/3,195 subtests in388.43s, exit0, all279 Python hashes unchanged. Owner11/7, independent6 methods, Main focused53/30 and complementary8 denials pass. Reports: C2_STOCK_FIELD_DRIVE_INCREMENT.md / C2_STOCK_FIELD_DRIVE_REVIEW.md; complete metadata/log: evidence/c2_drive_frozen_full_regression_meta.json / c2_drive_frozen_full_regression.txt. Existing clock, Engine, staged Action, Observation, Alpha and all87 tracked test files at a4ad912 remain protected. Positive finite source only; no sinks/open source/universal Field units, Alpha UI, complete P1/P2 or generation claim. Local checkpoint subject: feat: add bounded stock-fed field sources. Next independent task C3_RELATION_MODIFIER_DESIGN.md, then C4_CONDITION_BUDGET_DESIGN.md and remaining P1 gates.
+
+Intermediate QA fixture/import failures and Main nonexistent-path exit4 are retained, not called product regressions. Main two-failed-fix root review corrected the cascade fixture: an isolated copied session plus real installed action Laws and equipped timed Skill causes the actual Drive child to raise, then complete staged state/revisions/stats/closure/schedule remain unchanged. Independent Skills are equivalent actor-bound separate IDs, not one same-ID profile routed to both owners. Nonfinite rate coverage is complemented by c2_drive_main_denials.json; do not expand report prose into unexecuted tests. QA report/test hashes are preserved. No Python edits occurred during final full regression.

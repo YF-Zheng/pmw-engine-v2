@@ -92,6 +92,7 @@ def registry_configuration(compiled: Any) -> tuple[ActionRegistry, tuple[dict, .
         registry.statuses.values(),
         (item for item in registry.hooks.values() if item.id not in passive_hook_ids),
         process_controller=registry.process_controller,
+        drive_controller=registry.drive_controller,
     )
     static = tuple(dict(law) for law in compiled.laws if not _dynamic_action_law(law["id"]))
     if not any(law["id"] == "pmw.v04.registry.change" for law in static):
@@ -246,6 +247,7 @@ class MechanismRegistryRuntime:
             (*self.base_registry.hooks.values(), *(passive_hook(item) for item in active
                                                    if item.kind == "passive_blueprint")),
             process_controller=self.base_registry.process_controller,
+            drive_controller=self.base_registry.drive_controller,
         )
 
     def _compiled_laws(self, manifest: MechanismRegistryManifest | None = None) -> tuple[dict, ...]:
@@ -262,6 +264,7 @@ class MechanismRegistryRuntime:
             retired = ActionRegistry(
                 (blueprint.action,), self.base_registry.statuses.values(),
                 process_controller=self.base_registry.process_controller,
+                drive_controller=self.base_registry.drive_controller,
             )
             for law in build_action_laws(retired, status_slots=self.status_slots,
                                          dynamics_slots=self.dynamics_slots):

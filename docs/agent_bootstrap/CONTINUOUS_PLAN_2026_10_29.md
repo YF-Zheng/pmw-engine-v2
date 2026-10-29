@@ -29,10 +29,10 @@ heartbeat remains paused; this is continuous work in the current active turn.
 
 | Item | Scope and measurable gate | State |
 | --- | --- | --- |
-| C1 | Fix rate-only Process false rejection and genuine optional-schema defect; native/formal timed player/NPC, rollback/replay; 776 tests/3,180 subtests, 276 immutable hashes | accepted; local checkpoint next |
-| C2 | Bounded typed Drive/Source on the existing Gameplay clock, with explicit trusted source/conservation, local authority, duration/ownership and staged Action tests | architecture next |
+| C1 | Fix rate-only Process false rejection and genuine optional-schema defect; native/formal timed player/NPC, rollback/replay; 776 tests/3,180 subtests, 276 immutable hashes | accepted a4ad912 |
+| C2 | Bounded finite Stock-fed Field source on existing clock; explicit source/conservation, local authority, duration/ownership and staged Action tests | accepted:793/3,195,279 immutable hashes; local checkpoint |
 | C3 | Typed Relation modification using existing topology/lifecycle Laws; endpoint/type/scope/material rejection and actual downstream behavior | queued after C2 |
-| C4 | Close remaining P1 Operator/condition/lifecycle/resource-budget gaps; measure event/query/active-instance boundaries; ten formal mechanism scenarios with player/NPC | queued; P1 not accepted |
+| C4 | First bound shared condition parsing (actual depth1500 RecursionError/width100 accepted baseline); then close remaining P1 Operator/condition/lifecycle/resource-budget gaps and ten formal player/NPC scenarios | queued after C3; P1 not accepted |
 | C5 | Only after P1: versioned multi-trigger IR/typed selectors/conditions, one compiler/runtime and 30 data-only reference skills with adversarial/replay gates | gated by P1 |
 | C6 | Only after P2: real bounded Flash generation/evaluation, then Alpha generated-skill slice and public playtest-driven iteration | gated by P1 and P2 |
 
@@ -40,6 +40,15 @@ This is an ordered queue, not a promise that every stage fits the remaining
 day. Gate failures may select a smaller independently valuable repair rather
 than pretending a full stage passed. Update the table after every checkpoint;
 continue without asking for ordinary engineering choices.
+
+C3's existing-link overlay design uses REAL Core Relation components and an
+opt-in downstream World Law, not a proxy Entity or completion flag. Existing
+travel/locality selectors still read topology and are not falsely declared to
+honor the new effective switch. See C3_RELATION_MODIFIER_DESIGN.md.
+C4 condition design/baseline: C4_CONDITION_BUDGET_DESIGN.md and
+evidence/c4_condition_budget_before.json. Architecture/evidence preparation
+can run while C2 workers implement, but no C3/C4 production edits begin before
+the preceding source freeze, independent review, full regression and checkpoint.
 
 ## C1 Frozen Policy
 

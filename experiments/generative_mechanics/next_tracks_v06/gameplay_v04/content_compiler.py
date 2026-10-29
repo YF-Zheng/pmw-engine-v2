@@ -49,7 +49,8 @@ def make_content(base_registry: ActionRegistry, *, skills: tuple[SkillBlueprint,
                  harvest_by_area: Mapping[str, tuple[HarvestSpec, ...]] | None = None,
                  stock_amounts_by_area: Mapping[str, Mapping[str, float]] | None = None,
                  material_ids: tuple[str, ...] = (),
-                 process_controller: Any = None) -> Gate3Content:
+                 process_controller: Any = None,
+                 drive_controller: Any = None) -> Gate3Content:
     skill_actions = tuple(item.action for item in skills)
     if set(base_registry.actions) & {item.id for item in skill_actions}:
         raise GameplayContractError("skill ID collides with an installed Action")
@@ -61,7 +62,15 @@ def make_content(base_registry: ActionRegistry, *, skills: tuple[SkillBlueprint,
             base_registry.process_controller
             if process_controller is None else process_controller
         ),
+        drive_controller=(
+            base_registry.drive_controller
+            if drive_controller is None else drive_controller
+        ),
     )
+    if registry.drive_controller is not None and registry.process_controller is not None:
+        _assert_drive_process_stock_exclusion(
+            registry.drive_controller, registry.process_controller
+        )
     return Gate3Content(registry, skills, registry_manifest(skills),
                         MappingProxyType(dict(weather_by_area or {})),
                         MappingProxyType(dict(ecology_by_area or {})),
@@ -140,6 +149,9 @@ def initialize_content_world(world: WorldState, content: Gate3Content) -> WorldS
 
 def compile_content(content: Gate3Content) -> CompiledGate3Content:
     controller = content.action_registry.process_controller
+    drive_controller = content.action_registry.drive_controller
+    if drive_controller is not None and controller is not None:
+        _assert_drive_process_stock_exclusion(drive_controller, controller)
     laws = [
         *build_action_laws(content.action_registry),
         *build_weather_laws(content.weather_by_area, content.action_registry.statuses),
@@ -149,6 +161,7 @@ def compile_content(content: Gate3Content) -> CompiledGate3Content:
         *build_registry_laws(),
         *build_time_budget_laws(),
         *(() if controller is None else controller.laws),
+        *(() if drive_controller is None else drive_controller.laws),
     ]
     ids = [item["id"] for item in laws]
     if len(ids) != len(set(ids)):
@@ -162,3 +175,20 @@ def compile_content(content: Gate3Content) -> CompiledGate3Content:
 def build_content_session(world: WorldState, compiled: CompiledGate3Content):
     profiles = discover_profiles(world)
     return build_runtime(world, profiles, compiled.laws)
+
+
+def _assert_drive_process_stock_exclusion(
+    drive_controller: Any, process_controller: Any
+) -> None:
+    configured = {
+        stock_id: profile.id
+        for profile in process_controller.profiles
+        for stock_id in profile.stock_ids
+    }
+    for profile in drive_controller.profiles:
+        stock_id = profile.stock.entity_id
+        if stock_id in configured:
+            raise GameplayContractError(
+                f"Drive input Stock {stock_id!r} overlaps configured Process "
+                f"{configured[stock_id]!r} input/output Stock"
+            )

@@ -6,6 +6,7 @@ from typing import Any, Iterable
 
 from .actions import ACTION_EVENT, ACTOR_COMPONENT, ActionRegistry
 from .contracts import GameplayContractError
+from .drives import DRIVE_START_EVENT
 from .processes import PROCESS_MODIFY_EVENT, PROCESS_START_EVENT
 from .runtime import GameplaySession, build_runtime
 from .status import DurationSpec, STATUS_CANCEL_EVENT, STATUS_COMPONENT, StatusSpec, neutral_status_slot
@@ -215,6 +216,32 @@ def _effect_laws(action_id, action_version, action_hash, effect, status_slots, d
                         "after_progress": f"{payload_root}.after_progress",
                         "deadline": f"{payload_root}.deadline",
                     },
+                },
+            }],
+        }]
+    if effect.kind == "drive_source":
+        if effect.drive_profile_id is None:
+            raise GameplayContractError(
+                "compiled drive_source requires drive_profile_id"
+            )
+        drive_conditions = [
+            *conditions,
+            {"ref": "$event.payload.execution_kind", "eq": "primary"},
+        ]
+        return [{
+            "id": prefix,
+            "mode": "event",
+            "priority": 100,
+            "bindings": identity,
+            "when": {"all": drive_conditions},
+            "effects": [{
+                "op": "emit_event",
+                "event": {
+                    "type": DRIVE_START_EVENT,
+                    "time": "$event.time",
+                    "source": "$event.source",
+                    "target": f"{value_root}.drive_target_id",
+                    "payload": f"{value_root}.drive_prepared",
                 },
             }],
         }]
