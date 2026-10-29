@@ -1,0 +1,29 @@
+{
+  "checkpoint": "0e4e45b",
+  "native_function_sha256": "264c552e57c316ba0961408e8598867814ab073b2f7fe6ee08a4433f466003c2",
+  "scenario": "Full output trusted initial fixture, normal equipped paid start with real saturated tick, original accepted native rate-only preparation",
+  "clock": 2.0,
+  "component": {
+    "profile_id": "c1_baseline",
+    "profile_hash": "eb2319e5f285c56d18bb84fbef93356abc2a17700858d4e65e166e34587409d0",
+    "template_id": "refine_material",
+    "owner": "player_actor",
+    "state": "running",
+    "rate": 1.0,
+    "max_rate": 2.0,
+    "duration_ticks": 3,
+    "remaining_ticks": 3,
+    "elapsed_ticks": 0,
+    "progress": 0.0,
+    "started_at": 0.0,
+    "hard_deadline": 3.0,
+    "expiry_handle": "pmw:v04:sandbox.process.expiry:c1_baseline",
+    "last_step": 2,
+    "last_failure": null
+  },
+  "error": {
+    "type": "GameplayContractError",
+    "message": "Process duration cannot extend the hard deadline"
+  },
+  "state_unchanged": true
+}

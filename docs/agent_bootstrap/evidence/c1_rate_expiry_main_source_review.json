@@ -1,0 +1,16 @@
+{
+  "scope": "C1 Main source review; independent formal rate-only QA still pending",
+  "parent": "0e4e45b",
+  "main_turn": "01a1862b-a31c-7351-ac83-5a77abdf3769",
+  "source_sha256": "4f5f3b6941913b68ff3badac0d57e1c0c24cadb6516b1ea17a23d6488b78815b",
+  "owner_test_sha256": "3c0d7bf7f7f8e6c44bb1b52f37fbdf066ab7b53ab68b6208e2354e785ddec7de",
+  "architecture": "actual future expiry validated against harddeadline; stored duration/remaining/progress retained for rate-only; explicit remaining rules unchanged",
+  "owner_reported_results": [
+    "8 passed / 4 subtests in1.56s",
+    "36 passed / 15 subtests in5.70s",
+    "51 passed / 11 subtests in9.03s"
+  ],
+  "formal_evidence_limit": "Owner helper uses maxduration6 with duration3 and one formal case explicitly changes remaining; these cannot alone reproduce original saturated pure-rate rejection",
+  "required_independent_gate": "cold normal equipped parsed rate-only Effect with no remaining key, maxduration=duration3, real paid start2 -> now2/storedremaining3/hard3, primary resolution and exact expiry",
+  "gameplay_or_engine_changes_by_main": false
+}

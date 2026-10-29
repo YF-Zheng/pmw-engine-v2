@@ -42,6 +42,7 @@ class EffectSpec:
 def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.effect") -> EffectSpec:
     common = {"id", "kind", "target", "commitment"}
     optional = {"condition", "attribute_terms", "targeting"}
+    process_modify_optional = {"process_rate", "process_remaining_ticks"}
     if not isinstance(raw, dict) or not common <= set(raw): raise GameplayContractError(f"{path} is missing common fields")
     kind = raw["kind"]
     fields = {
@@ -50,13 +51,19 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
         "modify_field": {"field_id", "amount"}, "modify_attractor": {"field_id", "amount", "duration"},
         "modify_rate": {"field_id", "amount", "duration"}, "grant_trait": {"trait_id", "duration"},
         "process_start": {"process_template_id"},
-        "process_modify": {
-            "process_template_id", "process_rate", "process_remaining_ticks",
-        },
+        "process_modify": {"process_template_id"} | process_modify_optional,
     }
     if kind not in fields: raise GameplayContractError(f"{path}.kind is invalid")
     allowed = common | optional | fields[kind]
-    if set(raw) != (common | fields[kind] | (set(raw) & optional)) or set(raw) - allowed:
+    required_fields = fields[kind]
+    if kind == "process_modify":
+        required_fields = required_fields - process_modify_optional
+    required = common | required_fields
+    missing_required = not required <= set(raw)
+    if kind == "process_modify" and not any(
+            raw.get(key) is not None for key in process_modify_optional):
+        missing_required = True
+    if missing_required or set(raw) - allowed:
         raise GameplayContractError(f"{path} has missing or unknown fields")
     if not isinstance(raw["id"], str) or not raw["id"]: raise GameplayContractError(f"{path}.id is invalid")
     if raw["commitment"] not in {"required", "conditional"}: raise GameplayContractError(f"{path}.commitment is invalid")

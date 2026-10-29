@@ -21,7 +21,36 @@
 - P2-P5: not started/accepted. No 30-skill IR corpus or 200-500 generated batch.
 - Existing Alpha playable baseline retained. No remote push/global config edit.
 
+## Active Continuous Run
+
+User requested consecutive work on 2026-10-29, not stopping after each accepted
+increment. Plan: `CONTINUOUS_PLAN_2026_10_29.md`. Current verified GPT main turn:
+`01a1862b-a31c-7351-ac83-5a77abdf3769`. C1 saturated rate-only expiry and optional
+schema repairs are ACCEPTED with Lagrange/Linnaeus implementation and Russell independent QA; actual
+child IDs/stages are registered in project_run.json and their per-response
+records identify tencent/deepseek-v4.1-flash. Independent pure-rate QA exposed a
+real prior schema defect: both numeric Process fields were required despite the
+documented either/or contract. Linnaeus repaired disjoint effects.py/new schema
+tests; all three workers are frozen/closed. Previous both-parameter regression is
+not proof that pure-rate/remaining-only Skills were already usable. Accepted
+0e4e45b before evidence: c1_optional_fields_before.json. C2 finite Stock-to-Field source
+architecture is ready in `C2_STOCK_FIELD_DRIVE_DESIGN.md`, not implemented or
+accepted yet. Continue to the next independent target after each reviewed local
+checkpoint without requesting ordinary engineering decisions. Stop conditions
+and the 20:10 cutoff still apply. The paused heartbeat is not modified.
+
 ## Latest Accepted Iteration
+
+C1 fixes native rate-only expiry false rejection and genuine optional-key
+schema defect. Report: `C1_RATE_EXPIRY_INCREMENT.md`; independent review:
+`P1_PROCESS_RATE_EXPIRY_REVIEW.md`. Combined new suites17/28; Main complementary
+actual timed player/NPC pure-rate pays one Mana/Tick and expires exactly at3.
+Complete frozen regression: 776 passed / 3,180 subtests in407.04s, exit0,
+276 unchanged Python hashes. Old tests unchanged; complete P1 remains open.
+Accounting cutoff/counters: `evidence/c1_cost_snapshot.json` and COST_LEDGER.md.
+Continue immediately to C2 finite Stock-fed Field drive; no generator calls.
+
+## Previous Process Modification Iteration
 
 2026-10-29 manual continuation, starting clean `14cf16d`: bounded typed
 process_modify rate/remaining-duration bridge. Architecture:
@@ -141,25 +170,27 @@ records to verify these main/child routes. Bootstrap expenses stay separate.
 10. Process controller preflight scans entity maps for active/writer checks;
     formal tick remains existing Law execution, but constant-work action
     validation is not established. Full P1 budgets/locality gates remain open.
-11. Pre-existing native Process modification limitation verified at `14cf16d`:
+11. FIXED by C1: pre-existing native Process modification limitation at `14cf16d`:
     after a saturated Tick, stored remaining/elapsed conversion time can differ
     from wall-clock expiry. A rate-only modification can reject a safe unchanged
     expiry as a hard-deadline extension. Evidence:
     `evidence/p1_process_modify_saturation_baseline.json`. Not silently repaired
-    or disguised as a new bridge regression; broader Tick policy remains open.
+    or disguised as a new bridge regression. C1 retains actual scheduled expiry
+    and exact stored productive lifecycle; broader Tick policy remains unchanged.
+12. FIXED by C1: strict Effect schema previously required both numeric Process
+    parameters despite the optional contract. Pure-rate/remaining-only parsing
+    and genuine formal timed pure-rate are now verified, not inferred from labels.
 
 ## Recovery
 
 Current reviewed checkpoint: the local commit with subject
-`feat: bridge bounded process modification through staged actions` (resolve with
-`git log -1`). Previous accepted checkpoint: `14cf16d`; earlier `fda6557`.
-The current checkpoint includes the bounded Process rate/duration bridge,
+`fix: preserve process expiry and accept optional controls` (resolve with
+`git log -1`). Previous accepted checkpoint: `0e4e45b`; earlier `14cf16d`.
+The current checkpoint includes bounded native expiry and optional-schema repairs,
 independent QA and frozen regression, not full P1 acceptance. No remote push.
-Next independent task: reproduce and narrowly repair rate-only native rejection
-after saturated ticks, retaining the actual expiry and hard deadline. First
-freeze the stored productive-progress versus wall-clock policy; add native and
-formal Action regressions without introducing a second clock or extending
-lifetime. Then complete the remaining Operator
+Next independent task: C2 finite Stock-fed Field source through existing Engine
+causal child events, local catalog/material authority, owned expiry and complete
+staged rollback, per C2_STOCK_FIELD_DRIVE_DESIGN.md. Then complete remaining Operator
 bridges and ten scenarios; do not jump to generated skills.
 
 Read status, audit, QA, spec, cost ledger and `project_run.json` first. The run

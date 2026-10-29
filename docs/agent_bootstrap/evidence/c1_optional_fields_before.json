@@ -1,0 +1,23 @@
+{
+  "checkpoint": "0e4e45b",
+  "source_function_sha256": "79cb5e9529090902753fdefbaaeb550b0e71037dcb7100742bbce17632a58262",
+  "classification": "genuine production schema defect: accepted strict shape incorrectly requires both documented optional numeric parameters",
+  "outcomes": [
+    {
+      "case": "rate_only",
+      "accepted": false,
+      "error_type": "GameplayContractError",
+      "error": "$.effect has missing or unknown fields"
+    },
+    {
+      "case": "remaining_only",
+      "accepted": false,
+      "error_type": "GameplayContractError",
+      "error": "$.effect has missing or unknown fields"
+    },
+    {
+      "case": "both",
+      "accepted": true
+    }
+  ]
+}

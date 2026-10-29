@@ -13,7 +13,8 @@
     "01a185b4-fabf-7270-bef0-ec609363ff91",
     "01a185b7-8aea-7512-9311-d7516cb86eb1",
     "01a18599-6592-7d72-99a5-5d5ce3eab591",
-    "01a185ea-111c-7ec1-a028-48c2a86e82d8"
+    "01a185ea-111c-7ec1-a028-48c2a86e82d8",
+    "01a1862b-a31c-7351-ac83-5a77abdf3769"
   ],
   "default_phase": "P0",
   "agents": [
@@ -86,6 +87,21 @@
       "id": "01a185ed-76c5-79b0-8351-2fa4ff4f9a37",
       "task": "Independent Process modification scope/deadline/transaction QA",
       "stage": "P1"
+    },
+    {
+      "id": "01a1862e-a265-76a1-addb-858d18c5d98c",
+      "task": "C1 rate-only Process expiry implementation",
+      "stage": "P1"
+    },
+    {
+      "id": "01a1862e-f34d-75a3-b0a6-508cac392249",
+      "task": "C1 independent Process rate-only expiry QA",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18646-e1f3-77e1-a2c8-a5c860379fd2",
+      "task": "C1 genuine optional Process parameter schema repair",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -106,7 +122,8 @@
     "01a185b4-fabf-7270-bef0-ec609363ff91": "P1",
     "01a185b7-8aea-7512-9311-d7516cb86eb1": "P1",
     "01a18599-6592-7d72-99a5-5d5ce3eab591": "P1",
-    "01a185ea-111c-7ec1-a028-48c2a86e82d8": "P1"
+    "01a185ea-111c-7ec1-a028-48c2a86e82d8": "P1",
+    "01a1862b-a31c-7351-ac83-5a77abdf3769": "P1"
   },
   "bootstrap": {
     "project_turn": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
@@ -125,5 +142,19 @@
     "Append resumed project turn and child IDs before every ledger refresh.",
     "Main P0/P1 shared planning is charged conservatively to P0 until exact turn-stage separation is available.",
     "Covers managed project workload counters; not an account-wide bill or unrelated app-internal review activity."
-  ]
+  ],
+  "continuous_run": {
+    "started_at_utc": "2026-10-29T05:39:29.235Z",
+    "main_turns": [
+      "01a1862b-a31c-7351-ac83-5a77abdf3769"
+    ],
+    "accounted_tasks": [
+      {
+        "task": "c1",
+        "main_end_ordinal": 3595,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\c1_cost_snapshot.json"
+      }
+    ],
+    "main_ordinal_cursor": 3595
+  }
 }

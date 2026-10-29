@@ -170,3 +170,19 @@ checkpoint reproduction in `evidence/p1_process_modify_saturation_baseline.json`
 Skill pause/resume/progress writes, drive/Relation bridges, full multi-trigger IR,
 global budgets/locality and Alpha Stock UI/Process Observation/planning.
 No dynamic templates, generator calls, full P1 or P2 acceptance is claimed.
+
+### C1 Native Expiry And Optional Schema Repair
+
+The saturated rate-only guard now validates actual scheduled expiry, not
+now + stored productive remaining, and retains exact lifecycle/harddeadline.
+Independent pure-rate verification also exposed a genuine prior schema bug:
+strict key equality required both supposedly optional numeric fields. Original
+rate-only/remaining-only rejection versus both-key acceptance is retained in
+c1_optional_fields_before.json; a narrow required/allowed-key repair fixes it.
+
+Independent cold catalog and normal player/NPC pure-rate Primary Actions,
+Main's genuinely timed pure-rate calls, expiry, rollback and replay pass.
+Complete frozen regression776/3,180, 276 immutable hashes; no old tests changed.
+Reports: C1_RATE_EXPIRY_INCREMENT.md and P1_PROCESS_RATE_EXPIRY_REVIEW.md.
+This closes those two bounded defects, not full P1 or the wider Process/Drive/
+Relation/global-budget/IR/Alpha UI gaps. C2 source design is not yet implementation.

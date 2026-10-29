@@ -108,9 +108,12 @@ and every paid tick on failure. No second world simulator or clock is added.
 
 Expiry at T still precedes conversion at T. Productive elapsed/remaining ticks
 can diverge from wall time on saturated ticks. The pre-existing native rate-only
-hard-deadline false rejection is preserved and documented in
-`evidence/p1_process_modify_saturation_baseline.json`; this slice does not claim
-rate modification in all saturated states. Native pause/resume/progress policy
+hard-deadline false rejection was preserved at0e4e45b and documented in
+`evidence/p1_process_modify_saturation_baseline.json`. Subsequent C1 fixes that
+guard using actual future expiry, preserving duration/remaining/progress and
+harddeadline. C1 also fixes strict required-key accounting so rate-only and
+remaining-only really parse, rather than merely being a documented contract.
+Native pause/resume/progress policy
 and broader Skill exposure require separate acceptance.
 
 Public semantic footprint is `process:<template>:configuration`. Actor-safe
@@ -118,6 +121,9 @@ projection excludes both Process control Actions and private controller/Stock
 authority; basic_wait still works. It is not a Process forecasting/planning gate.
 Frozen acceptance evidence: `P1_PROCESS_MODIFY_INCREMENT.md` and independent
 `P1_PROCESS_MODIFY_REVIEW.md`, 759 tests / 3,152 subtests.
+C1 complementary evidence: `C1_RATE_EXPIRY_INCREMENT.md`, 776 tests / 3,180
+subtests, all276 Python hashes unchanged. Real timed pure-rate player/NPC calls
+pay one Mana and Tick, expire at3 before conversion, and do not extend lifetime.
 
 ## Remaining P1 Gates
 

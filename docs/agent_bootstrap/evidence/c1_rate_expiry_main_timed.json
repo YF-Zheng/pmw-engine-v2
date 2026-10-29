@@ -1,0 +1,76 @@
+[
+  {
+    "actor": "player_actor",
+    "before_clock": 2.0,
+    "after_clock": 3.0,
+    "time_duration": 1,
+    "before_budget": {
+      "total_ticks": 12,
+      "spent_ticks": 2,
+      "remaining_ticks": 10,
+      "last_reason": "exploration"
+    },
+    "after_budget": {
+      "total_ticks": 12,
+      "spent_ticks": 3,
+      "remaining_ticks": 9,
+      "last_reason": "exploration"
+    },
+    "after_process": {
+      "profile_id": "main_timed_player_actor",
+      "profile_hash": "d927bd59bf377f9dbb96ac92336ab2a43e98af99d07f8b5a7d344568ce1ff8a0",
+      "template_id": "refine_material",
+      "owner": "player_actor",
+      "state": "stopped",
+      "rate": 1.5,
+      "max_rate": 2.0,
+      "duration_ticks": 3,
+      "remaining_ticks": 0,
+      "elapsed_ticks": 0,
+      "progress": 1.0,
+      "started_at": 0.0,
+      "hard_deadline": 3.0,
+      "expiry_handle": null,
+      "last_step": 2,
+      "last_failure": null
+    },
+    "classification": "Main complementary genuinely timed pure-rate Action; not independent reviewer execution"
+  },
+  {
+    "actor": "npc_actor",
+    "before_clock": 2.0,
+    "after_clock": 3.0,
+    "time_duration": 1,
+    "before_budget": {
+      "total_ticks": 12,
+      "spent_ticks": 2,
+      "remaining_ticks": 10,
+      "last_reason": "exploration"
+    },
+    "after_budget": {
+      "total_ticks": 12,
+      "spent_ticks": 3,
+      "remaining_ticks": 9,
+      "last_reason": "exploration"
+    },
+    "after_process": {
+      "profile_id": "main_timed_npc_actor",
+      "profile_hash": "f9aad524b7d6c188cb0f49a32b799f17a7a1a17689a2ec421e942c94d9af27fb",
+      "template_id": "refine_material",
+      "owner": "npc_actor",
+      "state": "stopped",
+      "rate": 1.5,
+      "max_rate": 2.0,
+      "duration_ticks": 3,
+      "remaining_ticks": 0,
+      "elapsed_ticks": 0,
+      "progress": 1.0,
+      "started_at": 0.0,
+      "hard_deadline": 3.0,
+      "expiry_handle": null,
+      "last_step": 2,
+      "last_failure": null
+    },
+    "classification": "Main complementary genuinely timed pure-rate Action; not independent reviewer execution"
+  }
+]

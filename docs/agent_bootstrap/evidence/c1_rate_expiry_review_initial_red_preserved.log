@@ -1,0 +1,441 @@
+FF.FF.                                                             [100%]
+================================== FAILURES ===================================
+_ ProcessRateExpiryIndependentReviewTests.test_cascade_late_tick_and_checkpoint_continue_from_rate_expiry _
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_cascade_late_tick_and_checkpoint_continue_from_rate_expiry>
+
+    def test_cascade_late_tick_and_checkpoint_continue_from_rate_expiry(self):
+        runtime, compiled, profile, _, _ = _saturated_runtime()
+        _start_paid(runtime, PLAYER_ID, "cascade_start")
+        advance_world_tick(runtime.session)
+    
+        source = runtime.session
+        expected = _component(source, profile)
+        cascade_laws = (
+            {
+                "id": "pmw.v04.review.aa_expiry_bridge",
+                "mode": "event",
+                "priority": 100,
+                "bindings": {
+                    "process": {
+                        "kind": "entity",
+                        "requires": [PROCESS_COMPONENT],
+                    }
+                },
+                "when": {"all": [
+                    {"event.type": {"eq": "pmw.v04.sandbox.process.modify"}},
+                    {"ref": "$process.id", "eq": profile.process_entity_id},
+                ]},
+                "effects": [{
+                    "op": "emit_event",
+                    "event": {
+                        "type": "pmw.v04.review.expiry_committed",
+                        "time": "$event.time",
+                        "source": "$event.source",
+                        "target": "$process.id",
+                        "payload": {},
+                    },
+                }],
+            },
+            {
+                "id": "pmw.v04.review.zz_expiry_failure",
+                "mode": "event",
+                "priority": 100,
+                "bindings": {
+                    "process": {
+                        "kind": "entity",
+                        "requires": [PROCESS_COMPONENT],
+                    }
+                },
+                "when": {"all": [
+                    {"event.type": {"eq": "pmw.v04.review.expiry_committed"}},
+                    {"ref": "$process.id", "eq": "$event.target"},
+                ]},
+                "effects": [{
+                    "op": "set",
+                    "target": f"$process.{PROCESS_COMPONENT}.last_failure",
+                    "value": {"div": [1, 0]},
+                }],
+            },
+        )
+        runtime.session = build_runtime(
+            source.state,
+            source.profiles,
+            (
+                *runtime.static_laws,
+                *build_action_laws(runtime.action_registry),
+                *cascade_laws,
+            ),
+        )
+        before = _snapshot(runtime)
+        with self.assertRaises(ZeroDivisionError):
+>           _modify(runtime, PLAYER_ID, "cascade_rate_only")
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:416: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:100: in _modify
+    return resolve_action(runtime.session, runtime.action_registry, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:200: in resolve_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:246: in _resolve_action
+    outcome = _simulate_effect(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:454: in _simulate_effect
+    return _simulate_process_modify(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:580: in _simulate_process_modify
+    prepared = controller.prepare_modify(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\processes.py:295: in prepare_modify
+    return _prepare_modify(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\processes.py:896: in _prepare_modify
+    component = _preflight(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _preflight(
+        controller: ProcessController,
+        session: GameplaySession,
+        profile: ProcessProfile,
+        *,
+        owner: str,
+        states: set[str],
+        require_inputs: bool,
+    ) -> dict[str, Any]:
+        if owner != profile.owner:
+            raise GameplayContractError("Process source ownership does not match its trusted profile")
+        entity = session.state.entities.get(profile.process_entity_id)
+        if entity is None:
+            raise GameplayContractError("Process target entity does not exist")
+        component = _validate_process_component(entity, profile)
+        if component["state"] not in states:
+>           raise GameplayContractError(
+                f"Process state must be one of {', '.join(sorted(states))}"
+            )
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: Process state must be one of running
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\processes.py:1041: GameplayContractError
+_ ProcessRateExpiryIndependentReviewTests.test_duration_and_deadline_rejections_are_atomic_and_distinct _
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: Process state must be one of running
+
+During handling of the above exception, another exception occurred:
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_duration_and_deadline_rejections_are_atomic_and_distinct>
+
+    def test_duration_and_deadline_rejections_are_atomic_and_distinct(self):
+        runtime, _, profile, _, _ = _saturated_runtime(
+            documents=(
+                _modify_document(
+                    skill_id="rate_shorten_expiry",
+                    rate=1.5,
+                    remaining_ticks=2,
+                    duration=2,
+                ),
+                _modify_document(
+                    skill_id="rate_extend_expiry",
+                    rate=1.75,
+                    remaining_ticks=4,
+                    duration=2,
+                ),
+            )
+        )
+        _start_paid(runtime, PLAYER_ID, "deadline_start")
+        advance_world_tick(runtime.session)
+        before = _snapshot(runtime)
+>       with self.assertRaisesRegex(GameplayContractError, "hard deadline"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: "hard deadline" does not match "Process state must be one of running"
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:274: AssertionError
+_ ProcessRateExpiryIndependentReviewTests.test_equipped_player_and_npc_rate_only_then_paid_actions_keep_wall_expiry (actor_id='player_actor') _
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_equipped_player_and_npc_rate_only_then_paid_actions_keep_wall_expiry>
+
+    def test_equipped_player_and_npc_rate_only_then_paid_actions_keep_wall_expiry(self):
+        cases = (
+            (PLAYER_ID, "player_rate_expiry", 0.5),
+            (NPC_ID, "npc_rate_expiry", 0.75),
+        )
+        for actor_id, profile_id, initial_rate in cases:
+            with self.subTest(actor_id=actor_id):
+                runtime, _, profile, _, _ = _saturated_runtime(
+                    actor_id=actor_id,
+                    profile_id=profile_id,
+                )
+                template = replace(_template(), duration_ticks=6, max_duration_ticks=8)
+                profile = replace(
+                    profile,
+                    template=template,
+                    rate=initial_rate,
+                )
+                runtime, _, _, _ = _setup_modifier(
+                    (profile,),
+                    time_budget=12,
+                )
+                output = profile.outputs[0].stock.entity_id
+                runtime.session.state.entities[output].components["stock"]["amount"] = 20.0
+                runtime.session.runtime.revalidate()
+                _start_paid(runtime, actor_id, f"{actor_id}_start")
+                advance_world_tick(runtime.session)
+                before = _component(runtime.session, profile)
+>               self.assertEqual(before["remaining_ticks"], 6)
+E               AssertionError: 0 != 6
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:211: AssertionError
+_ ProcessRateExpiryIndependentReviewTests.test_equipped_player_and_npc_rate_only_then_paid_actions_keep_wall_expiry (actor_id='npc_actor') _
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_equipped_player_and_npc_rate_only_then_paid_actions_keep_wall_expiry>
+
+    def test_equipped_player_and_npc_rate_only_then_paid_actions_keep_wall_expiry(self):
+        cases = (
+            (PLAYER_ID, "player_rate_expiry", 0.5),
+            (NPC_ID, "npc_rate_expiry", 0.75),
+        )
+        for actor_id, profile_id, initial_rate in cases:
+            with self.subTest(actor_id=actor_id):
+                runtime, _, profile, _, _ = _saturated_runtime(
+                    actor_id=actor_id,
+                    profile_id=profile_id,
+                )
+                template = replace(_template(), duration_ticks=6, max_duration_ticks=8)
+                profile = replace(
+                    profile,
+                    template=template,
+                    rate=initial_rate,
+                )
+                runtime, _, _, _ = _setup_modifier(
+                    (profile,),
+                    time_budget=12,
+                )
+                output = profile.outputs[0].stock.entity_id
+                runtime.session.state.entities[output].components["stock"]["amount"] = 20.0
+                runtime.session.runtime.revalidate()
+                _start_paid(runtime, actor_id, f"{actor_id}_start")
+                advance_world_tick(runtime.session)
+                before = _component(runtime.session, profile)
+>               self.assertEqual(before["remaining_ticks"], 6)
+E               AssertionError: 0 != 6
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:211: AssertionError
+_ ProcessRateExpiryIndependentReviewTests.test_negative_fixture_corruption_is_not_direct_authority _
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_negative_fixture_corruption_is_not_direct_authority>
+
+    def test_negative_fixture_corruption_is_not_direct_authority(self):
+        runtime, _, profile, _, _ = _saturated_runtime()
+        _start_paid(runtime, PLAYER_ID, "fixture_start")
+        fault = deepcopy(runtime.session.runtime.engine.attach(
+            deepcopy(runtime.session.state)
+        ))
+        component = fault.state.entities[profile.process_entity_id].components[
+            PROCESS_COMPONENT
+        ]
+        component["expiry_handle"] = "foreign-handle"
+>       fault.runtime.revalidate()
+        ^^^^^^^^^^^^^
+E       AttributeError: 'WorldRuntime' object has no attribute 'runtime'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:443: AttributeError
+_ ProcessRateExpiryIndependentReviewTests.test_rate_only_keeps_actual_expiry_after_saturated_ticks _
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_rate_only_keeps_actual_expiry_after_saturated_ticks>
+
+    def test_rate_only_keeps_actual_expiry_after_saturated_ticks(self):
+        runtime, _, profile, _, _ = _saturated_runtime()
+        start = _start_paid(runtime, PLAYER_ID, "rate_expiry_start")
+        self.assertEqual(start.time.duration, 2)
+        before_tick = _component(runtime.session, profile)
+        self.assertEqual(runtime.session.state.sim_time, 2.0)
+        self.assertEqual(before_tick["remaining_ticks"], 3)
+        self.assertEqual(before_tick["elapsed_ticks"], 0)
+        self.assertEqual(before_tick["progress"], 0.0)
+>       self.assertEqual(before_tick["hard_deadline"], 3.0)
+E       AssertionError: 4.0 != 3.0
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:143: AssertionError
+_ ProcessRateExpiryIndependentReviewTests.test_scheduled_expiry_and_handles_must_be_unique_future_and_bound (mutation='missing') _
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_scheduled_expiry_and_handles_must_be_unique_future_and_bound>
+
+    def test_scheduled_expiry_and_handles_must_be_unique_future_and_bound(self):
+        runtime, _, profile, _, _ = _saturated_runtime()
+        _start_paid(runtime, PLAYER_ID, "handle_start")
+        component = _component(runtime.session, profile)
+        handle = component["expiry_handle"]
+        scheduled = _scheduled_expiry(runtime.session, component)
+        self.assertEqual(scheduled.time, 3.0)
+    
+        for mutation, pattern in (
+            ("missing", "missing"),
+            ("past", "not in the future"),
+            ("duplicate", "missing"),
+            ("beyond", "cannot extend the hard deadline"),
+        ):
+            with self.subTest(mutation=mutation):
+                candidate = deepcopy(runtime.session.runtime.engine.attach(
+                    deepcopy(runtime.session.state)
+                ))
+                current = candidate.state.entities[profile.process_entity_id].components[
+                    PROCESS_COMPONENT
+                ]
+                if mutation == "missing":
+                    candidate.state.scheduled_events = []
+                elif mutation == "past":
+                    current["expiry_handle"] = "past-handle"
+                    candidate.state.scheduled_events = [
+                        replace(scheduled, id="past-handle", time=2.0)
+                    ]
+                elif mutation == "duplicate":
+                    candidate.state.scheduled_events = [scheduled, replace(scheduled)]
+                else:
+                    current["expiry_handle"] = "beyond-handle"
+                    candidate.state.scheduled_events = [
+                        replace(scheduled, id="beyond-handle", time=4.0)
+                    ]
+>               candidate.runtime.revalidate()
+                ^^^^^^^^^^^^^^^^^
+E               AttributeError: 'WorldRuntime' object has no attribute 'runtime'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:345: AttributeError
+_ ProcessRateExpiryIndependentReviewTests.test_scheduled_expiry_and_handles_must_be_unique_future_and_bound (mutation='past') _
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_scheduled_expiry_and_handles_must_be_unique_future_and_bound>
+
+    def test_scheduled_expiry_and_handles_must_be_unique_future_and_bound(self):
+        runtime, _, profile, _, _ = _saturated_runtime()
+        _start_paid(runtime, PLAYER_ID, "handle_start")
+        component = _component(runtime.session, profile)
+        handle = component["expiry_handle"]
+        scheduled = _scheduled_expiry(runtime.session, component)
+        self.assertEqual(scheduled.time, 3.0)
+    
+        for mutation, pattern in (
+            ("missing", "missing"),
+            ("past", "not in the future"),
+            ("duplicate", "missing"),
+            ("beyond", "cannot extend the hard deadline"),
+        ):
+            with self.subTest(mutation=mutation):
+                candidate = deepcopy(runtime.session.runtime.engine.attach(
+                    deepcopy(runtime.session.state)
+                ))
+                current = candidate.state.entities[profile.process_entity_id].components[
+                    PROCESS_COMPONENT
+                ]
+                if mutation == "missing":
+                    candidate.state.scheduled_events = []
+                elif mutation == "past":
+                    current["expiry_handle"] = "past-handle"
+                    candidate.state.scheduled_events = [
+                        replace(scheduled, id="past-handle", time=2.0)
+                    ]
+                elif mutation == "duplicate":
+                    candidate.state.scheduled_events = [scheduled, replace(scheduled)]
+                else:
+                    current["expiry_handle"] = "beyond-handle"
+                    candidate.state.scheduled_events = [
+                        replace(scheduled, id="beyond-handle", time=4.0)
+                    ]
+>               candidate.runtime.revalidate()
+                ^^^^^^^^^^^^^^^^^
+E               AttributeError: 'WorldRuntime' object has no attribute 'runtime'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:345: AttributeError
+_ ProcessRateExpiryIndependentReviewTests.test_scheduled_expiry_and_handles_must_be_unique_future_and_bound (mutation='duplicate') _
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_scheduled_expiry_and_handles_must_be_unique_future_and_bound>
+
+    def test_scheduled_expiry_and_handles_must_be_unique_future_and_bound(self):
+        runtime, _, profile, _, _ = _saturated_runtime()
+        _start_paid(runtime, PLAYER_ID, "handle_start")
+        component = _component(runtime.session, profile)
+        handle = component["expiry_handle"]
+        scheduled = _scheduled_expiry(runtime.session, component)
+        self.assertEqual(scheduled.time, 3.0)
+    
+        for mutation, pattern in (
+            ("missing", "missing"),
+            ("past", "not in the future"),
+            ("duplicate", "missing"),
+            ("beyond", "cannot extend the hard deadline"),
+        ):
+            with self.subTest(mutation=mutation):
+                candidate = deepcopy(runtime.session.runtime.engine.attach(
+                    deepcopy(runtime.session.state)
+                ))
+                current = candidate.state.entities[profile.process_entity_id].components[
+                    PROCESS_COMPONENT
+                ]
+                if mutation == "missing":
+                    candidate.state.scheduled_events = []
+                elif mutation == "past":
+                    current["expiry_handle"] = "past-handle"
+                    candidate.state.scheduled_events = [
+                        replace(scheduled, id="past-handle", time=2.0)
+                    ]
+                elif mutation == "duplicate":
+                    candidate.state.scheduled_events = [scheduled, replace(scheduled)]
+                else:
+                    current["expiry_handle"] = "beyond-handle"
+                    candidate.state.scheduled_events = [
+                        replace(scheduled, id="beyond-handle", time=4.0)
+                    ]
+>               candidate.runtime.revalidate()
+                ^^^^^^^^^^^^^^^^^
+E               AttributeError: 'WorldRuntime' object has no attribute 'runtime'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:345: AttributeError
+_ ProcessRateExpiryIndependentReviewTests.test_scheduled_expiry_and_handles_must_be_unique_future_and_bound (mutation='beyond') _
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_scheduled_expiry_and_handles_must_be_unique_future_and_bound>
+
+    def test_scheduled_expiry_and_handles_must_be_unique_future_and_bound(self):
+        runtime, _, profile, _, _ = _saturated_runtime()
+        _start_paid(runtime, PLAYER_ID, "handle_start")
+        component = _component(runtime.session, profile)
+        handle = component["expiry_handle"]
+        scheduled = _scheduled_expiry(runtime.session, component)
+        self.assertEqual(scheduled.time, 3.0)
+    
+        for mutation, pattern in (
+            ("missing", "missing"),
+            ("past", "not in the future"),
+            ("duplicate", "missing"),
+            ("beyond", "cannot extend the hard deadline"),
+        ):
+            with self.subTest(mutation=mutation):
+                candidate = deepcopy(runtime.session.runtime.engine.attach(
+                    deepcopy(runtime.session.state)
+                ))
+                current = candidate.state.entities[profile.process_entity_id].components[
+                    PROCESS_COMPONENT
+                ]
+                if mutation == "missing":
+                    candidate.state.scheduled_events = []
+                elif mutation == "past":
+                    current["expiry_handle"] = "past-handle"
+                    candidate.state.scheduled_events = [
+                        replace(scheduled, id="past-handle", time=2.0)
+                    ]
+                elif mutation == "duplicate":
+                    candidate.state.scheduled_events = [scheduled, replace(scheduled)]
+                else:
+                    current["expiry_handle"] = "beyond-handle"
+                    candidate.state.scheduled_events = [
+                        replace(scheduled, id="beyond-handle", time=4.0)
+                    ]
+>               candidate.runtime.revalidate()
+                ^^^^^^^^^^^^^^^^^
+E               AttributeError: 'WorldRuntime' object has no attribute 'runtime'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:345: AttributeError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_cascade_late_tick_and_checkpoint_continue_from_rate_expiry
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_duration_and_deadline_rejections_are_atomic_and_distinct
+SUBFAILED(actor_id='player_actor') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_equipped_player_and_npc_rate_only_then_paid_actions_keep_wall_expiry
+SUBFAILED(actor_id='npc_actor') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_equipped_player_and_npc_rate_only_then_paid_actions_keep_wall_expiry
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_negative_fixture_corruption_is_not_direct_authority
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_rate_only_keeps_actual_expiry_after_saturated_ticks
+SUBFAILED(mutation='missing') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_scheduled_expiry_and_handles_must_be_unique_future_and_bound
+SUBFAILED(mutation='past') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_scheduled_expiry_and_handles_must_be_unique_future_and_bound
+SUBFAILED(mutation='duplicate') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_scheduled_expiry_and_handles_must_be_unique_future_and_bound
+SUBFAILED(mutation='beyond') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_scheduled_expiry_and_handles_must_be_unique_future_and_bound
+10 failed, 2 passed in 2.29s

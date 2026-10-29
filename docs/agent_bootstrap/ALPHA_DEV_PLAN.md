@@ -35,9 +35,9 @@
    rate/remaining-duration Process modification bridge is also accepted:
    759 tests/3,152 subtests, exact Law/expiry confirmation and independent QA.
    Pause/resume/progress writes are not part of this Skill language slice.
-   Next: narrowly repair the verified native rate-only hard-deadline rejection
-   after saturated ticks, preserving stored progress, actual expiry and the
-   existing clock. Then bridge remaining
+   C1 repairs the verified native rate-only hard-deadline rejection and genuine
+   optional-parameter schema gap: 776/3,180, 276 immutable hashes, real timed
+   player/NPC proof. Next: C2 finite Stock-fed Field drive, then bridge remaining
    catalog operators into Action/Registry;
    reuse material capabilities and topology validator, add bounded event/query
    budgets and lifecycle ownership. Run all ten scenarios including player/NPC.
@@ -62,9 +62,9 @@ to GPT root-cause analysis. Three ineffective iterations stop that direction.
 Never delete tests, bypass validation or modify victory flags to pass gates.
 No remote pushes or global Codex/Magpie configuration changes are required.
 
-Checkpoint verification: latest frozen full regression **759 passed, 3,152
-subtests passed in 332.41s**, all 273 Python hashes unchanged (previous
-checkpoint: 742/3,141). P0 accepted;
+Checkpoint verification: latest frozen full regression **776 passed, 3,180
+subtests passed in 407.04s**, all 276 Python hashes unchanged (previous
+checkpoint: 759/3,152). P0 accepted;
 only bounded P1 increments accepted, not the
 full ten-scenario gate. No generation batch or P2 reference corpus was started.
 

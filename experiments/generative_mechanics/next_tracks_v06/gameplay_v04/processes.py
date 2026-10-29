@@ -906,16 +906,21 @@ def _prepare_modify(
     after_remaining = current_remaining if remaining_ticks is None else _duration(
         remaining_ticks, "Process remaining_ticks", maximum=profile.template.max_duration_ticks
     )
-    deadline = now + after_remaining
-    if deadline > hard_deadline:
-        raise GameplayContractError("Process duration cannot extend the hard deadline")
     elapsed = component["elapsed_ticks"]
-    after_duration = elapsed + after_remaining
-    if after_duration > profile.template.max_duration_ticks:
-        raise GameplayContractError("Process duration exceeds the trusted template maximum")
     if remaining_ticks is None:
         deadline = _scheduled_time(session, component["expiry_handle"])
-    after_progress = min(1.0, elapsed / after_duration)
+        if deadline > hard_deadline:
+            raise GameplayContractError("Process schedule exceeds the hard deadline")
+        after_duration = component["duration_ticks"]
+        after_progress = component["progress"]
+    else:
+        deadline = now + after_remaining
+        if deadline > hard_deadline:
+            raise GameplayContractError("Process duration cannot extend the hard deadline")
+        after_duration = elapsed + after_remaining
+        after_progress = min(1.0, elapsed / after_duration)
+    if after_duration > profile.template.max_duration_ticks:
+        raise GameplayContractError("Process duration exceeds the trusted template maximum")
     return {
         "profile_id": profile.id,
         "profile_hash": profile.profile_hash,

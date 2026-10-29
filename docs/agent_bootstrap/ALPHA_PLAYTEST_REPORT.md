@@ -96,3 +96,12 @@ paid Action tests and the complete Alpha/M0 regression pass (759 total tests /
 3,152 subtests across all modules). They are mechanics/regression evidence,
 not a new public browser playtest or proof of the recommendations above.
 No new recipe diversity, completed game or P4 acceptance is claimed.
+
+## Continuous C1 Boundary
+
+C1 repairs native expiry and actual optional Process controls. New formal
+player/NPC timed probes and complete regression776/3,180 pass; this is still
+mechanics evidence, not a new public Alpha playtest. C2 finite Stock-fed Field
+source is selected to support sustained environmental investment identified by
+the existing playtest. Pending/completed UI feedback and full public-path rerun
+remain open; no generated skills or P4 acceptance are inferred.

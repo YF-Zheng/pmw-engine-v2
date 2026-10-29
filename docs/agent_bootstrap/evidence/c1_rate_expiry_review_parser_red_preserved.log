@@ -1,0 +1,18 @@
+F...                                                                   [100%]
+================================== FAILURES ===================================
+_ ProcessRateExpiryIndependentReviewTests.test_actual_native_rate_only_lifecycle_and_exact_expiry _
+
+self = <test_sandbox_process_rate_expiry_review.ProcessRateExpiryIndependentReviewTests testMethod=test_actual_native_rate_only_lifecycle_and_exact_expiry>
+
+    def test_actual_native_rate_only_lifecycle_and_exact_expiry(self):
+        runtime, compiled, profile = _native_runtime(
+            profile_id="native_rate_only"
+        )
+>       before = deepcopy(_component(runtime.session, profile))
+                                     ^^^^^^^^^^^^^^^
+E       AttributeError: 'GameplaySession' object has no attribute 'session'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_process_rate_expiry_review.py:193: AttributeError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_rate_expiry_review.py::ProcessRateExpiryIndependentReviewTests::test_actual_native_rate_only_lifecycle_and_exact_expiry
+1 failed, 3 passed, 2 subtests passed in 1.23s

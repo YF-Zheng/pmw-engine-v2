@@ -239,3 +239,20 @@ excluded from project totals. Workers were closed before the frozen full
 closing tool/final response usage; refresh it on the next continuation before
 spending. Complete means the observed selection, not zero future charges.
 No prompts, credentials or raw configuration are copied into the ledger.
+
+## Continuous C1 Snapshot
+
+Observed cutoff: **2026-10-29T06:34:24.210Z**; complete, Unknown 0, malformed 0.
+Snapshot: `evidence/c1_cost_snapshot.json`. This subset is already in cumulative totals; never add it again.
+97% cache is a price assumption only. Actual cache is preserved; pricing/FX remain pinned to verified 2026-10-28 sources.
+
+| Family | Responses | Actual input | Actual cache | Actual output | Reasoning (included) | Reference USD |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| GPT | 62 | 10,603,306 | 10,408,838 | 49,825 | 24,294 | 2.16296908 |
+| DeepSeek | 284 | 41,287,525 | 39,945,728 | 246,478 | 72,143 | 0.90765476 |
+| Unknown | 0 | 0 | 0 | 0 | 0 | N/A (no records) |
+
+Subset: USD 3.07062384 / CNY 20.47000677.
+Project cumulative: **USD 18.20380622 / CNY 121.35385379**.
+Safety-reserved: **CNY 152.91197225 / 2,000**; all stage gates within budget.
+Bootstrap remains separate. Closing response usage is pending the next refresh. Ordinal boundary allocation of shared overhead is not exact semantic task attribution.

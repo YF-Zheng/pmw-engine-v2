@@ -172,3 +172,32 @@ prior-checkpoint saturated-tick native rate-only false rejection remains open;
 do not change deadline/progress policy silently. No pause/resume/progress-write
 Skill, Alpha UI, full P1/P2 or generation acceptance follows. No new public
 browser playtest was performed in this engine increment.
+
+## Continuous C1 Expiry And Optional Controls
+
+Independent QA found a genuine production defect that prior both-parameter
+tests missed: strict Effect schema required both optional numeric keys.
+Original native and schema counterexamples are in c1_rate_expiry_before.json
+and c1_optional_fields_before.json. Native repair and separate schema repair
+have disjoint ownership; all three workers closed before final full regression.
+
+Independent frozen combined run of three new suites:17 passed/28 subtests in
+3.45s; four methods are QA-owned. Genuine pure-rate raw Effect omits remaining,
+parses None, uses cold catalog/normal player+NPC equipment and paid start. Pure
+Primary resolution pays Mana; manual world tick verifies expiry but does not
+pay modifier time budget. Main separately verified submit_timed_primary_action
+for player/NPC: clock2->3, budget spent2->3/remaining10->9, Mana1, no full-Stock
+conversion, exact expiry3. Evidence: c1_rate_expiry_main_timed.json.
+
+Earlier red logs preserve fixture/property errors, parser-defect evidence and
+Windows default-sandbox launcher1385 failures. Escalated repository-only
+execution works; this was not a permanently unavailable host. No tests were
+weakened or deleted to conceal those failures. Owner profiles with deadline
+slack and explicit remaining are supporting tests, not original defect proof.
+
+Full frozen regression: **776 passed, 3,180 subtests passed in407.04s**; exit0,
+all276 Python before/after hashes match, old tests unchanged. Logs/metadata:
+c1_rate_expiry_frozen_full_regression.txt / _full_regression_meta.json.
+Independent review: P1_PROCESS_RATE_EXPIRY_REVIEW.md; Main clarified its timing
+prose without modifying frozen test source. Full P1 remains open. Proceed to
+C2 finite Stock-fed Field source; no generator calls or Alpha UI claims.
