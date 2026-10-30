@@ -1,0 +1,70 @@
+{
+  "all_ok": true,
+  "author": "Main (not independent QA)",
+  "checks": [
+    {
+      "actual": 0.40000000000000013,
+      "check": "initial_heat",
+      "expected": 0.4,
+      "ok": true
+    },
+    {
+      "actual": 0.0,
+      "check": "initial_hot",
+      "ok": true
+    },
+    {
+      "check": "blaze_rejected_atomic_p1_npc",
+      "ok": true
+    },
+    {
+      "check": "blaze_rejected_atomic_p1_player",
+      "ok": true
+    },
+    {
+      "actual": 0.7750000000000001,
+      "check": "after_warm_heat",
+      "expected": 0.775,
+      "ok": true
+    },
+    {
+      "actual": 1.0,
+      "check": "after_warm_hot",
+      "ok": true
+    },
+    {
+      "check": "other_area_independent",
+      "ok": true
+    },
+    {
+      "check": "blaze_paid_p1_player",
+      "ok": true
+    },
+    {
+      "check": "blaze_paid_p1_npc",
+      "ok": true
+    },
+    {
+      "actual": 0.8750000000000001,
+      "check": "after_two_blaze_heat",
+      "expected": 0.875,
+      "ok": true
+    },
+    {
+      "actual": 1.0,
+      "check": "heat_clamped_max",
+      "ok": true
+    },
+    {
+      "check": "stable_under_ticks",
+      "ok": true
+    }
+  ],
+  "probe": "c5_derived_main_probe",
+  "source_sha256": {
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/actions.py": "8df813143dd4f70921f96d300ca0945157fd2ae465d42c56ae56a947def1e91a",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/conditions.py": "a750139bbad3547d58fd3e8e258fc10a1e73a5c7a51acc78fc120dcbcd7dd373",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/content_compiler.py": "366afbfde51f6b6044a9c1dc9789c509202ba4e326352d6bb24231115ad2e821",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/derived.py": "bcc9de894aaa789eb7c4cba76072c56ac94d8d1d26ac62378a5e352a4d366325"
+  }
+}

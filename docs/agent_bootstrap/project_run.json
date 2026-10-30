@@ -15,7 +15,8 @@
     "01a18599-6592-7d72-99a5-5d5ce3eab591",
     "01a185ea-111c-7ec1-a028-48c2a86e82d8",
     "01a1862b-a31c-7351-ac83-5a77abdf3769",
-    "01a18a8c-d2f5-7751-86e4-3b662913c288"
+    "01a18a8c-d2f5-7751-86e4-3b662913c288",
+    "01a18b1c-e159-7f31-a86d-8f49af40678e"
   ],
   "default_phase": "P0",
   "agents": [
@@ -198,6 +199,31 @@
       "id": "01a18b01-8653-7b81-9da2-719c1a84bb33",
       "task": "C5.1 move_actor independent QA",
       "stage": "P1"
+    },
+    {
+      "id": "01a18b22-0852-7151-8b38-03c7d9a2d86c",
+      "task": "C5.2 derived catalog implementation owner",
+      "stage": "Reserve"
+    },
+    {
+      "id": "01a18b39-ad4a-70c1-aee5-0d6124bb5504",
+      "task": "C5.2 derived catalog independent QA",
+      "stage": "Reserve"
+    },
+    {
+      "id": "01a18b3b-e9e3-7f73-a4c4-e89106ca8303",
+      "task": "P1 completion conformance owner (scenarios 1/7/9)",
+      "stage": "Reserve"
+    },
+    {
+      "id": "01a18b48-9c7a-7972-a4da-38cdfaef35dc",
+      "task": "C5.2-REV-01 derived observation/sandbox projection fix owner",
+      "stage": "Reserve"
+    },
+    {
+      "id": "01a18b48-d134-78d0-8ee9-908cb27e8433",
+      "task": "P1 completion conformance independent review",
+      "stage": "Reserve"
     }
   ],
   "turn_stages": {
@@ -220,7 +246,8 @@
     "01a18599-6592-7d72-99a5-5d5ce3eab591": "P1",
     "01a185ea-111c-7ec1-a028-48c2a86e82d8": "P1",
     "01a1862b-a31c-7351-ac83-5a77abdf3769": "P1",
-    "01a18a8c-d2f5-7751-86e4-3b662913c288": "P1"
+    "01a18a8c-d2f5-7751-86e4-3b662913c288": "P1",
+    "01a18b1c-e159-7f31-a86d-8f49af40678e": "Reserve"
   },
   "bootstrap": {
     "project_turn": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
@@ -238,13 +265,15 @@
   "notes": [
     "Append resumed project turn and child IDs before every ledger refresh.",
     "Main P0/P1 shared planning is charged conservatively to P0 until exact turn-stage separation is available.",
-    "Covers managed project workload counters; not an account-wide bill or unrelated app-internal review activity."
+    "Covers managed project workload counters; not an account-wide bill or unrelated app-internal review activity.",
+    "2026-10-30 12:41 +08:00: P1 stage reserve reached CNY366.37/400 after C5.1. User approved continuing ('\u989d\u5ea6\u591f\u7528\u4e0d\u7528\u62c5\u5fc3\uff0c\u5148\u7528\u7740'). Remaining P1-completion work from main turn 01a18b1c-e159-7f31-a86d-8f49af40678e onward and its workers is booked to the Reserve stage (limit CNY150) so the P1 stage limit is not overrun; total MAX 2000 still enforced."
   ],
   "continuous_run": {
     "started_at_utc": "2026-10-29T05:39:29.235Z",
     "main_turns": [
       "01a1862b-a31c-7351-ac83-5a77abdf3769",
-      "01a18a8c-d2f5-7751-86e4-3b662913c288"
+      "01a18a8c-d2f5-7751-86e4-3b662913c288",
+      "01a18b1c-e159-7f31-a86d-8f49af40678e"
     ],
     "accounted_tasks": [
       {
@@ -296,14 +325,20 @@
         "task": "c5_1",
         "main_end_ordinal": 6836,
         "snapshot": "docs\\agent_bootstrap\\evidence\\c5_1_cost_snapshot.json"
+      },
+      {
+        "task": "c5_2_p1_complete",
+        "main_end_ordinal": 7565,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\c5_2_p1_complete_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 6836,
-    "current_task": "c5_1",
-    "latest_checkpoint": "55299dac0f709c42195ce8d27be2cea93a9cf191",
+    "main_ordinal_cursor": 7565,
+    "current_task": "c5_2",
+    "latest_checkpoint": "db0fba2f463ac783d5b158494ba1cf71aeb2a96c",
     "main_turn_models": {
       "01a1862b-a31c-7351-ac83-5a77abdf3769": "tencent/gpt-6.1-sol",
-      "01a18a8c-d2f5-7751-86e4-3b662913c288": "tencent/claude-opus-5.5"
+      "01a18a8c-d2f5-7751-86e4-3b662913c288": "tencent/claude-opus-5.5",
+      "01a18b1c-e159-7f31-a86d-8f49af40678e": "tencent/claude-opus-5.5"
     }
   }
 }

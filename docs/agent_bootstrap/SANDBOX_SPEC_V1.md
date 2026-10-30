@@ -341,3 +341,60 @@ increment (~32-37 CNY reserve) would exceed the P1 stage limit, so P1
 implementation spending STOPS here pending user decision (raise P1 allocation
 from Reserve, or accept current state). No Alpha UI/playtest, generation, or
 full P1/P2 claim.
+
+## C5.2 Area Derived Catalog And P1 Gate Acceptance (2026-10-30)
+
+C5.2 read-only Area Derived catalog is ACCEPTED (C5_DERIVED_CATALOG_DESIGN.md).
+NEW gameplay_v04/derived.py: trusted DerivedSpec kinds weighted_sum
+(clamp(bias + sum weight*Field), <=8 terms, weights/bias in [-8,8]) and
+threshold (gt/gte/lt/lte -> 1.0/0.0), <=8 specs per Area, strict parse.
+Values live in Area component pmw_gameplay_derived {values, spec_hash},
+written once at time-zero initialization and afterwards ONLY by Core
+`state`-mode Laws (neq-guarded, area id + spec_hash bound), so they follow
+paid Field writes and native Ticks with no Python mutation and no second
+simulator. Skills cannot write Derived; they read it through a new typed
+condition leaf `derived` (subject current_area only; missing key -> False).
+Gate3Content.derived_by_area trailing default: legacy compiled Laws and all
+Action/Skill hashes byte-identical.
+
+Independent QA Pauli 01a18b39-ad4a-70c1-aee5-0d6124bb5504 first REJECTED with
+genuine PRODUCT_DEFECT C5.2-REV-01: actor Observation omitted Derived, so
+SandboxSimulator/LegalActionGenerator rejected a live-true derived-gated
+Skill. Fix owner Singer 01a18b48-9c7a-7972-a4da-38cdfaef35dc changed
+observation.py (project sorted finite current-Area Derived values only when
+the component exists; no spec_hash/Law IDs) and simulation.py (hydrate the
+values map). Legacy Observation documents/revision tokens byte-identical.
+Sandbox does not recompute Derived after simulated writes (scope note).
+QA re-verified and replaced its defect-asserting method with a requirement
+test: final ACCEPT (10 tests/13 subtests; obs/sim/legal/AI 43/40).
+Owner Confucius 01a18b22-0852-7151-8b38-03c7d9a2d86c 11/16; fix owner 5/11;
+Main focused 259/318; Main probe evidence/c5_derived_main_probe.json
+(12/12 hand-computed checks, two Derived in one all-condition, player/NPC).
+
+P1 completion conformance: owner Lovelace
+01a18b3b-e9e3-7f73-a4c4-e89106ca8303 NEW test_p1_scenarios_completion.py
+(4/6) proves the three previously PARTIAL scenarios through the formal chain
+for PLAYER and NPC: (1) attractor change, move_actor away, three real Ticks
+off-Area, return and observe continued change; (7) relation overlay blocks
+move_actor atomically, expiry restores traversal; (9) Derived follows Field
+changes and gates a Skill. Independent reviewer Hooke
+01a18b48-d134-78d0-8ee9-908cb27e8433 (P1_SCENARIO_COMPLETION_REVIEW.md) added
+counterfactual probes (no-attractor control 0.603392 vs 0.468928 while away;
+no-overlay world moves; boundary 0.5 accepts, 0.499999999999 rejects), zero
+product defects, zero production special cases, previous 7 PASS unaffected.
+
+**P1 GATE ACCEPTED**: all ten contract scenarios pass through the formal
+Engine (accepted 7 in P1_SCENARIO_CONFORMANCE.md + scenarios 1/7/9 in the
+completion addendum), no skill-name special cases, no second world simulator.
+Full frozen regression c5_derived_frozen: **985 passed, 3,550 subtests in
+403.70s**, exit0, 307 Python hashes unchanged during the run; protected 100
+old tests / Core 23 / Alpha 13 byte-identical vs
+c5_move_main_protected_before.json (130/130).
+
+Accounting c5_2_p1_complete subset USD8.16062993/CNY54.40202337; project
+USD56.26/CNY375.04; safety 472.57/2000; P1 369.62/400; Reserve 65.29/150
+(user-approved overflow booking); Unknown0. No Alpha UI/playtest or
+generation claim. Next: P2 (P2_SKILL_IR_DESIGN.md) P2.1 versioned Skill IR
+schema/validator/compiler lowering to the accepted runtime, then P2.2 30
+reference skills. Generation provider calls stay forbidden until P2 is
+accepted.

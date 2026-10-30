@@ -1,0 +1,50 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ SandboxDerivedCatalogReviewTests.test_observation_omits_derived_and_sandbox_gate_cannot_be_preflighted _
+
+self = <test_sandbox_derived_catalog_review.SandboxDerivedCatalogReviewTests testMethod=test_observation_omits_derived_and_sandbox_gate_cannot_be_preflighted>
+
+    def test_observation_omits_derived_and_sandbox_gate_cannot_be_preflighted(self):
+        condition = {"derived": {
+            "subject": "current_area",
+            "key": "comfort_index",
+            "comparator": "gte",
+            "value": 0.5,
+        }}
+        gated = _modify_skill("observed_derived_gate", condition=condition)
+        opener = _modify_skill(
+            "observed_derived_opener", duration=1, mana=1.0
+        )
+        spec = _weighted(
+            terms=(("humidity", 2.0),),
+            bias=0.0,
+            minimum=0.0,
+            maximum=2.0,
+        )
+        runtime, _ = _formal_runtime(
+            _static_fields(humidity=0.2),
+            (gated, opener),
+            derived_by_area={AREA: (spec,)},
+        )
+        submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("observed_derived_open", PLAYER, opener.id),
+        )
+        self.assertGreaterEqual(
+            _derived_values(runtime)["comfort_index"], 0.5
+        )
+        disclosure = ObservationDisclosure.create(
+            revealed_actions={PLAYER: (gated.id,)}
+        )
+        observation = ActorObservationBuilder().build(
+            runtime.session, runtime.action_registry, PLAYER, disclosure
+        )
+        document = observation.to_dict()
+>       self.assertNotIn("derived", document["area"])
+E       AssertionError: 'derived' unexpectedly found in {'derived': {'comfort_index': 0.8}, 'fields': {'humidity': {'domain_max': 1.0, 'domain_min': 0.0, 'effective_curve': 'linear', 'effective_rate': 0.0, 'effective_target': 0.2, 'value': 0.4}, 'temperature': {'domain_max': 1.0, 'domain_min': 0.0, 'effective_curve': 'linear', 'effective_rate': 0.0, 'effective_target': 0.4, 'value': 0.4}}, 'id': 'p1_area'}
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_derived_catalog_review.py:736: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_derived_catalog_review.py::SandboxDerivedCatalogReviewTests::test_observation_omits_derived_and_sandbox_gate_cannot_be_preflighted
+1 failed in 1.30s

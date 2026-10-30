@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
-from typing import Any
+import math
+from typing import Any, Mapping
 
 from pmw import Entity, Relation, WorldState
 
@@ -18,6 +19,7 @@ from .actions import (
 )
 from .blueprints import field_state
 from .contracts import FieldDefinition, GameplayContractError
+from .derived import DERIVED_COMPONENT
 from .dynamics import CLOCK_COMPONENT, DYNAMICS_COMPONENT
 from .observation import ActorObservation, ActorObservationBuilder, ObservationDisclosure, canonical_json
 from .runtime import run_phase_event, advance_world_tick
@@ -149,13 +151,22 @@ class SandboxSimulator:
                 }
             entities[actor_id] = Entity(actor_id, "pmw_gameplay_actor", components=components)
         area_id = document["current_area_id"]
-        entities[area_id] = Entity(area_id, "pmw_gameplay_area", components={
+        area_components = {
             "pmw_gameplay_area": {"blueprint_id": "observed_area", "ecology_state": "observed"},
             DYNAMICS_COMPONENT: {"fields": {
                 key: _field_from_public(key, value)
                 for key, value in sorted(document["area"]["fields"].items())
             }},
-        })
+        }
+        if "derived" in document["area"]:
+            area_components[DERIVED_COMPONENT] = {
+                "values": _derived_values_from_public(
+                    document["area"]["derived"]
+                )
+            }
+        entities[area_id] = Entity(
+            area_id, "pmw_gameplay_area", components=area_components
+        )
         for object_id, public in sorted(document.get("scoped_objects", {}).items()):
             components = {}
             if public["is_area"]:
@@ -235,6 +246,29 @@ def _field_from_public(field_id: str, raw: dict[str, Any]) -> dict[str, Any]:
         4, 4,
     )
     return field_state(definition)
+
+
+def _derived_values_from_public(raw: Any) -> dict[str, float]:
+    if not isinstance(raw, Mapping):
+        raise GameplayContractError(
+            "sandbox Area Derived values must be an object"
+        )
+    result = {}
+    for derived_id, value in raw.items():
+        if not isinstance(derived_id, str) or not derived_id:
+            raise GameplayContractError(
+                "sandbox Area Derived IDs must be non-empty strings"
+            )
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+        ):
+            raise GameplayContractError(
+                f"sandbox Area Derived value {derived_id!r} must be a finite number"
+            )
+        result[derived_id] = float(value)
+    return dict(sorted(result.items()))
 
 
 def _registry_projection(registry: ActionRegistry, document: dict[str, Any]) -> ActionRegistry:

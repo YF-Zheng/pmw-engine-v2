@@ -45,7 +45,8 @@ with files[0].open(encoding='utf-8') as stream:
             manifest['project_turns'].append(turn)
         if turn not in run['main_turns']:
             run['main_turns'].append(turn)
-        manifest['turn_stages'][turn] = 'P1'
+        # Keep an explicit stage (e.g. Reserve); default new main turns to P1.
+        manifest['turn_stages'].setdefault(turn, 'P1')
 assert run['main_turns']
 temporary = path.with_suffix('.tmp')
 temporary.write_bytes((json.dumps(manifest, indent=2) + '\n').encode())

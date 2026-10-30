@@ -87,3 +87,21 @@ in `evidence/p1_scenarios_gap_probes.log`.
    Action writes in `actions.py`, validated by `relations.py` for exactly one
    current `located_in` edge and one authorized adjacent destination. Do not
    expose a generic topology editor.
+
+## Completion Addendum (2026-10-30): Scenarios 1, 7, 9 Reclassified PASS
+
+New capabilities C5.1 move_actor and C5.2 Area Derived catalog close the
+three gaps recorded above. Owner test
+gameplay_v04/tests/test_p1_scenarios_completion.py (sha256 c6aa34e3...a455a3)
+and independent review test_p1_scenarios_completion_review.py (sha256
+eab301f3...b6b09; P1_SCENARIO_COMPLETION_REVIEW.md) prove, for PLAYER and
+NPC through the formal chain:
+
+| # | Previous | Now | Evidence |
+|---|---|---|---|
+| 1 | PARTIAL | PASS | attractor target 0.8 -> 0.6, move_actor away, Field evolves 0.28 -> 0.344 -> 0.3952 -> 0.43616 -> 0.468928 off-Area, return observes 0.4951424; no-attractor control 0.603392 |
+| 7 | PARTIAL | PASS | relation_modifier disables the only link; later move_actor rejects atomically ("move_actor path is disabled"); no-overlay world moves; expiry restores traversal |
+| 9 | PARTIAL | PASS | Derived weighted_sum/threshold updated by Core state Laws on paid writes and native Ticks; derived-gated Skill flips exactly at 0.5 |
+
+The original table above and test_p1_scenarios.py are unchanged. All ten
+scenarios now PASS; P1 Gate accepted (see PROJECT_STATUS.md, 2026-10-30).

@@ -1,0 +1,47 @@
+...................                                    [100%]
+=================================== PASSES ====================================
+_ CompletionConformanceReviewTests.test_review_scenario01_attractor_counterfactual_while_off_area _
+---------------------------- Captured stdout call -----------------------------
+uu
+_ CompletionConformanceReviewTests.test_review_scenario07_overlay_is_only_cause_and_rejection_is_atomic _
+---------------------------- Captured stdout call -----------------------------
+uu
+_ CompletionConformanceReviewTests.test_review_scenario09_boundary_crossings_are_exact_for_both_controllers _
+---------------------------- Captured stdout call -----------------------------
+uu
+_ CompletionConformanceReviewTests.test_review_scenario09_gate_exact_boundary_and_epsilon_below _
+---------------------------- Captured stdout call -----------------------------
+uuuu
+_ CompletionConformanceReviewTests.test_review_scenario09_threshold_closes_after_downward_crossing _
+---------------------------- Captured stdout call -----------------------------
+uu
+_ P1CompletionConformanceTests.test_scenario01_same_skills_leave_evolve_and_return _
+---------------------------- Captured stdout call -----------------------------
+uu
+_ P1CompletionConformanceTests.test_scenario07_relation_overlay_blocks_then_expiry_allows_move _
+---------------------------- Captured stdout call -----------------------------
+uu
+_ P1CompletionConformanceTests.test_scenario09_derived_values_and_gate_follow_real_field_changes _
+---------------------------- Captured stdout call -----------------------------
+uu
+=========================== short test summary info ===========================
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios_completion_review.py::CompletionConformanceReviewTests::test_review_scenario01_attractor_counterfactual_while_off_area
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios_completion_review.py::CompletionConformanceReviewTests::test_review_scenario07_overlay_is_only_cause_and_rejection_is_atomic
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios_completion_review.py::CompletionConformanceReviewTests::test_review_scenario09_boundary_crossings_are_exact_for_both_controllers
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios_completion_review.py::CompletionConformanceReviewTests::test_review_scenario09_gate_exact_boundary_and_epsilon_below
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios_completion_review.py::CompletionConformanceReviewTests::test_review_scenario09_threshold_closes_after_downward_crossing
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios_completion.py::P1CompletionConformanceTests::test_production_has_no_skill_or_test_name_special_cases
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios_completion.py::P1CompletionConformanceTests::test_scenario01_same_skills_leave_evolve_and_return
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios_completion.py::P1CompletionConformanceTests::test_scenario07_relation_overlay_blocks_then_expiry_allows_move
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios_completion.py::P1CompletionConformanceTests::test_scenario09_derived_values_and_gate_follow_real_field_changes
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario01_persistent_area_change_partial_without_formal_relocation
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario02_target_and_rate_are_separate_sources
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario03_multiple_dynamics_modifiers_expire_independently
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario04_process_converts_input_stock_to_output_stock
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario05_process_rate_and_remaining_duration_modification
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario06_damage_passive_fires_once_and_recursion_stops
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario07_relation_overlay_partial_without_supply_path_consumer
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario08_ecology_discrete_transition_triggered_by_field_law
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario09_field_diagnostics_are_partial_derived_bridge
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario10_same_parsed_skill_executes_for_player_and_npc
+19 passed, 18 subtests passed in 10.59s

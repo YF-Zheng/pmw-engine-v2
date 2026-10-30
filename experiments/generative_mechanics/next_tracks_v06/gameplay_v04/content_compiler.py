@@ -12,6 +12,8 @@ from pmw import WorldState, parse_law
 from .action_compiler import build_action_laws
 from .actions import ACTOR_COMPONENT, ActionRegistry, PassiveSkillBinding
 from .contracts import GameplayContractError, validate_curve_policy
+from .derived import (DERIVED_COMPONENT, DerivedSpec, build_derived_laws,
+                      derived_component, normalize_derived_by_area)
 from .ecology import ECOLOGY_COMPONENT, EcologyPlan, build_ecology_laws, ecology_component
 from .harvest import (MATERIAL_INVENTORY_COMPONENT, RESOURCE_COMPONENT, HarvestSpec,
                       build_harvest_laws, material_inventory_component, resource_component)
@@ -35,6 +37,7 @@ class Gate3Content:
     harvest_by_area: Mapping[str, tuple[HarvestSpec, ...]]
     stock_amounts_by_area: Mapping[str, Mapping[str, float]]
     material_ids: tuple[str, ...]
+    derived_by_area: Mapping[str, tuple[DerivedSpec, ...]] = MappingProxyType({})
 
 
 @dataclass(frozen=True, slots=True)
@@ -51,7 +54,8 @@ def make_content(base_registry: ActionRegistry, *, skills: tuple[SkillBlueprint,
                  material_ids: tuple[str, ...] = (),
                  process_controller: Any = None,
                  drive_controller: Any = None,
-                 relation_controller: Any = None) -> Gate3Content:
+                 relation_controller: Any = None,
+                 derived_by_area: Mapping[str, tuple[DerivedSpec, ...]] | None = None) -> Gate3Content:
     skill_actions = tuple(item.action for item in skills)
     if set(base_registry.actions) & {item.id for item in skill_actions}:
         raise GameplayContractError("skill ID collides with an installed Action")
@@ -88,7 +92,8 @@ def make_content(base_registry: ActionRegistry, *, skills: tuple[SkillBlueprint,
                         MappingProxyType(dict(weather_by_area or {})),
                         MappingProxyType(dict(ecology_by_area or {})),
                         MappingProxyType(dict(harvest_by_area or {})),
-                        MappingProxyType(dict(stock_amounts_by_area or {})), tuple(sorted(material_ids)))
+                        MappingProxyType(dict(stock_amounts_by_area or {})), tuple(sorted(material_ids)),
+                        MappingProxyType(normalize_derived_by_area(derived_by_area)))
 
 
 def initialize_content_world(world: WorldState, content: Gate3Content) -> WorldState:
@@ -96,7 +101,8 @@ def initialize_content_world(world: WorldState, content: Gate3Content) -> WorldS
     if world.tick != 0 or world.sim_time != 0 or world.scheduled_events:
         raise GameplayContractError("Gate 3 content initialization requires a detached time-zero WorldState")
     result = deepcopy(world)
-    all_area_ids = set(content.weather_by_area) | set(content.ecology_by_area) | set(content.harvest_by_area)
+    all_area_ids = (set(content.weather_by_area) | set(content.ecology_by_area)
+                    | set(content.harvest_by_area) | set(content.derived_by_area))
     for area_id in all_area_ids:
         area = result.entities.get(area_id)
         if area is None or "pmw_gameplay_area" not in area.components:
@@ -142,6 +148,10 @@ def initialize_content_world(world: WorldState, content: Gate3Content) -> WorldS
             if spec.source_kind == "abundance" and spec.source_id not in fields:
                 raise GameplayContractError("Harvest abundance Field is unavailable")
         area.components[RESOURCE_COMPONENT] = resource_component(specs, stock_amounts=content.stock_amounts_by_area.get(area_id, {}))
+    for area_id, specs in content.derived_by_area.items():
+        area = result.entities[area_id]
+        fields = area.components.get("pmw_gameplay_dynamics", {}).get("fields", {})
+        area.components[DERIVED_COMPONENT] = derived_component(specs, fields)
     projected_traits = sorted({interaction.subject_id for specs in content.weather_by_area.values()
                                for spec in specs for interaction in spec.trait_interactions
                                if interaction.subject_kind == "trait"})
@@ -174,6 +184,7 @@ def compile_content(content: Gate3Content) -> CompiledGate3Content:
         *build_loadout_laws(),
         *build_registry_laws(),
         *build_time_budget_laws(),
+        *build_derived_laws(content.derived_by_area),
         *(() if controller is None else controller.laws),
         *(() if drive_controller is None else drive_controller.laws),
         *(() if relation_controller is None else relation_controller.laws),

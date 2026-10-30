@@ -133,6 +133,39 @@ def _parse_condition(
         if value["subject"] not in {"self", "target_actor"} or not isinstance(value["id"], str) or not value["id"]:
             raise GameplayContractError(f"{path}.{kind} is invalid")
         return ConditionSpec(kind, value["subject"], value["id"])
+    if kind == "derived":
+        if not isinstance(value, dict):
+            raise GameplayContractError(f"{path}.derived must be an object")
+        required = {"subject", "key", "comparator", "value"}
+        if set(value) != required:
+            raise GameplayContractError(
+                f"{path}.derived fields must be {sorted(required)}"
+            )
+        if value["subject"] != "current_area":
+            raise GameplayContractError(
+                f"{path}.derived.subject must be current_area"
+            )
+        key = value["key"]
+        if not isinstance(key, str) or not key:
+            raise GameplayContractError(
+                f"{path}.derived.key must be a non-empty string"
+            )
+        if value["comparator"] not in {"eq", "neq", "gt", "gte", "lt", "lte"}:
+            raise GameplayContractError(
+                f"{path}.derived.comparator is invalid"
+            )
+        number = value["value"]
+        if (
+            isinstance(number, bool)
+            or not isinstance(number, (int, float))
+            or not math.isfinite(number)
+        ):
+            raise GameplayContractError(
+                f"{path}.derived.value must be finite numeric"
+            )
+        return ConditionSpec(
+            kind, value["subject"], key, value["comparator"], float(number)
+        )
     raise GameplayContractError(f"{path} has unknown condition {kind!r}")
 
 
@@ -146,6 +179,7 @@ def evaluate_condition(spec: ConditionSpec, context: Mapping[str, Any]) -> bool:
     if spec.kind == "attribute": actual = subject.get(spec.key)
     elif spec.kind == "resource": actual = subject.get(spec.key)
     elif spec.kind == "field": actual = subject.get("fields", {}).get(spec.key, {}).get("value")
+    elif spec.kind == "derived": actual = subject.get("derived", {}).get(spec.key)
     elif spec.kind == "has_trait": return spec.key in effective_traits(subject)
     elif spec.kind == "has_status": return any(row.get("active") and row.get("spec_id") == spec.key for row in subject.get("status_slots", {}).values())
     else: return False

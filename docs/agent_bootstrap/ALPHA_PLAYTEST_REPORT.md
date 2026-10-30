@@ -198,3 +198,11 @@ Test-only mechanics conformance; no Alpha source change and no new public playte
 ## C5.1 Playtest Note
 
 Mechanics-only formal move_actor; Alpha still uses its private travel. No Alpha source change and no new public playtest.
+
+## C5.2 / P1 Gate Note (2026-10-30)
+
+No new browser playtest was performed. C5.2 (Area Derived catalog plus
+Observation/Sandbox projection) and the P1 completion conformance are
+mechanics-level evidence only; the protected Alpha slice is byte-identical
+and its UI does not expose Derived values, move_actor, or new Skills. P1 Gate
+acceptance does not imply any Alpha playability improvement.

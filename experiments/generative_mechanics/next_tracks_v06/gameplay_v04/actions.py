@@ -731,6 +731,9 @@ def _condition_context(session, request, shadow):
     if located:
         entity = session.state.entities[located.target]
         area = {"fields": entity.components.get("pmw_gameplay_dynamics", {}).get("fields", {})}
+        derived = entity.components.get("pmw_gameplay_derived")
+        if isinstance(derived, Mapping):
+            area["derived"] = dict(derived.get("values", {}))
     return {"self": actor, "target_actor": target or {}, "current_area": area or {}}
 
 

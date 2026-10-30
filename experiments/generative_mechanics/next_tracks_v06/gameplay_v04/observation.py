@@ -10,10 +10,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 import hashlib
 import json
+import math
 from typing import Any, Iterable, Mapping
 
 from .actions import ACTOR_COMPONENT, ActionRegistry
 from .contracts import GameplayContractError
+from .derived import DERIVED_COMPONENT
 from .dynamics import CLOCK_COMPONENT, DYNAMICS_COMPONENT
 from .status import STATUS_COMPONENT
 
@@ -134,6 +136,10 @@ class ActorObservationBuilder:
             known_actions[actor_id] = sorted(allowed)
         area = session.state.entities[current_area]
         fields = _public_fields(area.components.get(DYNAMICS_COMPONENT, {}).get("fields", {}))
+        area_document = {"id": current_area, "fields": fields}
+        derived = _public_derived(area.components.get(DERIVED_COMPONENT))
+        if derived is not None:
+            area_document["derived"] = derived
         scoped_relations = []
         scoped_object_ids: set[str] = set()
         allowed_relation_types = set(disclosure.visible_relation_types)
@@ -181,7 +187,7 @@ class ActorObservationBuilder:
                 "last_completed_step": int(clock["last_completed_step"]),
             },
             "current_area_id": current_area,
-            "area": {"id": current_area, "fields": fields},
+            "area": area_document,
             "scoped_objects": scoped_objects,
             "scoped_relations": scoped_relations,
             "actors": actors,
@@ -255,6 +261,32 @@ def _equipped_action_ids(rows, registry: ActionRegistry) -> tuple[str, ...]:
 
 def _public_fields(fields: Mapping[str, Any]) -> dict[str, Any]:
     return {field_id: _public_field(value) for field_id, value in sorted(fields.items())}
+
+
+def _public_derived(component: Any) -> dict[str, float] | None:
+    if not isinstance(component, Mapping):
+        return None
+    values = component.get("values")
+    if not isinstance(values, Mapping):
+        raise GameplayContractError(
+            "Area Derived component values must be an object"
+        )
+    result = {}
+    for derived_id, value in values.items():
+        if not isinstance(derived_id, str) or not derived_id:
+            raise GameplayContractError(
+                "Area Derived IDs must be non-empty strings"
+            )
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+        ):
+            raise GameplayContractError(
+                f"Area Derived value {derived_id!r} must be a finite number"
+            )
+        result[derived_id] = float(value)
+    return dict(sorted(result.items()))
 
 
 def _public_scoped_object(entity) -> dict[str, Any]:
