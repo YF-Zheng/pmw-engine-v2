@@ -97,3 +97,24 @@ C4.2 accepted through independent21/13 and full869/3325,287 immutable hashes. Ne
 C4.3 accepted (884/3,335, 294 immutable hashes, one reviewed legacy fixture correction). User extended the run on 2026-10-30; continue C4.4 typed Dynamics Action bridge next, sequential ownership, no generator calls before full P1/P2.
 
 C4.4 accepted (917/3,445, 296 immutable hashes). P1 stage reserve 302.57/400 CNY: choose remaining P1 targets by value; stop P1 spending before the stage limit and report to the user rather than overrun.
+
+## P1 Ten-Scenario Formal Conformance (Test-Only)
+
+Test-only audit at 1aa4aad: NEW gameplay_v04/tests/test_p1_scenarios.py
+(sha256 06653f28...7ac62) drives each P1 gate through parsed SkillBlueprint ->
+make_content/compile -> MechanismRegistryRuntime/change_loadout ->
+submit_timed_primary_action (or managed combat) -> real advance_world_tick.
+Result: 7 PASS (2,3,4,5,6,8,10), 3 PARTIAL (1 no formal actor relocation;
+7 no formal supply/path consumer of relation effective_enabled; 9 no
+candidate-facing Derived catalog). Owner Peirce
+01a18ad2-2f1a-7632-b3af-c22186e91f05 10/10; Main rerun 10/10; independent
+reviewer Banach 01a18ae6-0601-7330-aa08-673a9282fd99 confirmed all ten
+classifications with causal probes (scenario 8 amount=0 stays dry; scenario
+10 zero shield still pays 27 Mana), no downgrades
+(P1_SCENARIO_CONFORMANCE.md / P1_SCENARIO_CONFORMANCE_REVIEW.md). Full frozen
+regression p1_scenarios_frozen: **927 passed, 3,445 subtests in 406.27s**,
+exit0, 298 Python hashes unchanged; no production/old-test/Core/Alpha change.
+Accounting p1_scenarios subset USD3.77094469/CNY25.13862568; project
+USD44.27/CNY295.14; safety 371.89/2000; **P1 reserve 334.24/400**; Unknown0.
+P1 remains NOT accepted (3 PARTIAL). Next: C5_MOVE_ACTOR_DESIGN.md (formal
+move_actor Effect honoring C3 link overlay), targeting scenarios 1 and 7.

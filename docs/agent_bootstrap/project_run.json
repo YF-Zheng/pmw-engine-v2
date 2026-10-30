@@ -178,6 +178,16 @@
       "id": "01a18a9f-fe77-70b0-a392-baa4e39f8914",
       "task": "C4.4 independent dynamics_modifier QA",
       "stage": "P1"
+    },
+    {
+      "id": "01a18ad2-2f1a-7632-b3af-c22186e91f05",
+      "task": "P1 ten-scenario formal-runtime conformance audit (test-only)",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18ae6-0601-7330-aa08-673a9282fd99",
+      "task": "P1 scenario conformance independent review (test-only)",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -266,11 +276,16 @@
         "task": "c4_4",
         "main_end_ordinal": 6164,
         "snapshot": "docs\\agent_bootstrap\\evidence\\c4_4_cost_snapshot.json"
+      },
+      {
+        "task": "p1_scenarios",
+        "main_end_ordinal": 6515,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\p1_scenarios_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 6164,
-    "current_task": "c4_4",
-    "latest_checkpoint": "7c975cb88def0eebf7c137e0b9305b74b8be1257",
+    "main_ordinal_cursor": 6515,
+    "current_task": "p1_scenarios",
+    "latest_checkpoint": "1aa4aadd813b80112bf8fd252ae88aced0972540",
     "main_turn_models": {
       "01a1862b-a31c-7351-ac83-5a77abdf3769": "tencent/gpt-6.1-sol",
       "01a18a8c-d2f5-7751-86e4-3b662913c288": "tencent/claude-opus-5.5"

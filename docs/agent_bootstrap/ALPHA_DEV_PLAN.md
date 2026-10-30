@@ -215,3 +215,24 @@ tencent/claude-opus-5.5 priced as Claude; workers actual DeepSeek Flash).
 Project USD40.50206953/CNY270.00299631; safety 340.21738405/2000; **P1
 reserve 302.5674514/400**: about two more C4-sized increments fit inside P1.
 Unknown0, complete. No Alpha UI/playtest, full P1/P2 or generation claim.
+
+## P1 Ten-Scenario Formal Conformance (Test-Only)
+
+Test-only audit at 1aa4aad: NEW gameplay_v04/tests/test_p1_scenarios.py
+(sha256 06653f28...7ac62) drives each P1 gate through parsed SkillBlueprint ->
+make_content/compile -> MechanismRegistryRuntime/change_loadout ->
+submit_timed_primary_action (or managed combat) -> real advance_world_tick.
+Result: 7 PASS (2,3,4,5,6,8,10), 3 PARTIAL (1 no formal actor relocation;
+7 no formal supply/path consumer of relation effective_enabled; 9 no
+candidate-facing Derived catalog). Owner Peirce
+01a18ad2-2f1a-7632-b3af-c22186e91f05 10/10; Main rerun 10/10; independent
+reviewer Banach 01a18ae6-0601-7330-aa08-673a9282fd99 confirmed all ten
+classifications with causal probes (scenario 8 amount=0 stays dry; scenario
+10 zero shield still pays 27 Mana), no downgrades
+(P1_SCENARIO_CONFORMANCE.md / P1_SCENARIO_CONFORMANCE_REVIEW.md). Full frozen
+regression p1_scenarios_frozen: **927 passed, 3,445 subtests in 406.27s**,
+exit0, 298 Python hashes unchanged; no production/old-test/Core/Alpha change.
+Accounting p1_scenarios subset USD3.77094469/CNY25.13862568; project
+USD44.27/CNY295.14; safety 371.89/2000; **P1 reserve 334.24/400**; Unknown0.
+P1 remains NOT accepted (3 PARTIAL). Next: C5_MOVE_ACTOR_DESIGN.md (formal
+move_actor Effect honoring C3 link overlay), targeting scenarios 1 and 7.

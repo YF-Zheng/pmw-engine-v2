@@ -190,3 +190,7 @@ controls) are unchanged.
 ## C4.4 Playtest Note
 
 Mechanics-only: dynamics_modifier Skills are now expressible and paid through the real Action path. Alpha content does not use them yet; no Alpha source change and no new public playtest.
+
+## P1 Scenario Conformance Playtest Note
+
+Test-only mechanics conformance; no Alpha source change and no new public playtest.

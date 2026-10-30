@@ -1,0 +1,3 @@
+move_actor: GameplayContractError: $.effect.kind is invalid
+relation_supply_multiplier: GameplayContractError: $.effect has missing or unknown fields
+derived_value: GameplayContractError: $.effect.kind is invalid

@@ -1,0 +1,21 @@
+{
+  "scenario08_without_paid_effect": {
+    "changed_event_count": 0,
+    "ecology_after_tick": "dry",
+    "field_value_after_tick": 0.18,
+    "spent_ticks": 1
+  },
+  "scenario10_without_paid_effect": {
+    "actors": {
+      "p1_npc": {
+        "mana": 27.0,
+        "shield": 0
+      },
+      "p1_player": {
+        "mana": 27.0,
+        "shield": 0
+      }
+    },
+    "spent_ticks": 2
+  }
+}

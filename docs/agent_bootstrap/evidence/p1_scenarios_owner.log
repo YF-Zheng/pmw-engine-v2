@@ -1,0 +1,15 @@
+test_scenario01_persistent_area_change_partial_without_formal_relocation (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_p1_scenarios.P1ScenarioConformanceTests.test_scenario01_persistent_area_change_partial_without_formal_relocation) ... ok
+test_scenario02_target_and_rate_are_separate_sources (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_p1_scenarios.P1ScenarioConformanceTests.test_scenario02_target_and_rate_are_separate_sources) ... ok
+test_scenario03_multiple_dynamics_modifiers_expire_independently (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_p1_scenarios.P1ScenarioConformanceTests.test_scenario03_multiple_dynamics_modifiers_expire_independently) ... ok
+test_scenario04_process_converts_input_stock_to_output_stock (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_p1_scenarios.P1ScenarioConformanceTests.test_scenario04_process_converts_input_stock_to_output_stock) ... ok
+test_scenario05_process_rate_and_remaining_duration_modification (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_p1_scenarios.P1ScenarioConformanceTests.test_scenario05_process_rate_and_remaining_duration_modification) ... ok
+test_scenario06_damage_passive_fires_once_and_recursion_stops (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_p1_scenarios.P1ScenarioConformanceTests.test_scenario06_damage_passive_fires_once_and_recursion_stops) ... ok
+test_scenario07_relation_overlay_partial_without_supply_path_consumer (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_p1_scenarios.P1ScenarioConformanceTests.test_scenario07_relation_overlay_partial_without_supply_path_consumer) ... ok
+test_scenario08_ecology_discrete_transition_triggered_by_field_law (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_p1_scenarios.P1ScenarioConformanceTests.test_scenario08_ecology_discrete_transition_triggered_by_field_law) ... ok
+test_scenario09_field_diagnostics_are_partial_derived_bridge (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_p1_scenarios.P1ScenarioConformanceTests.test_scenario09_field_diagnostics_are_partial_derived_bridge) ... ok
+test_scenario10_same_parsed_skill_executes_for_player_and_npc (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_p1_scenarios.P1ScenarioConformanceTests.test_scenario10_same_parsed_skill_executes_for_player_and_npc) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 4.259s
+
+OK
