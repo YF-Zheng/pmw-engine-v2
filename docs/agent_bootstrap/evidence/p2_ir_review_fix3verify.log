@@ -1,0 +1,39 @@
+............. [ 19%]
+...F................... [ 53%]
+...............................                [100%]
+================================== FAILURES ===================================
+_ SkillIRReviewCompilerTests.test_parse_deeply_nested_untrusted_input_fails_closed _
+
+self = <test_skill_ir_review.SkillIRReviewCompilerTests testMethod=test_parse_deeply_nested_untrusted_input_fails_closed>
+
+    def test_parse_deeply_nested_untrusted_input_fails_closed(self):
+        raw = _document()
+        nested = None
+        for _ in range(500):
+            nested = [nested]
+        raw["entries"][0]["effects"][0]["payload"] = nested
+    
+        with self.assertRaises(GameplayContractError):
+>           _parse(raw)
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:890: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:173: in _parse
+    return parse_skill_ir(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:135: in parse_skill_ir
+    raw = deepcopy(raw)
+          ^^^^^^^^^^^^^
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\copy.py:136: in deepcopy
+    y = copier(x, memo)
+        ^^^^^^^^^^^^^^^
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\copy.py:221: in _deepcopy_dict
+    y[deepcopy(key, memo)] = deepcopy(value, memo)
+                             ^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\copy.py:136: in deepcopy
+    y = copier(x, memo)
+        ^^^^^^^^^^^^^^^
+E   RecursionError: maximum recursion depth exceeded
+!!! Recursion detected (same locals & position)
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_parse_deeply_nested_untrusted_input_fails_closed
+1 failed, 66 passed, 134 subtests passed in 10.95s

@@ -1,0 +1,39 @@
+..................................................                         [100%]
+50 passed, 70 subtests passed in 9.77s
+
+=== experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py ===
+..............                           [100%]
+14 passed, 32 subtests passed in 0.86s
+
+=== experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py ===
+..............                                     [100%]
+14 passed, 22 subtests passed in 1.12s
+
+=== experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fixes.py ===
+.....                                                    [100%]
+5 passed, 16 subtests passed in 0.40s
+
+=== experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py ===
+..........                                                               [100%]
+10 passed in 4.85s
+
+=== experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py ===
+.......                                                                  [100%]
+7 passed in 3.93s
+
+=== FINAL COMBINED MATRIX ===
+..................................................                         [100%]
+50 passed, 70 subtests passed in 9.33s
+
+=== SHA256 ===
+e9e12f49e54dd19c21bfd8c6e2c3a799c50fc3bbfab4f5ecd35eae08d366a4f0  C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py
+bc875a78a5764f96d352c229f92bb4b9c42567cf5e0e2c8962e8f509b023f930  C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_fixes.py
+
+=== reviewer reproductions and hash integrity probe ===
+status world_tick GameplayContractError language_gap:lifecycle.status_duration is not consumed by the accepted runtime; use per-Effect durations
+status combat_round GameplayContractError language_gap:lifecycle.status_duration is not consumed by the accepted runtime; use per-Effect durations
+origin GameplayContractError $.origin.source is invalid
+effect GameplayContractError $.entries[0].effects[0].kind must be text
+mutation True True 4.0
+forged_hash GameplayContractError SkillIR canonical_hash does not match canonical_json
+forged_json GameplayContractError SkillIR canonical_hash does not match canonical_json

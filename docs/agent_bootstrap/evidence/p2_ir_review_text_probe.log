@@ -1,0 +1,18 @@
+{
+  "identity.description": {
+    "accepted": true,
+    "canonical_hash": "2cb0362a35dac8d796a8bf9b8b15ebf337cc62969aeb355dd89ed2c5706f17ad",
+    "canonical_json_bytes": 1000722
+  },
+  "identity.name": {
+    "accepted": true,
+    "canonical_hash": "7230b2c805886a7890a0528fc8510c71e6be47289c41d72f6878ad6761662630",
+    "canonical_json_bytes": 1000725
+  },
+  "origin.model": {
+    "accepted": true,
+    "canonical_hash": "8ffb050d83ea9cd7f3509210395a75eb1404a54a4e6043ed2b11ef074a006e5f",
+    "canonical_json_bytes": 1000752
+  },
+  "probe_sha256": "1b977e9f84f1b26b6ed7f68b0498faee2385ea4125bd29adce4a7d9106ba3134"
+}

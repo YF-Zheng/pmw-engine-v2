@@ -1,0 +1,68 @@
+.........F.............................................................. [  6%]
+........................................................................ [ 13%]
+........................................................................ [ 20%]
+................................................................................ [ 27%]
+.................................................................................................................................................... [ 41%]
+................................................................. [ 47%]
+................................................................. [ 53%]
+......................................................... [ 59%]
+...................................... [ 62%]
+....................................................................................................... [ 72%]
+................................................................................................................................... [ 84%]
+.......................................... [ 88%]
+.................................................. [ 93%]
+................... [ 95%]
+...................................................                 [100%]
+================================== FAILURES ===================================
+___________ AgentCostLedgerTest.test_phase_and_agent_stage_tag_rows ___________
+
+self = <test_agent_cost_ledger.AgentCostLedgerTest testMethod=test_phase_and_agent_stage_tag_rows>
+
+    def test_phase_and_agent_stage_tag_rows(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_rollout(
+                root,
+                MAIN_ID,
+                [context("tencent/gpt-6.1-sol"), usage(response_id="resp_main")],
+            )
+            write_rollout(
+                root,
+                CHILD_ID,
+                [
+                    context("tencent/deepseek-v4.1-flash"),
+                    usage(
+                        thread_id=CHILD_ID,
+                        response_id="resp_child",
+                        turn_id=OTHER_TURN,
+                    ),
+                ],
+            )
+            report = ledger.build_report(
+                root,
+                main_session=MAIN_ID,
+                project_turn=PROJECT_TURN,
+                agent_ids=[CHILD_ID],
+                phase="P1",
+                agent_stages={CHILD_ID: "P2"},
+            )
+    
+        responses = [
+            response
+            for bucket in report["families"].values()
+            for response in bucket["responses"]
+        ]
+        by_id = {response["response_id"]: response for response in responses}
+        self.assertEqual(by_id["resp_main"]["stage"], "P1")
+        self.assertEqual(by_id["resp_child"]["stage"], "P2")
+        self.assertEqual(report["stages"]["P1"]["record_count"], 1)
+        self.assertEqual(report["stages"]["P2"]["record_count"], 1)
+        self.assertEqual(report["budget"]["stage"], "P1")
+        self.assertEqual(report["budget"]["tiers"]["P5"]["limit_cny"], 400.0)
+>       self.assertEqual(report["budget"]["tiers"]["Reserve"]["limit_cny"], 150.0)
+E       AssertionError: 1150.0 != 150.0
+
+tests\test_agent_cost_ledger.py:521: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_agent_cost_ledger.py::AgentCostLedgerTest::test_phase_and_agent_stage_tag_rows
+1 failed, 1064 passed, 4103 subtests passed in 707.07s (0:11:47)

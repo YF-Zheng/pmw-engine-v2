@@ -28,6 +28,12 @@ if ($Bootstrap) {
     foreach ($entry in $manifest.turn_stages.PSObject.Properties) {
         $cliArgs += @('--turn-stage', "$($entry.Name)=$($entry.Value)")
     }
+    # User-authorised limit overrides live in the manifest, not in code defaults.
+    if ($manifest.budget_limits_cny) {
+        foreach ($entry in $manifest.budget_limits_cny.PSObject.Properties) {
+            $cliArgs += @('--budget-limit', "$($entry.Name)=$($entry.Value)")
+        }
+    }
     $outputPath = Join-Path $repoRoot 'docs\agent_bootstrap\evidence'
 }
 

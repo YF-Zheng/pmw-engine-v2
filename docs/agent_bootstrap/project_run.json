@@ -16,7 +16,8 @@
     "01a185ea-111c-7ec1-a028-48c2a86e82d8",
     "01a1862b-a31c-7351-ac83-5a77abdf3769",
     "01a18a8c-d2f5-7751-86e4-3b662913c288",
-    "01a18b1c-e159-7f31-a86d-8f49af40678e"
+    "01a18b1c-e159-7f31-a86d-8f49af40678e",
+    "01a18bac-45e0-76c3-afb0-86e1dfc45983"
   ],
   "default_phase": "P0",
   "agents": [
@@ -224,6 +225,36 @@
       "id": "01a18b48-d134-78d0-8ee9-908cb27e8433",
       "task": "P1 completion conformance independent review",
       "stage": "Reserve"
+    },
+    {
+      "id": "01a18b5f-c194-7e93-a9ca-62ab37307f58",
+      "task": "P2.1 Skill IR schema/validator/compiler owner",
+      "stage": "P2"
+    },
+    {
+      "id": "01a18b82-324d-7953-8978-3d2f226d9357",
+      "task": "P2.1 Skill IR independent QA",
+      "stage": "P2"
+    },
+    {
+      "id": "01a18b97-ab41-7341-90a5-ae8755860668",
+      "task": "P2.1 Skill IR QA-defect fix owner",
+      "stage": "P2"
+    },
+    {
+      "id": "01a18ba9-ca25-70a3-b83f-41ccfb8389b6",
+      "task": "P2.1 Skill IR round-3 root-cause fix owner",
+      "stage": "P2"
+    },
+    {
+      "id": "01a18bc3-93d2-79c1-96b3-5cbef321b9be",
+      "task": "P2.1 Skill IR round-4 input-shape bound fix owner",
+      "stage": "P2"
+    },
+    {
+      "id": "01a18bcf-52aa-7ec2-af7e-3adf108e9d3a",
+      "task": "P2.2 reference library owner",
+      "stage": "P2"
     }
   ],
   "turn_stages": {
@@ -247,7 +278,8 @@
     "01a185ea-111c-7ec1-a028-48c2a86e82d8": "P1",
     "01a1862b-a31c-7351-ac83-5a77abdf3769": "P1",
     "01a18a8c-d2f5-7751-86e4-3b662913c288": "P1",
-    "01a18b1c-e159-7f31-a86d-8f49af40678e": "Reserve"
+    "01a18b1c-e159-7f31-a86d-8f49af40678e": "Reserve",
+    "01a18bac-45e0-76c3-afb0-86e1dfc45983": "P2"
   },
   "bootstrap": {
     "project_turn": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
@@ -266,14 +298,18 @@
     "Append resumed project turn and child IDs before every ledger refresh.",
     "Main P0/P1 shared planning is charged conservatively to P0 until exact turn-stage separation is available.",
     "Covers managed project workload counters; not an account-wide bill or unrelated app-internal review activity.",
-    "2026-10-30 12:41 +08:00: P1 stage reserve reached CNY366.37/400 after C5.1. User approved continuing ('\u989d\u5ea6\u591f\u7528\u4e0d\u7528\u62c5\u5fc3\uff0c\u5148\u7528\u7740'). Remaining P1-completion work from main turn 01a18b1c-e159-7f31-a86d-8f49af40678e onward and its workers is booked to the Reserve stage (limit CNY150) so the P1 stage limit is not overrun; total MAX 2000 still enforced."
+    "2026-10-30 12:41 +08:00: P1 stage reserve reached CNY366.37/400 after C5.1. User approved continuing ('\u989d\u5ea6\u591f\u7528\u4e0d\u7528\u62c5\u5fc3\uff0c\u5148\u7528\u7740'). Remaining P1-completion work from main turn 01a18b1c-e159-7f31-a86d-8f49af40678e onward and its workers is booked to the Reserve stage (limit CNY150) so the P1 stage limit is not overrun; total MAX 2000 still enforced.",
+    "2026-10-30 15:20 +08:00: user raised the total reference cap to CNY3000 ('\u6211\u8bbe\u4e00\u4e2a3000\u4eba\u6c11\u5e01\u7684\u603b\u4e0a\u9650'); tools/agent_cost_ledger.py MAX 2000->3000 and Reserve 150->1150 (extra CNY1000 to the overflow tier). Other stage limits unchanged.",
+    "2026-10-30 17:45 +08:00: the CNY3000 cap (Reserve 1150, MAX 3000) moved from code defaults into budget_limits_cny, passed by refresh_cost_ledger.ps1 as --budget-limit. Code defaults restored to 150/2000 so the accepted ledger test stays unchanged; frozen run p2_ir_frozen failed only on that test and is preserved.",
+    "2026-10-30 18:00 +08:00: main turn 01a18bac-45e0-76c3-afb0-86e1dfc45983 (P2.1 rounds 3-5 and P2.2) was defaulted to P1 by continuous_accounting.ps1, making P1 405.12/400 and the p2_1 capture fail closed before any snapshot was written. Corrected to P2 (actual work stage); script now defaults new main turns to continuous_run.default_turn_stage (P2)."
   ],
   "continuous_run": {
     "started_at_utc": "2026-10-29T05:39:29.235Z",
     "main_turns": [
       "01a1862b-a31c-7351-ac83-5a77abdf3769",
       "01a18a8c-d2f5-7751-86e4-3b662913c288",
-      "01a18b1c-e159-7f31-a86d-8f49af40678e"
+      "01a18b1c-e159-7f31-a86d-8f49af40678e",
+      "01a18bac-45e0-76c3-afb0-86e1dfc45983"
     ],
     "accounted_tasks": [
       {
@@ -330,15 +366,26 @@
         "task": "c5_2_p1_complete",
         "main_end_ordinal": 7565,
         "snapshot": "docs\\agent_bootstrap\\evidence\\c5_2_p1_complete_cost_snapshot.json"
+      },
+      {
+        "task": "p2_1",
+        "main_end_ordinal": 8491,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\p2_1_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 7565,
-    "current_task": "c5_2",
-    "latest_checkpoint": "db0fba2f463ac783d5b158494ba1cf71aeb2a96c",
+    "main_ordinal_cursor": 8491,
+    "current_task": "p2_1",
+    "latest_checkpoint": "c14a81c04d1b28bcaa391b4000ff8bcee1fad242",
     "main_turn_models": {
       "01a1862b-a31c-7351-ac83-5a77abdf3769": "tencent/gpt-6.1-sol",
       "01a18a8c-d2f5-7751-86e4-3b662913c288": "tencent/claude-opus-5.5",
-      "01a18b1c-e159-7f31-a86d-8f49af40678e": "tencent/claude-opus-5.5"
-    }
+      "01a18b1c-e159-7f31-a86d-8f49af40678e": "tencent/claude-opus-5.5",
+      "01a18bac-45e0-76c3-afb0-86e1dfc45983": "tencent/claude-opus-5.5"
+    },
+    "default_turn_stage": "P2"
+  },
+  "budget_limits_cny": {
+    "Reserve": 1150,
+    "MAX": 3000
   }
 }

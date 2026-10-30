@@ -1,0 +1,31 @@
+...........FF..... [ 40%]
+...........................                                              [100%]
+================================== FAILURES ===================================
+E   TypeError: unhashable type: 'list'
+C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:171: TypeError: unhashable type: 'list'
+E   TypeError: unhashable type: 'list'
+C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:607: TypeError: unhashable type: 'list'
+E   TypeError: unhashable type: 'list'
+C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\effects.py:76: TypeError: unhashable type: 'list'
+E   AssertionError: unexpectedly None : accepted status_duration was silently discarded
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:715: AssertionError: unexpectedly None : accepted status_duration was silently discarded
+E   AssertionError: unexpectedly None : accepted status_duration was silently discarded
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:715: AssertionError: unexpectedly None : accepted status_duration was silently discarded
+E   AssertionError: '67f8bc9813354512b218709f7a895ae2e8088e8494d5ab9f2a97be630c3308c2' == '67f8bc9813354512b218709f7a895ae2e8088e8494d5ab9f2a97be630c3308c2' : two accepted lifecycle durations lowered identically
+---------------------------- Captured stdout call -----------------------------
+uu
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:894: AssertionError: '67f8bc9813354512b218709f7a895ae2e8088e8494d5ab9f2a97be630c3308c2' == '67f8bc9813354512b218709f7a895ae2e8088e8494d5ab9f2a97be630c3308c2' : two accepted lifecycle durations lowered identically
+E   AssertionError: 'aee2cb5dc7a6db47e47e5f2d44cb0b8ba561142848589ab14ee2d361a6eccb20' != '67f8bc9813354512b218709f7a895ae2e8088e8494d5ab9f2a97be630c3308c2'
+    - aee2cb5dc7a6db47e47e5f2d44cb0b8ba561142848589ab14ee2d361a6eccb20
+    + 67f8bc9813354512b218709f7a895ae2e8088e8494d5ab9f2a97be630c3308c2
+     : mutating the trusted IR changed its lowered semantics
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:715: AssertionError: 'aee2cb5dc7a6db47e47e5f2d44cb0b8ba561142848589ab14ee2d361a6eccb20' != '67f8bc9813354512b218709f7a895ae2e8088e8494d5ab9f2a97be630c3308c2'
+=========================== short test summary info ===========================
+SUBFAILED(label='origin.source') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewAuthorityAndSchemaTests::test_malformed_membership_inputs_are_schema_errors
+SUBFAILED(label='status_duration.unit') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewAuthorityAndSchemaTests::test_malformed_membership_inputs_are_schema_errors
+SUBFAILED(label='effect.kind') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewAuthorityAndSchemaTests::test_malformed_membership_inputs_are_schema_errors
+SUBFAILED(unit='world_tick') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_status_duration_must_be_lowered_or_rejected_as_language_gap
+SUBFAILED(unit='combat_round') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_status_duration_must_be_lowered_or_rejected_as_language_gap
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_status_duration_must_be_lowered_or_rejected_as_language_gap
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_trusted_ir_cannot_silently_diverge_from_its_hash_metadata
+7 failed, 43 passed, 49 subtests passed in 9.48s

@@ -1,0 +1,28 @@
+{
+  "mutation": {
+    "changed_lowered_hash": "aee2cb5dc7a6db47e47e5f2d44cb0b8ba561142848589ab14ee2d361a6eccb20",
+    "ir_hash": "bc1e5676dfda8bef9d6ea7f2fcbfcfef26a2b52f445e080bcae27972456d8c7f",
+    "ir_hash_unchanged": true,
+    "lowered_hash_changed": true,
+    "metadata_matches_changed_lowered_hash": true,
+    "original_lowered_hash": "67f8bc9813354512b218709f7a895ae2e8088e8494d5ab9f2a97be630c3308c2"
+  },
+  "text": {
+    "identity.description": {
+      "accepted": true,
+      "canonical_hash": "2cb0362a35dac8d796a8bf9b8b15ebf337cc62969aeb355dd89ed2c5706f17ad",
+      "canonical_json_bytes": 1000722
+    },
+    "identity.name": {
+      "accepted": true,
+      "canonical_hash": "7230b2c805886a7890a0528fc8510c71e6be47289c41d72f6878ad6761662630",
+      "canonical_json_bytes": 1000725
+    },
+    "origin.model": {
+      "accepted": true,
+      "canonical_hash": "8ffb050d83ea9cd7f3509210395a75eb1404a54a4e6043ed2b11ef074a006e5f",
+      "canonical_json_bytes": 1000752
+    },
+    "probe_sha256": "1b977e9f84f1b26b6ed7f68b0498faee2385ea4125bd29adce4a7d9106ba3134"
+  }
+}

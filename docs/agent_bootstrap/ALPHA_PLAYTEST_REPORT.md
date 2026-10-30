@@ -206,3 +206,4 @@ Observation/Sandbox projection) and the P1 completion conformance are
 mechanics-level evidence only; the protected Alpha slice is byte-identical
 and its UI does not expose Derived values, move_actor, or new Skills. P1 Gate
 acceptance does not imply any Alpha playability improvement.
+No new browser playtest was performed for P2.1 (Skill IR). It is a compiler/validator over the accepted runtime; the protected Alpha slice is byte-identical and exposes no IR Skills.

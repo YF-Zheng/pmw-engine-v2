@@ -445,3 +445,34 @@ generation claim. Next: P2 (P2_SKILL_IR_DESIGN.md) P2.1 versioned Skill IR
 schema/validator/compiler lowering to the accepted runtime, then P2.2 30
 reference skills. Generation provider calls stay forbidden until P2 is
 accepted.
+## P2.1 Versioned Skill IR Accepted (2026-10-30)
+
+`gameplay_v04/skill_ir.py` (`pmw-skill-ir-v1`): strict closed-key IR,
+multi-entry (one on_use + on_event damage_resolved passives), document-wide
+shared condition and material budgets, lowering to unchanged v0.4
+SkillBlueprints through `parse_skill_blueprint` (no new runtime), Operator /
+state-class coverage and deterministic preview; unsupported triggers and
+`lifecycle.status_duration` rejected as `language_gap`. Iterations: owner
+Laplace, fixes Kierkegaard (round 2), Gibbs (round 3, compile re-parses the
+canonical JSON), Halley (round 4 iterative JSON shape bound; round 5
+tighten-only condition limits and |int| <= 2**53). Independent QA Ampere
+rejected rounds 1-4 with distinct new defects each time (each round fixed its
+target, so the section 28 stop rule was not triggered) and ACCEPTED round 5:
+87 passed / 179 subtests, 0 product defects, 1 scope note (hostile container
+subclasses outside the JSON threat model). Main root-cause decision: IR
+condition limits are tighten-only because registry install and checkpoint
+restore re-parse with default limits.
+
+Full frozen regression p2_ir_frozen2: **1065 passed, 4103 subtests in
+780.25s**, exit 0, 317 Python hashes unchanged. Protected 130/130 unchanged
+(evidence/p2_ir_main_protected_after.json). First run p2_ir_frozen failed
+only tests/test_agent_cost_ledger.py because the CNY3000 cap had been written
+into code defaults; defaults were restored and the user-authorised limits
+moved to project_run.json `budget_limits_cny` (refresh passes
+`--budget-limit`); evidence preserved.
+
+Accounting p2_1: USD 11.02583293 / CNY 73.50261264; safety 575.49/3000; P1
+369.62/400; P2 76.45/350; Reserve 91.77/1150; Unknown 0. A main turn
+mis-defaulted to P1 was corrected to P2 before the snapshot was written.
+No Alpha UI/playtest or generation claim. Next: P2.2 reference library (40
+Skills, owner Faraday done) independent QA, then the P2 Gate.

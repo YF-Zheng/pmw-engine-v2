@@ -45,8 +45,9 @@ with files[0].open(encoding='utf-8') as stream:
             manifest['project_turns'].append(turn)
         if turn not in run['main_turns']:
             run['main_turns'].append(turn)
-        # Keep an explicit stage (e.g. Reserve); default new main turns to P1.
-        manifest['turn_stages'].setdefault(turn, 'P1')
+        # Keep an explicit stage (e.g. Reserve); default new main turns to the
+        # manifest's current continuous stage (P1 before it was configured).
+        manifest['turn_stages'].setdefault(turn, run.get('default_turn_stage', 'P1'))
 assert run['main_turns']
 temporary = path.with_suffix('.tmp')
 temporary.write_bytes((json.dumps(manifest, indent=2) + '\n').encode())
@@ -158,7 +159,7 @@ for family in ['GPT', 'Claude', 'DeepSeek', 'Unknown']:
     lines.append(f"| {family} | {bucket['record_count']} | {usage['input_tokens']:,} | {usage['cached_input_tokens']:,} | {usage['output_tokens']:,} | {usage['reasoning_output_tokens']:,} | {price} |")
 lines.extend(['', 'Subset: USD ' + snapshot['estimated_usd'] + ' / CNY ' + snapshot['estimated_cny_reference'] + '.',
               'Project cumulative: **USD ' + money(ledger['totals']['estimated_usd']) + ' / CNY ' + money(ledger['totals']['estimated_cny_reference']) + '**.',
-              'Safety-reserved: **CNY ' + money(ledger['budget']['reserved_cny']) + ' / 2,000**; all stage gates within budget.',
+              'Safety-reserved: **CNY ' + money(ledger['budget']['reserved_cny']) + ' / ' + money(ledger['budget']['tiers']['MAX']['limit_cny']) + '**; all stage gates within budget.',
               'Bootstrap remains separate. Closing response usage is pending the next refresh. Ordinal boundary allocation of shared overhead is not exact semantic task attribution.', ''])
 temporary = cost_path.with_suffix('.tmp')
 temporary.write_bytes((old.rstrip() + '\n' + '\n'.join(lines)).encode())

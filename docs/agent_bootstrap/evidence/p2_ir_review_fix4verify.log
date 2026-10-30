@@ -1,0 +1,183 @@
+.............. [ 17%]
+.................................................. [ 79%]
+.................                                                        [100%]
+================================== FAILURES ===================================
+_ SkillIRReviewBudgetTests.test_documents_at_trusted_condition_caps_parse_and_compile (label='max_depth') _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:339: in test_documents_at_trusted_condition_caps_parse_and_compile
+    parsed = _parse(raw, limits=limits)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:174: in _parse
+    return parse_skill_ir(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:384: in parse_skill_ir
+    material_usage = _document_material_usage(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:658: in _document_material_usage
+    total += parse_skill_blueprint(raw, statuses, authority).budget_used
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skills.py:86: in parse_skill_blueprint
+    condition = parse_condition(raw["condition"], f"{path}.condition")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:65: in parse_condition
+    return _parse_condition(raw, path, 1, _ConditionParseState(limits))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:107: in _parse_condition
+    children=(_parse_condition(value, f"{path}.not", depth + 1, state),),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:76: in _parse_condition
+    raise GameplayContractError(
+E   experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: $.skill.condition.not.not.not.not.not.not.not.not.not.not.not.not.not.not.not.not exceeds condition max_depth 16
+_ SkillIRReviewBudgetTests.test_documents_at_trusted_condition_caps_parse_and_compile (label='max_children') _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:339: in test_documents_at_trusted_condition_caps_parse_and_compile
+    parsed = _parse(raw, limits=limits)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:174: in _parse
+    return parse_skill_ir(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:384: in parse_skill_ir
+    material_usage = _document_material_usage(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:658: in _document_material_usage
+    total += parse_skill_blueprint(raw, statuses, authority).budget_used
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skills.py:86: in parse_skill_blueprint
+    condition = parse_condition(raw["condition"], f"{path}.condition")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:65: in parse_condition
+    return _parse_condition(raw, path, 1, _ConditionParseState(limits))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:93: in _parse_condition
+    raise GameplayContractError(
+E   experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: $.skill.condition.all exceeds condition max_children 16
+_ SkillIRReviewBudgetTests.test_documents_at_trusted_condition_caps_parse_and_compile (label='max_nodes') _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:339: in test_documents_at_trusted_condition_caps_parse_and_compile
+    parsed = _parse(raw, limits=limits)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:174: in _parse
+    return parse_skill_ir(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:384: in parse_skill_ir
+    material_usage = _document_material_usage(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:658: in _document_material_usage
+    total += parse_skill_blueprint(raw, statuses, authority).budget_used
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skills.py:86: in parse_skill_blueprint
+    condition = parse_condition(raw["condition"], f"{path}.condition")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:65: in parse_condition
+    return _parse_condition(raw, path, 1, _ConditionParseState(limits))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:99: in _parse_condition
+    children=tuple(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:100: in <genexpr>
+    _parse_condition(item, f"{path}.{kind}[{i}]", depth + 1, state)
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:93: in _parse_condition
+    raise GameplayContractError(
+E   experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: $.skill.condition.all[0].all exceeds condition max_children 16
+_ SkillIRReviewAuthorityAndSchemaTests.test_oversized_integers_fail_closed_as_contract_errors (label='costs.mana') _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:587: in test_oversized_integers_fail_closed_as_contract_errors
+    _parse(raw)
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:174: in _parse
+    return parse_skill_ir(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:320: in parse_skill_ir
+    mana = _nonnegative_number(costs["mana"], "$.costs.mana")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:894: in _nonnegative_number
+    number = _number(value, path)
+             ^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:887: in _number
+    or not math.isfinite(value)
+           ^^^^^^^^^^^^^^^^^^^^
+E   OverflowError: int too large to convert to float
+_ SkillIRReviewAuthorityAndSchemaTests.test_oversized_integers_fail_closed_as_contract_errors (label='effect.amount') _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:587: in test_oversized_integers_fail_closed_as_contract_errors
+    _parse(raw)
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:174: in _parse
+    return parse_skill_ir(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:384: in parse_skill_ir
+    material_usage = _document_material_usage(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:658: in _document_material_usage
+    total += parse_skill_blueprint(raw, statuses, authority).budget_used
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skills.py:90: in parse_skill_blueprint
+    effects = tuple(parse_effect(item, statuses, f"{path}.effects[{i}]") for i, item in enumerate(raw["effects"]))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skills.py:90: in <genexpr>
+    effects = tuple(parse_effect(item, statuses, f"{path}.effects[{i}]") for i, item in enumerate(raw["effects"]))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\effects.py:292: in parse_effect
+    if isinstance(amount, bool) or not isinstance(amount, (int, float)) or not math.isfinite(amount): raise GameplayContractError(f"{path}.amount is invalid")
+                                                                               ^^^^^^^^^^^^^^^^^^^^^
+E   OverflowError: int too large to convert to float
+_ SkillIRReviewAuthorityAndSchemaTests.test_oversized_integers_fail_closed_as_contract_errors (label='condition.value') _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:587: in test_oversized_integers_fail_closed_as_contract_errors
+    _parse(raw)
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:174: in _parse
+    return parse_skill_ir(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:384: in parse_skill_ir
+    material_usage = _document_material_usage(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:658: in _document_material_usage
+    total += parse_skill_blueprint(raw, statuses, authority).budget_used
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skills.py:86: in parse_skill_blueprint
+    condition = parse_condition(raw["condition"], f"{path}.condition")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:65: in parse_condition
+    return _parse_condition(raw, path, 1, _ConditionParseState(limits))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:99: in _parse_condition
+    children=tuple(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:100: in <genexpr>
+    _parse_condition(item, f"{path}.{kind}[{i}]", depth + 1, state)
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\conditions.py:127: in _parse_condition
+    if isinstance(number, bool) or not isinstance(number, (int, float)) or not math.isfinite(number):
+                                                                               ^^^^^^^^^^^^^^^^^^^^^
+E   OverflowError: int too large to convert to float
+=========================== short test summary info ===========================
+SUBFAILED(label='max_depth') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewBudgetTests::test_documents_at_trusted_condition_caps_parse_and_compile
+SUBFAILED(label='max_children') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewBudgetTests::test_documents_at_trusted_condition_caps_parse_and_compile
+SUBFAILED(label='max_nodes') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewBudgetTests::test_documents_at_trusted_condition_caps_parse_and_compile
+SUBFAILED(label='costs.mana') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewAuthorityAndSchemaTests::test_oversized_integers_fail_closed_as_contract_errors
+SUBFAILED(label='effect.amount') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewAuthorityAndSchemaTests::test_oversized_integers_fail_closed_as_contract_errors
+SUBFAILED(label='condition.value') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewAuthorityAndSchemaTests::test_oversized_integers_fail_closed_as_contract_errors
+6 failed, 81 passed, 146 subtests passed in 10.55s

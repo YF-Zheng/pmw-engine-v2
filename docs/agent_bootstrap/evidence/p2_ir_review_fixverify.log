@@ -1,0 +1,35 @@
+........F............................................ [ 98%]
+.                                                                        [100%]
+================================== FAILURES ===================================
+E   AssertionError: 999 != 2
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:878: AssertionError: 999 != 2
+E   AssertionError: GameplayContractError not raised
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:200: AssertionError: GameplayContractError not raised
+E   AssertionError: GameplayContractError not raised
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:200: AssertionError: GameplayContractError not raised
+E   AssertionError: GameplayContractError not raised
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:200: AssertionError: GameplayContractError not raised
+E   AssertionError: GameplayContractError not raised
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:200: AssertionError: GameplayContractError not raised
+E   AssertionError: GameplayContractError not raised
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:200: AssertionError: GameplayContractError not raised
+E   AssertionError: GameplayContractError not raised
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:200: AssertionError: GameplayContractError not raised
+E   AssertionError: GameplayContractError not raised
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:200: AssertionError: GameplayContractError not raised
+E   AssertionError: GameplayContractError not raised
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:200: AssertionError: GameplayContractError not raised
+E   AssertionError: GameplayContractError not raised
+C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py:200: AssertionError: GameplayContractError not raised
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_compile_recomputes_condition_nodes_from_canonical_document
+SUBFAILED(label='empty entries') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_self_consistent_canonical_document_gets_full_ir_validation
+SUBFAILED(label='duplicate entry ids') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_self_consistent_canonical_document_gets_full_ir_validation
+SUBFAILED(label='two on_use entries') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_self_consistent_canonical_document_gets_full_ir_validation
+SUBFAILED(label='effect outside declared selectors') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_self_consistent_canonical_document_gets_full_ir_validation
+SUBFAILED(label='linked_object without relation') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_self_consistent_canonical_document_gets_full_ir_validation
+SUBFAILED(label='shared budget overflow') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_self_consistent_canonical_document_gets_full_ir_validation
+SUBFAILED(label='invalid origin source') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_self_consistent_canonical_document_gets_full_ir_validation
+SUBFAILED(label='model over bound') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_self_consistent_canonical_document_gets_full_ir_validation
+SUBFAILED(label='summary over bound') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_self_consistent_canonical_document_gets_full_ir_validation
+10 failed, 53 passed, 82 subtests passed in 10.81s

@@ -1,0 +1,154 @@
+............. [ 19%]
+...F................... [ 53%]
+...............................                [100%]
+================================== FAILURES ===================================
+_ SkillIRReviewCompilerTests.test_parse_deeply_nested_untrusted_input_fails_closed _
+
+self = <test_skill_ir_review.SkillIRReviewCompilerTests testMethod=test_parse_deeply_nested_untrusted_input_fails_closed>
+
+    def test_parse_deeply_nested_untrusted_input_fails_closed(self):
+        raw = _document()
+        nested = None
+        for _ in range(500):
+            nested = [nested]
+        raw["entries"][0]["effects"][0]["payload"] = nested
+    
+        with self.assertRaises(GameplayContractError):
+>           _parse(raw)
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:890: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_ir_review.py:173: in _parse
+    return parse_skill_ir(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_ir.py:135: in parse_skill_ir
+    raw = deepcopy(raw)
+          ^^^^^^^^^^^^^
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\copy.py:136: in deepcopy
+    y = copier(x, memo)
+        ^^^^^^^^^^^^^^^
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\copy.py:221: in _deepcopy_dict
+    y[deepcopy(key, memo)] = deepcopy(value, memo)
+                             ^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\copy.py:136: in deepcopy
+    y = copier(x, memo)
+        ^^^^^^^^^^^^^^^
+E   RecursionError: maximum recursion depth exceeded
+!!! Recursion detected (same locals & position)
+=================================== PASSES ====================================
+_________ SkillIRReviewAuthorityAndSchemaTests.test_authority_matrix __________
+---------------------------- Captured stdout call -----------------------------
+uuuuu
+_ SkillIRReviewAuthorityAndSchemaTests.test_malformed_membership_inputs_are_schema_errors _
+---------------------------- Captured stdout call -----------------------------
+uuuuuuuuu
+_ SkillIRReviewAuthorityAndSchemaTests.test_reserved_constructs_are_language_gaps_and_junk_is_schema_error _
+---------------------------- Captured stdout call -----------------------------
+uuuuuuuuuuuu
+_ SkillIRReviewCompilerTests.test_compile_ignores_forged_skill_ir_value_fields _
+---------------------------- Captured stdout call -----------------------------
+uuuuuuuuuuuuuuuuuuuuuuuu
+_ SkillIRReviewCompilerTests.test_compile_revalidates_malformed_nested_canonical_payloads _
+---------------------------- Captured stdout call -----------------------------
+uuuuuu
+_ SkillIRReviewCompilerTests.test_forged_condition_limits_stay_within_trusted_condition_caps _
+---------------------------- Captured stdout call -----------------------------
+uuu
+_ SkillIRReviewCompilerTests.test_identity_model_and_display_length_boundaries _
+---------------------------- Captured stdout call -----------------------------
+uuuuuu
+_ SkillIRReviewCompilerTests.test_self_consistent_canonical_document_gets_full_ir_validation _
+---------------------------- Captured stdout call -----------------------------
+uuuuuuuuu
+_ SkillIRReviewCompilerTests.test_status_duration_must_be_lowered_or_rejected_as_language_gap _
+---------------------------- Captured stdout call -----------------------------
+uu
+________________ SkillIRSchemaTests.test_language_gap_triggers ________________
+---------------------------- Captured stdout call -----------------------------
+uuuuuuuu
+_______________ SkillIRSchemaTests.test_schema_rejection_matrix _______________
+---------------------------- Captured stdout call -----------------------------
+uuuuuuuuuuuuuuuuuuuuuuuu
+___________ SkillIRFixTests.test_input_and_canonical_length_bounds ____________
+---------------------------- Captured stdout call -----------------------------
+uuu
+____ SkillIRFixTests.test_malformed_membership_scalars_are_contract_errors ____
+---------------------------- Captured stdout call -----------------------------
+uuuuuuuuuu
+_______ SkillIRFixTests.test_non_null_status_duration_is_a_language_gap _______
+---------------------------- Captured stdout call -----------------------------
+uuu
+_ SkillIRFix3ReparseTests.test_over_bound_text_in_self_consistent_document_is_rejected _
+---------------------------- Captured stdout call -----------------------------
+uuuu
+_ SkillIRFix3ReparseTests.test_self_consistent_invalid_documents_are_rejected _
+---------------------------- Captured stdout call -----------------------------
+uuuuuu
+=========================== short test summary info ===========================
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewBudgetTests::test_condition_budget_exact_64_and_65_across_entries_and_effects
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewBudgetTests::test_condition_budget_rejects_two_individually_valid_64_node_trees
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewBudgetTests::test_null_nodes_and_nested_limits_match_conditions_parser
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewBudgetTests::test_shared_material_budget_includes_each_passive_surcharge
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewAuthorityAndSchemaTests::test_authority_matrix
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewAuthorityAndSchemaTests::test_contract_errors_are_not_double_wrapped
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewAuthorityAndSchemaTests::test_malformed_membership_inputs_are_schema_errors
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewAuthorityAndSchemaTests::test_reserved_constructs_are_language_gaps_and_junk_is_schema_error
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_compile_ignores_forged_skill_ir_value_fields
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_compile_recomputes_condition_nodes_from_canonical_document
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_compile_revalidates_malformed_nested_canonical_payloads
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_duplicate_json_keys_compile_only_their_fresh_legal_parse
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_forged_condition_limits_stay_within_trusted_condition_caps
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_identity_model_and_display_length_boundaries
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_lowered_id_overflow_is_rejected
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_mutating_the_input_after_parse_does_not_alter_the_ir
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_recursive_key_permutation_preserves_ir_and_lowered_hashes
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_self_consistent_canonical_document_gets_full_ir_validation
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_single_on_use_lowered_hash_matches_handwritten_v04
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_status_duration_must_be_lowered_or_rejected_as_language_gap
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_trusted_ir_cannot_silently_diverge_from_its_hash_metadata
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewFormalRuntimeTests::test_two_entry_ir_runs_independently_for_player_and_npc
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRSchemaTests::test_language_gap_triggers
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRSchemaTests::test_schema_rejection_matrix
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRBudgetTests::test_authority_exceeded_by_effect_kind_and_selector
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRBudgetTests::test_multi_entry_material_bypass_rejected
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRBudgetTests::test_relation_scope_requires_named_relation_type
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRBudgetTests::test_shared_condition_budget_aggregates_effect_conditions
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRBudgetTests::test_shared_condition_budget_counts_effect_conditions
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRBudgetTests::test_shared_condition_budget_exact_boundary
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRBudgetTests::test_shared_material_budget_exact_boundary
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRCompilerTests::test_derived_condition_classifies_read_only_coverage
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRCompilerTests::test_hash_and_key_order_determinism
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRCompilerTests::test_hash_parity_with_handwritten_v04
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIRCompilerTests::test_operator_and_state_class_catalog
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py::SkillIREndToEndTests::test_two_entry_compiled_ir_through_formal_runtime_for_player_and_npc
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fixes.py::SkillIRFixTests::test_canonical_json_prevents_hash_and_lowered_semantics_divergence
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fixes.py::SkillIRFixTests::test_input_and_canonical_length_bounds
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fixes.py::SkillIRFixTests::test_malformed_membership_scalars_are_contract_errors
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fixes.py::SkillIRFixTests::test_non_null_status_duration_is_a_language_gap
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fixes.py::SkillIRFixTests::test_v04_hash_parity_and_canonical_ir_hash_parity
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fix3.py::SkillIRFix3ReparseTests::test_compile_reuses_the_recorded_condition_limits
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fix3.py::SkillIRFix3ReparseTests::test_compile_type_and_json_boundaries_are_contract_errors
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fix3.py::SkillIRFix3ReparseTests::test_forged_condition_nodes_are_recomputed_from_fresh_parse
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fix3.py::SkillIRFix3ReparseTests::test_over_bound_text_in_self_consistent_document_is_rejected
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fix3.py::SkillIRFix3ReparseTests::test_parse_records_the_trusted_condition_limits
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fix3.py::SkillIRFix3ReparseTests::test_reviewer_empty_entries_reproduction_is_rejected
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fix3.py::SkillIRFix3ReparseTests::test_self_consistent_invalid_documents_are_rejected
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_fix3.py::SkillIRFix3ReparseTests::test_valid_document_returns_fresh_ir_and_identical_hashes
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario01_persistent_area_change_partial_without_formal_relocation
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario02_target_and_rate_are_separate_sources
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario03_multiple_dynamics_modifiers_expire_independently
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario04_process_converts_input_stock_to_output_stock
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario05_process_rate_and_remaining_duration_modification
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario06_damage_passive_fires_once_and_recursion_stops
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario07_relation_overlay_partial_without_supply_path_consumer
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario08_ecology_discrete_transition_triggered_by_field_law
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario09_field_diagnostics_are_partial_derived_bridge
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios.py::P1ScenarioConformanceTests::test_scenario10_same_parsed_skill_executes_for_player_and_npc
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py::RegistryCheckpointTests::test_checkpoint_hash_rejects_corruption_before_rebuild
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py::RegistryCheckpointTests::test_checkpoint_restores_world_registry_scheduler_and_continuation_trace
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py::RegistryCheckpointTests::test_disable_blocks_new_use_but_retains_scheduled_expiry
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py::RegistryCheckpointTests::test_failed_rebuild_preflight_does_not_publish_manifest
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py::RegistryCheckpointTests::test_fractional_time_is_not_a_world_tick_boundary
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py::RegistryCheckpointTests::test_install_is_formal_traced_and_once_per_world_tick_boundary
+PASSED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py::RegistryCheckpointTests::test_versions_are_monotonic_and_old_loadout_refs_cannot_alias_new_action
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir_review.py::SkillIRReviewCompilerTests::test_parse_deeply_nested_untrusted_input_fails_closed
+1 failed, 66 passed, 134 subtests passed in 11.27s

@@ -1,0 +1,13 @@
+{
+  "reference": "docs/agent_bootstrap/evidence/c5_move_main_protected_before.json",
+  "head": "c14a81c04d1b28bcaa391b4000ff8bcee1fad242",
+  "frozen_run": "p2_ir_frozen2",
+  "count": 130,
+  "counts": {
+    "alpha_python": 13,
+    "old_tests": 100,
+    "core_python": 23
+  },
+  "mismatched": [],
+  "status": "passed"
+}

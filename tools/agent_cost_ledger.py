@@ -50,6 +50,21 @@ STAGE_LIMITS_CNY = {
 STAGE_NAMES = tuple(STAGE_LIMITS_CNY)
 DEFAULT_PHASE = "P0"
 
+
+def resolve_budget_limits(
+    overrides: Mapping[str, Any] | None = None,
+) -> dict[str, Decimal]:
+    """Return default limits with explicit, user-authorised overrides applied."""
+    limits = dict(BUDGET_LIMITS_CNY)
+    for name, value in (overrides or {}).items():
+        if name not in limits:
+            raise ValueError(f"unknown budget limit: {name}")
+        amount = Decimal(str(value))
+        if not amount.is_finite() or amount <= 0:
+            raise ValueError(f"budget limit must be positive: {name}")
+        limits[name] = amount
+    return limits
+
 TOKEN_KEYS = (
     "input_tokens",
     "cached_input_tokens",
@@ -557,24 +572,26 @@ def build_budget(
     incomplete_reasons: Sequence[str],
     *,
     stage: str = DEFAULT_PHASE,
+    budget_limits: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
+    limits = resolve_budget_limits(budget_limits)
     tiers: dict[str, Any] = {}
     for tier in STAGE_NAMES:
-        limit_cny = STAGE_LIMITS_CNY[tier]
+        limit_cny = limits[tier]
         tier_reserved = stage_reserved_cny.get(tier, Decimal("0"))
         tiers[tier] = {
             "limit_cny": _money(limit_cny),
             "reserved_cny": _money(tier_reserved),
             "within_limit": tier_reserved <= limit_cny,
         }
-    max_limit_cny = BUDGET_LIMITS_CNY["MAX"]
+    max_limit_cny = limits["MAX"]
     tiers["MAX"] = {
         "limit_cny": _money(max_limit_cny),
         "reserved_cny": _money(total_reserved_cny),
         "within_limit": total_reserved_cny <= max_limit_cny,
     }
 
-    active_limit = BUDGET_LIMITS_CNY.get(stage, BUDGET_LIMITS_CNY["MAX"])
+    active_limit = limits.get(stage, limits["MAX"])
     active_reserved = stage_reserved_cny.get(stage, total_reserved_cny)
     any_stage_over = any(
         not tiers[tier]["within_limit"] for tier in STAGE_NAMES
@@ -622,7 +639,9 @@ def build_report(
     phase: str = DEFAULT_PHASE,
     agent_stages: Mapping[str, str] | None = None,
     turn_stages: Mapping[str, str] | None = None,
+    budget_limits: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
+    limits = resolve_budget_limits(budget_limits)
     normalized_phase = normalize_stage(phase)
     normalized_stages = {
         agent_id: normalize_stage(stage)
@@ -804,8 +823,8 @@ def build_report(
             "actual_usage": _usage_to_json(stage_usage.get(stage, empty_usage())),
             "known_estimated_usd": _money(stage_usd),
             "reserved_cny": _money(stage_reserved),
-            "limit_cny": _money(STAGE_LIMITS_CNY[stage]),
-            "within_limit": stage_reserved <= STAGE_LIMITS_CNY[stage],
+            "limit_cny": _money(limits[stage]),
+            "within_limit": stage_reserved <= limits[stage],
         }
 
     total_reserved_cny = known_total_usd * USD_CNY_RESERVE * SAFETY_MULTIPLIER
@@ -818,6 +837,7 @@ def build_report(
         total_reserved_cny,
         incomplete_reasons,
         stage=normalized_phase,
+        budget_limits=limits,
     )
 
     source_ordinals: dict[str, int] = {}
@@ -1006,6 +1026,12 @@ def build_parser() -> argparse.ArgumentParser:
         default=[],
         help="Override one turn's stage as TURN_ID=P0..P5 or TURN_ID=Reserve.",
     )
+    parser.add_argument(
+        "--budget-limit",
+        action="append",
+        default=[],
+        help="Override one limit as NAME=CNY (P0..P5, Reserve, MAX); repeatable.",
+    )
     parser.add_argument("--output", default=DEFAULT_OUTPUT)
     parser.add_argument(
         "--check-budget",
@@ -1020,6 +1046,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         agent_stages = parse_agent_stages(args.agent_stage)
         turn_stages = parse_turn_stages(args.turn_stage)
+        budget_limits = {}
+        for value in args.budget_limit:
+            name, separator, amount = value.partition("=")
+            if not separator or not name or not amount:
+                raise ValueError("budget limit must use NAME=CNY")
+            budget_limits[name] = amount
+        resolve_budget_limits(budget_limits)
         requested_turns = normalize_project_turns(
             None,
             [*args.project_turn, *args.project_turns],
@@ -1033,6 +1066,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             phase=args.phase,
             agent_stages=agent_stages,
             turn_stages=turn_stages,
+            budget_limits=budget_limits,
         )
         destination = write_report(report, Path(args.output))
     except (FileNotFoundError, OSError, UnicodeError, ValueError):
