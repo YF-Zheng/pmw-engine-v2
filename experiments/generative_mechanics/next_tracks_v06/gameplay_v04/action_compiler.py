@@ -149,7 +149,7 @@ def _effect_laws(action_id, action_version, action_hash, effect, status_slots, d
                  "when": {"all": conditions}, "effects": [{"op": "set",
                     "target": f"${binding}.pmw_gameplay_dynamics.fields.{effect.field_id}.{suffix}",
                     "value": f"{value_root}.{key}"}]}]
-    if effect.kind in {"modify_attractor", "modify_rate"}:
+    if effect.kind in {"modify_attractor", "modify_rate", "dynamics_modifier"}:
         result = []
         expiry_type = f"pmw.v04.action.{token}.{effect.id}.expire"
         for index in range(dynamics_slots):

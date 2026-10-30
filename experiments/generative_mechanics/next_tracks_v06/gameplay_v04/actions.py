@@ -15,7 +15,8 @@ from pmw import Event
 
 from .attributes import evaluate_terms
 from .conditions import ConditionSpec, evaluate_condition, parse_condition
-from .contracts import GameplayContractError, ScopeCapability, SelectorContext
+from .contracts import DynamicsSource, GameplayContractError, ScopeCapability, SelectorContext
+from .dynamics import validate_source
 from .effects import EffectSpec, parse_effect
 from .selectors import resolve_selector
 from .status import (DurationSpec, STATUS_COMPONENT, StatusSpec, active_status_slot,
@@ -224,6 +225,11 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
             keys = (f"drive:{effect.drive_profile_id}:source",)
         if effect.kind == "relation_modifier":
             keys = (f"relation:{effect.relation_profile_id}:enabled",)
+        if effect.kind == "dynamics_modifier":
+            keys = (
+                f"field:{effect.field_id}:rate",
+                f"field:{effect.field_id}:target",
+            )
         for key in keys:
             footprint = (effect.target.kind, effect.target.relation_type, key)
             if footprint in footprints: raise GameplayContractError(f"{path}.effects contains conflicting writes")
@@ -316,10 +322,15 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
     shadow[request.actor_id]["mana"] -= quote.mana
     writes: dict[str, dict[str, Any]] = {request.actor_id: {"mana": shadow[request.actor_id]["mana"]}}
     outcomes = []
-    reservations: list[tuple[str, str, dict]] = []
+    reservations: list[tuple[str, str, dict[str, Any]]] = []
+    source_slots: list[tuple[str, str, str]] = []
+    source_writers: list[tuple[str, str, str]] = []
+    has_dynamics_modifier = any(
+        effect.kind == "dynamics_modifier" for effect in definition.effects
+    )
     for effect in definition.effects:
         if (effect.kind in {"process_start", "process_modify", "drive_source",
-                           "relation_modifier"}
+                            "relation_modifier", "dynamics_modifier"}
                 and execution_kind != "primary"):
             raise GameplayContractError(f"{effect.kind} is supported only for active primary execution")
         targets = resolve_selector(session.state, effect.target, context, definition.capability)
@@ -330,8 +341,18 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
         if effect.commitment == "required" and not enabled: raise GameplayContractError(f"required effect {effect.id!r} condition failed")
         if not enabled:
             outcomes.append({"effect_id": effect.id, "kind": effect.kind, "status": "skipped", "target_id": target_id, "values": {}}); continue
+        if effect.kind in {"modify_attractor", "modify_rate", "dynamics_modifier"}:
+            if has_dynamics_modifier and any(
+                owner == target_id and field_id == effect.field_id
+                for owner, field_id, _effect_id in source_writers
+            ):
+                raise GameplayContractError(
+                    "effects conflict on one Field source footprint"
+                )
+            source_writers.append((target_id, effect.field_id, effect.id))
         outcome = _simulate_effect(
-            session, registry, request, definition, effect, target_id, shadow, writes, reservations,
+            session, registry, request, definition, effect, target_id, shadow,
+            writes, reservations, source_slots,
             execution_kind=execution_kind,
         )
         outcomes.append(outcome)
@@ -646,8 +667,9 @@ def _condition_context(session, request, shadow):
     return {"self": actor, "target_actor": target or {}, "current_area": area or {}}
 
 
-def _simulate_effect(session, registry, request, definition, effect, target_id, shadow, writes, reservations,
-                     *, execution_kind: str):
+def _simulate_effect(session, registry, request, definition, effect, target_id,
+                     shadow, writes, reservations, source_slots, *,
+                     execution_kind: str):
     target_entity = session.state.entities[target_id]
     actor_state = shadow.get(target_id)
     source_actor = shadow[request.actor_id]
@@ -745,14 +767,72 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
                                    owner_id=request.actor_id, stacks=stacks,
                                    shield_layer_slot=shield_layer_slot)
         slots[slot] = value; reservations.append((target_id, slot, value)); values = {"slot": slot, "status": value, "status_component": {"slots": slots}}
-    elif effect.kind in {"modify_field", "modify_attractor", "modify_rate"}:
+    elif effect.kind in {
+        "modify_field", "modify_attractor", "modify_rate", "dynamics_modifier",
+    }:
         fields = target_entity.components.get("pmw_gameplay_dynamics", {}).get("fields", {})
         field = fields.get(effect.field_id)
         if field is None: raise GameplayContractError("effect targets unknown Field")
         row = writes.setdefault(target_id, {})
         if effect.kind == "modify_field": row[f"field:{effect.field_id}:value"] = max(field["domain_min"], min(field["domain_max"], field["value"] + amount)); values = {"value": row[f"field:{effect.field_id}:value"]}
+        elif effect.kind == "dynamics_modifier":
+            slot = next((
+                name for name, value in sorted(field["temporary_modifiers"].items())
+                if not value["active"] and not _field_slot_reserved(
+                    source_slots, target_id, effect.field_id, name
+                )
+            ), None)
+            if slot is None:
+                raise GameplayContractError(
+                    "temporary dynamics modifier capacity exhausted"
+                )
+            profile = next((
+                item for item in session.profiles
+                if item.entity_id == target_id and item.field.id == effect.field_id
+            ), None)
+            if profile is None:
+                raise GameplayContractError("effect targets unknown Field profile")
+            source_id = _dynamics_source_id(
+                request.request_id, definition.id, effect.id, request.actor_id
+            )
+            dynamics_source = DynamicsSource(
+                source_id, request.actor_id,
+                rate_add=float(effect.rate_add),
+                rate_multiplier=float(effect.rate_multiplier),
+                curve=effect.curve,
+                curve_priority=effect.curve_priority,
+                duration_ticks=effect.duration,
+            )
+            validate_source(dynamics_source, profile.field, temporary=True)
+            if any(
+                item["active"]
+                and item["curve_priority"] == dynamics_source.curve_priority
+                for layer in ("persistent_patches", "temporary_modifiers")
+                for item in field[layer].values()
+            ):
+                raise GameplayContractError("curve override priority conflict")
+            handle = f"pmw:v04:action-expiry:{request.request_id}:{effect.id}"
+            prepared = {
+                "active": True, "source_id": source_id, "owner": request.actor_id,
+                "target": 0.0, "target_weight": 0.0,
+                "rate_add": dynamics_source.rate_add,
+                "rate_multiplier": dynamics_source.rate_multiplier,
+                "curve": dynamics_source.curve,
+                "curve_priority": dynamics_source.curve_priority,
+                "expiry_handle": handle,
+            }
+            source_slots.append((target_id, effect.field_id, slot))
+            values = {
+                "slot": slot, "source": prepared, "expiry_handle": handle,
+                "expiry_time": session.state.sim_time + effect.duration,
+            }
         else:
-            slot = next((name for name, value in sorted(field["temporary_modifiers"].items()) if not value["active"]), None)
+            slot = next((
+                name for name, value in sorted(field["temporary_modifiers"].items())
+                if not value["active"] and not _field_slot_reserved(
+                    source_slots, target_id, effect.field_id, name
+                )
+            ), None)
             if slot is None: raise GameplayContractError("temporary dynamics modifier capacity exhausted")
             handle = f"pmw:v04:action-expiry:{request.request_id}:{effect.id}"
             source = {"active": True, "source_id": f"{definition.id}_{effect.id}", "owner": request.actor_id,
@@ -760,10 +840,22 @@ def _simulate_effect(session, registry, request, definition, effect, target_id, 
                       "target_weight": 1.0 if effect.kind == "modify_attractor" else 0.0,
                       "rate_add": amount if effect.kind == "modify_rate" else 0.0, "rate_multiplier": 1.0,
                       "curve": None, "curve_priority": -1, "expiry_handle": handle}
+            source_slots.append((target_id, effect.field_id, slot))
             values = {"slot": slot, "source": source, "expiry_handle": handle,
                       "expiry_time": session.state.sim_time + effect.duration}
     return {"effect_id": effect.id, "kind": effect.kind, "status": "applied", "target_id": target_id,
             "amount": amount, "values": values, "attribute_terms": term_trace}
+
+
+def _field_slot_reserved(source_slots, target_id, field_id, slot):
+    return any(
+        row == (target_id, field_id, slot) for row in source_slots
+    )
+
+
+def _dynamics_source_id(request_id, action_id, effect_id, owner):
+    payload = "\0".join((request_id, action_id, effect_id, owner)).encode()
+    return "dm_" + hashlib.sha256(payload).hexdigest()[:32]
 
 
 def _simulate_process_start(session, registry, request, definition, effect, target_id, execution_kind):

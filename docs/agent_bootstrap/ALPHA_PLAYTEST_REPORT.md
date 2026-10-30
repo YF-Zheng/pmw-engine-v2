@@ -186,3 +186,7 @@ charge or run). No Alpha source changed (13 hashes identical) and no new public
 or blind playtest was performed; the earlier public API replay remains the latest
 Main replay. Remaining UX findings (generic root-bridge feedback, unavailable craft
 controls) are unchanged.
+
+## C4.4 Playtest Note
+
+Mechanics-only: dynamics_modifier Skills are now expressible and paid through the real Action path. Alpha content does not use them yet; no Alpha source change and no new public playtest.

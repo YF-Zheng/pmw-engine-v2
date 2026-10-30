@@ -168,6 +168,16 @@
       "id": "01a18a8e-510c-7931-9587-c0a11d314db2",
       "task": "C4.3 replacement independent legacy fixture review (PMW-local temp)",
       "stage": "P1"
+    },
+    {
+      "id": "01a18a9f-ba78-7123-bccf-1488c2a2c2b7",
+      "task": "C4.4 typed dynamics_modifier Action bridge implementation",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18a9f-fe77-70b0-a392-baa4e39f8914",
+      "task": "C4.4 independent dynamics_modifier QA",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -251,11 +261,16 @@
         "task": "c4_3_fixture",
         "main_end_ordinal": 5844,
         "snapshot": "docs\\agent_bootstrap\\evidence\\c4_3_fixture_cost_snapshot.json"
+      },
+      {
+        "task": "c4_4",
+        "main_end_ordinal": 6164,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\c4_4_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 5844,
-    "current_task": "c4_3_fixture",
-    "latest_checkpoint": "576048b0f4796695a63883b46c6c62b03ef92b8b",
+    "main_ordinal_cursor": 6164,
+    "current_task": "c4_4",
+    "latest_checkpoint": "7c975cb88def0eebf7c137e0b9305b74b8be1257",
     "main_turn_models": {
       "01a1862b-a31c-7351-ac83-5a77abdf3769": "tencent/gpt-6.1-sol",
       "01a18a8c-d2f5-7751-86e4-3b662913c288": "tencent/claude-opus-5.5"

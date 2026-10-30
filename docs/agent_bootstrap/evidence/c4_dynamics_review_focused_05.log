@@ -1,0 +1,25 @@
+test_capacity_and_late_failure_rollback (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.AtomicDenialTests.test_capacity_and_late_failure_rollback) ... ok
+test_duplicate_priority_persistent_and_temporary_reject_without_delta (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.AtomicDenialTests.test_duplicate_priority_persistent_and_temporary_reject_without_delta) ... ok
+test_dynamics_and_legacy_modifier_footprint_conflict (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.AtomicDenialTests.test_dynamics_and_legacy_modifier_footprint_conflict) ... ok
+test_material_scope_rejects_without_publication (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.AtomicDenialTests.test_material_scope_rejects_without_publication) ... ok
+test_schema_matrix_rejects_atomically (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.AtomicDenialTests.test_schema_matrix_rejects_atomically) ... ok
+test_two_new_writes_do_not_reuse_one_temp_slot (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.AtomicDenialTests.test_two_new_writes_do_not_reuse_one_temp_slot) ... ok
+test_old_effect_action_and_skill_hashes_unchanged (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.ContinuityAndLegacyTests.test_old_effect_action_and_skill_hashes_unchanged) ... ok
+test_save_load_rebuild_preserves_hashes_and_continuation (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.ContinuityAndLegacyTests.test_save_load_rebuild_preserves_hashes_and_continuation) ... ok
+test_add_multiply_hand_value_and_effective_rate_clamp (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.FormalSharedActionTests.test_add_multiply_hand_value_and_effective_rate_clamp) ... ok
+test_lower_and_higher_priority_sources_survive_exact_expiry (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.FormalSharedActionTests.test_lower_and_higher_priority_sources_survive_exact_expiry) ... ok
+test_none_freeze_duration3_expires_before_tick3_current_base (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.FormalSharedActionTests.test_none_freeze_duration3_expires_before_tick3_current_base) ... ok
+test_same_parsed_skill_player_npc_two_areas_real_ticks (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.FormalSharedActionTests.test_same_parsed_skill_player_npc_two_areas_real_ticks) ... FAIL
+
+======================================================================
+FAIL: test_same_parsed_skill_player_npc_two_areas_real_ticks (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_dynamics_action_review.FormalSharedActionTests.test_same_parsed_skill_player_npc_two_areas_real_ticks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_dynamics_action_review.py", line 432, in test_same_parsed_skill_player_npc_two_areas_real_ticks
+    self.assertTrue(any(
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 12 tests in 1.608s
+
+FAILED (failures=1)

@@ -359,3 +359,21 @@ Subset: USD 3.26245498 / CNY 21.74882988.
 Project cumulative: **USD 36.10221855 / CNY 240.67182974**.
 Safety-reserved: **CNY 303.25863582 / 2,000**; all stage gates within budget.
 Bootstrap remains separate. Closing response usage is pending the next refresh. Ordinal boundary allocation of shared overhead is not exact semantic task attribution.
+
+## Continuous C4_4 Snapshot
+
+Observed cutoff: **2026-10-30T03:16:23.852Z**; complete, Unknown 0, malformed 0.
+Snapshot: `evidence/c4_4_cost_snapshot.json`. This subset is already in cumulative totals; never add it again.
+97% cache is a price assumption only. Actual cache is preserved; GPT/DeepSeek/FX pinned to verified 2026-10-28 sources, Claude Opus 5.5 to official pricing checked 2026-10-30.
+
+| Family | Responses | Actual input | Actual cache | Actual output | Reasoning (included) | Reference USD |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| GPT | 0 | 0 | 0 | 0 | 0 | 0E-8 |
+| Claude | 45 | 7,553,719 | 7,144,090 | 38,873 | 0 | 3.14932777 |
+| DeepSeek | 350 | 53,867,013 | 51,909,504 | 376,845 | 119,403 | 1.25052321 |
+| Unknown | 0 | 0 | 0 | 0 | 0 | N/A (no records) |
+
+Subset: USD 4.39985098 / CNY 29.33116657.
+Project cumulative: **USD 40.50206953 / CNY 270.00299631**.
+Safety-reserved: **CNY 340.21738405 / 2,000**; all stage gates within budget.
+Bootstrap remains separate. Closing response usage is pending the next refresh. Ordinal boundary allocation of shared overhead is not exact semantic task attribution.

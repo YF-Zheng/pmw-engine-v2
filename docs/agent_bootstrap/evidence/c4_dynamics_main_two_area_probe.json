@@ -1,0 +1,214 @@
+{
+  "utc": "2026-10-30T10:50:17.981669+08:00",
+  "kind": "Main complementary probe (not independent QA)",
+  "rule": "Cast at sim_time c with duration d schedules expiry at c+d; scheduler-before-Tick means the Tick ending at time k is modified iff k < c+d, i.e. d-1 Ticks. Matches native baseline c4_dynamics_main_before.json.",
+  "areas": {
+    "player_area": {
+      "initial": 0.2,
+      "target": 0.8,
+      "rate": 0.2
+    },
+    "npc_area": {
+      "initial": 0.5,
+      "target": 0.9,
+      "rate": 0.1
+    }
+  },
+  "effect": {
+    "rate_add": 0.3,
+    "rate_multiplier": 1.5,
+    "curve": "linear"
+  },
+  "first_attempt_note": "Main first hand model assumed d Ticks of effect and mismatched (0.7625 vs actual 0.68); that was a Main expectation error, not a product fix.",
+  "runs": {
+    "1": {
+      "timeline": [
+        [
+          0.0,
+          0.2,
+          0.5
+        ],
+        [
+          1.0,
+          0.32000000000000006,
+          0.54
+        ],
+        [
+          2.0,
+          0.41600000000000004,
+          0.5760000000000001
+        ],
+        [
+          3.0,
+          0.4928,
+          0.6084
+        ],
+        [
+          4.0,
+          0.5542400000000001,
+          0.63756
+        ],
+        [
+          5.0,
+          0.603392,
+          0.6638040000000001
+        ]
+      ],
+      "hand_area": [
+        0.2,
+        0.32000000000000006,
+        0.41600000000000004,
+        0.4928,
+        0.5542400000000001,
+        0.603392
+      ],
+      "hand_other": [
+        0.5,
+        0.54,
+        0.5760000000000001,
+        0.6084,
+        0.63756,
+        0.6638040000000001
+      ],
+      "match": true,
+      "mana": [
+        16.0,
+        16.0
+      ],
+      "budget": {
+        "total_ticks": 20,
+        "spent_ticks": 2,
+        "remaining_ticks": 18,
+        "last_reason": "exploration"
+      }
+    },
+    "2": {
+      "timeline": [
+        [
+          0.0,
+          0.2,
+          0.5
+        ],
+        [
+          1.0,
+          0.6500000000000001,
+          0.54
+        ],
+        [
+          2.0,
+          0.6800000000000002,
+          0.756
+        ],
+        [
+          3.0,
+          0.7040000000000002,
+          0.7704
+        ],
+        [
+          4.0,
+          0.7232000000000002,
+          0.78336
+        ],
+        [
+          5.0,
+          0.7385600000000001,
+          0.795024
+        ]
+      ],
+      "hand_area": [
+        0.2,
+        0.6500000000000001,
+        0.6800000000000002,
+        0.7040000000000002,
+        0.7232000000000002,
+        0.7385600000000001
+      ],
+      "hand_other": [
+        0.5,
+        0.54,
+        0.756,
+        0.7704,
+        0.78336,
+        0.795024
+      ],
+      "match": true,
+      "mana": [
+        16.0,
+        16.0
+      ],
+      "budget": {
+        "total_ticks": 20,
+        "spent_ticks": 2,
+        "remaining_ticks": 18,
+        "last_reason": "exploration"
+      }
+    },
+    "3": {
+      "timeline": [
+        [
+          0.0,
+          0.2,
+          0.5
+        ],
+        [
+          1.0,
+          0.6500000000000001,
+          0.54
+        ],
+        [
+          2.0,
+          0.7625000000000001,
+          0.756
+        ],
+        [
+          3.0,
+          0.77,
+          0.8424
+        ],
+        [
+          4.0,
+          0.776,
+          0.84816
+        ],
+        [
+          5.0,
+          0.7808,
+          0.853344
+        ]
+      ],
+      "hand_area": [
+        0.2,
+        0.6500000000000001,
+        0.7625000000000001,
+        0.77,
+        0.776,
+        0.7808
+      ],
+      "hand_other": [
+        0.5,
+        0.54,
+        0.756,
+        0.8424,
+        0.84816,
+        0.853344
+      ],
+      "match": true,
+      "mana": [
+        16.0,
+        16.0
+      ],
+      "budget": {
+        "total_ticks": 20,
+        "spent_ticks": 2,
+        "remaining_ticks": 18,
+        "last_reason": "exploration"
+      }
+    }
+  },
+  "source_sha256": {
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/effects.py": "63da4d1b21d582d0c2bad8e4ffcf1fd323fbccaac65610a42e678a8c54d983cc",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skills.py": "65e56628614b649e47bee5e10875f5e114213250bf8676ee6b34e68dadf4afbf",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/actions.py": "2e379bef9e9180b4465d03f7d3086d7f25209a60a7be9a25aaa47a411241bfa9",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/action_compiler.py": "dbb9a938c8ccd79d7084219b14c31242f5ba2bd38578f73ae45820b59400802e"
+  }
+}

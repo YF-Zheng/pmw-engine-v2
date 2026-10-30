@@ -4,18 +4,23 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import math
+import re
 from typing import Any, Mapping
 
 from .attributes import AttributeTerm, parse_attribute_term
 from .conditions import ConditionSpec, parse_condition
-from .contracts import GameplayContractError, ScopedSelector
+from .contracts import CURVES, GameplayContractError, ScopedSelector
 from .selectors import parse_selector
 from .status import StatusSpec
 
 
 EFFECT_KINDS = ("damage", "heal", "shield", "add_resource", "apply_status", "modify_field",
                 "modify_attractor", "modify_rate", "grant_trait", "process_start",
-                "process_modify", "drive_source", "relation_modifier")
+                "process_modify", "drive_source", "relation_modifier",
+                "dynamics_modifier")
+
+_EFFECT_ID = re.compile(r"[a-z][a-z0-9_]{1,63}\Z")
+_FIELD_ID = re.compile(r"[a-z][a-z0-9_]{1,47}\Z")
 
 
 @dataclass(frozen=True, slots=True)
@@ -41,6 +46,10 @@ class EffectSpec:
     drive_rate: float | None = None
     relation_profile_id: str | None = None
     relation_enabled: bool | None = None
+    rate_add: float | None = None
+    rate_multiplier: float | None = None
+    curve: str | None = None
+    curve_priority: int | None = None
 
 
 def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.effect") -> EffectSpec:
@@ -58,9 +67,13 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
         "process_modify": {"process_template_id"} | process_modify_optional,
         "drive_source": {"drive_profile_id", "drive_rate", "duration"},
         "relation_modifier": {"relation_profile_id", "relation_enabled", "duration"},
+        "dynamics_modifier": {
+            "field_id", "rate_add", "rate_multiplier", "curve",
+            "curve_priority", "duration",
+        },
     }
     if kind not in fields: raise GameplayContractError(f"{path}.kind is invalid")
-    allowed = common | optional | fields[kind]
+    allowed = common | (set() if kind == "dynamics_modifier" else optional) | fields[kind]
     required_fields = fields[kind]
     if kind == "process_modify":
         required_fields = required_fields - process_modify_optional
@@ -161,6 +174,80 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
             raise GameplayContractError(
                 f"{path}.duration must be a positive integer"
             )
+    rate_add = None
+    rate_multiplier = None
+    curve = None
+    curve_priority = None
+    if kind == "dynamics_modifier":
+        field_id = raw["field_id"]
+        if (
+            not isinstance(raw["id"], str)
+            or _EFFECT_ID.fullmatch(raw["id"]) is None
+        ):
+            raise GameplayContractError(f"{path}.id is invalid")
+        if target.kind != "current_area":
+            raise GameplayContractError(
+                f"{path}.target must be current_area for dynamics_modifier"
+            )
+        if raw["commitment"] != "required":
+            raise GameplayContractError(
+                f"{path}.commitment must be required for dynamics_modifier"
+            )
+        if terms:
+            raise GameplayContractError(
+                f"{path}.attribute_terms are not allowed for dynamics_modifier"
+            )
+        if targeting != {"sensing": "none", "evadable": False}:
+            raise GameplayContractError(
+                f"{path}.targeting is not allowed for dynamics_modifier"
+            )
+        if (
+            not isinstance(field_id, str)
+            or _FIELD_ID.fullmatch(field_id) is None
+        ):
+            raise GameplayContractError(f"{path}.field_id is invalid")
+        for key in ("rate_add", "rate_multiplier"):
+            value = raw[key]
+            if (
+                isinstance(value, bool)
+                or not isinstance(value, (int, float))
+                or not math.isfinite(value)
+            ):
+                raise GameplayContractError(
+                    f"{path}.{key} must be a finite number"
+                )
+        rate_add = float(raw["rate_add"])
+        rate_multiplier = float(raw["rate_multiplier"])
+        if not -1.0 <= rate_add <= 1.0:
+            raise GameplayContractError(
+                f"{path}.rate_add must be in [-1, 1]"
+            )
+        if not 0.0 <= rate_multiplier <= 8.0:
+            raise GameplayContractError(
+                f"{path}.rate_multiplier must be in [0, 8]"
+            )
+        curve = raw["curve"]
+        if curve not in CURVES:
+            raise GameplayContractError(
+                f"{path}.curve must be one of {CURVES}"
+            )
+        curve_priority = raw["curve_priority"]
+        if (
+            isinstance(curve_priority, bool)
+            or not isinstance(curve_priority, int)
+            or not 0 <= curve_priority <= 31
+        ):
+            raise GameplayContractError(
+                f"{path}.curve_priority must be an integer in [0, 31]"
+            )
+        if (
+            isinstance(raw["duration"], bool)
+            or not isinstance(raw["duration"], int)
+            or not 1 <= raw["duration"] <= 64
+        ):
+            raise GameplayContractError(
+                f"{path}.duration must be an integer in [1, 64]"
+            )
     process_rate = None
     process_remaining_ticks = None
     if kind == "process_modify":
@@ -207,4 +294,5 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
                       field_id, trait, status_id, duration, terms, targeting["sensing"],
                       targeting["evadable"], process_template_id, process_rate,
                       process_remaining_ticks, drive_profile_id, drive_rate,
-                      relation_profile_id, relation_enabled)
+                      relation_profile_id, relation_enabled, rate_add,
+                      rate_multiplier, curve, curve_priority)
