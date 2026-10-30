@@ -1,0 +1,33 @@
+
+=================================== ERRORS ====================================
+_ ERROR collecting experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py _
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\python.py:528: in importtestmodule
+    mod = import_path(
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\pathlib.py:640: in import_path
+    importlib.import_module(module_name)
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\assertion\rewrite.py:176: in exec_module
+    source_hash, co = _rewrite_test(fn, self.config)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\assertion\rewrite.py:339: in _rewrite_test
+    tree = ast.parse(source, filename=strfn)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\ast.py:52: in parse
+    return compile(source, filename, mode, flags,
+E     File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py", line 603
+E       self.assertEqual(create.value["source"], actor_id)
+E   IndentationError: unexpected indent
+=========================== short test summary info ===========================
+ERROR experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.53s

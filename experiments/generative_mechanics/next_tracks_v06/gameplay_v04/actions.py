@@ -72,6 +72,7 @@ class ActionRequest:
     actor_id: str
     action_id: str
     target_actor_id: str | None = None
+    target_area_id: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -210,6 +211,26 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
         raise GameplayContractError(
             f"{path}.effects permits at most one Process/Drive control operation"
         )
+    move_count = sum(effect.kind == "move_actor" for effect in effects)
+    if move_count > 1:
+        raise GameplayContractError(f"{path}.effects permits at most one move_actor")
+    if move_count:
+        allowed = {
+            "move_actor", "heal", "shield", "add_resource", "apply_status",
+            "grant_trait", "modify_field", "modify_attractor", "modify_rate",
+            "dynamics_modifier",
+        }
+        disallowed = {
+            "damage", "process_start", "process_modify", "drive_source",
+            "relation_modifier",
+        }
+        if any(
+            effect.kind in disallowed or effect.kind not in allowed
+            for effect in effects
+        ):
+            raise GameplayContractError(
+                f"{path}.effects move_actor cannot be combined with this Effect"
+            )
     footprints = []
     for effect in effects:
         if effect.target.kind not in selectors: raise GameplayContractError(f"{path}.effects target exceeds action scope")
@@ -230,6 +251,8 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
                 f"field:{effect.field_id}:rate",
                 f"field:{effect.field_id}:target",
             )
+        if effect.kind == "move_actor":
+            keys = ("location",)
         for key in keys:
             footprint = (effect.target.kind, effect.target.relation_type, key)
             if footprint in footprints: raise GameplayContractError(f"{path}.effects contains conflicting writes")
@@ -263,13 +286,16 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
 
 
 def parse_action_request(raw: Any) -> ActionRequest:
-    if not isinstance(raw, dict) or set(raw) - {"request_id", "actor_id", "action_id", "target_actor_id"} or not {"request_id", "actor_id", "action_id"} <= set(raw):
+    if not isinstance(raw, dict) or set(raw) - {"request_id", "actor_id", "action_id", "target_actor_id", "target_area_id"} or not {"request_id", "actor_id", "action_id"} <= set(raw):
         raise GameplayContractError("ActionRequest has missing or unknown fields")
     for key in ("request_id", "actor_id", "action_id"):
         if not isinstance(raw[key], str) or not _ID.fullmatch(raw[key]): raise GameplayContractError(f"ActionRequest.{key} is invalid")
     target = raw.get("target_actor_id")
     if target is not None and (not isinstance(target, str) or not _ID.fullmatch(target)): raise GameplayContractError("ActionRequest.target_actor_id is invalid")
-    return ActionRequest(raw["request_id"], raw["actor_id"], raw["action_id"], target)
+    target_area = raw.get("target_area_id")
+    if target_area is not None and (not isinstance(target_area, str) or not _ID.fullmatch(target_area)):
+        raise GameplayContractError("ActionRequest.target_area_id is invalid")
+    return ActionRequest(raw["request_id"], raw["actor_id"], raw["action_id"], target, target_area)
 
 
 def resolve_action(session, registry: ActionRegistry, request: ActionRequest, *,
@@ -293,6 +319,19 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
         raise GameplayContractError("parent event is valid only for hook execution")
     definition = registry.actions.get(request.action_id)
     if definition is None: raise GameplayContractError("unknown registered action")
+    move_effects = tuple(
+        effect for effect in definition.effects if effect.kind == "move_actor"
+    )
+    if move_effects and execution_kind != "primary":
+        raise GameplayContractError(
+            "move_actor is supported only for active primary execution"
+        )
+    if not move_effects and request.target_area_id is not None:
+        raise GameplayContractError(
+            "target_area_id is valid only for an Action with move_actor"
+        )
+    if move_effects and request.target_area_id is None:
+        raise GameplayContractError("move_actor requires target_area_id")
     actor_entity = session.state.entities.get(request.actor_id)
     if actor_entity is None or ACTOR_COMPONENT not in actor_entity.components: raise GameplayContractError("request actor is not an Actor")
     actor = _actor_view(actor_entity)
@@ -334,8 +373,14 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
                 and execution_kind != "primary"):
             raise GameplayContractError(f"{effect.kind} is supported only for active primary execution")
         targets = resolve_selector(session.state, effect.target, context, definition.capability)
-        if len(targets) != 1: raise GameplayContractError("Gate 2 effects require exactly one resolved target")
-        target_id = targets[0]
+        move_prepared = None
+        if effect.kind == "move_actor":
+            target_id, move_prepared = _prepare_move_actor(
+                session, request, targets
+            )
+        else:
+            if len(targets) != 1: raise GameplayContractError("Gate 2 effects require exactly one resolved target")
+            target_id = targets[0]
         cond_context = _condition_context(session, request, shadow)
         enabled = evaluate_condition(effect.condition, cond_context)
         if effect.commitment == "required" and not enabled: raise GameplayContractError(f"required effect {effect.id!r} condition failed")
@@ -354,6 +399,7 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
             session, registry, request, definition, effect, target_id, shadow,
             writes, reservations, source_slots,
             execution_kind=execution_kind,
+            move_prepared=move_prepared,
         )
         outcomes.append(outcome)
     for outcome in outcomes:
@@ -371,6 +417,8 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
                "execution_kind": execution_kind, "actor_mana": shadow[request.actor_id]["mana"], "action_duration": quote.duration,
                "writes": writes, "reservations": reservations,
                "effects": {row["effect_id"]: row for row in outcomes}, "outcomes": outcomes}
+    if request.target_area_id is not None:
+        payload["target_area_id"] = request.target_area_id
     if hook_context is not None: payload["hook"] = dict(hook_context)
     payload = json.loads(json.dumps(payload, sort_keys=True, allow_nan=False))
     before = session.state.to_dict()
@@ -386,6 +434,25 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
     if not matched:
         if session.state.to_dict() != before: raise GameplayContractError("failed action mutated state")
         raise GameplayContractError("action did not match installed definition")
+    move_rows = [
+        row for row in outcomes
+        if row["kind"] == "move_actor" and row["status"] == "applied"
+    ]
+    if move_rows:
+        values = move_rows[0]["values"]
+        locations = [
+            relation for relation in session.state.relations.values()
+            if relation.type == "located_in"
+            and relation.source == request.actor_id
+        ]
+        if (
+            len(locations) != 1
+            or locations[0].target != values["destination_area_id"]
+            or locations[0].id != values["new_relation_id"]
+        ):
+            raise GameplayContractError(
+                "move_actor lifecycle did not commit exactly one destination location"
+            )
     process_rows = [
         row for row in outcomes
         if row["kind"] in {"process_start", "process_modify"} and row["status"] == "applied"
@@ -667,9 +734,90 @@ def _condition_context(session, request, shadow):
     return {"self": actor, "target_actor": target or {}, "current_area": area or {}}
 
 
+def _prepare_move_actor(session, request, adjacent_ids):
+    """Validate one adjacent move against pre-action Relations, without mutation."""
+    destination = request.target_area_id
+    if destination is None:
+        raise GameplayContractError("move_actor requires target_area_id")
+    if destination not in adjacent_ids:
+        raise GameplayContractError("move_actor target is not an adjacent Area")
+    destination_entity = session.state.entities.get(destination)
+    if (
+        destination_entity is None
+        or "pmw_gameplay_area" not in destination_entity.components
+    ):
+        raise GameplayContractError("move_actor target is not an Area")
+    locations = [
+        relation for relation in session.state.relations.values()
+        if relation.type == "located_in" and relation.source == request.actor_id
+    ]
+    if len(locations) != 1:
+        raise GameplayContractError(
+            "move_actor requires exactly one current located_in relation"
+        )
+    old_relation = locations[0]
+    origin = old_relation.target
+    if destination == origin:
+        raise GameplayContractError("move_actor destination must differ from origin")
+    joining = [
+        relation for relation in session.state.relations.values()
+        if relation.type == "adjacent"
+        and {relation.source, relation.target} == {origin, destination}
+    ]
+    if not joining:
+        raise GameplayContractError("move_actor Areas have no joining adjacent relation")
+    traversable = []
+    for relation in joining:
+        if "pmw_gameplay_link" not in relation.components:
+            traversable.append(relation.id)
+            continue
+        component = relation.components["pmw_gameplay_link"]
+        if not isinstance(component, Mapping):
+            raise GameplayContractError(
+                "move_actor link component is malformed"
+            )
+        effective_enabled = component.get("effective_enabled")
+        if not isinstance(effective_enabled, bool):
+            raise GameplayContractError(
+                "move_actor link component is malformed"
+            )
+        if effective_enabled:
+            traversable.append(relation.id)
+    if not traversable:
+        raise GameplayContractError("move_actor path is disabled")
+    new_relation_id = f"located:{request.actor_id}:{destination}"
+    if (
+        new_relation_id in session.state.relations
+        or new_relation_id in session.state.entities
+    ):
+        raise GameplayContractError("move_actor destination Relation id collides")
+    return destination, {
+        "origin_area_id": origin,
+        "destination_area_id": destination,
+        "old_relation_id": old_relation.id,
+        "new_relation_id": new_relation_id,
+        "via_relation_ids": sorted(traversable),
+    }
+
+
 def _simulate_effect(session, registry, request, definition, effect, target_id,
                      shadow, writes, reservations, source_slots, *,
-                     execution_kind: str):
+                     execution_kind: str, move_prepared=None):
+    if effect.kind == "move_actor":
+        if execution_kind != "primary":
+            raise GameplayContractError(
+                "move_actor is supported only for active primary execution"
+            )
+        if move_prepared is None:
+            raise GameplayContractError("move_actor preparation is missing")
+        return {
+            "effect_id": effect.id,
+            "kind": effect.kind,
+            "status": "applied",
+            "target_id": target_id,
+            "values": move_prepared,
+            "attribute_terms": (),
+        }
     target_entity = session.state.entities[target_id]
     actor_state = shadow.get(target_id)
     source_actor = shadow[request.actor_id]

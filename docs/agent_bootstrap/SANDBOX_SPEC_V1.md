@@ -299,3 +299,45 @@ Accounting p1_scenarios subset USD3.77094469/CNY25.13862568; project
 USD44.27/CNY295.14; safety 371.89/2000; **P1 reserve 334.24/400**; Unknown0.
 P1 remains NOT accepted (3 PARTIAL). Next: C5_MOVE_ACTOR_DESIGN.md (formal
 move_actor Effect honoring C3 link overlay), targeting scenarios 1 and 7.
+
+## Continuous C5.1 Formal Actor Relocation (move_actor) Acceptance
+
+C5.1 bounded `move_actor` Effect is ACCEPTED (design C5_MOVE_ACTOR_DESIGN.md).
+Closed kind appended to EFFECT_KINDS: target adjacent_area only, commitment
+required, raw keys exactly id/kind/target/commitment, budget cost 2, active
+on_use only; at most one per Action; no damage/process_start/process_modify/
+drive_source/relation_modifier co-effects (Skill and Action parse). Trailing
+ActionRequest.target_area_id (default None); payload key only when present, so
+legacy payloads/hashes unchanged. Staged preparation: exact adjacent target,
+one located_in, destination != origin, traversal needs a joining adjacent
+relation that is bare or has pmw_gameplay_link.effective_enabled True
+(malformed link rejects), no id collision. Lowering: two event Laws using Core
+delete_relation/create_relation; post-run exactly-one-destination check.
+Production: effects.py, skills.py, actions.py, action_compiler.py only.
+
+Owner Darwin 01a18af3-71af-75e3-9ba2-01d10ffb1a3e: 11/30; focused 77/107.
+Independent Rawls 01a18b01-8653-7b81-9da2-719c1a84bb33: ACCEPT, 12/17, no
+product defects; fixture corrections recorded (C5_MOVE_ACTOR_REVIEW.md).
+Residual diagnostic only: a C3 profile Relation whose endpoints are marker
+entities is not an Area-Area adjacency edge, so it reports "not an adjacent
+Area"; an owned Area-to-Area disabled link reports "disabled" (owner test).
+Main cross-module focused 281/167 (gate*, dynamics, P1 scenarios, Alpha,
+storm relay). Main probe (evidence/c5_move_main_probe.json): after moving
+A->B, a current_area Skill targets B; A evolves at baseline .2 while B gets
+.4 on the paid Tick (hand-checked); move back/again works; NPC legal-action
+enumeration does not yet list move targets (documented scope).
+
+Full frozen regression c5_move_frozen: **950 passed, 3,492 subtests in
+391.75s**, exit0, 300 Python hashes unchanged; protected 100 old tests, Core
+23, Alpha 13 byte-identical vs c5_move_main_protected_before.json.
+P1 scenarios 1 and 7 now have a formal relocation path and a formal
+traversal consumer of relation effective_enabled; their PARTIAL status in
+P1_SCENARIO_CONFORMANCE.md is not re-classified without a new conformance
+review. Scenario 9 (Derived catalog) remains PARTIAL. Full P1 NOT accepted.
+
+Accounting c5_1 subset USD3.82419318/CNY25.49360142; project CNY320.64;
+safety 404.02/2000; **P1 reserve 366.37/400**, Unknown0. Another C-sized
+increment (~32-37 CNY reserve) would exceed the P1 stage limit, so P1
+implementation spending STOPS here pending user decision (raise P1 allocation
+from Reserve, or accept current state). No Alpha UI/playtest, generation, or
+full P1/P2 claim.

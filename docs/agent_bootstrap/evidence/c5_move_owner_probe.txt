@@ -1,0 +1,6 @@
+test_closed_kind_schema_cost_and_old_hashes (experiments.generative_mechanics.next_tracks_v06.gameplay_v04.tests.test_sandbox_move_actor.MoveActorSchemaTests.test_closed_kind_schema_cost_and_old_hashes) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.004s
+
+OK

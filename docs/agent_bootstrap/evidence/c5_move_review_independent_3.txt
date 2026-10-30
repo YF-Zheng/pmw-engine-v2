@@ -1,0 +1,361 @@
+.FFF.FF.F..                                             [100%]
+================================== FAILURES ===================================
+________ MoveActorIndependentReviewTests.test_atomic_rejection_matrix _________
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_atomic_rejection_matrix>
+
+    def test_atomic_rejection_matrix(self):
+        move = _move_skill()
+        runtime, _ = _formal_runtime((move,))
+        cases = (
+            (ActionRequest("qa_unknown", PLAYER, MOVE_SKILL, None, AREA_C),
+             "not an adjacent"),
+            (ActionRequest("qa_same", PLAYER, MOVE_SKILL, None, AREA_A),
+             "not an adjacent"),
+            (ActionRequest("qa_missing", PLAYER, MOVE_SKILL),
+             "requires target_area_id"),
+            (ActionRequest("qa_wrong_action", PLAYER, "basic_wait", None, AREA_B),
+             "target_area_id"),
+        )
+        for request, pattern in cases:
+            with self.subTest(request=request.request_id):
+                _assert_rejected(self, runtime, request, pattern)
+    
+        zero, _ = _formal_runtime((move,), world=_world(extra_located=()))
+        zero.session.state.relations = {
+            key: relation for key, relation in zero.session.state.relations.items()
+            if not (relation.type == "located_in" and relation.source == PLAYER)
+        }
+        zero.session.runtime.revalidate()
+        _assert_rejected(
+            self,
+            zero,
+            ActionRequest("qa_zero_locations", PLAYER, MOVE_SKILL, None, AREA_B),
+            "exactly one current",
+        )
+    
+        two, _ = _formal_runtime(
+            (move,),
+            world=_world(extra_located=((PLAYER, AREA_C),)),
+        )
+        _assert_rejected(
+            self,
+            two,
+            ActionRequest("qa_two_locations", PLAYER, MOVE_SKILL, None, AREA_B),
+            "exactly one current",
+        )
+    
+        collision, _ = _formal_runtime(
+            (move,),
+            world=_world(collision_id=f"located:{PLAYER}:{AREA_B}"),
+        )
+        _assert_rejected(
+            self,
+            collision,
+            ActionRequest("qa_collision", PLAYER, MOVE_SKILL, None, AREA_B),
+            "collides",
+        )
+    
+        for malformed in (
+            {"pmw_gameplay_link": "bad"},
+            {"pmw_gameplay_link": {}},
+            {"pmw_gameplay_link": {"effective_enabled": 1}},
+        ):
+            with self.subTest(malformed=malformed):
+                bad, _ = _formal_runtime(
+                    (move,),
+                    world=_world(
+                        links=(("qa_malformed", malformed),),
+                    ),
+                )
+                _assert_rejected(
+                    self,
+                    bad,
+                    ActionRequest(
+                        "qa_malformed_request", PLAYER, MOVE_SKILL, None, AREA_B
+                    ),
+                    "malformed",
+                )
+    
+        nonarea, _ = _formal_runtime((move,))
+        nonarea.session.state.entities[AREA_B].components.pop("pmw_gameplay_area")
+        nonarea.session.runtime.revalidate()
+        _assert_rejected(
+            self,
+            nonarea,
+            ActionRequest("qa_nonarea", PLAYER, MOVE_SKILL, None, AREA_B),
+            "not an Area|adjacent",
+        )
+    
+>       wrong_selector = _skill(
+            _skill_document(
+                "qa_wrong_selector_move",
+                [_move_effect()],
+                selectors=["current_area"],
+            ),
+        )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:870: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:286: in _skill
+    return parse_skill_blueprint(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skills.py:162: in parse_skill_blueprint
+    action = parse_action_definition(action_raw, statuses, f"{path}.action")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+raw = {'id': 'qa_wrong_selector_move', 'version': 1, 'action_type': 'skill', 'cost': {'duration': 1, 'mana': 4.0}, ...}
+statuses = mappingproxy({'basic_guarding': StatusSpec(id='basic_guarding', version=1, polarity='buff', max_stacks=1, stack_policy...n_expire_resource=('shield', 0.0), canonical_hash='26a09807646c1d29a56b7eedccc244b0cbfa58bb3a2524748bbae4df0bc7e58b')})
+path = '$.skill.action'
+
+    def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.action") -> ActionDefinition:
+        required = {"id", "version", "action_type", "cost", "scope", "effects"}
+        optional = {"builtin", "cost_modifiers", "condition"}
+        if not isinstance(raw, dict) or set(raw) - required - optional or not required <= set(raw): raise GameplayContractError(f"{path} has missing or unknown fields")
+        if not isinstance(raw["id"], str) or not _ID.fullmatch(raw["id"]): raise GameplayContractError(f"{path}.id is invalid")
+        if isinstance(raw["version"], bool) or not isinstance(raw["version"], int) or raw["version"] < 1: raise GameplayContractError(f"{path}.version is invalid")
+        if raw["action_type"] not in {"attack", "guard", "wait", "skill", "explore", "harvest"}: raise GameplayContractError(f"{path}.action_type is invalid")
+        cost = raw["cost"]
+        if not isinstance(cost, dict) or set(cost) != {"duration", "mana"}: raise GameplayContractError(f"{path}.cost is invalid")
+        duration, mana = cost["duration"], cost["mana"]
+        if isinstance(duration, bool) or not isinstance(duration, int) or duration < 1: raise GameplayContractError(f"{path}.cost.duration must be positive")
+        if isinstance(mana, bool) or not isinstance(mana, (int, float)) or not math.isfinite(mana) or mana < 0: raise GameplayContractError(f"{path}.cost.mana is invalid")
+        scope = raw["scope"]
+        if not isinstance(scope, dict) or set(scope) != {"selectors", "relation_types"}: raise GameplayContractError(f"{path}.scope is invalid")
+        selectors, relations = scope["selectors"], scope["relation_types"]
+        if not isinstance(selectors, list) or not selectors or any(x not in {"self", "target_actor", "current_area", "linked_object", "adjacent_area"} for x in selectors): raise GameplayContractError(f"{path}.scope.selectors is invalid")
+        if len(set(selectors)) != len(selectors) or not isinstance(relations, list) or any(not isinstance(x, str) or not x for x in relations): raise GameplayContractError(f"{path}.scope is invalid")
+        if not isinstance(raw["effects"], list) or not raw["effects"]: raise GameplayContractError(f"{path}.effects must be non-empty")
+        effects = tuple(parse_effect(item, statuses, f"{path}.effects[{i}]") for i, item in enumerate(raw["effects"]))
+        if len({x.id for x in effects}) != len(effects): raise GameplayContractError(f"{path}.effects contains duplicate IDs")
+        control_effects = {
+            "process_start", "process_modify", "drive_source", "relation_modifier",
+        }
+        controls = sum(effect.kind in control_effects for effect in effects)
+        process_controls = sum(
+            effect.kind in {"process_start", "process_modify"} for effect in effects
+        )
+        if process_controls > 1 and sum(effect.kind == "process_start" for effect in effects) > 1:
+            raise GameplayContractError(f"{path}.effects permits at most one process_start")
+        if process_controls > 1:
+            raise GameplayContractError(
+                f"{path}.effects permits at most one Process control operation"
+            )
+        if controls > 1:
+            raise GameplayContractError(
+                f"{path}.effects permits at most one Process/Drive control operation"
+            )
+        move_count = sum(effect.kind == "move_actor" for effect in effects)
+        if move_count > 1:
+            raise GameplayContractError(f"{path}.effects permits at most one move_actor")
+        if move_count:
+            allowed = {
+                "move_actor", "heal", "shield", "add_resource", "apply_status",
+                "grant_trait", "modify_field", "modify_attractor", "modify_rate",
+                "dynamics_modifier",
+            }
+            disallowed = {
+                "damage", "process_start", "process_modify", "drive_source",
+                "relation_modifier",
+            }
+            if any(
+                effect.kind in disallowed or effect.kind not in allowed
+                for effect in effects
+            ):
+                raise GameplayContractError(
+                    f"{path}.effects move_actor cannot be combined with this Effect"
+                )
+        footprints = []
+        for effect in effects:
+>           if effect.target.kind not in selectors: raise GameplayContractError(f"{path}.effects target exceeds action scope")
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: $.skill.action.effects target exceeds action scope
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:236: GameplayContractError
+---------------------------- Captured stdout call -----------------------------
+uuuuuuu
+_ MoveActorIndependentReviewTests.test_base_disabled_only_link_blocks_and_bare_link_opens _
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: move_actor target is not an adjacent Area
+
+During handling of the above exception, another exception occurred:
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_base_disabled_only_link_blocks_and_bare_link_opens>
+
+    def test_base_disabled_only_link_blocks_and_bare_link_opens(self):
+        profile = _profile()
+        runtime, _ = _formal_runtime(
+            (_move_skill(),),
+            world=_link_world(profile=profile, base_enabled=False),
+        )
+>       _assert_rejected(
+            self,
+            runtime,
+            ActionRequest("qa_base_disabled", PLAYER, MOVE_SKILL, None, AREA_B),
+            "disabled",
+        )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:770: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:537: in _assert_rejected
+    with testcase.assertRaisesRegex(GameplayContractError, pattern):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: "disabled" does not match "move_actor target is not an adjacent Area"
+_ MoveActorIndependentReviewTests.test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open _
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: move_actor target is not an adjacent Area
+
+During handling of the above exception, another exception occurred:
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open>
+
+    def test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open(self):
+        profile = _profile()
+        controller = RelationController((profile,))
+        control = _control_skill()
+        move = _move_skill()
+        runtime, _ = _formal_runtime(
+            (control, move),
+            world=_link_world(profile=profile, base_enabled=True),
+            relation_controller=controller,
+        )
+        blocked = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_disable_only_link", PLAYER, CONTROL_SKILL),
+        )
+        self.assertEqual(blocked.time.duration, 1)
+>       _assert_rejected(
+            self,
+            runtime,
+            ActionRequest("qa_blocked", PLAYER, MOVE_SKILL, None, AREA_B),
+            "disabled",
+        )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:725: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:537: in _assert_rejected
+    with testcase.assertRaisesRegex(GameplayContractError, pattern):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: "disabled" does not match "move_actor target is not an adjacent Area"
+___ MoveActorIndependentReviewTests.test_coeffect_current_area_uses_origin ____
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_coeffect_current_area_uses_origin>
+
+    def test_coeffect_current_area_uses_origin(self):
+        combined = _skill(
+            _skill_document(
+                "qa_move_and_soak",
+                [_move_effect(), _modify_field_effect()],
+                mana=5.0,
+            )
+        )
+        runtime, _ = _formal_runtime((combined,))
+        origin_before = _field_state(runtime, AREA_A)["value"]
+        destination_before = _field_state(runtime, AREA_B)["value"]
+        submitted = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_origin_coeffect", PLAYER, combined.id, None, AREA_B),
+        )
+        self.assertAlmostEqual(
+            _field_state(runtime, AREA_A)["value"],
+            (origin_before + 0.1) + 0.2 * (
+                0.8 - (origin_before + 0.1)
+            ),
+            delta=1e-12,
+        )
+>       self.assertEqual(
+            _field_state(runtime, AREA_B)["value"], destination_before
+        )
+E       AssertionError: 0.32000000000000006 != 0.2
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:703: AssertionError
+_ MoveActorIndependentReviewTests.test_hook_and_passive_paths_reject_without_mutation _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_hook_and_passive_paths_reject_without_mutation>
+
+    def test_hook_and_passive_paths_reject_without_mutation(self):
+        move = _move_skill()
+        runtime, _ = _formal_runtime((move,))
+        before = _snapshot(runtime)
+>       with self.assertRaisesRegex(GameplayContractError, "primary"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: GameplayContractError not raised
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:895: AssertionError
+_ MoveActorIndependentReviewTests.test_paid_tick_resolves_destination_with_area_scoped_law _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_paid_tick_resolves_destination_with_area_scoped_law>
+
+    def test_paid_tick_resolves_destination_with_area_scoped_law(self):
+        move = _move_skill()
+        runtime, compiled = _formal_runtime((move,))
+        submitted = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_tick_destination", PLAYER, MOVE_SKILL, None, AREA_B),
+        )
+        tick = submitted.time.ticks[0]
+        tick_text = json.dumps(tick.event_result.trace.to_dict(), sort_keys=True)
+        self.assertIn(AREA_B, tick_text)
+        self.assertEqual(_locations(runtime, PLAYER)[0].target, AREA_B)
+        after = advance_world_tick(runtime.session)
+        self.assertEqual(_locations(runtime, PLAYER)[0].target, AREA_B)
+        self.assertEqual(after.step, 2)
+    
+        seen = []
+        bindings = {
+            "actor": {
+                "kind": "entity",
+                "requires": [ACTOR_COMPONENT],
+            },
+            "destination": {
+                "kind": "entity",
+                "requires": ["pmw_gameplay_area"],
+            },
+            "location": {
+                "kind": "relation",
+                "type": "located_in",
+                "source": "$actor",
+                "target": "$destination",
+            },
+        }
+        law = {
+            "id": "qa_move_destination_observer",
+            "mode": "event",
+            "priority": 100,
+            "bindings": bindings,
+            "when": {"all": [
+                {"event.type": {"eq": "pmw.v04.world.tick"}},
+                {"ref": "$actor.id", "eq": PLAYER},
+                {"ref": "$destination.id", "eq": AREA_B},
+            ]},
+            "effects": [{
+                "op": "set",
+                "target": f"$destination.pmw_gameplay_dynamics.fields.humidity.value",
+                "value": 0.77,
+            }],
+        }
+        # Compile the support Law through the real Core parser, then attach it
+        # only to this isolated review world.
+        review = build_runtime(
+            deepcopy(runtime.session.state),
+            discover_profiles(runtime.session.state),
+            extra_laws=(
+                *runtime.static_laws,
+                *build_action_laws(runtime.action_registry),
+                law,
+            ),
+        )
+        observed = advance_world_tick(review)
+>       self.assertAlmostEqual(_field_state_for(review, AREA_B)["value"], 0.77)
+E       AssertionError: 0.4928 != 0.77 within 7 places (0.2772 difference)
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:674: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_atomic_rejection_matrix
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_base_disabled_only_link_blocks_and_bare_link_opens
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_coeffect_current_area_uses_origin
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_hook_and_passive_paths_reject_without_mutation
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_paid_tick_resolves_destination_with_area_scoped_law
+6 failed, 5 passed, 17 subtests passed in 6.96s

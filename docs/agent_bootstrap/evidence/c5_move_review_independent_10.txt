@@ -1,0 +1,67 @@
+...F........                                            [100%]
+================================== FAILURES ===================================
+_ MoveActorIndependentReviewTests.test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open>
+
+    def test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open(self):
+        profile = _profile()
+        controller = RelationController((profile,))
+        control = _control_skill()
+        move = _move_skill()
+        parallel = Relation(
+            "qa_parallel_ab",
+            "adjacent",
+            AREA_A,
+            AREA_B,
+        )
+        runtime, _ = _formal_runtime(
+            (control, move),
+            world=_link_world(
+                profile=profile,
+                base_enabled=True,
+                parallel_links=(parallel,),
+            ),
+            relation_controller=controller,
+        )
+        disabled = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_disable_only_link", PLAYER, CONTROL_SKILL),
+        )
+        self.assertEqual(disabled.time.duration, 1)
+        moved = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_parallel_bare_move", PLAYER, MOVE_SKILL, None, AREA_B),
+        )
+        self.assertEqual(moved.time.duration, 1)
+        self.assertEqual(_locations(runtime, PLAYER)[0].target, AREA_B)
+    
+        parallel_runtime, _ = _formal_runtime(
+            (control, move),
+            world=_link_world(
+                profile=profile,
+                base_enabled=True,
+                parallel_links=(
+                    Relation("qa_parallel_bare", "adjacent", AREA_A, AREA_B),
+                    Relation(
+                        "qa_parallel_enabled",
+                        "adjacent",
+                        AREA_A,
+                        AREA_B,
+                        components={
+>                           RELATION_COMPONENT: {"effective_enabled": True},
+                            ^^^^^^^^^^^^^^^^^^
+                        },
+                    ),
+                ),
+            ),
+            relation_controller=RelationController((profile,)),
+        )
+E       NameError: name 'RELATION_COMPONENT' is not defined
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:787: NameError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open
+1 failed, 11 passed, 17 subtests passed in 4.97s

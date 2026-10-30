@@ -1,0 +1,121 @@
+...F....F..                                             [100%]
+================================== FAILURES ===================================
+_ MoveActorIndependentReviewTests.test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open>
+
+    def test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open(self):
+        profile = _profile()
+        controller = RelationController((profile,))
+        control = _control_skill()
+        move = _move_skill()
+        parallel = Relation(
+            "qa_parallel_ab",
+            "adjacent",
+            AREA_A,
+            AREA_B,
+        )
+        runtime, _ = _formal_runtime(
+            (control, move),
+            world=_link_world(
+                profile=profile,
+                base_enabled=True,
+                parallel_links=(parallel,),
+            ),
+            relation_controller=controller,
+        )
+        blocked = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_disable_only_link", PLAYER, CONTROL_SKILL),
+        )
+        self.assertEqual(blocked.time.duration, 1)
+        before = _snapshot(runtime)
+>       with self.assertRaisesRegex(
+            GameplayContractError,
+            "not an adjacent|disabled",
+        ):
+E       AssertionError: GameplayContractError not raised
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:758: AssertionError
+_ MoveActorIndependentReviewTests.test_paid_tick_resolves_destination_with_area_scoped_law _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_paid_tick_resolves_destination_with_area_scoped_law>
+
+    def test_paid_tick_resolves_destination_with_area_scoped_law(self):
+        move = _move_skill()
+        runtime, compiled = _formal_runtime((move,), world=_bare_world())
+        submitted = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_tick_destination", PLAYER, MOVE_SKILL, None, AREA_B),
+        )
+        tick = submitted.time.ticks[0]
+        tick_text = json.dumps(tick.event_result.trace.to_dict(), sort_keys=True)
+        self.assertIn(AREA_B, tick_text)
+        self.assertEqual(_locations(runtime, PLAYER)[0].target, AREA_B)
+        after = advance_world_tick(runtime.session)
+        self.assertEqual(_locations(runtime, PLAYER)[0].target, AREA_B)
+        self.assertEqual(after.step, 2)
+    
+        budget = _budget(runtime)["spent_ticks"]
+        marker_id = "qa_destination_observed_unclamped"
+        runtime.session.state.entities[AREA_B].components["qa_destination_review"] = {
+            "seen": False,
+        }
+        runtime.session.runtime.revalidate()
+        bindings = {
+            "actor": {
+                "kind": "entity",
+                "requires": [ACTOR_COMPONENT],
+            },
+            "destination": {
+                "kind": "entity",
+                "requires": ["pmw_gameplay_area"],
+            },
+            "location": {
+                "kind": "relation",
+                "type": "located_in",
+                "source": "$actor",
+                "target": "$destination",
+            },
+        }
+        law = {
+            "id": marker_id,
+            "mode": "event",
+            "priority": 100,
+            "bindings": bindings,
+            "when": {"all": [
+                {"event.type": {"eq": "pmw.v04.world.tick"}},
+                {"ref": "$actor.id", "eq": PLAYER},
+                {"ref": "$destination.id", "eq": AREA_B},
+            ]},
+            "effects": [{
+                "op": "set",
+                "target": "$destination.qa_destination_review.seen",
+                "value": True,
+            }],
+        }
+        # Compile the support Law through the real Core parser, then attach it
+        # only to this isolated review world.
+        review = build_runtime(
+            deepcopy(runtime.session.state),
+            discover_profiles(runtime.session.state),
+            extra_laws=(
+                *runtime.static_laws,
+                *build_action_laws(runtime.action_registry),
+                law,
+            ),
+        )
+        observed = advance_world_tick(review)
+>       self.assertIs(
+            review.state.entities[AREA_B].components["qa_destination_review"]["seen"],
+            True,
+        )
+E       AssertionError: False is not True
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:688: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_paid_tick_resolves_destination_with_area_scoped_law
+2 failed, 9 passed, 17 subtests passed in 7.06s

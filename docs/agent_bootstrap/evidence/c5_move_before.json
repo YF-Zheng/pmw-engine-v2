@@ -1,0 +1,22 @@
+{
+  "baseline": "55299da",
+  "effect_kinds": [
+    "damage",
+    "heal",
+    "shield",
+    "add_resource",
+    "apply_status",
+    "modify_field",
+    "modify_attractor",
+    "modify_rate",
+    "grant_trait",
+    "process_start",
+    "process_modify",
+    "drive_source",
+    "relation_modifier",
+    "dynamics_modifier"
+  ],
+  "move_actor_effect": "rejected: $.effect.kind is invalid",
+  "target_area_request": "rejected: ActionRequest has missing or unknown fields",
+  "note": "Only protected examples/pmw_alpha/session.py::_travel rewrites located_in (private, not a formal paid Action)."
+}

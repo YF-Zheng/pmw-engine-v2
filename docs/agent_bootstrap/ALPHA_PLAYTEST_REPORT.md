@@ -194,3 +194,7 @@ Mechanics-only: dynamics_modifier Skills are now expressible and paid through th
 ## P1 Scenario Conformance Playtest Note
 
 Test-only mechanics conformance; no Alpha source change and no new public playtest.
+
+## C5.1 Playtest Note
+
+Mechanics-only formal move_actor; Alpha still uses its private travel. No Alpha source change and no new public playtest.

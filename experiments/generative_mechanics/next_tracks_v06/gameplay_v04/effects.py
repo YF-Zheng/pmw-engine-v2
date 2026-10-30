@@ -17,7 +17,7 @@ from .status import StatusSpec
 EFFECT_KINDS = ("damage", "heal", "shield", "add_resource", "apply_status", "modify_field",
                 "modify_attractor", "modify_rate", "grant_trait", "process_start",
                 "process_modify", "drive_source", "relation_modifier",
-                "dynamics_modifier")
+                "dynamics_modifier", "move_actor")
 
 _EFFECT_ID = re.compile(r"[a-z][a-z0-9_]{1,63}\Z")
 _FIELD_ID = re.compile(r"[a-z][a-z0-9_]{1,47}\Z")
@@ -71,8 +71,20 @@ def parse_effect(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.ef
             "field_id", "rate_add", "rate_multiplier", "curve",
             "curve_priority", "duration",
         },
+        "move_actor": set(),
     }
     if kind not in fields: raise GameplayContractError(f"{path}.kind is invalid")
+    if kind == "move_actor":
+        if set(raw) != common:
+            raise GameplayContractError(f"{path} has missing or unknown fields")
+        if raw["target"] != {"kind": "adjacent_area"}:
+            raise GameplayContractError(f"{path}.target must be adjacent_area for move_actor")
+        if raw["commitment"] != "required":
+            raise GameplayContractError(f"{path}.commitment must be required for move_actor")
+        if not isinstance(raw["id"], str) or _EFFECT_ID.fullmatch(raw["id"]) is None:
+            raise GameplayContractError(f"{path}.id is invalid")
+        return EffectSpec(raw["id"], kind, ScopedSelector("adjacent_area"), "required",
+                          ConditionSpec("always"))
     allowed = common | (set() if kind == "dynamics_modifier" else optional) | fields[kind]
     required_fields = fields[kind]
     if kind == "process_modify":

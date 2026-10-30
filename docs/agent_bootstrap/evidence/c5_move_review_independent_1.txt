@@ -1,0 +1,291 @@
+...F.FF.F..                                            [100%]
+================================== FAILURES ===================================
+_ MoveActorIndependentReviewTests.test_atomic_rejection_matrix (request='qa_wrong_selector') _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_atomic_rejection_matrix>
+
+    def test_atomic_rejection_matrix(self):
+        move = _move_skill()
+        runtime, _ = _formal_runtime((move,))
+        cases = (
+            (ActionRequest("qa_unknown", PLAYER, MOVE_SKILL, None, AREA_C),
+             "not an adjacent"),
+            (ActionRequest("qa_same", PLAYER, MOVE_SKILL, None, AREA_A),
+             "not an adjacent"),
+            (ActionRequest("qa_missing", PLAYER, MOVE_SKILL),
+             "requires target_area_id"),
+            (ActionRequest("qa_wrong_action", PLAYER, "basic_wait", None, AREA_B),
+             "target_area_id"),
+            (ActionRequest("qa_wrong_selector", PLAYER, MOVE_SKILL, None, AREA_B),
+             "not an adjacent"),
+        )
+        for request, pattern in cases:
+            with self.subTest(request=request.request_id):
+>               _assert_rejected(self, runtime, request, pattern)
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:747: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:493: in _assert_rejected
+    with testcase.assertRaisesRegex(GameplayContractError, pattern):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: GameplayContractError not raised
+_ MoveActorIndependentReviewTests.test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open>
+
+    def test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open(self):
+        profile = _profile()
+        controller = RelationController((profile,))
+        control = _control_skill()
+        move = _move_skill()
+        profile_relation = instantiate_relation(profile, base_enabled=True)
+        runtime, _ = _formal_runtime(
+            (control, move),
+            world=_world(
+                links=(),
+                extra_relations=(profile_relation,),
+            ),
+            relation_controller=controller,
+        )
+>       blocked = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_disable_only_link", PLAYER, CONTROL_SKILL),
+        )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:670: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:711: in submit_timed_primary_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:398: in _resolve_action
+    outcome = _simulate_effect(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:842: in _simulate_effect
+    return _simulate_relation_modifier(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:1152: in _simulate_relation_modifier
+    profile = _resolve_relation_profile(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x000001FAE23F8500>, profiles=(FieldProfile(entity...al=0.2, target=0.8, rate=0.2, curve='linear', max_persistent_patches=2, max_temporary_modifiers=2), mirror_path=None)))
+controller = RelationController(profiles=(RelationProfile(id='qa_move_link_profile', relation_id='qa_move_link', relation_type='adj...ae3a48613537092483b4e54cec410e108'),), limits=RelationLimits(max_instances=16, max_active=8), clock_id='pmw:v04:clock')
+profile_id = 'qa_move_link_profile', owner = 'qa_move_player'
+area_id = 'qa_move_area_a'
+
+    def _resolve_relation_profile(session, controller, profile_id, owner, area_id):
+        matches = [
+            profile for profile in controller.profiles
+            if profile.id == profile_id and profile.owner == owner
+        ]
+        if not matches:
+            raise GameplayContractError(
+                "no Relation profile matches the requested profile and owner"
+            )
+        area = session.state.entities.get(area_id)
+        if area is None or "pmw_gameplay_area" not in area.components:
+            raise GameplayContractError("relation_modifier target is not an Area")
+        local = [
+            profile for profile in matches
+            if profile.area_id == area_id
+            and _endpoint_area(session, profile.source_entity_id) == area_id
+            and _endpoint_area(session, profile.target_entity_id) == area_id
+        ]
+        if len(local) != 1:
+>           raise GameplayContractError(
+                "Relation profile scope is missing, ambiguous, or remote for this Area"
+            )
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: Relation profile scope is missing, ambiguous, or remote for this Area
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:1205: GameplayContractError
+___ MoveActorIndependentReviewTests.test_coeffect_current_area_uses_origin ____
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_coeffect_current_area_uses_origin>
+
+    def test_coeffect_current_area_uses_origin(self):
+        combined = _skill(
+            _skill_document(
+                "qa_move_and_soak",
+                [_move_effect(), _modify_field_effect()],
+                mana=5.0,
+            )
+        )
+        runtime, _ = _formal_runtime((combined,))
+        origin_before = _field_state(runtime, AREA_A)["value"]
+        destination_before = _field_state(runtime, AREA_B)["value"]
+        submitted = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_origin_coeffect", PLAYER, combined.id, None, AREA_B),
+        )
+>       self.assertEqual(
+            _field_state(runtime, AREA_A)["value"],
+            min(1.0, origin_before + 0.1),
+        )
+E       AssertionError: 0.4 != 0.30000000000000004
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:646: AssertionError
+_ MoveActorIndependentReviewTests.test_hook_and_passive_paths_reject_without_mutation _
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: unknown world time spend reason
+
+During handling of the above exception, another exception occurred:
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_hook_and_passive_paths_reject_without_mutation>
+
+    def test_hook_and_passive_paths_reject_without_mutation(self):
+        move = _move_skill()
+        runtime, _ = _formal_runtime((move,))
+        before = _snapshot(runtime)
+>       with self.assertRaisesRegex(GameplayContractError, "primary"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: "primary" does not match "unknown world time spend reason"
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:819: AssertionError
+_ MoveActorIndependentReviewTests.test_paid_tick_resolves_destination_with_area_scoped_law _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_paid_tick_resolves_destination_with_area_scoped_law>
+
+    def test_paid_tick_resolves_destination_with_area_scoped_law(self):
+        move = _move_skill()
+        runtime, compiled = _formal_runtime((move,))
+        submitted = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_tick_destination", PLAYER, MOVE_SKILL, None, AREA_B),
+        )
+        tick = submitted.time.ticks[0]
+        tick_text = json.dumps(tick.event_result.trace.to_dict(), sort_keys=True)
+        self.assertIn(AREA_B, tick_text)
+>       self.assertIn(f"located:{PLAYER}:{AREA_B}", tick_text)
+E       AssertionError: 'located:qa_move_player:qa_move_area_b' not found in '{"conflicts": [], "events": [{"commits": [{"accepted_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000001", "proposal:pmw:v04:world-tick:00000001:000002", "proposal:pmw:v04:world-tick:00000001:000003", "proposal:pmw:v04:world-tick:00000001:000004", "proposal:pmw:v04:world-tick:00000001:000005", "proposal:pmw:v04:world-tick:00000001:000006", "proposal:pmw:v04:world-tick:00000001:000007", "proposal:pmw:v04:world-tick:00000001:000008", "proposal:pmw:v04:world-tick:00000001:000009", "proposal:pmw:v04:world-tick:00000001:000010", "proposal:pmw:v04:world-tick:00000001:000011", "proposal:pmw:v04:world-tick:00000001:000012", "proposal:pmw:v04:world-tick:00000001:000013", "proposal:pmw:v04:world-tick:00000001:000014", "proposal:pmw:v04:world-tick:00000001:000015", "proposal:pmw:v04:world-tick:00000001:000016", "proposal:pmw:v04:world-tick:00000001:000017", "proposal:pmw:v04:world-tick:00000001:000018", "proposal:pmw:v04:world-tick:00000001:000019", "proposal:pmw:v04:world-tick:00000001:000020", "proposal:pmw:v04:world-tick:00000001:000021"], "cancelled_event_ids": [], "derived_event_ids": [], "microstep": 1, "phase": "event", "rejected_proposal_ids": [], "rescheduled_events": [], "scheduled_event_ids": [], "state_deltas": [{"address": "entity:pmw:v04:clock/pmw_gameplay_clock/last_completed_step", "law_ids": ["pmw.v04.dynamics.900.clock_complete"], "new": 1, "old": 0, "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000019"]}, {"address": "entity:pmw:v04:clock/pmw_gameplay_clock/next_step", "law_ids": ["pmw.v04.dynamics.900.clock_complete"], "new": 2, "old": 1, "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000020"]}, {"address": "entity:pmw:v04:clock/pmw_gameplay_clock/next_time", "law_ids": ["pmw.v04.dynamics.900.clock_complete"], "new": 2.0, "old": 1.0, "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000021"]}, {"address": "entity:qa_move_area_a/pmw_gameplay_dynamics/fields/humidity/diagnostics/unclamped", "law_ids": ["pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all"], "new": 0.32000000000000006, "old": 0.2, "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000004"]}, {"address": "entity:qa_move_area_a/pmw_gameplay_dynamics/fields/humidity/value", "law_ids": ["pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all"], "new": 0.32000000000000006, "old": 0.2, "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000006"]}, {"address": "entity:qa_move_area_b/pmw_gameplay_dynamics/fields/humidity/diagnostics/unclamped", "law_ids": ["pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all"], "new": 0.32000000000000006, "old": 0.2, "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000010"]}, {"address": "entity:qa_move_area_b/pmw_gameplay_dynamics/fields/humidity/value", "law_ids": ["pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all"], "new": 0.32000000000000006, "old": 0.2, "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000012"]}, {"address": "entity:qa_move_area_c/pmw_gameplay_dynamics/fields/humidity/diagnostics/unclamped", "law_ids": ["pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all"], "new": 0.32000000000000006, "old": 0.2, "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000016"]}, {"address": "entity:qa_move_area_c/pmw_gameplay_dynamics/fields/humidity/value", "law_ids": ["pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all"], "new": 0.32000000000000006, "old": 0.2, "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000018"]}]}], "event": {"id": "pmw:v04:world-tick:00000001", "payload": {"step": 1}, "provenance": {"kind": "external", "parent_event": null}, "source": "pmw:v04:clock", "target": null, "time": 1.0, "type": "pmw.v04.world_tick"}, "event_law_matches": [{"bindings": {"clock": "pmw:v04:clock", "subject": "qa_move_area_a"}, "law_id": "pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all", "mode": "event", "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000001", "proposal:pmw:v04:world-tick:00000001:000002", "proposal:pmw:v04:world-tick:00000001:000003", "proposal:pmw:v04:world-tick:00000001:000004", "proposal:pmw:v04:world-tick:00000001:000005", "proposal:pmw:v04:world-tick:00000001:000006"]}, {"bindings": {"clock": "pmw:v04:clock", "subject": "qa_move_area_b"}, "law_id": "pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all", "mode": "event", "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000007", "proposal:pmw:v04:world-tick:00000001:000008", "proposal:pmw:v04:world-tick:00000001:000009", "proposal:pmw:v04:world-tick:00000001:000010", "proposal:pmw:v04:world-tick:00000001:000011", "proposal:pmw:v04:world-tick:00000001:000012"]}, {"bindings": {"clock": "pmw:v04:clock", "subject": "qa_move_area_c"}, "law_id": "pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all", "mode": "event", "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000013", "proposal:pmw:v04:world-tick:00000001:000014", "proposal:pmw:v04:world-tick:00000001:000015", "proposal:pmw:v04:world-tick:00000001:000016", "proposal:pmw:v04:world-tick:00000001:000017", "proposal:pmw:v04:world-tick:00000001:000018"]}, {"bindings": {"clock": "pmw:v04:clock"}, "law_id": "pmw.v04.dynamics.900.clock_complete", "mode": "event", "proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000019", "proposal:pmw:v04:world-tick:00000001:000020", "proposal:pmw:v04:world-tick:00000001:000021"]}], "state_law_matches": []}], "proposals": [{"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000001", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000001"], "status": "accepted", "target": "entity:qa_move_area_a/pmw_gameplay_dynamics/fields/humidity/diagnostics/effective_target", "value": 0.8}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000002", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000002"], "status": "accepted", "target": "entity:qa_move_area_a/pmw_gameplay_dynamics/fields/humidity/diagnostics/effective_rate", "value": 0.2}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000003", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000003"], "status": "accepted", "target": "entity:qa_move_area_a/pmw_gameplay_dynamics/fields/humidity/diagnostics/effective_curve", "value": "linear"}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000004", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000004"], "status": "accepted", "target": "entity:qa_move_area_a/pmw_gameplay_dynamics/fields/humidity/diagnostics/unclamped", "value": 0.32000000000000006}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000005", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000005"], "status": "accepted", "target": "entity:qa_move_area_a/pmw_gameplay_dynamics/fields/humidity/diagnostics/clamp_loss", "value": 0.0}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000006", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_a.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000006"], "status": "accepted", "target": "entity:qa_move_area_a/pmw_gameplay_dynamics/fields/humidity/value", "value": 0.32000000000000006}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000007", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000007"], "status": "accepted", "target": "entity:qa_move_area_b/pmw_gameplay_dynamics/fields/humidity/diagnostics/effective_target", "value": 0.8}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000008", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000008"], "status": "accepted", "target": "entity:qa_move_area_b/pmw_gameplay_dynamics/fields/humidity/diagnostics/effective_rate", "value": 0.2}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000009", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000009"], "status": "accepted", "target": "entity:qa_move_area_b/pmw_gameplay_dynamics/fields/humidity/diagnostics/effective_curve", "value": "linear"}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000010", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000010"], "status": "accepted", "target": "entity:qa_move_area_b/pmw_gameplay_dynamics/fields/humidity/diagnostics/unclamped", "value": 0.32000000000000006}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000011", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000011"], "status": "accepted", "target": "entity:qa_move_area_b/pmw_gameplay_dynamics/fields/humidity/diagnostics/clamp_loss", "value": 0.0}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000012", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_b.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000012"], "status": "accepted", "target": "entity:qa_move_area_b/pmw_gameplay_dynamics/fields/humidity/value", "value": 0.32000000000000006}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000013", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000013"], "status": "accepted", "target": "entity:qa_move_area_c/pmw_gameplay_dynamics/fields/humidity/diagnostics/effective_target", "value": 0.8}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000014", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000014"], "status": "accepted", "target": "entity:qa_move_area_c/pmw_gameplay_dynamics/fields/humidity/diagnostics/effective_rate", "value": 0.2}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000015", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000015"], "status": "accepted", "target": "entity:qa_move_area_c/pmw_gameplay_dynamics/fields/humidity/diagnostics/effective_curve", "value": "linear"}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000016", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000016"], "status": "accepted", "target": "entity:qa_move_area_c/pmw_gameplay_dynamics/fields/humidity/diagnostics/unclamped", "value": 0.32000000000000006}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000017", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000017"], "status": "accepted", "target": "entity:qa_move_area_c/pmw_gameplay_dynamics/fields/humidity/diagnostics/clamp_loss", "value": 0.0}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000018", "reason": null, "source_law_ids": ["pmw.v04.dynamics.200.qa_move_area_c.humidity.base.all"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000018"], "status": "accepted", "target": "entity:qa_move_area_c/pmw_gameplay_dynamics/fields/humidity/value", "value": 0.32000000000000006}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.900.clock_complete", "op": "set", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000019", "reason": null, "source_law_ids": ["pmw.v04.dynamics.900.clock_complete"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000019"], "status": "accepted", "target": "entity:pmw:v04:clock/pmw_gameplay_clock/last_completed_step", "value": 1}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.900.clock_complete", "op": "delta", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000020", "reason": null, "source_law_ids": ["pmw.v04.dynamics.900.clock_complete"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000020"], "status": "accepted", "target": "entity:pmw:v04:clock/pmw_gameplay_clock/next_step", "value": 1}, {"cause_event_id": "pmw:v04:world-tick:00000001", "emitted_event_id": null, "law_id": "pmw.v04.dynamics.900.clock_complete", "op": "delta", "proposal_id": "proposal:pmw:v04:world-tick:00000001:000021", "reason": null, "source_law_ids": ["pmw.v04.dynamics.900.clock_complete"], "source_proposal_ids": ["proposal:pmw:v04:world-tick:00000001:000021"], "status": "accepted", "target": "entity:pmw:v04:clock/pmw_gameplay_clock/next_time", "value": 1.0}], "root_event": {"id": "pmw:v04:world-tick:00000001", "payload": {"step": 1}, "provenance": {"kind": "external", "parent_event": null}, "source": "pmw:v04:clock", "target": null, "time": 1.0, "type": "pmw.v04.world_tick"}}'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:574: AssertionError
+_ MoveActorIndependentReviewTests.test_player_and_npc_move_with_exact_cost_and_accepted_core_lifecycle (actor_id='qa_move_player') _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_player_and_npc_move_with_exact_cost_and_accepted_core_lifecycle>
+
+    def test_player_and_npc_move_with_exact_cost_and_accepted_core_lifecycle(self):
+        move = _move_skill()
+        runtime, _ = _formal_runtime((move,))
+        self.assertEqual(runtime.blueprints[(MOVE_SKILL, 1)], move)
+        self.assertEqual(EFFECT_KINDS[-1], "move_actor")
+        self.assertEqual(_effect_cost(move.effects[0]), 2.0)
+    
+        for actor_id, request_id in (
+            (PLAYER, "qa_player_move"),
+            (NPC, "qa_npc_move"),
+        ):
+            with self.subTest(actor_id=actor_id):
+                before_mana = _actor_state(runtime, actor_id)["mana"]
+                before_spent = _budget(runtime)["spent_ticks"]
+                submitted = submit_timed_primary_action(
+                    runtime.session,
+                    runtime.action_registry,
+                    ActionRequest(request_id, actor_id, MOVE_SKILL, None, AREA_B),
+                )
+                self.assertEqual(submitted.action.cost.mana, 4.0)
+                self.assertEqual(submitted.time.duration, 1)
+                self.assertEqual(
+                    _actor_state(runtime, actor_id)["mana"], before_mana - 4.0
+                )
+                self.assertEqual(
+                    _budget(runtime)["spent_ticks"], before_spent + 1
+                )
+                locations = _locations(runtime, actor_id)
+                self.assertEqual(len(locations), 1)
+                self.assertEqual(locations[0].target, AREA_B)
+                self.assertEqual(
+                    locations[0].id, f"located:{actor_id}:{AREA_B}"
+                )
+    
+                proposals = submitted.action.event_result.trace.proposals
+                lifecycle = [
+                    proposal for proposal in proposals
+                    if proposal.op in {"delete_relation", "create_relation"}
+                ]
+                self.assertEqual(
+                    sorted(proposal.op for proposal in lifecycle),
+                    ["create_relation", "delete_relation"],
+                )
+                self.assertTrue(all(_accepted(item) for item in lifecycle))
+                delete = next(
+                    item for item in lifecycle if item.op == "delete_relation"
+                )
+                create = next(
+                    item for item in lifecycle if item.op == "create_relation"
+                )
+>               self.assertEqual(delete.law_id, f"pmw.v04.action.{MOVE_SKILL}.travel.delete")
+E               AssertionError: 'pmw.v04.action.qa_move_step.v1.97c7b56d2282.effect.travel.delete' != 'pmw.v04.action.qa_move_step.travel.delete'
+E               - pmw.v04.action.qa_move_step.v1.97c7b56d2282.effect.travel.delete
+E               ?                             -----------------------
+E               + pmw.v04.action.qa_move_step.travel.delete
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:557: AssertionError
+_ MoveActorIndependentReviewTests.test_player_and_npc_move_with_exact_cost_and_accepted_core_lifecycle (actor_id='qa_move_npc') _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_player_and_npc_move_with_exact_cost_and_accepted_core_lifecycle>
+
+    def test_player_and_npc_move_with_exact_cost_and_accepted_core_lifecycle(self):
+        move = _move_skill()
+        runtime, _ = _formal_runtime((move,))
+        self.assertEqual(runtime.blueprints[(MOVE_SKILL, 1)], move)
+        self.assertEqual(EFFECT_KINDS[-1], "move_actor")
+        self.assertEqual(_effect_cost(move.effects[0]), 2.0)
+    
+        for actor_id, request_id in (
+            (PLAYER, "qa_player_move"),
+            (NPC, "qa_npc_move"),
+        ):
+            with self.subTest(actor_id=actor_id):
+                before_mana = _actor_state(runtime, actor_id)["mana"]
+                before_spent = _budget(runtime)["spent_ticks"]
+                submitted = submit_timed_primary_action(
+                    runtime.session,
+                    runtime.action_registry,
+                    ActionRequest(request_id, actor_id, MOVE_SKILL, None, AREA_B),
+                )
+                self.assertEqual(submitted.action.cost.mana, 4.0)
+                self.assertEqual(submitted.time.duration, 1)
+                self.assertEqual(
+                    _actor_state(runtime, actor_id)["mana"], before_mana - 4.0
+                )
+                self.assertEqual(
+                    _budget(runtime)["spent_ticks"], before_spent + 1
+                )
+                locations = _locations(runtime, actor_id)
+                self.assertEqual(len(locations), 1)
+                self.assertEqual(locations[0].target, AREA_B)
+                self.assertEqual(
+                    locations[0].id, f"located:{actor_id}:{AREA_B}"
+                )
+    
+                proposals = submitted.action.event_result.trace.proposals
+                lifecycle = [
+                    proposal for proposal in proposals
+                    if proposal.op in {"delete_relation", "create_relation"}
+                ]
+                self.assertEqual(
+                    sorted(proposal.op for proposal in lifecycle),
+                    ["create_relation", "delete_relation"],
+                )
+                self.assertTrue(all(_accepted(item) for item in lifecycle))
+                delete = next(
+                    item for item in lifecycle if item.op == "delete_relation"
+                )
+                create = next(
+                    item for item in lifecycle if item.op == "create_relation"
+                )
+>               self.assertEqual(delete.law_id, f"pmw.v04.action.{MOVE_SKILL}.travel.delete")
+E               AssertionError: 'pmw.v04.action.qa_move_step.v1.97c7b56d2282.effect.travel.delete' != 'pmw.v04.action.qa_move_step.travel.delete'
+E               - pmw.v04.action.qa_move_step.v1.97c7b56d2282.effect.travel.delete
+E               ?                             -----------------------
+E               + pmw.v04.action.qa_move_step.travel.delete
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:557: AssertionError
+=========================== short test summary info ===========================
+SUBFAILED(request='qa_wrong_selector') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_atomic_rejection_matrix
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_coeffect_current_area_uses_origin
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_hook_and_passive_paths_reject_without_mutation
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_paid_tick_resolves_destination_with_area_scoped_law
+SUBFAILED(actor_id='qa_move_player') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_player_and_npc_move_with_exact_cost_and_accepted_core_lifecycle
+SUBFAILED(actor_id='qa_move_npc') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_player_and_npc_move_with_exact_cost_and_accepted_core_lifecycle
+7 failed, 7 passed, 15 subtests passed in 6.76s

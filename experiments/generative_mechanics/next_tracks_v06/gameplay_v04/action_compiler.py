@@ -297,6 +297,55 @@ def _effect_laws(action_id, action_version, action_hash, effect, status_slots, d
                 },
             }],
         }]
+    if effect.kind == "move_actor":
+        move_conditions = [
+            *common,
+            {"ref": "$event.payload.execution_kind", "eq": "primary"},
+            {"ref": "$event.payload.actor_id", "eq": "$event.source"},
+            {"ref": "$actor.id", "eq": "$event.source"},
+            {"ref": "$event.payload.target_area_id", "eq": f"{value_root}.destination_area_id"},
+        ]
+        actor_identity = {
+            "actor": {"kind": "entity", "requires": [ACTOR_COMPONENT]}
+        }
+        delete_identity = {
+            "actor": {"kind": "entity", "requires": [ACTOR_COMPONENT]},
+            "loc": {
+                "kind": "relation",
+                "type": "located_in",
+                "source": "$actor",
+            },
+        }
+        return [
+            {
+                "id": f"{prefix}.delete",
+                "mode": "event",
+                "priority": 100,
+                "bindings": delete_identity,
+                "when": {"all": [
+                    *move_conditions,
+                    {"ref": "$loc.id", "eq": f"{value_root}.old_relation_id"},
+                    {"ref": "$loc.target", "eq": f"{value_root}.origin_area_id"},
+                ]},
+                "effects": [{"op": "delete_relation", "target": "$loc"}],
+            },
+            {
+                "id": f"{prefix}.create",
+                "mode": "event",
+                "priority": 100,
+                "bindings": actor_identity,
+                "when": {"all": move_conditions},
+                "effects": [{
+                    "op": "create_relation",
+                    "value": {
+                        "id": f"{value_root}.new_relation_id",
+                        "type": "located_in",
+                        "source": "$event.source",
+                        "target": f"{value_root}.destination_area_id",
+                    },
+                }],
+            },
+        ]
     raise GameplayContractError(f"unsupported compiled effect {effect.kind}")
 
 

@@ -1,0 +1,141 @@
+...F..F.....                                            [100%]
+================================== FAILURES ===================================
+_ MoveActorIndependentReviewTests.test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open>
+
+    def test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open(self):
+        profile = _profile()
+        controller = RelationController((profile,))
+        control = _control_skill()
+        move = _move_skill()
+        parallel = Relation(
+            "qa_parallel_ab",
+            "adjacent",
+            AREA_A,
+            AREA_B,
+        )
+        runtime, _ = _formal_runtime(
+            (control, move),
+            world=_link_world(
+                profile=profile,
+                base_enabled=True,
+                parallel_links=(parallel,),
+            ),
+            relation_controller=controller,
+        )
+>       disabled = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_disable_only_link", PLAYER, CONTROL_SKILL),
+        )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:724: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:711: in submit_timed_primary_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:398: in _resolve_action
+    outcome = _simulate_effect(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:842: in _simulate_effect
+    return _simulate_relation_modifier(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:1152: in _simulate_relation_modifier
+    profile = _resolve_relation_profile(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x000001F877B41040>, profiles=(FieldProfile(entity...al=0.2, target=0.8, rate=0.2, curve='linear', max_persistent_patches=2, max_temporary_modifiers=2), mirror_path=None)))
+controller = RelationController(profiles=(RelationProfile(id='qa_move_link_profile', relation_id='qa_move_link', relation_type='adj...ae3a48613537092483b4e54cec410e108'),), limits=RelationLimits(max_instances=16, max_active=8), clock_id='pmw:v04:clock')
+profile_id = 'qa_move_link_profile', owner = 'qa_move_player'
+area_id = 'qa_move_area_a'
+
+    def _resolve_relation_profile(session, controller, profile_id, owner, area_id):
+        matches = [
+            profile for profile in controller.profiles
+            if profile.id == profile_id and profile.owner == owner
+        ]
+        if not matches:
+            raise GameplayContractError(
+                "no Relation profile matches the requested profile and owner"
+            )
+        area = session.state.entities.get(area_id)
+        if area is None or "pmw_gameplay_area" not in area.components:
+            raise GameplayContractError("relation_modifier target is not an Area")
+        local = [
+            profile for profile in matches
+            if profile.area_id == area_id
+            and _endpoint_area(session, profile.source_entity_id) == area_id
+            and _endpoint_area(session, profile.target_entity_id) == area_id
+        ]
+        if len(local) != 1:
+>           raise GameplayContractError(
+                "Relation profile scope is missing, ambiguous, or remote for this Area"
+            )
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: Relation profile scope is missing, ambiguous, or remote for this Area
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:1205: GameplayContractError
+_ MoveActorIndependentReviewTests.test_disabled_profile_relation_without_bare_link_is_not_adjacent _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_disabled_profile_relation_without_bare_link_is_not_adjacent>
+
+    def test_disabled_profile_relation_without_bare_link_is_not_adjacent(self):
+        profile = _profile()
+        control = _control_skill()
+        move = _move_skill()
+        runtime, _ = _formal_runtime(
+            (control, move),
+            world=_link_world(profile=profile, base_enabled=True),
+            relation_controller=RelationController((profile,)),
+        )
+>       submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_disable_profile_only", PLAYER, CONTROL_SKILL),
+        )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:594: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:711: in submit_timed_primary_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:398: in _resolve_action
+    outcome = _simulate_effect(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:842: in _simulate_effect
+    return _simulate_relation_modifier(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:1152: in _simulate_relation_modifier
+    profile = _resolve_relation_profile(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x000001F878C70B60>, profiles=(FieldProfile(entity...al=0.2, target=0.8, rate=0.2, curve='linear', max_persistent_patches=2, max_temporary_modifiers=2), mirror_path=None)))
+controller = RelationController(profiles=(RelationProfile(id='qa_move_link_profile', relation_id='qa_move_link', relation_type='adj...ae3a48613537092483b4e54cec410e108'),), limits=RelationLimits(max_instances=16, max_active=8), clock_id='pmw:v04:clock')
+profile_id = 'qa_move_link_profile', owner = 'qa_move_player'
+area_id = 'qa_move_area_a'
+
+    def _resolve_relation_profile(session, controller, profile_id, owner, area_id):
+        matches = [
+            profile for profile in controller.profiles
+            if profile.id == profile_id and profile.owner == owner
+        ]
+        if not matches:
+            raise GameplayContractError(
+                "no Relation profile matches the requested profile and owner"
+            )
+        area = session.state.entities.get(area_id)
+        if area is None or "pmw_gameplay_area" not in area.components:
+            raise GameplayContractError("relation_modifier target is not an Area")
+        local = [
+            profile for profile in matches
+            if profile.area_id == area_id
+            and _endpoint_area(session, profile.source_entity_id) == area_id
+            and _endpoint_area(session, profile.target_entity_id) == area_id
+        ]
+        if len(local) != 1:
+>           raise GameplayContractError(
+                "Relation profile scope is missing, ambiguous, or remote for this Area"
+            )
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: Relation profile scope is missing, ambiguous, or remote for this Area
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:1205: GameplayContractError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_c3_overlay_blocks_atomically_and_parallel_link_keeps_path_open
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_disabled_profile_relation_without_bare_link_is_not_adjacent
+2 failed, 10 passed, 17 subtests passed in 5.83s

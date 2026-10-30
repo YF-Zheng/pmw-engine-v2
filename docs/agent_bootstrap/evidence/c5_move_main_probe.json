@@ -1,0 +1,32 @@
+{
+  "note": "Main supplementary probe; reuses owner fixture builders only for world setup; not independent QA.",
+  "pulse_after_move_target": "move_area_b",
+  "values": {
+    "a0": 0.2,
+    "b0": 0.2,
+    "a1": 0.32000000000000006,
+    "b1": 0.32000000000000006,
+    "a2": 0.41600000000000004,
+    "b2": 0.512
+  },
+  "A_baseline_step_ok": true,
+  "B_boosted_step_ok": true,
+  "move_back_locations": [
+    [
+      "located:move_player:move_area_a",
+      "move_area_a"
+    ]
+  ],
+  "move_again_locations": [
+    [
+      "located:move_player:move_area_b",
+      "move_area_b"
+    ]
+  ],
+  "mana": 3.0,
+  "spent_ticks": 4,
+  "legal_actions_npc": [
+    "basic_guard|",
+    "basic_wait|"
+  ]
+}

@@ -25,7 +25,7 @@ _EFFECT_COST = {
     "modify_rate": 3.0, "grant_trait": 3.0,
     "process_start": 5.0, "process_modify": 5.0,
     "drive_source": 5.0, "relation_modifier": 5.0,
-    "dynamics_modifier": 3.0,
+    "dynamics_modifier": 3.0, "move_actor": 2.0,
 }
 
 
@@ -107,6 +107,18 @@ def parse_skill_blueprint(raw: Any, statuses: Mapping[str, StatusSpec], authorit
         raise GameplayContractError(
             f"{path}.effects permits at most one Process/Drive control operation"
         )
+    move_count = sum(item.kind == "move_actor" for item in effects)
+    if move_count > 1:
+        raise GameplayContractError(f"{path}.effects permits at most one move_actor")
+    move_allowed = {
+        "move_actor", "heal", "shield", "add_resource", "apply_status",
+        "grant_trait", "modify_field", "modify_attractor", "modify_rate",
+        "dynamics_modifier",
+    }
+    if move_count and any(item.kind not in move_allowed for item in effects):
+        raise GameplayContractError(
+            f"{path}.effects move_actor cannot be combined with this Effect"
+        )
     if kind == "passive_blueprint" and any(
             item.kind in control_effects for item in effects):
         raise GameplayContractError(
@@ -116,6 +128,11 @@ def parse_skill_blueprint(raw: Any, statuses: Mapping[str, StatusSpec], authorit
             item.kind == "dynamics_modifier" for item in effects):
         raise GameplayContractError(
             f"{path}.effects permits dynamics_modifier only on active on_use skills"
+        )
+    if kind == "passive_blueprint" and any(
+            item.kind == "move_actor" for item in effects):
+        raise GameplayContractError(
+            f"{path}.effects permits move_actor only on active on_use skills"
         )
     if any(item.kind not in authority.effect_kinds for item in effects):
         raise GameplayContractError(f"{path}.effects exceeds material effect authorization")

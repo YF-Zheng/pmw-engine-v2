@@ -1,0 +1,49 @@
+.....F......                                            [100%]
+================================== FAILURES ===================================
+_ MoveActorIndependentReviewTests.test_coeffect_and_later_origin_dynamics_use_origin _
+
+self = <test_sandbox_move_actor_review.MoveActorIndependentReviewTests testMethod=test_coeffect_and_later_origin_dynamics_use_origin>
+
+    def test_coeffect_and_later_origin_dynamics_use_origin(self):
+        combined = _skill(
+            _skill_document(
+                "qa_move_and_soak",
+                [_move_effect(), _modify_field_effect()],
+                mana=5.0,
+            )
+        )
+        runtime, _ = _formal_runtime((combined,), world=_bare_world())
+        origin_before = _field_state(runtime, AREA_A)["value"]
+        destination_before = _field_state(runtime, AREA_B)["value"]
+        submitted = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("qa_origin_coeffect", PLAYER, combined.id, None, AREA_B),
+        )
+        self.assertAlmostEqual(
+            _field_state(runtime, AREA_A)["value"],
+            (origin_before + 0.1) + 0.2 * (
+                0.8 - (origin_before + 0.1)
+            ),
+            delta=1e-12,
+        )
+        # The destination's continuous Field Law runs in the same paid Tick, so
+        # its observable value advances once from the untouched baseline.
+        self.assertAlmostEqual(
+            _field_state(runtime, AREA_B)["value"],
+            destination_before + 0.2 * (0.8 - destination_before),
+            delta=1e-12,
+        )
+        self.assertEqual(_locations(runtime, PLAYER)[0].target, AREA_B)
+        self.assertEqual(submitted.time.duration, 1)
+    
+        origin_after_move = _field_state(runtime, AREA_A)["value"]
+        advance_world_tick(runtime.session)
+        self.assertGreater(_field_state(runtime, AREA_A)["value"], origin_after_move)
+>       self.assertEqual(_budget(runtime)["spent_ticks"], 2)
+E       AssertionError: 1 != 2
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_move_actor_review.py:735: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_move_actor_review.py::MoveActorIndependentReviewTests::test_coeffect_and_later_origin_dynamics_use_origin
+1 failed, 11 passed, 17 subtests passed in 5.45s
