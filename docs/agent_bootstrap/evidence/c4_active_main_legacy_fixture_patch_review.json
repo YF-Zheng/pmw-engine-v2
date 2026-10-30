@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-29T10:52:08.389382+00:00",
+  "original_sha256": "5bc6d2cbaad49aa0f59130afa1fa6e1fdffbf0c85f8c7b8eaf8b747fefd9ff78",
+  "corrected_sha256": "956e6fa8e5fa9e8d29f575b8dbc96def0b373c45d403594d3886146fd56cb560",
+  "exact_byte_replacement_only": true,
+  "delta_bytes": 9,
+  "all_other_positive_test_statements_and_assertions_AST_identical": true,
+  "original_preserved": true,
+  "passed": true
+}

@@ -1,0 +1,349 @@
+....FFFF                                                         [100%]
+================================== FAILURES ===================================
+_ IdentityAndTimingTests.test_basic_identity_oracle_and_conditional_counterfeit_rejected _
+
+self = <test_sandbox_active_condition_review.IdentityAndTimingTests testMethod=test_basic_identity_oracle_and_conditional_counterfeit_rejected>
+
+    def test_basic_identity_oracle_and_conditional_counterfeit_rejected(self):
+        expected = _historical_basic_hashes()
+        current = basic_registry().actions
+        self.assertEqual(
+            {key: current[key].canonical_hash for key in expected},
+            expected,
+        )
+        absent = deepcopy(basic_registry_document())
+        null = deepcopy(basic_registry_document())
+        for doc in (absent, null):
+            for row in doc["actions"]:
+                if row["id"] in expected:
+                    row.pop("condition", None)
+        for row in null["actions"]:
+            if row["id"] in expected:
+                row["condition"] = None
+        absent_registry = ActionRegistry.parse(absent)
+        null_registry = ActionRegistry.parse(null)
+        self.assertEqual(
+            {
+                key: item.canonical_hash
+                for key, item in absent_registry.actions.items()
+                if key in expected
+            },
+            expected,
+        )
+        self.assertEqual(
+            {
+                key: item.canonical_hash
+                for key, item in null_registry.actions.items()
+                if key in expected
+            },
+            expected,
+        )
+    
+        forged = deepcopy(basic_registry_document())
+        forged_before = deepcopy(forged)
+        basic_attack = next(
+            row for row in forged["actions"] if row["id"] == "basic_attack"
+        )
+        basic_attack["condition"] = _acting_condition()
+        forged_registry = ActionRegistry.parse(forged)
+        self.assertNotEqual(
+            forged_registry.actions["basic_attack"].canonical_hash,
+            expected["basic_attack"],
+        )
+>       self.assertEqual(forged, forged_before)
+E       AssertionError: {'pro[684 chars]0}]}], 'condition': {'resource': {'subject': '[885 chars]}]}]} != {'pro[684 chars]0}]}]}, {'id': 'basic_guard', 'version': 1, 'a[789 chars]}]}]}
+E       Diff is 2995 characters long. Set self.maxDiff to None to see it.
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:735: AssertionError
+_ IdentityAndTimingTests.test_cost_modifier_timing_and_effect_condition_remain_distinct _
+
+self = <test_sandbox_active_condition_review.IdentityAndTimingTests testMethod=test_cost_modifier_timing_and_effect_condition_remain_distinct>
+
+    def test_cost_modifier_timing_and_effect_condition_remain_distinct(self):
+        raw = _skill_document(
+            condition=_acting_condition(),
+            effect={
+                "id": "self_heal",
+                "kind": "heal",
+                "target": {"kind": "self"},
+                "commitment": "conditional",
+                "amount": 2.0,
+                "condition": _acting_condition("mana", "gte", 5),
+            },
+        )
+        raw["effects"] = [raw["effects"][0]]
+        # Use a normal Skill action first, then a direct trusted Action document
+        # to prove quote timing is separate from post-cost Effect predicates.
+        skill = _parse_skill(raw)
+        self.assertEqual(skill.action.cost.mana, 4.0)
+        direct = parse_action_definition(
+            {
+                "id": "c43_cost_timing",
+                "version": 1,
+                "action_type": "skill",
+                "cost": {"duration": 1, "mana": 4.0},
+                "scope": {"selectors": ["self"], "relation_types": []},
+                "effects": [raw["effects"][0]],
+                "cost_modifiers": [{
+                    "id": "c43_quote_modifier",
+                    "condition": _acting_condition("mana", "gte", 5),
+                    "duration_add": 1,
+                    "mana_add": 1.0,
+                }],
+            },
+            basic_registry().statuses,
+        )
+        self.assertIsNotNone(direct)
+        profile = _profile()
+        fixture = _fixture(skills=(skill,), profiles=(profile,))
+        runtime_registry = ActionRegistry(
+            (*basic_registry().actions.values(), direct),
+            basic_registry().statuses.values(),
+        )
+        _actor_component(fixture["session"], PLAYER)["active_equipped"][0] = {
+            "id": direct.id,
+            "version": direct.version,
+            "canonical_hash": direct.canonical_hash,
+            "kind": "skill_blueprint",
+        }
+>       outcome = _resolve_action(
+            fixture["session"],
+            runtime_registry,
+            ActionRequest("c43_cost_timing_request", PLAYER, direct.id),
+        )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:807: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x000001106289C5C0>, profiles=(FieldProfile(entity...tial=3.0, target=3.0, rate=0.0, curve='none', max_persistent_patches=1, max_temporary_modifiers=1), mirror_path=None)))
+registry = <experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions.ActionRegistry object at 0x00000110627A4500>
+request = ActionRequest(request_id='c43_cost_timing_request', actor_id='c43_player', action_id='c43_cost_timing', target_actor_id=None)
+execution_kind = 'primary', hook_context = None, parent_event_id = None
+
+    def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *, execution_kind: str = "primary",
+                        hook_context: Mapping[str, Any] | None = None,
+                        parent_event_id: str | None = None) -> ActionOutcome:
+        if execution_kind not in {"primary", "hook"}: raise GameplayContractError("invalid action execution kind")
+        if (execution_kind == "hook") != (hook_context is not None): raise GameplayContractError("hook execution requires trusted hook context")
+        if parent_event_id is not None and execution_kind != "hook":
+            raise GameplayContractError("parent event is valid only for hook execution")
+        definition = registry.actions.get(request.action_id)
+        if definition is None: raise GameplayContractError("unknown registered action")
+        actor_entity = session.state.entities.get(request.actor_id)
+        if actor_entity is None or ACTOR_COMPONENT not in actor_entity.components: raise GameplayContractError("request actor is not an Actor")
+        actor = _actor_view(actor_entity)
+        if actor["hp"] <= 0: raise GameplayContractError("defeated Actor cannot act")
+        target_entity = session.state.entities.get(request.target_actor_id) if request.target_actor_id else None
+        if request.target_actor_id and (target_entity is None or ACTOR_COMPONENT not in target_entity.components): raise GameplayContractError("target is not an Actor")
+        context = SelectorContext(request.actor_id, request.target_actor_id)
+        shadow = {request.actor_id: deepcopy(actor)}
+        if target_entity is not None: shadow[target_entity.id] = _actor_view(target_entity)
+        if (execution_kind == "primary" and
+                not evaluate_condition(
+                    definition.condition,
+                    _condition_context(session, request, shadow),
+                )):
+            raise GameplayContractError("action condition is not satisfied")
+        quote = definition.cost
+        if execution_kind == "primary":
+            duration, mana = quote.duration, quote.mana
+            cost_context = _condition_context(session, request, shadow)
+            for modifier in definition.cost_modifiers:
+                if evaluate_condition(modifier.condition, cost_context):
+                    duration += modifier.duration_add; mana += modifier.mana_add
+            quote = ActionCost(max(1, duration), max(0.0, mana))
+        else:
+            quote = ActionCost(1, 0.0)
+        if actor["mana"] < quote.mana: raise GameplayContractError("insufficient mana")
+        shadow[request.actor_id]["mana"] -= quote.mana
+        writes: dict[str, dict[str, Any]] = {request.actor_id: {"mana": shadow[request.actor_id]["mana"]}}
+        outcomes = []
+        reservations: list[tuple[str, str, dict]] = []
+        for effect in definition.effects:
+            if (effect.kind in {"process_start", "process_modify", "drive_source",
+                               "relation_modifier"}
+                    and execution_kind != "primary"):
+                raise GameplayContractError(f"{effect.kind} is supported only for active primary execution")
+            targets = resolve_selector(session.state, effect.target, context, definition.capability)
+            if len(targets) != 1: raise GameplayContractError("Gate 2 effects require exactly one resolved target")
+            target_id = targets[0]
+            cond_context = _condition_context(session, request, shadow)
+            enabled = evaluate_condition(effect.condition, cond_context)
+            if effect.commitment == "required" and not enabled: raise GameplayContractError(f"required effect {effect.id!r} condition failed")
+            if not enabled:
+                outcomes.append({"effect_id": effect.id, "kind": effect.kind, "status": "skipped", "target_id": target_id, "values": {}}); continue
+            outcome = _simulate_effect(
+                session, registry, request, definition, effect, target_id, shadow, writes, reservations,
+                execution_kind=execution_kind,
+            )
+            outcomes.append(outcome)
+        for outcome in outcomes:
+            final_actor = shadow.get(outcome["target_id"])
+            if (final_actor is not None and final_actor.get("_replacement_released_shield") and
+                    "shield" in outcome["values"]):
+                outcome["values"]["shield"] = final_actor["shield"]
+                outcome["values"]["shield_component"] = final_actor["_shield_component"]
+        for actor_state in shadow.values():
+            validate_status_shield_ownership(
+                {"slots": actor_state["status_slots"]}, actor_state["_shield_component"]
+            )
+        payload = {"protocol": "pmw-gameplay-v0.4", "request_id": request.request_id, "action_id": definition.id,
+                   "action_hash": definition.canonical_hash, "actor_id": request.actor_id, "target_actor_id": request.target_actor_id,
+                   "execution_kind": execution_kind, "actor_mana": shadow[request.actor_id]["mana"], "action_duration": quote.duration,
+                   "writes": writes, "reservations": reservations,
+                   "effects": {row["effect_id"]: row for row in outcomes}, "outcomes": outcomes}
+        if hook_context is not None: payload["hook"] = dict(hook_context)
+        payload = json.loads(json.dumps(payload, sort_keys=True, allow_nan=False))
+        before = session.state.to_dict()
+        provenance = (
+            {"kind": "derived", "parent_event": parent_event_id}
+            if parent_event_id is not None
+            else {"kind": "external", "parent_event": None}
+        )
+        result = session.runtime.run_event(Event(f"pmw:v04:action:{request.request_id}", ACTION_EVENT,
+                                                  session.state.sim_time, request.actor_id, request.target_actor_id, payload,
+                                                  provenance))
+        matched = any(event.event_law_matches for event in result.trace.events)
+        if not matched:
+            if session.state.to_dict() != before: raise GameplayContractError("failed action mutated state")
+>           raise GameplayContractError("action did not match installed definition")
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: action did not match installed definition
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:367: GameplayContractError
+_ ContinuityTests.test_c42_passive_dispatch_continues_with_c43_condition_skill _
+
+self = <test_sandbox_active_condition_review.ContinuityTests testMethod=test_c42_passive_dispatch_continues_with_c43_condition_skill>
+
+    def test_c42_passive_dispatch_continues_with_c43_condition_skill(self):
+        active = _parse_skill(_skill_document(effect=_self_heal_effect()))
+        fired_raw = {
+            "protocol": "pmw-gameplay-v0.4",
+            "kind": "passive_blueprint",
+            "id": "c43_passive_shield_true",
+            "version": 1,
+            "trigger": "damage_resolved",
+            "condition": None,
+            "duration": None,
+            "cost": {"duration": 1, "mana": 0.0},
+            "scope": {
+                "selectors": ["self", "target_actor"],
+                "relation_types": [],
+            },
+            "effects": [{
+                "id": "passive_shield",
+                "kind": "shield",
+                "target": {"kind": "self"},
+                "commitment": "required",
+                "amount": 7.0,
+            }],
+            "budget": {"limit": 8.0},
+            "max_firings_per_root": 1,
+            "material_ids": [MATERIAL_ID],
+        }
+        fired_passive = parse_skill_blueprint(
+            fired_raw,
+            basic_registry().statuses,
+            material_authority((_material(),)),
+        )
+        skipped_raw = deepcopy(fired_raw)
+        skipped_raw["id"] = "c43_passive_shield_false"
+        skipped_raw["condition"] = _acting_condition("mana", "gte", 100)
+        skipped_passive = parse_skill_blueprint(
+            skipped_raw,
+            basic_registry().statuses,
+            material_authority((_material(),)),
+        )
+        profile = _profile()
+        fixture = _fixture(
+            skills=(active, fired_passive, skipped_passive),
+            profiles=(profile,),
+            npc=5.0,
+        )
+        _equip_both(fixture["runtime"], active)
+        change_loadout(
+            fixture["session"],
+            fixture["runtime"].manifest,
+            actor_id=PLAYER,
+            operation="equip_passive",
+            skill=skill_ref(fired_passive),
+            slot=0,
+        )
+        change_loadout(
+            fixture["session"],
+            fixture["runtime"].manifest,
+            actor_id=NPC,
+            operation="equip_passive",
+            skill=skill_ref(skipped_passive),
+            slot=0,
+        )
+        fired_hash = fired_passive.action.canonical_hash
+        skipped_hash = skipped_passive.action.canonical_hash
+        before_passive = _snapshot(fixture["session"])
+        npc_before = deepcopy(_actor_component(fixture["session"], NPC))
+        player_before = deepcopy(_actor_component(fixture["session"], PLAYER))
+        result = resolve_action(
+            fixture["session"],
+            fixture["registry"],
+            ActionRequest("c43_passive_root", NPC, "basic_attack", PLAYER),
+        )
+        fired = tuple(row for row in result.auto_hooks if row.status == "fired")
+        skipped = tuple(row for row in result.auto_hooks if row.status == "skipped")
+        self.assertGreaterEqual(len(fired), 1)
+>       self.assertEqual(len(skipped), 1)
+E       AssertionError: 0 != 1
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:945: AssertionError
+__ ContinuityTests.test_checkpoint_continuation_preserves_condition_and_cast __
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: insufficient mana
+
+During handling of the above exception, another exception occurred:
+
+self = <test_sandbox_active_condition_review.ContinuityTests testMethod=test_checkpoint_continuation_preserves_condition_and_cast>
+
+    def test_checkpoint_continuation_preserves_condition_and_cast(self):
+        skill = _parse_skill(_skill_document(
+            condition=_acting_condition("hp", "gte", 40),
+            effect=_self_heal_effect(),
+        ))
+        profile = _profile()
+        fixture = _fixture(skills=(skill,), profiles=(profile,), npc=0.0)
+        _equip_both(fixture["runtime"], skill)
+        before = _persistent_snapshot(fixture["session"])
+        with tempfile.TemporaryDirectory(dir=REVIEW_TMP) as directory:
+            path = Path(directory) / "c43-active-condition.json"
+            save_registry_checkpoint(path, fixture["runtime"])
+            restored = load_registry_checkpoint(path, fixture["compiled"])
+        self.assertEqual(_persistent_snapshot(restored.session),
+                         before)
+        self.assertEqual(
+            restored.blueprints[(SKILL_ID, 1)].canonical_hash,
+            skill.canonical_hash,
+        )
+        self.assertEqual(
+            restored.action_registry.actions[SKILL_ID].canonical_hash,
+            skill.action.canonical_hash,
+        )
+        restored_fixture = {
+            "session": restored.session,
+            "registry": restored.action_registry,
+        }
+        accepted = _cast(restored_fixture, "c43_after_load_true", PLAYER)
+        self.assertEqual(accepted.action.cost.mana, 4.0)
+        self.assertEqual(
+            _actor_component(restored.session, PLAYER)["hp"],
+            42.0,
+        )
+        after_accept = _snapshot(restored.session)
+>       with self.assertRaisesRegex(
+            GameplayContractError,
+            "action condition is not satisfied",
+        ):
+E       AssertionError: "action condition is not satisfied" does not match "insufficient mana"
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:862: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::IdentityAndTimingTests::test_basic_identity_oracle_and_conditional_counterfeit_rejected
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::IdentityAndTimingTests::test_cost_modifier_timing_and_effect_condition_remain_distinct
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::ContinuityTests::test_c42_passive_dispatch_continues_with_c43_condition_skill
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::ContinuityTests::test_checkpoint_continuation_preserves_condition_and_cast
+4 failed, 4 passed, 8 subtests passed in 1.53s

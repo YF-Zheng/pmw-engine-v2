@@ -68,6 +68,12 @@ PRICING_SOURCES = (
         "url": "https://api-docs.deepseek.com/quick_start/pricing",
     },
     {
+        # Verified 2026-10-30: Opus 5.5 standard input $4, cache hit $0.20,
+        # output $20 per MTok; 1M context at standard pricing (no long tier).
+        "name": "Claude Platform Docs - Pricing (Claude Opus 5.5), checked 2026-10-30",
+        "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+    },
+    {
         "name": "Investing.com - USD/CNY historical data",
         "url": "https://www.investing.com/currencies/usd-cny-historical-data",
     },
@@ -110,6 +116,13 @@ PRICE_BOOK: dict[str, PriceSpec] = {
         uncached_input_usd_per_million=Decimal("1.32"),
         cached_input_usd_per_million=Decimal("0.044"),
         output_usd_per_million=Decimal("3.96"),
+    ),
+    "tencent/claude-opus-5.5": PriceSpec(
+        family="Claude",
+        mapped_model="claude-opus-5-5 (standard, global)",
+        uncached_input_usd_per_million=Decimal("4"),
+        cached_input_usd_per_million=Decimal("0.20"),
+        output_usd_per_million=Decimal("20"),
     ),
 }
 
@@ -642,6 +655,16 @@ def build_report(
             "responses": [],
         },
         "DeepSeek": {
+            "record_count": 0,
+            "known_record_count": 0,
+            "unknown_record_count": 0,
+            "actual_usage": empty_usage(),
+            "estimated_usd": Decimal("0"),
+            "estimated_usd_json": 0.0,
+            "models": {},
+            "responses": [],
+        },
+        "Claude": {
             "record_count": 0,
             "known_record_count": 0,
             "unknown_record_count": 0,

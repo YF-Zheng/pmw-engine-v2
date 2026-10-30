@@ -1,0 +1,14 @@
+test_false_top_level_condition_should_not_cast (__main__.BaselineProbe.test_false_top_level_condition_should_not_cast) ... FAIL
+
+======================================================================
+FAIL: test_false_top_level_condition_should_not_cast (__main__.BaselineProbe.test_false_top_level_condition_should_not_cast)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2\\docs\\agent_bootstrap\\evidence\\c4_active_review_baseline_probe_576048b.py", line 321, in test_false_top_level_condition_should_not_cast
+    self.assertIsNotNone(
+AssertionError: unexpectedly None : {'failure': 'false top-level condition executed', 'mana': [5.0, 4.0], 'hp': [40.0, 42.0], 'time': [1.0, 1]}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.205s
+
+FAILED (failures=1)

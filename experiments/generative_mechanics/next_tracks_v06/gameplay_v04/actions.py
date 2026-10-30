@@ -62,6 +62,7 @@ class ActionDefinition:
     canonical_hash: str
     cost_modifiers: tuple[ActionCostModifier, ...] = ()
     builtin: bool = False
+    condition: ConditionSpec = ConditionSpec("always")
 
 
 @dataclass(frozen=True, slots=True)
@@ -173,7 +174,7 @@ class ActionRegistry:
 
 def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: str = "$.action") -> ActionDefinition:
     required = {"id", "version", "action_type", "cost", "scope", "effects"}
-    optional = {"builtin", "cost_modifiers"}
+    optional = {"builtin", "cost_modifiers", "condition"}
     if not isinstance(raw, dict) or set(raw) - required - optional or not required <= set(raw): raise GameplayContractError(f"{path} has missing or unknown fields")
     if not isinstance(raw["id"], str) or not _ID.fullmatch(raw["id"]): raise GameplayContractError(f"{path}.id is invalid")
     if isinstance(raw["version"], bool) or not isinstance(raw["version"], int) or raw["version"] < 1: raise GameplayContractError(f"{path}.version is invalid")
@@ -242,10 +243,17 @@ def parse_action_definition(raw: Any, statuses: Mapping[str, StatusSpec], path: 
         if isinstance(mana_add, bool) or not isinstance(mana_add, (int, float)) or not math.isfinite(mana_add): raise GameplayContractError(f"{item_path}.mana_add is invalid")
         modifiers.append(ActionCostModifier(item["id"], parse_condition(item["condition"], f"{item_path}.condition"), duration_add, float(mana_add)))
     if len({item.id for item in modifiers}) != len(modifiers): raise GameplayContractError(f"{path}.cost_modifiers contains duplicates")
-    canonical = json.dumps(raw, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
+    condition = (
+        parse_condition(raw["condition"], f"{path}.condition")
+        if "condition" in raw else ConditionSpec("always")
+    )
+    canonical_raw = dict(raw)
+    if canonical_raw.get("condition", object()) is None:
+        canonical_raw.pop("condition", None)
+    canonical = json.dumps(canonical_raw, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
     return ActionDefinition(raw["id"], raw["version"], raw["action_type"], ActionCost(duration, float(mana)),
                             ScopeCapability(raw["id"], tuple(selectors), tuple(relations)), effects,
-                            hashlib.sha256(canonical).hexdigest(), tuple(modifiers), builtin)
+                            hashlib.sha256(canonical).hexdigest(), tuple(modifiers), builtin, condition)
 
 
 def parse_action_request(raw: Any) -> ActionRequest:
@@ -288,6 +296,12 @@ def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *
     context = SelectorContext(request.actor_id, request.target_actor_id)
     shadow = {request.actor_id: deepcopy(actor)}
     if target_entity is not None: shadow[target_entity.id] = _actor_view(target_entity)
+    if (execution_kind == "primary" and
+            not evaluate_condition(
+                definition.condition,
+                _condition_context(session, request, shadow),
+            )):
+        raise GameplayContractError("action condition is not satisfied")
     quote = definition.cost
     if execution_kind == "primary":
         duration, mana = quote.duration, quote.mana

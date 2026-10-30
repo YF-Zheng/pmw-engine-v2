@@ -1,0 +1,81 @@
+.....F.                                                               [100%]
+================================== FAILURES ===================================
+_ ContinuityTests.test_c42_passive_dispatch_continues_with_c43_condition_skill _
+
+self = <test_sandbox_active_condition_review.ContinuityTests testMethod=test_c42_passive_dispatch_continues_with_c43_condition_skill>
+
+    def test_c42_passive_dispatch_continues_with_c43_condition_skill(self):
+        raw = {
+            "protocol": "pmw-gameplay-v0.4",
+            "kind": "passive_blueprint",
+            "id": "c43_passive_shield",
+            "version": 1,
+            "trigger": "damage_resolved",
+            "condition": None,
+            "duration": None,
+            "cost": {"duration": 1, "mana": 0.0},
+            "scope": {
+                "selectors": ["self", "target_actor"],
+                "relation_types": [],
+            },
+            "effects": [{
+                "id": "passive_shield",
+                "kind": "shield",
+                "target": {"kind": "self"},
+                "commitment": "required",
+                "amount": 7.0,
+            }],
+            "budget": {"limit": 8.0},
+            "max_firings_per_root": 1,
+            "material_ids": [MATERIAL_ID],
+        }
+        passive = parse_skill_blueprint(
+            raw,
+            basic_registry().statuses,
+            material_authority((_material(),)),
+        )
+        active = _parse_skill(_skill_document())
+        profile = _profile()
+        fixture = _fixture(
+            skills=(active, passive),
+            profiles=(profile,),
+            npc=5.0,
+        )
+        _equip_both(fixture["runtime"], active)
+        change_loadout(
+            fixture["session"],
+            fixture["runtime"].manifest,
+            actor_id=PLAYER,
+            operation="equip_passive",
+            skill=skill_ref(passive),
+            slot=0,
+        )
+        passive_hash = passive.action.canonical_hash
+        passive_condition = passive.condition
+        before_passive = _snapshot(fixture["session"])
+        npc_before = deepcopy(_actor_component(fixture["session"], NPC))
+        result = resolve_action(
+            fixture["session"],
+            fixture["registry"],
+            ActionRequest("c43_passive_root", NPC, "basic_attack", PLAYER),
+        )
+        fired = tuple(row for row in result.auto_hooks if row.status == "fired")
+        self.assertGreaterEqual(len(fired), 1)
+        self.assertEqual(
+            fixture["registry"].actions[passive.id].canonical_hash,
+            passive_hash,
+        )
+        self.assertEqual(passive.condition, passive_condition)
+        self.assertEqual(passive.action.condition.kind, "always")
+        self.assertNotEqual(active.action.condition.kind, "always")
+        self.assertEqual(_actor_component(fixture["session"], NPC)["mana"],
+                         npc_before["mana"])
+        self.assertEqual(_actor_component(fixture["session"], PLAYER)["mana"],
+>                        player_before["mana"])
+                         ^^^^^^^^^^^^^
+E       NameError: name 'player_before' is not defined
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:795: NameError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::ContinuityTests::test_c42_passive_dispatch_continues_with_c43_condition_skill
+1 failed, 6 passed, 3 subtests passed in 1.51s

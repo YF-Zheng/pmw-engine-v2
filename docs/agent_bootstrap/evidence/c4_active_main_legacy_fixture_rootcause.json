@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-29T10:43:32.150456+00:00",
+  "old_test_path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py",
+  "old_test_exact_git_source_sha256": "5bc6d2cbaad49aa0f59130afa1fa6e1fdffbf0c85f8c7b8eaf8b747fefd9ff78",
+  "original_preserved_path": "docs\\agent_bootstrap\\evidence\\c4_active_main_legacy_condition_original.py",
+  "old_positive_fixture": {
+    "all": [
+      null,
+      {
+        "not": null
+      }
+    ]
+  },
+  "old_evaluates": false,
+  "proposed_positive_fixture": {
+    "all": [
+      null,
+      {
+        "not": {
+          "not": null
+        }
+      }
+    ]
+  },
+  "proposed_evaluates": true,
+  "required": "No production bypass/no assertion removal; retain original false-expression negative atomic test in distinct new independent review; one explicit legacy fixture-only scope exception."
+}

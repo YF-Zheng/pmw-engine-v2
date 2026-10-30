@@ -14,7 +14,8 @@
     "01a185b7-8aea-7512-9311-d7516cb86eb1",
     "01a18599-6592-7d72-99a5-5d5ce3eab591",
     "01a185ea-111c-7ec1-a028-48c2a86e82d8",
-    "01a1862b-a31c-7351-ac83-5a77abdf3769"
+    "01a1862b-a31c-7351-ac83-5a77abdf3769",
+    "01a18a8c-d2f5-7751-86e4-3b662913c288"
   ],
   "default_phase": "P0",
   "agents": [
@@ -142,6 +143,31 @@
       "id": "01a186d5-018d-7ff1-9bac-49853026dc96",
       "task": "C4.2 independent passive authority/causal FIFO/rollback QA",
       "stage": "P1"
+    },
+    {
+      "id": "01a18719-d210-7122-bd1c-4aaa1142b637",
+      "task": "C4.3 actual pre-cost active top-level condition gate implementation",
+      "stage": "P1"
+    },
+    {
+      "id": "01a1871a-2831-7f91-80cd-c28b54a03df3",
+      "task": "C4.3 independent current-state/condition/canonical/replay QA",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18742-bfb5-7851-9c6e-4339bfe42551",
+      "task": "C4.3 one legacy positive condition fixture correction",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18743-222f-7830-8432-5a83674afd70",
+      "task": "C4.3 independent immutable-assertion/original-false atomic fixture review",
+      "stage": "P1"
+    },
+    {
+      "id": "01a18a8e-510c-7931-9587-c0a11d314db2",
+      "task": "C4.3 replacement independent legacy fixture review (PMW-local temp)",
+      "stage": "P1"
     }
   ],
   "turn_stages": {
@@ -163,7 +189,8 @@
     "01a185b7-8aea-7512-9311-d7516cb86eb1": "P1",
     "01a18599-6592-7d72-99a5-5d5ce3eab591": "P1",
     "01a185ea-111c-7ec1-a028-48c2a86e82d8": "P1",
-    "01a1862b-a31c-7351-ac83-5a77abdf3769": "P1"
+    "01a1862b-a31c-7351-ac83-5a77abdf3769": "P1",
+    "01a18a8c-d2f5-7751-86e4-3b662913c288": "P1"
   },
   "bootstrap": {
     "project_turn": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
@@ -186,7 +213,8 @@
   "continuous_run": {
     "started_at_utc": "2026-10-29T05:39:29.235Z",
     "main_turns": [
-      "01a1862b-a31c-7351-ac83-5a77abdf3769"
+      "01a1862b-a31c-7351-ac83-5a77abdf3769",
+      "01a18a8c-d2f5-7751-86e4-3b662913c288"
     ],
     "accounted_tasks": [
       {
@@ -213,10 +241,24 @@
         "task": "c4_2",
         "main_end_ordinal": 4979,
         "snapshot": "docs\\agent_bootstrap\\evidence\\c4_2_cost_snapshot.json"
+      },
+      {
+        "task": "c4_3",
+        "main_end_ordinal": 5410,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\c4_3_cost_snapshot.json"
+      },
+      {
+        "task": "c4_3_fixture",
+        "main_end_ordinal": 5844,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\c4_3_fixture_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 4979,
-    "current_task": "c4_2",
-    "latest_checkpoint": "718be652754c065b88d6d6cbf013c754f90c05c0"
+    "main_ordinal_cursor": 5844,
+    "current_task": "c4_3_fixture",
+    "latest_checkpoint": "576048b0f4796695a63883b46c6c62b03ef92b8b",
+    "main_turn_models": {
+      "01a1862b-a31c-7351-ac83-5a77abdf3769": "tencent/gpt-6.1-sol",
+      "01a18a8c-d2f5-7751-86e4-3b662913c288": "tencent/claude-opus-5.5"
+    }
   }
 }

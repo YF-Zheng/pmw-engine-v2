@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-29T10:05:39.005167+00:00",
+  "kind": "Main complementary actual finite combat adapter,not independent QA or public Alpha",
+  "same_parsed_skill_hash": "940e9bd1e953fe73518ad69d1e2347228c23d093c767f4d6e7cf992923efe6dc",
+  "accepted_actors": [
+    "c42_player",
+    "c42_npc"
+  ],
+  "accepted_mana_each": [
+    20,
+    16
+  ],
+  "first_round_paid_ticks": 1,
+  "second_round_rejection": "action condition is not satisfied",
+  "second_round_complete_rollback_including_prior_guard_ownerturn": true,
+  "source_sha256_before": {
+    "actions.py": "f97f7b3f8777b48684a9138770db3f41bc0d23c8554700398df8e4173cb85803",
+    "skills.py": "2ce87fe45d8964ef5ef16bd76df8e2132a1f24d27fe5ae33192bb98e8678443c"
+  },
+  "source_sha256_after": {
+    "actions.py": "f97f7b3f8777b48684a9138770db3f41bc0d23c8554700398df8e4173cb85803",
+    "skills.py": "2ce87fe45d8964ef5ef16bd76df8e2132a1f24d27fe5ae33192bb98e8678443c"
+  },
+  "passed": true
+}

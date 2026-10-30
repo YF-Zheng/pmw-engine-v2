@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-29T10:22:35.076646+00:00",
+  "actual_loaded_functions": {
+    "_resolve_action": {
+      "module_file": "C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\actions.py",
+      "source_sha256": "f94afaed4e1d225eb15e48151436f2480b6701754b7be362b9a9b24bfc87bb6a",
+      "loaded_bytecode_matches_current_source_compile": true
+    },
+    "parse_action_definition": {
+      "module_file": "C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\actions.py",
+      "source_sha256": "f94afaed4e1d225eb15e48151436f2480b6701754b7be362b9a9b24bfc87bb6a",
+      "loaded_bytecode_matches_current_source_compile": true
+    },
+    "parse_skill_blueprint": {
+      "module_file": "C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\skills.py",
+      "source_sha256": "2ce87fe45d8964ef5ef16bd76df8e2132a1f24d27fe5ae33192bb98e8678443c",
+      "loaded_bytecode_matches_current_source_compile": true
+    }
+  },
+  "passed": true
+}

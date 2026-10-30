@@ -1,0 +1,185 @@
+.....F.                                                               [100%]
+================================== FAILURES ===================================
+_ TypedBoundaryTests.test_condition_reads_current_area_and_target_bounds (label='target') _
+
+self = <test_sandbox_active_condition_review.TypedBoundaryTests testMethod=test_condition_reads_current_area_and_target_bounds>
+
+    def test_condition_reads_current_area_and_target_bounds(self):
+        npc_profile = _profile(
+            owner=NPC,
+            relation_id="c43_npc_supply_link",
+            profile_id="c43_npc_supply_profile",
+        )
+        cases = (
+            (
+                "field",
+                {"field": {
+                    "subject": "current_area",
+                    "key": "heat",
+                    "comparator": "gte",
+                    "value": 3.0,
+                }},
+                PLAYER,
+                True,
+                _profile(),
+            ),
+            (
+                "target",
+                _acting_condition("hp", "gte", 40, "target_actor"),
+                NPC,
+                True,
+                npc_profile,
+            ),
+            (
+                "out_of_range",
+                _acting_condition("mana", "gte", 200, "self"),
+                PLAYER,
+                False,
+                _profile(),
+            ),
+        )
+        for label, condition, actor_id, should_accept, profile in cases:
+            with self.subTest(label=label):
+                effect = {
+                    "id": "link_change",
+                    "kind": "relation_modifier",
+                    "target": {"kind": "current_area"},
+                    "commitment": "required",
+                    "relation_profile_id": profile.id,
+                    "relation_enabled": False,
+                    "duration": 3,
+                }
+                skill = _parse_skill(_skill_document(
+                    skill_id=f"c43_{label}",
+                    condition=condition,
+                    effect=effect,
+                ))
+                fixture = _fixture(
+                    skills=(skill,),
+                    profiles=(profile,),
+                )
+                _equip(fixture["runtime"], actor_id, skill)
+                before = _snapshot(fixture["session"])
+                if should_accept:
+>                   result = submit_timed_primary_action(
+                        fixture["session"],
+                        fixture["registry"],
+                        ActionRequest(
+                            f"c43_{label}_request",
+                            actor_id,
+                            skill.id,
+                            NPC if actor_id != NPC else PLAYER,
+                        ),
+                    )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:561: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:619: in submit_timed_primary_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:329: in _resolve_action
+    outcome = _simulate_effect(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:668: in _simulate_effect
+    return _simulate_relation_modifier(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:916: in _simulate_relation_modifier
+    prepared = controller.prepare_modify(
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\relations.py:157: in prepare_modify
+    _preflight(self, session, profile, owner=owner)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+controller = RelationController(profiles=(RelationProfile(id='c43_npc_supply_profile', relation_id='c43_npc_supply_link', relation_...c3fb379ce50dbd355db67f0eb871462a8'),), limits=RelationLimits(max_instances=16, max_active=8), clock_id='pmw:v04:clock')
+session = GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x000002B52B7A10A0>, profiles=(FieldProfile(entity...tial=3.0, target=3.0, rate=0.0, curve='none', max_persistent_patches=1, max_temporary_modifiers=1), mirror_path=None)))
+profile = RelationProfile(id='c43_npc_supply_profile', relation_id='c43_npc_supply_link', relation_type='supplies_power', source...lay_c43_sink',), max_duration_ticks=8, profile_hash='2db35463ea59b30c82eff22d6407ebfc3fb379ce50dbd355db67f0eb871462a8')
+owner = 'c43_npc'
+
+    def _preflight(
+        controller: RelationController,
+        session: GameplaySession,
+        profile: RelationProfile,
+        *,
+        owner: str,
+    ) -> None:
+        if owner != profile.owner:
+            raise GameplayContractError("Relation owner does not match the trusted profile")
+        relation = session.state.relations.get(profile.relation_id)
+        if relation is None:
+>           raise GameplayContractError("trusted Relation is unavailable")
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: trusted Relation is unavailable
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\relations.py:515: GameplayContractError
+_ ContinuityTests.test_c42_passive_dispatch_continues_with_c43_condition_skill _
+
+self = <test_sandbox_active_condition_review.ContinuityTests testMethod=test_c42_passive_dispatch_continues_with_c43_condition_skill>
+
+    def test_c42_passive_dispatch_continues_with_c43_condition_skill(self):
+        raw = {
+            "protocol": "pmw-gameplay-v0.4",
+            "kind": "passive_blueprint",
+            "id": "c43_passive_shield",
+            "version": 1,
+            "trigger": "damage_resolved",
+            "condition": None,
+            "duration": None,
+            "cost": {"duration": 1, "mana": 0.0},
+            "scope": {
+                "selectors": ["self", "target_actor"],
+                "relation_types": [],
+            },
+            "effects": [{
+                "id": "passive_shield",
+                "kind": "shield",
+                "target": {"kind": "self"},
+                "commitment": "required",
+                "amount": 7.0,
+            }],
+            "budget": {"limit": 8.0},
+            "max_firings_per_root": 1,
+            "material_ids": [MATERIAL_ID],
+        }
+        passive = parse_skill_blueprint(
+            raw,
+            basic_registry().statuses,
+            material_authority((_material(),)),
+        )
+        active = _parse_skill(_skill_document())
+        profile = _profile()
+        fixture = _fixture(
+            skills=(active, passive),
+            profiles=(profile,),
+            npc=5.0,
+        )
+        _equip_both(fixture["runtime"], active)
+        change_loadout(
+            fixture["session"],
+            fixture["runtime"].manifest,
+            actor_id=PLAYER,
+            operation="equip_passive",
+            skill=skill_ref(passive),
+            slot=0,
+        )
+        passive_hash = passive.action.canonical_hash
+        passive_condition = passive.condition
+        before_passive = _snapshot(fixture["session"])
+        npc_before = deepcopy(_actor_component(fixture["session"], NPC))
+        result = resolve_action(
+            fixture["session"],
+            fixture["registry"],
+            ActionRequest("c43_passive_root", NPC, "basic_attack", PLAYER),
+        )
+        fired = tuple(row for row in result.auto_hooks if row.status == "fired")
+        self.assertGreaterEqual(len(fired), 1)
+        self.assertEqual(
+            fixture["registry"].actions[passive.id].canonical_hash,
+            passive_hash,
+        )
+        self.assertEqual(passive.condition, passive_condition)
+        self.assertEqual(_actor_component(fixture["session"], NPC)["mana"],
+                         npc_before["mana"])
+>       self.assertEqual(_actor_component(fixture["session"], NPC)["shield"], 7.0)
+E       AssertionError: 0 != 7.0
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:791: AssertionError
+=========================== short test summary info ===========================
+SUBFAILED(label='target') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::TypedBoundaryTests::test_condition_reads_current_area_and_target_bounds
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::ContinuityTests::test_c42_passive_dispatch_continues_with_c43_condition_skill
+2 failed, 6 passed, 2 subtests passed in 1.81s

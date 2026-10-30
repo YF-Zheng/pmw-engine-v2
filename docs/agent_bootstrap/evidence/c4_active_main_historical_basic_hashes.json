@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-29T10:04:04.386280+00:00",
+  "baseline": "576048b0f4796695a63883b46c6c62b03ef92b8b",
+  "baseline_basic_source_sha256": "2e621a0bb6e3efd0443bf371496e4a2e5eb7270eaf476691eb4341b4564972b8",
+  "derivation": "Raw Basic documents from exact Git baseline; exact old parser canonical json.dumps(raw) algorithm, no invocation of new parser to define expected hashes.",
+  "expected_basic_action_hashes": {
+    "basic_attack": "ac7edec9eac88f7f72ed123235ae4369466327ec5e69ee67ce4122aa178b9eae",
+    "basic_guard": "dc25094f1b1a53e9e7f8059cb1d79b2332983b4d6555fc993052667213b4a93a",
+    "basic_wait": "76402836ee7b674883344f555ca8d8e0d85d5f9fb3806c4330749e562679c3ee"
+  }
+}

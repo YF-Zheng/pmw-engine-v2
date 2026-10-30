@@ -37,7 +37,9 @@ with files[0].open(encoding='utf-8') as stream:
         if row.get('type') != 'turn_context' or row.get('timestamp', '') < run['started_at_utc']:
             continue
         context = row['payload']
-        assert context.get('model') == 'tencent/gpt-6.1-sol'
+        # Main turns may run on any verified, priced main model; record the actual one.
+        assert context.get('model') in ('tencent/gpt-6.1-sol', 'tencent/claude-opus-5.5'), context.get('model')
+        run.setdefault('main_turn_models', {})[context['turn_id']] = context['model']
         turn = context['turn_id']
         if turn not in manifest['project_turns']:
             manifest['project_turns'].append(turn)
@@ -98,8 +100,10 @@ for family, bucket in ledger['families'].items():
         key = (row['thread_id'], row['response_id'])
         assert key not in seen and row['usage_complete'] and row['pricing']['priced']
         seen.add(key)
-        assert row['model'] == ('tencent/gpt-6.1-sol' if row['source_session_id'] == main
-                                else 'tencent/deepseek-v4.1-flash')
+        if row['source_session_id'] == main:
+            assert row['model'] == run.get('main_turn_models', {}).get(row['turn_id'], 'tencent/gpt-6.1-sol')
+        else:
+            assert row['model'] in ('tencent/deepseek-v4.1-flash', 'tencent/deepseek-v4-pro-ioa')
     usage = {key: sum(row['actual_usage'][key] for row in records) for key in bucket['actual_usage']}
     amount = sum((Decimal(str(row['pricing']['estimated_usd']['total'])) for row in records), Decimal(0))
     families[family] = dict(record_count=len(records), actual_usage=usage,
@@ -141,11 +145,13 @@ old = cost_path.read_text(encoding='utf-8')
 assert heading not in old
 lines = ['', heading, '', 'Observed cutoff: **' + snapshot['cutoff_utc'] + '**; complete, Unknown 0, malformed 0.',
          'Snapshot: `evidence/' + path.name + '`. This subset is already in cumulative totals; never add it again.',
-         '97% cache is a price assumption only. Actual cache is preserved; pricing/FX remain pinned to verified 2026-10-28 sources.',
+         '97% cache is a price assumption only. Actual cache is preserved; GPT/DeepSeek/FX pinned to verified 2026-10-28 sources, Claude Opus 5.5 to official pricing checked 2026-10-30.',
          '', '| Family | Responses | Actual input | Actual cache | Actual output | Reasoning (included) | Reference USD |',
          '| --- | ---: | ---: | ---: | ---: | ---: | ---: |']
-for family in ['GPT', 'DeepSeek', 'Unknown']:
-    bucket = families[family]
+for family in ['GPT', 'Claude', 'DeepSeek', 'Unknown']:
+    bucket = families.get(family)
+    if bucket is None:
+        continue
     usage = bucket['actual_usage']
     price = money(bucket['estimated_usd']) if bucket['estimated_usd'] is not None else 'N/A (no records)'
     lines.append(f"| {family} | {bucket['record_count']} | {usage['input_tokens']:,} | {usage['cached_input_tokens']:,} | {usage['output_tokens']:,} | {usage['reasoning_output_tokens']:,} | {price} |")

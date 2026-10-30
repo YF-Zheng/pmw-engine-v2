@@ -112,3 +112,34 @@ Always hook actions keep existing neutral cost and Hook false-skip semantics.
 Exercise null/absent basic identities, new conditional-basic privilege rejection,
 same parsed Skill player/NPC pre-cost mana5/cost4 boundary, current-state change,
 normal save/load rebuild, false rollback and C4.2 passive compatibility.
+
+## Main Explicit Legacy Fixture Exception After Real Full Failure
+
+First frozen full run is preserved:1 failed,883 passed/3335 subtests,292 unchanged
+Python hashes. The sole failure is accepted C4.1 owner positive execution test
+test_normal_timed_player_and_npc_actions_with_accepted_condition: its input
+all(None,not(None)) is identically FALSE yet expects two paid successful casts.
+Parser-accepted shape never implied a logically true eligibility condition.
+The old test inadvertently depended on the omission now intentionally fixed;
+do not bypass the new production gate or change False semantics to make it pass.
+
+Explicit bounded exception to Main's earlier byte-immutability policy: one
+DeepSeek owner may edit ONLY that test's condition assignment, replacing
+not(None) with not(not(None)). This increases operator coverage and makes the
+positive predicate TRUE; every existing runtime/cost assertion remains exact.
+No other old-test or production edit. Main preserved exact Git original bytes
+in evidence/c4_active_main_legacy_condition_original.py and actual truth values
+in c4_active_main_legacy_fixture_rootcause.json. Independent reviewer owns a
+distinct NEW test/report: verify all non-fixture ASTs and assertion statements
+unchanged, exercise the ORIGINAL false expression on the real parsed/equipped
+timed player/NPC bridge and require full atomic rejection/no cost/time, then
+the corrected true expression must retain exact original positive Mana/Tick
+outcomes. This is a reviewed positive-fixture correction plus stronger negative
+coverage,not deleting/weakening tests or fabricating stage passage. All other94
+old tests,Core23/Alpha13 remain byte-identical. Report this exception honestly;
+do not continue claiming95 unchanged test files. New fix child IDs are separate
+actual responses/task snapshot c4_3_fixture; never recapture c4_3 expense twice.
+
+This exception does not authorize source changes by QA or a game-code workaround.
+After independent review and a new unique frozen full run, continue the queued
+Dynamics target only if time/budget gates permit. Full P1/P2 remain open.

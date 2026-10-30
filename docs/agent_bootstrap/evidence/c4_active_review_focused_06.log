@@ -1,0 +1,381 @@
+....FFFF                                                         [100%]
+================================== FAILURES ===================================
+_ TypedBoundaryTests.test_condition_reads_current_area_and_target_bounds (label='field') _
+
+self = <test_sandbox_active_condition_review.TypedBoundaryTests testMethod=test_condition_reads_current_area_and_target_bounds>
+
+    def test_condition_reads_current_area_and_target_bounds(self):
+        cases = (
+            (
+                "field",
+                {"field": {
+                    "subject": "current_area",
+                    "key": "heat",
+                    "comparator": "gte",
+                    "value": 3.0,
+                }},
+                PLAYER,
+                True,
+            ),
+            (
+                "target",
+                _acting_condition("hp", "gte", 40, "target_actor"),
+                NPC,
+                True,
+            ),
+            (
+                "out_of_range",
+                _acting_condition("mana", "gte", 200, "self"),
+                PLAYER,
+                False,
+            ),
+        )
+        profile = _profile()
+        for label, condition, actor_id, should_accept in cases:
+            with self.subTest(label=label):
+                skill = _parse_skill(_skill_document(
+                    skill_id=f"c43_{label}",
+                    condition=condition,
+                    effect=_self_heal_effect(f"c43_{label}_heal"),
+                ))
+                fixture = _fixture(
+                    skills=(skill,),
+                    profiles=(profile,),
+                    npc=5.0,
+                )
+                _equip(fixture["runtime"], actor_id, skill)
+                before = _snapshot(fixture["session"])
+                if should_accept:
+                    result = submit_timed_primary_action(
+                        fixture["session"],
+                        fixture["registry"],
+                        ActionRequest(
+                            f"c43_{label}_request",
+                            actor_id,
+                            skill.id,
+                            NPC if actor_id != NPC else PLAYER,
+                        ),
+                    )
+                    self.assertIsNotNone(result.action.event_result)
+>                   self.assertEqual(
+                        (fixture["session"].state.tick,
+                         fixture["session"].state.sim_time),
+                        (1, 1.0),
+                    )
+E                   AssertionError: Tuples differ: (0, 1.0) != (1, 1.0)
+E                   
+E                   First differing element 0:
+E                   0
+E                   1
+E                   
+E                   - (0, 1.0)
+E                   ?  ^
+E                   
+E                   + (1, 1.0)
+E                   ?  ^
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:610: AssertionError
+_ TypedBoundaryTests.test_condition_reads_current_area_and_target_bounds (label='target') _
+
+self = <test_sandbox_active_condition_review.TypedBoundaryTests testMethod=test_condition_reads_current_area_and_target_bounds>
+
+    def test_condition_reads_current_area_and_target_bounds(self):
+        cases = (
+            (
+                "field",
+                {"field": {
+                    "subject": "current_area",
+                    "key": "heat",
+                    "comparator": "gte",
+                    "value": 3.0,
+                }},
+                PLAYER,
+                True,
+            ),
+            (
+                "target",
+                _acting_condition("hp", "gte", 40, "target_actor"),
+                NPC,
+                True,
+            ),
+            (
+                "out_of_range",
+                _acting_condition("mana", "gte", 200, "self"),
+                PLAYER,
+                False,
+            ),
+        )
+        profile = _profile()
+        for label, condition, actor_id, should_accept in cases:
+            with self.subTest(label=label):
+                skill = _parse_skill(_skill_document(
+                    skill_id=f"c43_{label}",
+                    condition=condition,
+                    effect=_self_heal_effect(f"c43_{label}_heal"),
+                ))
+                fixture = _fixture(
+                    skills=(skill,),
+                    profiles=(profile,),
+                    npc=5.0,
+                )
+                _equip(fixture["runtime"], actor_id, skill)
+                before = _snapshot(fixture["session"])
+                if should_accept:
+                    result = submit_timed_primary_action(
+                        fixture["session"],
+                        fixture["registry"],
+                        ActionRequest(
+                            f"c43_{label}_request",
+                            actor_id,
+                            skill.id,
+                            NPC if actor_id != NPC else PLAYER,
+                        ),
+                    )
+                    self.assertIsNotNone(result.action.event_result)
+>                   self.assertEqual(
+                        (fixture["session"].state.tick,
+                         fixture["session"].state.sim_time),
+                        (1, 1.0),
+                    )
+E                   AssertionError: Tuples differ: (0, 1.0) != (1, 1.0)
+E                   
+E                   First differing element 0:
+E                   0
+E                   1
+E                   
+E                   - (0, 1.0)
+E                   ?  ^
+E                   
+E                   + (1, 1.0)
+E                   ?  ^
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:610: AssertionError
+_ IdentityAndTimingTests.test_basic_identity_oracle_and_conditional_counterfeit_rejected _
+
+self = <test_sandbox_active_condition_review.IdentityAndTimingTests testMethod=test_basic_identity_oracle_and_conditional_counterfeit_rejected>
+
+    def test_basic_identity_oracle_and_conditional_counterfeit_rejected(self):
+        expected = _historical_basic_hashes()
+        current = basic_registry().actions
+        self.assertEqual(
+            {key: current[key].canonical_hash for key in expected},
+            expected,
+        )
+        absent = deepcopy(basic_registry_document())
+        null = deepcopy(basic_registry_document())
+        absent_before = deepcopy(absent)
+        null_before = deepcopy(null)
+        for doc in (absent, null):
+            for row in doc["actions"]:
+                if row["id"] in expected:
+                    row.pop("condition", None)
+        for row in null["actions"]:
+            if row["id"] in expected:
+                row["condition"] = None
+        absent_registry = ActionRegistry.parse(absent)
+        null_registry = ActionRegistry.parse(null)
+        self.assertEqual(absent, absent_before)
+>       self.assertEqual(null, null_before)
+E       AssertionError: {'pro[684 chars]0}]}], 'condition': None}, {'id': 'basic_guard[846 chars]ne}]} != {'pro[684 chars]0}]}]}, {'id': 'basic_guard', 'version': 1, 'a[789 chars]}]}]}
+E       Diff is 2859 characters long. Set self.maxDiff to None to see it.
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:713: AssertionError
+_ IdentityAndTimingTests.test_cost_modifier_timing_and_effect_condition_remain_distinct _
+
+self = <test_sandbox_active_condition_review.IdentityAndTimingTests testMethod=test_cost_modifier_timing_and_effect_condition_remain_distinct>
+
+    def test_cost_modifier_timing_and_effect_condition_remain_distinct(self):
+        raw = _skill_document(
+            condition=_acting_condition(),
+            effect={
+                "id": "self_heal",
+                "kind": "heal",
+                "target": {"kind": "self"},
+                "commitment": "conditional",
+                "amount": 2.0,
+                "condition": _acting_condition("mana", "gte", 5),
+            },
+        )
+        raw["effects"] = [raw["effects"][0]]
+        # Use a normal Skill action first, then a direct trusted Action document
+        # to prove quote timing is separate from post-cost Effect predicates.
+        skill = _parse_skill(raw)
+        self.assertEqual(skill.action.cost.mana, 4.0)
+        direct = parse_action_definition(
+            {
+                "id": "c43_cost_timing",
+                "version": 1,
+                "action_type": "skill",
+                "cost": {"duration": 1, "mana": 4.0},
+                "scope": {"selectors": ["self"], "relation_types": []},
+                "effects": [raw["effects"][0]],
+                "cost_modifiers": [{
+                    "id": "c43_quote_modifier",
+                    "condition": _acting_condition("mana", "gte", 5),
+                    "duration_add": 1,
+                    "mana_add": 1.0,
+                }],
+            },
+            basic_registry().statuses,
+        )
+        self.assertIsNotNone(direct)
+        profile = _profile()
+        fixture = _fixture(skills=(skill,), profiles=(profile,))
+        runtime_registry = ActionRegistry(
+            (*basic_registry().actions.values(), direct),
+            basic_registry().statuses.values(),
+        )
+        _actor_component(fixture["session"], PLAYER)["active_equipped"][0] = {
+            "id": direct.id,
+            "version": direct.version,
+            "canonical_hash": direct.canonical_hash,
+            "kind": "skill_blueprint",
+        }
+>       outcome = _resolve_action(
+                  ^^^^^^^^^^^^^^^
+            fixture["session"],
+            runtime_registry,
+            ActionRequest("c43_cost_timing_request", PLAYER, direct.id),
+        )
+E       NameError: name '_resolve_action' is not defined
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:814: NameError
+_ ContinuityTests.test_c42_passive_dispatch_continues_with_c43_condition_skill _
+
+self = <test_sandbox_active_condition_review.ContinuityTests testMethod=test_c42_passive_dispatch_continues_with_c43_condition_skill>
+
+    def test_c42_passive_dispatch_continues_with_c43_condition_skill(self):
+        active = _parse_skill(_skill_document(effect=_self_heal_effect()))
+        fired_raw = {
+            "protocol": "pmw-gameplay-v0.4",
+            "kind": "passive_blueprint",
+            "id": "c43_passive_shield_true",
+            "version": 1,
+            "trigger": "damage_resolved",
+            "condition": None,
+            "duration": None,
+            "cost": {"duration": 1, "mana": 0.0},
+            "scope": {
+                "selectors": ["self", "target_actor"],
+                "relation_types": [],
+            },
+            "effects": [{
+                "id": "passive_shield",
+                "kind": "shield",
+                "target": {"kind": "self"},
+                "commitment": "required",
+                "amount": 7.0,
+            }],
+            "budget": {"limit": 8.0},
+            "max_firings_per_root": 1,
+            "material_ids": [MATERIAL_ID],
+        }
+        fired_passive = parse_skill_blueprint(
+            fired_raw,
+            basic_registry().statuses,
+            material_authority((_material(),)),
+        )
+        skipped_raw = deepcopy(fired_raw)
+        skipped_raw["id"] = "c43_passive_shield_false"
+        skipped_raw["condition"] = _acting_condition("hp", "lt", 0)
+        skipped_passive = parse_skill_blueprint(
+            skipped_raw,
+            basic_registry().statuses,
+            material_authority((_material(),)),
+        )
+        profile = _profile()
+        fixture = _fixture(
+            skills=(active, fired_passive, skipped_passive),
+            profiles=(profile,),
+            npc=5.0,
+        )
+        _equip_both(fixture["runtime"], active)
+        change_loadout(
+            fixture["session"],
+            fixture["runtime"].manifest,
+            actor_id=PLAYER,
+            operation="equip_passive",
+            skill=skill_ref(fired_passive),
+            slot=0,
+        )
+        change_loadout(
+            fixture["session"],
+            fixture["runtime"].manifest,
+            actor_id=NPC,
+            operation="equip_passive",
+            skill=skill_ref(skipped_passive),
+            slot=0,
+        )
+        fired_hash = fired_passive.action.canonical_hash
+        skipped_hash = skipped_passive.action.canonical_hash
+        before_passive = _snapshot(fixture["session"])
+        npc_before = deepcopy(_actor_component(fixture["session"], NPC))
+        player_before = deepcopy(_actor_component(fixture["session"], PLAYER))
+        result = resolve_action(
+            fixture["session"],
+            fixture["registry"],
+            ActionRequest("c43_passive_root", NPC, "basic_attack", PLAYER),
+        )
+        fired = tuple(row for row in result.auto_hooks if row.status == "fired")
+        skipped = tuple(row for row in result.auto_hooks if row.status == "skipped")
+        self.assertGreaterEqual(len(fired), 1)
+>       self.assertEqual(len(skipped), 1)
+E       AssertionError: 0 != 1
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:955: AssertionError
+__ ContinuityTests.test_checkpoint_continuation_preserves_condition_and_cast __
+experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: insufficient mana
+
+During handling of the above exception, another exception occurred:
+
+self = <test_sandbox_active_condition_review.ContinuityTests testMethod=test_checkpoint_continuation_preserves_condition_and_cast>
+
+    def test_checkpoint_continuation_preserves_condition_and_cast(self):
+        skill = _parse_skill(_skill_document(
+            condition=_acting_condition("hp", "gte", 40),
+            effect=_self_heal_effect(),
+        ))
+        profile = _profile()
+        fixture = _fixture(skills=(skill,), profiles=(profile,), npc=0.0)
+        _equip_both(fixture["runtime"], skill)
+        before = _persistent_snapshot(fixture["session"])
+        with tempfile.TemporaryDirectory(dir=REVIEW_TMP) as directory:
+            path = Path(directory) / "c43-active-condition.json"
+            save_registry_checkpoint(path, fixture["runtime"])
+            restored = load_registry_checkpoint(path, fixture["compiled"])
+        self.assertEqual(_persistent_snapshot(restored.session),
+                         before)
+        self.assertEqual(
+            restored.blueprints[(SKILL_ID, 1)].canonical_hash,
+            skill.canonical_hash,
+        )
+        self.assertEqual(
+            restored.action_registry.actions[SKILL_ID].canonical_hash,
+            skill.action.canonical_hash,
+        )
+        restored_fixture = {
+            "session": restored.session,
+            "registry": restored.action_registry,
+        }
+        accepted = _cast(restored_fixture, "c43_after_load_true", PLAYER)
+        self.assertEqual(accepted.action.cost.mana, 4.0)
+        self.assertEqual(
+            _actor_component(restored.session, PLAYER)["hp"],
+            42.0,
+        )
+        after_accept = _snapshot(restored.session)
+>       with self.assertRaisesRegex(
+            GameplayContractError,
+            "action condition is not satisfied",
+        ):
+E       AssertionError: "action condition is not satisfied" does not match "insufficient mana"
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:869: AssertionError
+=========================== short test summary info ===========================
+SUBFAILED(label='field') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::TypedBoundaryTests::test_condition_reads_current_area_and_target_bounds
+SUBFAILED(label='target') experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::TypedBoundaryTests::test_condition_reads_current_area_and_target_bounds
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::IdentityAndTimingTests::test_basic_identity_oracle_and_conditional_counterfeit_rejected
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::IdentityAndTimingTests::test_cost_modifier_timing_and_effect_condition_remain_distinct
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::ContinuityTests::test_c42_passive_dispatch_continues_with_c43_condition_skill
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::ContinuityTests::test_checkpoint_continuation_preserves_condition_and_cast
+6 failed, 4 passed, 6 subtests passed in 1.62s

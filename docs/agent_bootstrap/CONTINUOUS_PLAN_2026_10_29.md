@@ -32,7 +32,7 @@ heartbeat remains paused; this is continuous work in the current active turn.
 | C1 | Fix rate-only Process false rejection and genuine optional-schema defect; native/formal timed player/NPC, rollback/replay; 776 tests/3,180 subtests, 276 immutable hashes | accepted a4ad912 |
 | C2 | Bounded finite Stock-fed Field source on existing clock; explicit source/conservation, local authority, duration/ownership and staged Action tests | accepted:793/3,195,279 immutable hashes; local checkpoint |
 | C3 | Typed Relation modification using existing topology/lifecycle Laws; endpoint/type/scope/material rejection and actual downstream behavior | accepted804/3,226,282 immutable hashes; local checkpoint |
-| C4 | Bound shared condition parsing, then fix actual equipped damage-passive auto-dispatch gap; continue remaining P1 Operator/condition/lifecycle/budget gaps and ten formal player/NPC scenarios | C4.1 accepted835/3,304/284; C4.2 accepted869/3,325/287; C4.3 next; P1 not accepted |
+| C4 | Bound shared condition parsing, then fix actual equipped damage-passive auto-dispatch gap; continue remaining P1 Operator/condition/lifecycle/budget gaps and ten formal player/NPC scenarios | C4.1 accepted835/3,304/284; C4.2 accepted869/3,325/287; C4.3 accepted884/3,335/294 (one reviewed legacy fixture exception); C4.4 Dynamics next; P1 not accepted |
 | C5 | Only after P1: versioned multi-trigger IR/typed selectors/conditions, one compiler/runtime and 30 data-only reference skills with adversarial/replay gates | gated by P1 |
 | C6 | Only after P2: real bounded Flash generation/evaluation, then Alpha generated-skill slice and public playtest-driven iteration | gated by P1 and P2 |
 
@@ -93,3 +93,5 @@ production scope overlap, no native-only acceptance, no generator calls.
 After parser safety and actual damage passive dispatch: C4_ACTIVE_CONDITION_DESIGN.md. Main real formal parsed/equipped timed false-condition Skill still activated and spent Mana/Tick (evidence/c4_active_condition_before.json). This is queued production defect evidence, not fixed by parser safety or accepted P1. Proceed sequentially; no concurrent Actions ownership.
 
 C4.2 accepted through independent21/13 and full869/3325,287 immutable hashes. Next C4.3 actual active-condition gate, then queued C4_DYNAMICS_ACTION_DESIGN.md if time/budget permit. Do not stop after this increment.
+
+C4.3 accepted (884/3,335, 294 immutable hashes, one reviewed legacy fixture correction). User extended the run on 2026-10-30; continue C4.4 typed Dynamics Action bridge next, sequential ownership, no generator calls before full P1/P2.

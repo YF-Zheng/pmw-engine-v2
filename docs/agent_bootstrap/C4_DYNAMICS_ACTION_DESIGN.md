@@ -81,3 +81,29 @@ Four production files is proposed scope, not yet an authorization to edit.
 Do not claim complete seven-Operator language, global CPU/query/per-Tick budgets,
 unit/Discrete/Derived catalog or ten complete P1 scenarios from this slice.
 Stop/close safely near20:10 +08:00; do not start an oversized final increment.
+
+## Frozen Schema And Validation Details Before Delegation
+
+New Effect-only id/field_id use the existing bounded lowercase identifier
+grammar (no dotted component paths). Add trailing typed fields to EffectSpec
+without changing positional meanings/defaults of any old Effect. Explicit raw
+new fields are mandatory; null/bool/string/NaN/infinity and unknown extras reject.
+The new base shared material budget cost is3 points plus the existing duration
+and term cost accounting. Existing numeric rate/multiplier bounds are a narrow
+normalized language limit,not a claim of universal physical Field units.
+
+Native validate_source must run against one actual matching registered current
+Area FieldProfile/definition. Source ID is bounded deterministic digest over
+request/effect/owner identity. Before publication inspect all current persistent
+and temporary active curve priorities; reject a duplicate rather than trusting
+the source's priority to automatically win. Do not call an unmanaged apply_source
+that publishes outside the Action transaction; prepare values and reuse actual
+Action source slot apply/expiry Laws on the staged session. Verify those accepted
+Laws/deltas/schedule and real Tick diagnostics,not just returned planned values.
+
+Do not accept a new modifier with another source writer on the same resolved
+Field/selector footprint. Allow unrelated impulse/other-Field effects as existing
+contracts allow; do not globally redefine old modifier document acceptance.
+Source expiry at now+duration follows existing scheduler-before-Tick semantics:
+an override at time0 with duration3 affects Tick1/2 and expires before Tick3.
+Preserve that real wall-time rule,not a new off-by-one clock or snapshot reset.

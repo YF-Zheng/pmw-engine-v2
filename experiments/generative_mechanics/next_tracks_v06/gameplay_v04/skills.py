@@ -134,6 +134,8 @@ def parse_skill_blueprint(raw: Any, statuses: Mapping[str, StatusSpec], authorit
         "id": skill_id, "version": version, "action_type": "skill", "cost": raw["cost"],
         "scope": raw["scope"], "effects": raw["effects"],
     }
+    if kind == "skill_blueprint" and raw["condition"] is not None:
+        action_raw["condition"] = raw["condition"]
     action = parse_action_definition(action_raw, statuses, f"{path}.action")
     if kind == "passive_blueprint" and (action.cost.mana != 0 or action.cost.duration != 1):
         raise GameplayContractError(f"{path} passive hook action must use the neutral 1/0 cost")

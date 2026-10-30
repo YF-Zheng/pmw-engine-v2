@@ -1,0 +1,74 @@
+{
+  "after": {
+    "budget": {
+      "last_reason": "exploration",
+      "remaining_ticks": 2,
+      "spent_ticks": 1,
+      "total_ticks": 3
+    },
+    "hp": 42.0,
+    "mana": 4.0,
+    "sim_time": 1.0,
+    "state_sha256": "7872db5760babf517d35367e7267ac96dc6f1319809668480e083a780d878e47",
+    "tick": 0
+  },
+  "baseline_commit": "576048b0f4796695a63883b46c6c62b03ef92b8b",
+  "before": {
+    "budget": {
+      "last_reason": null,
+      "remaining_ticks": 3,
+      "spent_ticks": 0,
+      "total_ticks": 3
+    },
+    "hp": 40.0,
+    "mana": 5.0,
+    "sim_time": 0.0,
+    "state_sha256": "22b8c5ec0c372d9e0ae169174bded1c2d85caff6c4e147608713bb4325d2b7da",
+    "tick": 0
+  },
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONIOENCODING": "utf8",
+    "PYTHONPATH": "C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\docs\\agent_bootstrap\\evidence\\test_tmp\\c4_active_review_baseline_576048b\\src;C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\docs\\agent_bootstrap\\evidence\\test_tmp\\c4_active_review_baseline_576048b",
+    "TEMP": "C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\docs\\agent_bootstrap\\evidence\\test_tmp\\c4_active_review_baseline_576048b",
+    "TMP": "C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\docs\\agent_bootstrap\\evidence\\test_tmp\\c4_active_review_baseline_576048b",
+    "TMPDIR": "C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\docs\\agent_bootstrap\\evidence\\test_tmp\\c4_active_review_baseline_576048b"
+  },
+  "imported_actions_path": "C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\docs\\agent_bootstrap\\evidence\\test_tmp\\c4_active_review_baseline_576048b\\experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\actions.py",
+  "imported_skills_path": "C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2\\docs\\agent_bootstrap\\evidence\\test_tmp\\c4_active_review_baseline_576048b\\experiments\\generative_mechanics\\next_tracks_v06\\gameplay_v04\\skills.py",
+  "outcome_duration": 1,
+  "outcome_present": true,
+  "raised_error": null,
+  "runtime_metadata_unchanged": false,
+  "scope": "Standalone HEAD baseline probe; intentionally fails on the known omitted top-level condition. It is not collected by the permanent review suite.",
+  "skill": {
+    "action_hash": "5103f78005d54e207ecb8afc71fd88862dac4e5823b027baceaa5900be18c906",
+    "condition": {
+      "children": [
+        {
+          "children": [],
+          "comparator": null,
+          "key": null,
+          "kind": "always",
+          "subject": null,
+          "value": null
+        }
+      ],
+      "comparator": null,
+      "key": null,
+      "kind": "not",
+      "subject": null,
+      "value": null
+    },
+    "evaluated_condition": false,
+    "id": "c43_review_false_heal",
+    "skill_hash": "ce6467868adfde0aec1ce1eb98aed527b4f4bb28663fe7d974cd7fae22bfe874",
+    "version": 1
+  },
+  "source_sha256": {
+    "actions.py": "9e2d3589990d7dbf915af00a9a0434241f831903fa92d49ebc542cb8e1f89530",
+    "skills.py": "5e6569c1ad5bbe3304077f8dcdc0e54349f9a75140a470059fa09d5d32b1102a"
+  },
+  "status": "actual_gap_reproduced",
+  "world_unchanged": false
+}

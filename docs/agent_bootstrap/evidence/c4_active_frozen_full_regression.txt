@@ -1,0 +1,73 @@
+........................................................................ [  8%]
+........................................................................ [ 16%]
+........................................................................ [ 24%]
+................................................................................ [ 33%]
+.................................................................................................................................................... [ 50%]
+................................................................. [ 57%]
+................................................................. [ 64%]
+......................................................... [ 71%]
+.................................F.................... [ 77%]
+........................................ [ 82%]
+............................................... [ 87%]
+..................................................................... [ 95%]
+...........................................                              [100%]
+================================== FAILURES ===================================
+_ AcceptedSemanticsTests.test_normal_timed_player_and_npc_actions_with_accepted_condition _
+
+self = <test_sandbox_condition_limits.AcceptedSemanticsTests testMethod=test_normal_timed_player_and_npc_actions_with_accepted_condition>
+
+    def test_normal_timed_player_and_npc_actions_with_accepted_condition(self):
+        condition = {"all": [None, {"not": None}]}
+        skill = _blueprint_with_condition(condition)
+        player = _profile("condition_player", PLAYER_ID)
+        npc = _profile("condition_npc", NPC_ID)
+        runtime, _, _ = _runtime((player, npc), skill=skill, time_budget=6)
+    
+>       player_outcome = submit_timed_primary_action(
+            runtime.session,
+            runtime.action_registry,
+            ActionRequest("condition_player_use", PLAYER_ID, skill.id),
+        )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_condition_limits.py:378: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:623: in submit_timed_primary_action
+    outcome = _resolve_action(staged, registry, request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+session = GameplaySession(runtime=<pmw.runtime.session.WorldRuntime object at 0x0000019F7FE587A0>, profiles=(FieldProfile(entity...l=1.0, target=1.0, rate=0.1, curve='linear', max_persistent_patches=2, max_temporary_modifiers=2), mirror_path=None),))
+registry = <experiments.generative_mechanics.next_tracks_v06.gameplay_v04.actions.ActionRegistry object at 0x0000019F08E58170>
+request = ActionRequest(request_id='condition_player_use', actor_id='player_actor', action_id='start_refining', target_actor_id=None)
+execution_kind = 'primary', hook_context = None, parent_event_id = None
+
+    def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *, execution_kind: str = "primary",
+                        hook_context: Mapping[str, Any] | None = None,
+                        parent_event_id: str | None = None) -> ActionOutcome:
+        if execution_kind not in {"primary", "hook"}: raise GameplayContractError("invalid action execution kind")
+        if (execution_kind == "hook") != (hook_context is not None): raise GameplayContractError("hook execution requires trusted hook context")
+        if parent_event_id is not None and execution_kind != "hook":
+            raise GameplayContractError("parent event is valid only for hook execution")
+        definition = registry.actions.get(request.action_id)
+        if definition is None: raise GameplayContractError("unknown registered action")
+        actor_entity = session.state.entities.get(request.actor_id)
+        if actor_entity is None or ACTOR_COMPONENT not in actor_entity.components: raise GameplayContractError("request actor is not an Actor")
+        actor = _actor_view(actor_entity)
+        if actor["hp"] <= 0: raise GameplayContractError("defeated Actor cannot act")
+        target_entity = session.state.entities.get(request.target_actor_id) if request.target_actor_id else None
+        if request.target_actor_id and (target_entity is None or ACTOR_COMPONENT not in target_entity.components): raise GameplayContractError("target is not an Actor")
+        context = SelectorContext(request.actor_id, request.target_actor_id)
+        shadow = {request.actor_id: deepcopy(actor)}
+        if target_entity is not None: shadow[target_entity.id] = _actor_view(target_entity)
+        if (execution_kind == "primary" and
+                not evaluate_condition(
+                    definition.condition,
+                    _condition_context(session, request, shadow),
+                )):
+>           raise GameplayContractError("action condition is not satisfied")
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: action condition is not satisfied
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\actions.py:304: GameplayContractError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::AcceptedSemanticsTests::test_normal_timed_player_and_npc_actions_with_accepted_condition
+1 failed, 883 passed, 3335 subtests passed in 398.01s (0:06:38)

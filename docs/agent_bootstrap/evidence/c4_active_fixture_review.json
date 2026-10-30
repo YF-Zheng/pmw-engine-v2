@@ -1,0 +1,333 @@
+{
+  "corrected_true": {
+    "condition": {
+      "all": [
+        null,
+        {
+          "not": {
+            "not": null
+          }
+        }
+      ]
+    },
+    "npc_duration": 2,
+    "npc_mana_after": 16.0,
+    "npc_mana_before": 20.0,
+    "npc_process": {
+      "duration_ticks": 3,
+      "elapsed_ticks": 2,
+      "expiry_handle": "pmw:v04:sandbox.process.expiry:condition_npc",
+      "hard_deadline": 5.0,
+      "last_failure": null,
+      "last_step": 4,
+      "max_rate": 2.0,
+      "owner": "npc_actor",
+      "profile_hash": "f415a1b03988fc7bc7469587badbeaaa8c9bd8c6bfff8ea280c480cdbc0151ee",
+      "profile_id": "condition_npc",
+      "progress": 0.6666666666666666,
+      "rate": 1.0,
+      "remaining_ticks": 1,
+      "started_at": 2.0,
+      "state": "running",
+      "template_id": "refine_material"
+    },
+    "passed": true,
+    "player_duration": 2,
+    "player_mana_after": 16.0,
+    "player_mana_before": 20.0,
+    "player_process": {
+      "duration_ticks": 3,
+      "elapsed_ticks": 2,
+      "expiry_handle": null,
+      "hard_deadline": 3.0,
+      "last_failure": null,
+      "last_step": 2,
+      "max_rate": 2.0,
+      "owner": "player_actor",
+      "profile_hash": "13fa8f5063f956214ed022f091b656472ebb435e0bbcc52ad527f9d63e7226c3",
+      "profile_id": "condition_player",
+      "progress": 1.0,
+      "rate": 1.0,
+      "remaining_ticks": 0,
+      "started_at": 0.0,
+      "state": "stopped",
+      "template_id": "refine_material"
+    },
+    "revision": 19,
+    "schedule": [
+      {
+        "id": "pmw:v04:sandbox.process.expiry:condition_npc",
+        "payload": {
+          "profile_hash": "f415a1b03988fc7bc7469587badbeaaa8c9bd8c6bfff8ea280c480cdbc0151ee",
+          "profile_id": "condition_npc"
+        },
+        "provenance": {
+          "kind": "scheduled",
+          "parent_event": "derived:pmw:v04:action:corrected_npc:000001"
+        },
+        "source": "npc_actor",
+        "target": "process_condition_npc",
+        "time": 5.0,
+        "type": "pmw.v04.sandbox.process.expire"
+      }
+    ],
+    "sim_time": 4.0,
+    "stocks": {
+      "condition_npc_ingot": {
+        "amount": 2.0,
+        "capacity": 20.0,
+        "unit": "ingot"
+      },
+      "condition_npc_ore": {
+        "amount": 6.0,
+        "capacity": 20.0,
+        "unit": "ore"
+      },
+      "condition_player_ingot": {
+        "amount": 2.0,
+        "capacity": 20.0,
+        "unit": "ingot"
+      },
+      "condition_player_ore": {
+        "amount": 6.0,
+        "capacity": 20.0,
+        "unit": "ore"
+      }
+    },
+    "tick": 1,
+    "time_budget": {
+      "last_reason": "exploration",
+      "remaining_ticks": 2,
+      "spent_ticks": 4,
+      "total_ticks": 6
+    }
+  },
+  "expressions": {
+    "corrected": {
+      "all": [
+        null,
+        {
+          "not": {
+            "not": null
+          }
+        }
+      ]
+    },
+    "original": {
+      "all": [
+        null,
+        {
+          "not": null
+        }
+      ]
+    }
+  },
+  "original_false_npc": {
+    "actor_id": "npc_actor",
+    "condition": {
+      "all": [
+        null,
+        {
+          "not": null
+        }
+      ]
+    },
+    "error": "action condition is not satisfied",
+    "mana_after": 20.0,
+    "mana_before": 20.0,
+    "passed": true,
+    "processes": {
+      "condition_npc": {
+        "duration_ticks": 3,
+        "elapsed_ticks": 0,
+        "expiry_handle": null,
+        "hard_deadline": null,
+        "last_failure": null,
+        "last_step": -1,
+        "max_rate": 2.0,
+        "owner": "npc_actor",
+        "profile_hash": "f415a1b03988fc7bc7469587badbeaaa8c9bd8c6bfff8ea280c480cdbc0151ee",
+        "profile_id": "condition_npc",
+        "progress": 0.0,
+        "rate": 1.0,
+        "remaining_ticks": 3,
+        "started_at": null,
+        "state": "stopped",
+        "template_id": "refine_material"
+      },
+      "condition_player": {
+        "duration_ticks": 3,
+        "elapsed_ticks": 0,
+        "expiry_handle": null,
+        "hard_deadline": null,
+        "last_failure": null,
+        "last_step": -1,
+        "max_rate": 2.0,
+        "owner": "player_actor",
+        "profile_hash": "13fa8f5063f956214ed022f091b656472ebb435e0bbcc52ad527f9d63e7226c3",
+        "profile_id": "condition_player",
+        "progress": 0.0,
+        "rate": 1.0,
+        "remaining_ticks": 3,
+        "started_at": null,
+        "state": "stopped",
+        "template_id": "refine_material"
+      }
+    },
+    "raised": true,
+    "revision": 2,
+    "schedule": [],
+    "sim_time": 0.0,
+    "snapshot_equal": true,
+    "stocks": {
+      "condition_npc_ingot": {
+        "amount": 0.0,
+        "capacity": 20.0,
+        "unit": "ingot"
+      },
+      "condition_npc_ore": {
+        "amount": 10.0,
+        "capacity": 20.0,
+        "unit": "ore"
+      },
+      "condition_player_ingot": {
+        "amount": 0.0,
+        "capacity": 20.0,
+        "unit": "ingot"
+      },
+      "condition_player_ore": {
+        "amount": 10.0,
+        "capacity": 20.0,
+        "unit": "ore"
+      }
+    },
+    "tick": 0,
+    "time_budget": {
+      "last_reason": null,
+      "remaining_ticks": 6,
+      "spent_ticks": 0,
+      "total_ticks": 6
+    }
+  },
+  "original_false_player": {
+    "actor_id": "player_actor",
+    "condition": {
+      "all": [
+        null,
+        {
+          "not": null
+        }
+      ]
+    },
+    "error": "action condition is not satisfied",
+    "mana_after": 20.0,
+    "mana_before": 20.0,
+    "passed": true,
+    "processes": {
+      "condition_npc": {
+        "duration_ticks": 3,
+        "elapsed_ticks": 0,
+        "expiry_handle": null,
+        "hard_deadline": null,
+        "last_failure": null,
+        "last_step": -1,
+        "max_rate": 2.0,
+        "owner": "npc_actor",
+        "profile_hash": "f415a1b03988fc7bc7469587badbeaaa8c9bd8c6bfff8ea280c480cdbc0151ee",
+        "profile_id": "condition_npc",
+        "progress": 0.0,
+        "rate": 1.0,
+        "remaining_ticks": 3,
+        "started_at": null,
+        "state": "stopped",
+        "template_id": "refine_material"
+      },
+      "condition_player": {
+        "duration_ticks": 3,
+        "elapsed_ticks": 0,
+        "expiry_handle": null,
+        "hard_deadline": null,
+        "last_failure": null,
+        "last_step": -1,
+        "max_rate": 2.0,
+        "owner": "player_actor",
+        "profile_hash": "13fa8f5063f956214ed022f091b656472ebb435e0bbcc52ad527f9d63e7226c3",
+        "profile_id": "condition_player",
+        "progress": 0.0,
+        "rate": 1.0,
+        "remaining_ticks": 3,
+        "started_at": null,
+        "state": "stopped",
+        "template_id": "refine_material"
+      }
+    },
+    "raised": true,
+    "revision": 2,
+    "schedule": [],
+    "sim_time": 0.0,
+    "snapshot_equal": true,
+    "stocks": {
+      "condition_npc_ingot": {
+        "amount": 0.0,
+        "capacity": 20.0,
+        "unit": "ingot"
+      },
+      "condition_npc_ore": {
+        "amount": 10.0,
+        "capacity": 20.0,
+        "unit": "ore"
+      },
+      "condition_player_ingot": {
+        "amount": 0.0,
+        "capacity": 20.0,
+        "unit": "ingot"
+      },
+      "condition_player_ore": {
+        "amount": 10.0,
+        "capacity": 20.0,
+        "unit": "ore"
+      }
+    },
+    "tick": 0,
+    "time_budget": {
+      "last_reason": null,
+      "remaining_ticks": 6,
+      "spent_ticks": 0,
+      "total_ticks": 6
+    }
+  },
+  "patch_surface": {
+    "all_other_ast_identical": true,
+    "assignment_count_is_one_each": true,
+    "ast_node_count": {
+      "HEAD": 2114,
+      "WORKTREE": 2114
+    },
+    "diff_check": [
+      "diff --git a/experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py b/experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py",
+      "index d18bb46..03fe932 100644",
+      "--- a/experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py",
+      "+++ b/experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py",
+      "@@ -369,7 +369,7 @@ class AcceptedSemanticsTests(unittest.TestCase):",
+      "         ))",
+      " ",
+      "     def test_normal_timed_player_and_npc_actions_with_accepted_condition(self):",
+      "-        condition = {\"all\": [None, {\"not\": None}]}",
+      "+        condition = {\"all\": [None, {\"not\": {\"not\": None}}]}",
+      "         skill = _blueprint_with_condition(condition)",
+      "         player = _profile(\"condition_player\", PLAYER_ID)",
+      "         npc = _profile(\"condition_npc\", NPC_ID)"
+    ],
+    "head_assignment": [
+      "condition = {'all': [None, {'not': None}]}"
+    ],
+    "worktree_assignment": [
+      "condition = {'all': [None, {'not': {'not': None}}]}"
+    ]
+  },
+  "probe": "c4_active_fixture_review_probe.py",
+  "repository_root": "C:\\Users\\orinzheng\\Documents\\Codex\\2026-10-28\\magpie-codex-deepseek-17-21-codex\\pmw-engine-v2",
+  "target_test": "test_normal_timed_player_and_npc_actions_with_accepted_condition",
+  "test_path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py",
+  "verdict": "ACCEPT"
+}

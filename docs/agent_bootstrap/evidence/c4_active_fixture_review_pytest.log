@@ -1,0 +1,33 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\python.exe
+rootdir: C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2
+configfile: pyproject.toml
+collecting ... collected 22 items
+
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::DefaultBoundaryTests::test_alternating_operators_are_depth_bounded PASSED [  4%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::DefaultBoundaryTests::test_children_exact_boundary_and_one_over PASSED [  9%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::DefaultBoundaryTests::test_cyclic_python_dict_rejects_with_bounded_depth PASSED [ 13%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::DefaultBoundaryTests::test_depth_exact_boundary_and_one_over PASSED [ 18%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::DefaultBoundaryTests::test_frozen_limits_and_invalid_values_are_rejected 
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::DefaultBoundaryTests::test_frozen_limits_and_invalid_values_are_rejected PASSED [ 22%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::DefaultBoundaryTests::test_node_exact_boundary_and_one_over_after_null_is_counted PASSED [ 27%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::DefaultBoundaryTests::test_shared_sibling_budget_and_repeated_calls_do_not_leak PASSED [ 31%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::DefaultBoundaryTests::test_trusted_limits_are_keyword_only_and_type_checked PASSED [ 36%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::SharedEntryPointTests::test_action_registry_and_cost_modifier_use_shared_budget PASSED [ 40%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::SharedEntryPointTests::test_candidate_json_cannot_raise_budgets_and_caller_is_immutable PASSED [ 45%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::SharedEntryPointTests::test_effect_skill_and_hook_entry_points_use_shared_budget PASSED [ 50%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::AcceptedSemanticsTests::test_accepted_skill_canonical_hash_is_stable PASSED [ 54%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::AcceptedSemanticsTests::test_normal_timed_player_and_npc_actions_with_accepted_condition PASSED [ 59%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::AcceptedSemanticsTests::test_pathological_raw_tree_is_atomic_before_execution PASSED [ 63%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::AcceptedSemanticsTests::test_typed_leaf_schema_and_meaning_are_unchanged 
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits.py::AcceptedSemanticsTests::test_typed_leaf_schema_and_meaning_are_unchanged PASSED [ 68%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition.py::ActiveConditionTests::test_action_condition_is_typed_optional_and_immutable 
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition.py::ActiveConditionTests::test_action_condition_is_typed_optional_and_immutable PASSED [ 72%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition.py::ActiveConditionTests::test_altered_nonnull_basic_cannot_gain_slot_free_authority PASSED [ 77%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition.py::ActiveConditionTests::test_checkpoint_rebuild_preserves_condition_semantics PASSED [ 81%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition.py::ActiveConditionTests::test_false_condition_rejects_before_all_side_effects PASSED [ 86%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition.py::ActiveConditionTests::test_null_and_absent_condition_preserve_basic_identity PASSED [ 90%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition.py::ActiveConditionTests::test_passive_action_remains_always_and_hook_condition_separate PASSED [ 95%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition.py::ActiveConditionTests::test_same_parsed_skill_player_npc_pre_cost_boundary_and_current_state PASSED [100%]
+
+=================== 22 passed, 16 subtests passed in 1.60s ====================

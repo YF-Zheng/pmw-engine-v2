@@ -154,3 +154,35 @@ checkpoint; latest actual stable Process gap pays2Ticks/4Mana despite false
 condition (c4_active_main_latest_before.json). C4.4 Dynamics bridge architecture
 is queued only,not implemented. All deadline20:10 +08:00/stop/accounting rules
 remain; current chat continues without altering paused automation/global config.
+
+## Current Public API Path Replay (2026-10-29)
+
+Main replayed the exact19 previously advertised player requests through only
+AlphaSession.new_game/public_state/perform. No hidden WorldState/private methods,
+game-source changes or skill-generation calls. This is a complementary Main
+replay,NOT an independent blind/browser playtest,complete win/loss or P4 gate.
+All13 Alpha Python source hashes were unchanged throughout. Full allowlisted
+public snapshots:evidence/c4_active_main_public_alpha_replay.json.
+
+All19 actions complete without exceptions; still playing in frost_forest,
+public time28,remaining44. Every snapshot satisfies time+remaining=72 and the
+clock advances0->28 (sequence preserved in evidence); latest actual event ticks
+are27/28/28. The original stale-clock finding is not reproduced on current
+protected Alpha. This verifies the prior clock repair,not a new C4.3 UI change.
+Restoration has actual public biomass0.579 after leaving/revisiting; root bridge
+remains not yet grown on this short path. Its inspection still gives generic
+recorded-feature feedback rather than a concrete threshold/expected tick.
+Craft controls after the dais still expose unavailable recipes. These are
+remaining UX/integration findings,not proof that the eventual World transition
+is broken or that complete delayed-world observation/P4 is accepted.
+
+Continue staged mechanics/condition review and queued Dynamics language bridge;
+do not substitute this public API replay for independent mechanics source QA.
+
+## C4.3 Playtest Note
+
+C4.3 changes only mechanics-layer eligibility (false active conditions no longer
+charge or run). No Alpha source changed (13 hashes identical) and no new public
+or blind playtest was performed; the earlier public API replay remains the latest
+Main replay. Remaining UX findings (generic root-bridge feedback, unavailable craft
+controls) are unchanged.

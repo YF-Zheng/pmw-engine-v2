@@ -369,7 +369,7 @@ class AcceptedSemanticsTests(unittest.TestCase):
         ))
 
     def test_normal_timed_player_and_npc_actions_with_accepted_condition(self):
-        condition = {"all": [None, {"not": None}]}
+        condition = {"all": [None, {"not": {"not": None}}]}
         skill = _blueprint_with_condition(condition)
         player = _profile("condition_player", PLAYER_ID)
         npc = _profile("condition_npc", NPC_ID)

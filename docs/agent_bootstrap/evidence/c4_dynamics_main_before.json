@@ -1,0 +1,94 @@
+{
+  "at": "2026-10-29T10:01:34.378924+00:00",
+  "kind": "Actual formal Effect parser gap plus privileged native World Law support only; NOT paid Skill/Alpha/P1 acceptance",
+  "candidate_effect": {
+    "id": "freeze_recovery",
+    "kind": "dynamics_modifier",
+    "target": {
+      "kind": "current_area"
+    },
+    "commitment": "required",
+    "field_id": "humidity",
+    "rate_add": 0.1,
+    "rate_multiplier": 2.0,
+    "curve": "none",
+    "curve_priority": 3,
+    "duration": 3
+  },
+  "actual_parser_rejection": "$.effect.kind is invalid",
+  "native_apply_event_ids": [
+    "pmw:v04:source:apply:c44_area:humidity:native_freeze"
+  ],
+  "actual_world_ticks": [
+    {
+      "step": 1,
+      "value": 0.2,
+      "diagnostics": {
+        "effective_target": 0.8,
+        "effective_rate": 0.0,
+        "effective_curve": "none",
+        "unclamped": 0.2,
+        "clamp_loss": 0.0
+      },
+      "actual_law_ids": [
+        "pmw.v04.dynamics.200.c44_area.humidity.slot_2_none.all",
+        "pmw.v04.dynamics.900.clock_complete"
+      ]
+    },
+    {
+      "step": 2,
+      "value": 0.2,
+      "diagnostics": {
+        "effective_target": 0.8,
+        "effective_rate": 0.0,
+        "effective_curve": "none",
+        "unclamped": 0.2,
+        "clamp_loss": 0.0
+      },
+      "actual_law_ids": [
+        "pmw.v04.dynamics.200.c44_area.humidity.slot_2_none.all",
+        "pmw.v04.dynamics.900.clock_complete"
+      ]
+    },
+    {
+      "step": 3,
+      "value": 0.32000000000000006,
+      "diagnostics": {
+        "effective_target": 0.8,
+        "effective_rate": 0.2,
+        "effective_curve": "linear",
+        "unclamped": 0.32000000000000006,
+        "clamp_loss": 0.0
+      },
+      "actual_law_ids": [
+        "pmw.v04.dynamics.200.c44_area.humidity.base.all",
+        "pmw.v04.dynamics.900.clock_complete"
+      ]
+    },
+    {
+      "step": 4,
+      "value": 0.41600000000000004,
+      "diagnostics": {
+        "effective_target": 0.8,
+        "effective_rate": 0.2,
+        "effective_curve": "linear",
+        "unclamped": 0.41600000000000004,
+        "clamp_loss": 0.0
+      },
+      "actual_law_ids": [
+        "pmw.v04.dynamics.200.c44_area.humidity.base.all",
+        "pmw.v04.dynamics.900.clock_complete"
+      ]
+    }
+  ],
+  "source_sha256_before": {
+    "effects.py": "f0f32975899665b8866d2b230275d73dfe7b75c8faf38a947120328929d339fd",
+    "dynamics.py": "d057121d008fa5a1d4057fbf838fe4018a8d0386a72c7348664bb0ebe7d67dcb",
+    "runtime.py": "e31100617854ed61cb227475cd0a50957be8c0c8d478a3e47b7f6ebbfe26e5c6"
+  },
+  "source_sha256_after": {
+    "effects.py": "f0f32975899665b8866d2b230275d73dfe7b75c8faf38a947120328929d339fd",
+    "dynamics.py": "d057121d008fa5a1d4057fbf838fe4018a8d0386a72c7348664bb0ebe7d67dcb",
+    "runtime.py": "e31100617854ed61cb227475cd0a50957be8c0c8d478a3e47b7f6ebbfe26e5c6"
+  }
+}

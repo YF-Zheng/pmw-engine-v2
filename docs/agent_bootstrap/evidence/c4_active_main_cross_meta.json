@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-29T10:11:45.164764+00:00",
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition.py",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_condition_limits_review.py",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_process_modify_review.py",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_relation_modifier_review.py",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate52_time_transaction.py",
+    "experiments/generative_mechanics/next_tracks_v06/tests/test_sandbox_passive_dispatch.py"
+  ],
+  "exit_code": 0,
+  "source_sha256_before": {
+    "actions.py": "f94afaed4e1d225eb15e48151436f2480b6701754b7be362b9a9b24bfc87bb6a",
+    "skills.py": "2ce87fe45d8964ef5ef16bd76df8e2132a1f24d27fe5ae33192bb98e8678443c"
+  },
+  "source_sha256_after": {
+    "actions.py": "f94afaed4e1d225eb15e48151436f2480b6701754b7be362b9a9b24bfc87bb6a",
+    "skills.py": "2ce87fe45d8964ef5ef16bd76df8e2132a1f24d27fe5ae33192bb98e8678443c"
+  },
+  "source_unchanged": true,
+  "log_sha256": "6140e71c7972dacf8b119bb68acd72382179ea23562b4413c31fdc9fdaa5ff48"
+}

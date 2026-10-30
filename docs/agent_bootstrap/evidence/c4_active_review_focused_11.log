@@ -1,0 +1,26 @@
+F.......                                                         [100%]
+================================== FAILURES ===================================
+_ PreCostSharedSkillTests.test_current_state_reenables_without_registry_rebuild _
+
+self = <test_sandbox_active_condition_review.PreCostSharedSkillTests testMethod=test_current_state_reenables_without_registry_rebuild>
+
+    def test_current_state_reenables_without_registry_rebuild(self):
+        skill = _parse_skill(_skill_document(
+            condition=_acting_condition("mana", "gte", 5),
+            effect=_self_heal_effect(),
+        ))
+        profile = _profile()
+        fixture = _fixture(skills=(skill,), profiles=(profile,), player=5.0, npc=5.0)
+        _equip_both(fixture["runtime"], skill)
+        _cast(fixture, "c43_hp_true", PLAYER)
+        before_false = _snapshot(fixture["session"])
+>       with self.assertRaisesRegex(
+            GameplayContractError,
+            "action condition is not satisfied",
+        ):
+E       AssertionError: GameplayContractError not raised
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_active_condition_review.py:529: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_active_condition_review.py::PreCostSharedSkillTests::test_current_state_reenables_without_registry_rebuild
+1 failed, 7 passed, 8 subtests passed in 1.82s
