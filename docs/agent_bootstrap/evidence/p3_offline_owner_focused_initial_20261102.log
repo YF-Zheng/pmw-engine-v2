@@ -1,0 +1,137 @@
+....F.......F.....F.....................F...                             [100%]
+================================== FAILURES ===================================
+___ test_normalization_preserves_effects_costs_conditions_and_unknown_keys ____
+
+    def test_normalization_preserves_effects_costs_conditions_and_unknown_keys():
+        material = _material(kinds=("damage",), selectors=("target_actor",))
+        document = _document(
+            effect_kind="damage",
+            effects=[{
+                "id": "pulse",
+                "kind": "damage",
+                "target": {"kind": "target_actor"},
+                "commitment": "required",
+                "amount": 4.5,
+                "unknown_effect_field": {"keep": True},
+            }],
+            budget=19.25,
+        )
+        context = build_generation_context(
+            profile="combat",
+            materials=[material],
+            complexity=1,
+            public_known_rules=[],
+            acquired_capabilities=[],
+        )
+        decoded = decode_candidate(_snapshot(document))
+>       with pytest.raises(_CandidateRejection) as rejected:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE _CandidateRejection
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline.py:291: Failed
+_ test_decode_rejects_malformed_json_and_fences[```json\n{"x":1}\n```\n```json\n{"x":2}\n```-incomplete] _
+
+text = '```json\n{"x":1}\n```\n```json\n{"x":2}\n```', reason = 'incomplete'
+
+    @pytest.mark.parametrize(
+        "text, reason",
+        (
+            ("{not JSON}", "invalid JSON"),
+            ('{"x":1,"x":2}', "duplicate JSON key"),
+            ('{"x":NaN}', "non-finite JSON number"),
+            ('{"x":Infinity}', "non-finite JSON number"),
+            ("[]", "root JSON value must be an object"),
+            ('{"x":1} trailing', "invalid JSON"),
+            ('```json\n{"x":1}\n```\n```json\n{"x":2}\n```', "incomplete"),
+            ('```json\n{"x":1}\n``` trailing', "incomplete"),
+            ('```\n{"x":1}\n```', "fence language"),
+        ),
+    )
+    def test_decode_rejects_malformed_json_and_fences(text, reason):
+>       with pytest.raises(_CandidateRejection, match=reason):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'incomplete'
+E         Actual message: 'only one JSON fence is permitted'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline.py:344: AssertionError
+___________ test_repair_limits_zero_one_two_and_maximum_three_calls ___________
+
+    def test_repair_limits_zero_one_two_and_maximum_three_calls():
+        material = _material()
+        bad = _snapshot(_document())
+        good_document = _document(material_id=material.id)
+        good = _snapshot(good_document)
+        for repairs, expected_calls in ((0, 1), (1, 2), (2, 3)):
+            replies = [bad] * expected_calls
+            result, provider, _ = _run(replies, material=material, max_repairs=repairs)
+>           payload = _assert_rejected(result, "repairs_exhausted")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline.py:402: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+result = PipelineResult(canonical_json='{"attempts":[{"accepted":true,"attempt":1,"context_hash":"b38d14712a3b0e3a9515ad79eb6c8...na': 1.0, 'duration': 1}, 'effect_kinds': ('damage',), 'condition_nodes': 2, 'budget': {'limit': 20.0, 'used': 2.0}})))
+stage = 'repairs_exhausted'
+
+    def _assert_rejected(result: PipelineResult, stage: str | None = None):
+        document = result.to_dict()
+>       assert document["status"] == "rejected"
+E       AssertionError: assert 'compiled_unregistered' == 'rejected'
+E         
+E         - rejected
+E         + compiled_unregistered
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline.py:210: AssertionError
+____ test_replay_exhaustion_and_provider_contract_failure_end_immediately _____
+
+    def test_replay_exhaustion_and_provider_contract_failure_end_immediately():
+        result, provider, _ = _run([], max_repairs=2)
+        payload = _assert_rejected(result, "provider_exhausted")
+        assert payload["attempts"] == []
+        assert len(payload["calls"]) == 1
+        assert provider.calls[-1].reply_text is None
+    
+        class ContractBrokenProvider(ReplayProvider):
+            def reply(self, request):
+                return "not-a-replay-reply"
+    
+        provider = ContractBrokenProvider(())
+        result, _, _ = _run([], max_repairs=2, replay=provider)
+>       payload = _assert_rejected(result, "provider_contract")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline.py:537: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+result = PipelineResult(canonical_json='{"attempts":[],"blueprint_hash":null,"calls":[{"attempt":1,"context_hash":"b38d14712a3b...":"16765e0ba05135d2f4bf2ad75878d2dfa839de1c1cb420988e4bb9b5bd7b9367","status":"rejected"}', parsed=None, compiled=None)
+stage = 'provider_contract'
+
+    def _assert_rejected(result: PipelineResult, stage: str | None = None):
+        document = result.to_dict()
+        assert document["status"] == "rejected"
+        assert document["gate_state"] == {
+            "accepted": False,
+            "sandbox": "not_run",
+            "register": "not_available",
+            "usable_pool": False,
+        }
+        assert document["ir"] is None
+        assert document["ir_hash"] is None
+        assert document["blueprint_hash"] is None
+        assert result.parsed is None
+        assert result.compiled is None
+        assert result.accepted is False
+        if stage is not None:
+>           assert stage in {
+                row["stage"] for row in document["attempts"]
+            } | {document["failure"]["stage"]}
+E           AssertionError: assert 'provider_contract' in (set() | {'provider_exhausted'})
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline.py:224: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline.py::test_normalization_preserves_effects_costs_conditions_and_unknown_keys
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline.py::test_decode_rejects_malformed_json_and_fences[```json\n{"x":1}\n```\n```json\n{"x":2}\n```-incomplete]
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline.py::test_repair_limits_zero_one_two_and_maximum_three_calls
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline.py::test_replay_exhaustion_and_provider_contract_failure_end_immediately
+4 failed, 40 passed in 5.21s

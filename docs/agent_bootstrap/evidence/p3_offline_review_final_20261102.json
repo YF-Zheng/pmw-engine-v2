@@ -1,0 +1,53 @@
+{
+  "verdict": "REJECT",
+  "status": "preliminary_pending_owner_fix",
+  "head": "65926940ca48ede699df219a39ef0143df1d2118",
+  "branch": "feature/alpha-v02-seventh-night",
+  "counts": {
+    "PRODUCT_DEFECT": 1,
+    "TEST_GAP": 0,
+    "FIXTURE_ERROR": 0,
+    "SCOPE_NOTE": 0
+  },
+  "defects": [
+    {
+      "id": "escaped-lone-surrogate-compiles",
+      "severity": "P2",
+      "requirement": "Reject lone surrogates in replay JSON as typed candidate rejections.",
+      "observed": "Escaped U+D800/D83D/DC00/DFFF decode successfully; a legal candidate containing U+D800 reaches compiled_unregistered.",
+      "repro_log": "docs/agent_bootstrap/evidence/p3_offline_review_stable_selected_20261102_01.log",
+      "repro_json": "docs/agent_bootstrap/evidence/p3_offline_review_lone_surrogate_repro_20261102_01.json",
+      "reply_sha256": "332162a2fd96cf6ef52ea2d61ebcd4f5df61f98cad69d6482ee61e92e490d77c",
+      "result_hash": "b1283483c8be13d8c3efe953de79d5c780ec18b625c2b63d31a74bf1cf8fffb5"
+    }
+  ],
+  "selected_run": {
+    "collected": 218,
+    "passed": 213,
+    "failed": 5,
+    "subtests_passed": 32,
+    "log": "docs/agent_bootstrap/evidence/p3_offline_review_stable_selected_20261102_01.log",
+    "per_file": [
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline.py", "collected": 49, "outcome": "passed"},
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py", "collected": 59, "outcome": "54 passed, 5 failed"},
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_catalog_context.py", "collected": 47, "outcome": "passed"},
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_catalog_context_review.py", "collected": 49, "outcome": "passed"},
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py", "collected": 14, "outcome": "passed"}
+    ]
+  },
+  "hashes": {
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/replay.py": "796117306cfcce9f6f254b165d2173696dde4e27b60a7119bb5ee6a6fdb971c8",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/pipeline.py": "910ed2254c54f3dea6ef6ca4fd8fd58407fb64a2e7d1e9a2a4e32551cf83c291",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline.py": "3c29497217f6c108724b0a8fdd3c19902df74b4d2b4a6b391fa37b22351bf242",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py": "4066cfdad4f6ac4a04e8103e684f8afa2471eb3260a038265d0cd3e0873bf0ba"
+  },
+  "claims": {
+    "compiled_unregistered_success_path_exercised": true,
+    "sandbox_run": false,
+    "registration_available": false,
+    "world_state_mutated": false,
+    "live_generation_or_provider_calls": false,
+    "p3_gate_claimed": false,
+    "batch_claimed": false
+  }
+}

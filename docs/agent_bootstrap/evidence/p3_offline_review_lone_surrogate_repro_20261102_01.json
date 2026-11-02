@@ -1,0 +1,41 @@
+{
+  "actual_attempt": [
+    {
+      "accepted": true,
+      "attempt": 1,
+      "context_hash": "e73ef88cfe7a9058546b4e8d4a5e743ff6f791af0c29f8ea289742e68e239c5b",
+      "reason": "candidate compiled successfully",
+      "reply_hash": "332162a2fd96cf6ef52ea2d61ebcd4f5df61f98cad69d6482ee61e92e490d77c",
+      "stage": "compiled"
+    }
+  ],
+  "actual_decode_accepted": true,
+  "actual_ir_hash": "b3d1f2f1325cea6e3723fc914b1829f360c7d23f119509875668ca0d73aea673",
+  "actual_result_hash": "b1283483c8be13d8c3efe953de79d5c780ec18b625c2b63d31a74bf1cf8fffb5",
+  "actual_status": "compiled_unregistered",
+  "actual_summary_code_points": [
+    82,
+    101,
+    118,
+    105,
+    101,
+    119,
+    32,
+    55296,
+    32,
+    102,
+    105,
+    120,
+    116,
+    117,
+    114,
+    101,
+    46
+  ],
+  "classification": "PRODUCT_DEFECT",
+  "expected": "typed decode rejection; no compiled IR",
+  "reply_sha256": "332162a2fd96cf6ef52ea2d61ebcd4f5df61f98cad69d6482ee61e92e490d77c",
+  "reply_utf8_bytes": 813,
+  "reproducer": "PYTHONPATH=src pytest -p no:cacheprovider -q experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py",
+  "requirement": "Replay UTF-8/JSON decode must reject lone surrogates as a typed candidate rejection."
+}

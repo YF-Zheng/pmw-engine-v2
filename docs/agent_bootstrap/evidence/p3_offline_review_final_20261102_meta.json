@@ -1,0 +1,63 @@
+{
+  "review": "P3.1B offline replay/compile independent QA",
+  "verdict": "ACCEPT",
+  "verdict_scope": "offline P3.1B only",
+  "severity_priority_note": "P2 in the preliminary finding was defect priority, not P2 Gate regression scope; the defect was in the new P3 decoder.",
+  "head": "65926940ca48ede699df219a39ef0143df1d2118",
+  "branch": "feature/alpha-v02-seventh-night",
+  "selected_run": {
+    "collected": 234,
+    "passed": 234,
+    "failed": 0,
+    "subtests_passed": 32,
+    "log": "docs/agent_bootstrap/evidence/p3_offline_review_final_20261102.log",
+    "command_environment": {
+      "PYTHONPATH": "src",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONIOENCODING": "utf-8",
+      "TEMP/TMP/TMPDIR": "docs/agent_bootstrap/evidence/test_tmp",
+      "PYTHONPYCACHEPREFIX": "docs/agent_bootstrap/evidence/test_tmp/pyc_p3offline_final_20261102",
+      "pytest": "-p no:cacheprovider"
+    },
+    "per_file": [
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline.py", "collected": 49, "outcome": "passed"},
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py", "collected": 59, "outcome": "passed"},
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py", "collected": 16, "outcome": "passed"},
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_catalog_context.py", "collected": 47, "outcome": "passed"},
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_catalog_context_review.py", "collected": 49, "outcome": "passed"},
+      {"file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_ir.py", "collected": 14, "outcome": "passed"}
+    ]
+  },
+  "hashes": {
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/pipeline.py": "61350f0de577e7a39e457cea870bd57a57cf057d85e6c288e13dbf647f9712a1",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/replay.py": "796117306cfcce9f6f254b165d2173696dde4e27b60a7119bb5ee6a6fdb971c8",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline.py": "3c29497217f6c108724b0a8fdd3c19902df74b4d2b4a6b391fa37b22351bf242",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py": "4066cfdad4f6ac4a04e8103e684f8afa2471eb3260a038265d0cd3e0873bf0ba",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py": "8b5ad0fb8ae096a1b2adfea8799f157e81702dd05ea93d711c3096424a34208d"
+  },
+  "fix_verified": {
+    "file": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/pipeline.py",
+    "function": "_bounded_json",
+    "decoded_dict_keys_utf8_validated": true,
+    "decoded_string_values_utf8_validated": true,
+    "string_and_key_length_cap": 4096,
+    "lone_surrogates_rejected": true,
+    "escaped_valid_surrogate_pairs_accepted": true,
+    "literal_emoji_and_chinese_accepted": true,
+    "five_original_review_failures_preserved_and_now_pass": true
+  },
+  "counts": {
+    "PRODUCT_DEFECT": 0,
+    "TEST_GAP": 0,
+    "FIXTURE_ERROR": 0,
+    "SCOPE_NOTE": 0
+  },
+  "unresolved_scope": [
+    "No Sandbox execution or behavioral validation",
+    "No registration or usable-pool admission",
+    "No WorldState mutation",
+    "No live generation or provider transport",
+    "No P3 Gate, batch, token, cost, or model-usage claim",
+    "Main retains cross-module and repository-integrity coverage"
+  ]
+}

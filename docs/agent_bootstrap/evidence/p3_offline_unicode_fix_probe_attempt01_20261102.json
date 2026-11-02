@@ -1,0 +1,56 @@
+[
+  {
+    "input": "{\"x\":\"\\ud800\"}",
+    "outcome": "rejected",
+    "stage": "decode",
+    "reason": "candidate contains invalid Unicode"
+  },
+  {
+    "input": "{\"x\":\"\\udfff\"}",
+    "outcome": "rejected",
+    "stage": "decode",
+    "reason": "candidate contains invalid Unicode"
+  },
+  {
+    "input": "{\"x\":\"\\ud83d\"}",
+    "outcome": "rejected",
+    "stage": "decode",
+    "reason": "candidate contains invalid Unicode"
+  },
+  {
+    "input": "{\"x\":\"\\ude00\"}",
+    "outcome": "rejected",
+    "stage": "decode",
+    "reason": "candidate contains invalid Unicode"
+  },
+  {
+    "input": "{\"outer\":{\"items\":[{\"value\":\"\\ud800\"}]}}",
+    "outcome": "rejected",
+    "stage": "decode",
+    "reason": "candidate contains invalid Unicode"
+  },
+  {
+    "input": "{\"\\ud800\":1}",
+    "outcome": "rejected",
+    "stage": "decode",
+    "reason": "candidate contains invalid Unicode"
+  },
+  {
+    "input": "{\"x\":\"\\ud83d\\ude80\"}",
+    "outcome": "accepted",
+    "value": "🚀",
+    "utf8_hex": "f09f9a80"
+  },
+  {
+    "input": "{\"x\":\"🚀\"}",
+    "outcome": "accepted",
+    "value": "🚀",
+    "utf8_hex": "f09f9a80"
+  },
+  {
+    "input": "{\"x\":\"中文\"}",
+    "outcome": "accepted",
+    "value": "中文",
+    "utf8_hex": "e4b8ade69687"
+  }
+]

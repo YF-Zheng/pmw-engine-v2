@@ -1,0 +1,24 @@
+..................F.........................                             [100%]
+================================== FAILURES ===================================
+___________ test_repair_limits_zero_one_two_and_maximum_three_calls ___________
+
+    def test_repair_limits_zero_one_two_and_maximum_three_calls():
+        material = _material()
+        bad = _snapshot(_document(material_id="forged_material"))
+        good_document = _document(material_id=material.id)
+        good = _snapshot(good_document)
+        for repairs, expected_calls in ((0, 1), (1, 2), (2, 3)):
+            replies = [bad] * expected_calls
+            result, provider, _ = _run(replies, material=material, max_repairs=repairs)
+            payload = _assert_rejected(result, "repairs_exhausted")
+            assert len(payload["calls"]) == expected_calls
+            assert len(payload["attempts"]) == expected_calls
+            assert provider.remaining == 0
+            if expected_calls > 1:
+>               assert payload["attempts"][1]["reason"] != payload["attempts"][0]["reason"]
+E               AssertionError: assert '$.origin.material_ids must exactly match selected trusted material IDs' != '$.origin.material_ids must exactly match selected trusted material IDs'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline.py:402: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline.py::test_repair_limits_zero_one_two_and_maximum_three_calls
+1 failed, 43 passed in 5.12s

@@ -1,0 +1,84 @@
+.................FFFF.....................................               [100%]
+================================== FAILURES ===================================
+______ test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ud800"}] ______
+
+text = '{"x":"\\ud800"}'
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            '{"x":"\\ud800"}',
+            '{"x":"\\udfff"}',
+            '{"x":"\\ud83d"}',
+            '{"x":"\\ude00"}',
+        ],
+    )
+    def test_decode_rejects_json_escaped_lone_surrogates(text):
+>       with pytest.raises(_CandidateRejection):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE _CandidateRejection
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:325: Failed
+______ test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\udfff"}] ______
+
+text = '{"x":"\\udfff"}'
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            '{"x":"\\ud800"}',
+            '{"x":"\\udfff"}',
+            '{"x":"\\ud83d"}',
+            '{"x":"\\ude00"}',
+        ],
+    )
+    def test_decode_rejects_json_escaped_lone_surrogates(text):
+>       with pytest.raises(_CandidateRejection):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE _CandidateRejection
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:325: Failed
+______ test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ud83d"}] ______
+
+text = '{"x":"\\ud83d"}'
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            '{"x":"\\ud800"}',
+            '{"x":"\\udfff"}',
+            '{"x":"\\ud83d"}',
+            '{"x":"\\ude00"}',
+        ],
+    )
+    def test_decode_rejects_json_escaped_lone_surrogates(text):
+>       with pytest.raises(_CandidateRejection):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE _CandidateRejection
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:325: Failed
+______ test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ude00"}] ______
+
+text = '{"x":"\\ude00"}'
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            '{"x":"\\ud800"}',
+            '{"x":"\\udfff"}',
+            '{"x":"\\ud83d"}',
+            '{"x":"\\ude00"}',
+        ],
+    )
+    def test_decode_rejects_json_escaped_lone_surrogates(text):
+>       with pytest.raises(_CandidateRejection):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE _CandidateRejection
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:325: Failed
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ud800"}]
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\udfff"}]
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ud83d"}]
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ude00"}]
+4 failed, 54 passed in 4.33s

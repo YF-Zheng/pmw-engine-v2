@@ -1,0 +1,362 @@
+[
+  {
+    "blueprint_hash": "24b73a3ccbb36d520d90965dc2847d61775b700e54e46eb178029150e3e6c2ff",
+    "index": 1,
+    "ir_hash": "cf2913c6db2262a83730510ba13d0d9e4f1c745c94869f21438cffd9b710745f",
+    "library_id": "ember_touch",
+    "profile": "field",
+    "result_hash": "86d1187aac7c8040a686927f5ea0f9c4fdfe8be6813c8feb329eff5ae0c4c449",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "c7ec64468b6a23e0c2fc89b44a4472eab66b3afa812e4e403e92aa4be8a95b25",
+    "index": 2,
+    "ir_hash": "6133ffd13c411ef7a4d0742c4fbac985521b9f31c7cb8b97ab917ec6b9dfc17b",
+    "library_id": "damp_breeze",
+    "profile": "field",
+    "result_hash": "13bafb0269e85dc68b024436838d115035363ba3cf08b8cef6a86bed3163fec2",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "3607208dcecb96dbd2d0e9faf5d2c98493b53c582fd40e5d7a4adeabfaf501a7",
+    "index": 3,
+    "ir_hash": "2a49ff7e5b19fb73b8e4bbb6925216e1b0f66f4851cc5716d952f677f430fa29",
+    "library_id": "adjacent_damp",
+    "profile": "field",
+    "result_hash": "271cb2058ed863193acc31ede272a8b1631f96ade90889f5a437e7357bffce14",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "d3ebadcc1889d231a45e0d10360a4e8761396d602d6f9ae77b620afefabd58a0",
+    "index": 4,
+    "ir_hash": "11156c10578732a2460fca32bd0eb8324819a283cc7b28fab869b42be6948fc3",
+    "library_id": "attractor_dawn",
+    "profile": "field",
+    "result_hash": "9f312b6c66a732f099f31ae099530c59a15e4370ea85f544bee14c8836464f77",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "5e0341039c4a86d913e88c71788b8401902e3e2d6c053c5949cdaeda1acc6f5b",
+    "index": 5,
+    "ir_hash": "0ed53435b93e4ccd1d8e5081062ffd2c34249857a446d41549db0d50285db697",
+    "library_id": "attractor_adjacent",
+    "profile": "field",
+    "result_hash": "7c8c295b089b0981ec8ac97a6e36e6358e425e2bd41020f833d032982c4854f8",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "b9a3edd58c6f091a74fab577e3122e299cfd7ae7cb447520998e269f35c51311",
+    "index": 6,
+    "ir_hash": "e7094873854047a1aff1be891e2ec5ecbdbdad7d19900e11459ec28e6c28e394",
+    "library_id": "rate_surge",
+    "profile": "field",
+    "result_hash": "7fd29fbd4786cd9f088a3db83727749cc1f65787f8addb79a761ef96c6c6618a",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "41099a9c9e9ed27cfd85b3013565a178118c8814d4acb18889e7b187dbe8dd73",
+    "index": 7,
+    "ir_hash": "5f091b2d4f2b1dc7b24490704329f07e42d94b4d08396fc7571450296f6ee3a2",
+    "library_id": "rate_slow",
+    "profile": "field",
+    "result_hash": "4e5c53fc1faa9d97b6ea337b1d922151e32c1b68311f85536142ab0760078840",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "8a3d359649cb8be417b3ea7646e5af79ec6327cb14180960de85ed32e7ff9e1d",
+    "index": 8,
+    "ir_hash": "9e2224ae80ef307bb6b0e39732b93de686790a0b6161f6a34691d63b6b40af54",
+    "library_id": "rate_adjacent",
+    "profile": "field",
+    "result_hash": "564644c82fae6066e01deb2dc03aebe1e4759a3b95567acee46d5b73de284a2d",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "0c96ef3da48e09d53c9e3f94b755dac1a0205d62d6b44dcf3dd84aa2c64dd39d",
+    "index": 9,
+    "ir_hash": "b7d268e538638972193fdc189dadeba49a7b5ecc3ae8c9486008abc8d1945655",
+    "library_id": "mana_gift",
+    "profile": "stock",
+    "result_hash": "4fadbcca5c7b297de471b640d9abd0af3a66396b54f11ef06974f4bab81a1e73",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "89d273cecc16e4a1ab15efa43296e0f5aca8651a6107ac741d5127d4a8327ed1",
+    "index": 10,
+    "ir_hash": "25267a55b34375d142cd0d7426106b1527121bf596c6cd4862ba5b08bd8d1682",
+    "library_id": "mana_tithe",
+    "profile": "stock",
+    "result_hash": "4781c0c1fe0abce4bde1081498ea7ef3bd26fc47a13f4e512f33299ac05e0eb9",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "9f23fb7a58db685ee6451d981145c3ece1595fedad2f4d956f7fbf205385fc1d",
+    "index": 11,
+    "ir_hash": "509f7faf652de3136e51edb2c998d30404836c92c530914e7563c5d4fc2122a6",
+    "library_id": "drive_ember",
+    "profile": "stock",
+    "result_hash": "f583841227b3c12d11852dedc7c35daec9a49598610cdab3e23dc1c94a4b8e1b",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "e9d62f3eeab9af9753b879309fe2f2d47657380ed8a44fc086f933a9ec87ee83",
+    "index": 12,
+    "ir_hash": "cfb5791c0eef8bdf12ae8b9c447f722c5c9de25e82dbf3eb6c1ead9bbaadbb3c",
+    "library_id": "drive_alt",
+    "profile": "stock",
+    "result_hash": "7f1c47619c282aa521e61a23e2a021b5eb9bf4c7ea61a5847e11684b99d66325",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "70a9ce30c509897d82dd0977a770711604c8a9d411a156b1837180d684f834ea",
+    "index": 13,
+    "ir_hash": "fe81faf31dc7b2d291e8b5f7d1d341620c687254b0c08a39c8470cd7ec411033",
+    "library_id": "process_start_refine",
+    "profile": "process",
+    "result_hash": "9da948f9de1cd2092deea76514c6c1c7764e760021b0970f9caf8205f3dbef8b",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "b6b1ab557cd52246d8dacd364a350bb50775f6e7bce680d64196247d88d075a8",
+    "index": 14,
+    "ir_hash": "704e59a7fd697f0de33c3831321129f4002beafca00f4df67bd8afa11e3fd356",
+    "library_id": "process_start_smelt",
+    "profile": "process",
+    "result_hash": "e7dc601d6c4647f4f0495f7a0a4f66e1eccf098a4d73487bf825265b23be3c2b",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "01d2209e5080acea140a311c9de40de9a34283a9cb13ef1076d057b69c8a09d3",
+    "index": 15,
+    "ir_hash": "43b5dc8b99357be56ae91537aa06e8fd568ad2871940058cec38e9ff33d5ab69",
+    "library_id": "process_rate_boost",
+    "profile": "process",
+    "result_hash": "39a81b7ba9079834c451e54e6b24783a8a957da8eaaa20e9f57544ff59edafc3",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "08c0e6149f268310d5c9abdd7251239ae76c6bad6ffd025900e78beb30ebc7e8",
+    "index": 16,
+    "ir_hash": "1befa8f253d783057f1f975d3e4d9066b66e2c009dd1056f67824fc6bd975dfb",
+    "library_id": "process_extend",
+    "profile": "process",
+    "result_hash": "4e586ff12bb0160bed325e502531e1d98dd8817d95fc61953500defb38c76836",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "75f5283ad0d239271b592f3d1f6a4d35b1cd1e47fa0a869877a5989ef8cfb984",
+    "index": 17,
+    "ir_hash": "ff43c5bda776184a450b07d600f6076322be1c910713b2974ef7c44c07efe164",
+    "library_id": "process_tune",
+    "profile": "process",
+    "result_hash": "697e1c491b99cbdcd5c8a9545760a7a052fbe9a8f21bfbeab3c95cbf6cc90872",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "d6a1dd81d25b56021fab8e47eae52ee84e47cab4197df572836f48b174847910",
+    "index": 18,
+    "ir_hash": "924e028c1cffc5b5c91457ea0f3c26895de444ad2b746c5819eefccec79794a5",
+    "library_id": "link_off",
+    "profile": "relation",
+    "result_hash": "d298b264c6f9f2b7f6b006f33347b0969d75f0fc80d123707279836a7bad2179",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "0b9c37366f70b9c74e45374f0f666fabc1edcac6e8d977f91e1c2fc486e29c19",
+    "index": 19,
+    "ir_hash": "b4d533718443026e4c8e33e872636d19812f62ecc479d8f08db65e202ec3d9d3",
+    "library_id": "link_on",
+    "profile": "relation",
+    "result_hash": "66476fbccfc0095ddc2c1fe66271070214c00689967651f75e8ff84ee336b8c9",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "1f09b759156398163fcf462e7100f025cc67a57e824c5a177a431c0f532e0c59",
+    "index": 20,
+    "ir_hash": "15ffbf44850ad9241e15bef830fd0d880893c318bea1e26f24a583e578bc37e7",
+    "library_id": "travel_step",
+    "profile": "travel",
+    "result_hash": "3460cb16c1c64e495328b7e71c1b4077df67542f7b0e6e31ec4cecc4362ac9dc",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "24ec8fc1d30f726120319165e613d8ceaab48a5f7eb3bc065cd1f979001c380a",
+    "index": 21,
+    "ir_hash": "eb153737c844237b89a308a7a47f34906ff5fcd72ed1b717c92727628699f109",
+    "library_id": "travel_ward",
+    "profile": "travel",
+    "result_hash": "320bdcf4a239a0bb9d79d5fe21cd595aa5067649dc4948ba48f6fdcbb1f7dba5",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "8dc675f8940a39e7b83e6799dde465122c993bc7584b5998bb3ce48542088b86",
+    "index": 22,
+    "ir_hash": "b1122c857f445b1e39edb0b770ae4fa96a858e36f310922894e4ca57a304196f",
+    "library_id": "travel_trail",
+    "profile": "travel",
+    "result_hash": "f9f677adf0824f99b15d94b382a98bf2a75654c4ca54d1b25211692c9d87c105",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "92219588ef4b8553ebe4d3968ffb3d33663d19d202420f1efe184fdeeb12087a",
+    "index": 23,
+    "ir_hash": "7c3b184817c11a63d60d58b09edd3076603d2479e3e4e51eb2455b97aff019cc",
+    "library_id": "strike",
+    "profile": "combat",
+    "result_hash": "8151082a12396ecc5df91b27835066d221e8baaf471606533852c40c5a396497",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "2d0872c5e410caf76efa69667b5811514440de5f7081b6f0adde54d39b1756d9",
+    "index": 24,
+    "ir_hash": "2ae09e938f56d1128fa8ec34d32df4a06756e79a13f405ed705a4b7837a94776",
+    "library_id": "mend",
+    "profile": "combat",
+    "result_hash": "96d41b230bab8c5129ed772740dd53afde7238f04533939293e9d96212046b52",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "379818cd7ff456784ab03909672bbcfa9731fd5d3120adacb7f73090c7451f8e",
+    "index": 25,
+    "ir_hash": "bfe55b2c1dae3c1557d6f1dc80d9b2d7fc4b588f07a52dc73ba6b519a3f0d628",
+    "library_id": "bulwark",
+    "profile": "combat",
+    "result_hash": "8767085d266c53ec94df1621ab1ee271e88761b35caec8b4d4cfaa0e386ed382",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "90e25204990e57207133e373908c935f1dd7246072136437164cf051a1c7c2a3",
+    "index": 26,
+    "ir_hash": "a5c8036b7069b0249d7e74d505814aa26ba6507e6d5d0631205c67f70eca1b37",
+    "library_id": "guarded_step",
+    "profile": "combat",
+    "result_hash": "4c429ee97902c512e2ea5f0e0f7d9064e1723c0519941030bff8b710eacffb71",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "0d5f439bce9c16d1484c252c94a6eef8c6c1bd202ef37ce04f32ea4d02d89583",
+    "index": 27,
+    "ir_hash": "672d43e5f8aae661bca26bd8fcf76e7b266f13d56f6a9a5fc3eae5f8908cfa75",
+    "library_id": "trait_touch",
+    "profile": "combat",
+    "result_hash": "29f970351e381a1768c54b6f555b5a8b798f89440890ca5d34cfef8e9fecf50d",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "48a9bcccedca41c4c545295f4fb22890c2cf940c577ed5fa881a8374214b941a",
+    "index": 28,
+    "ir_hash": "508e2ec6dedc5a403cea4f02561a6bf83d2aec6bb3693c411c4061adc5d0e517",
+    "library_id": "linked_guard",
+    "profile": "combat",
+    "result_hash": "a6c308de49cf605e0810fc3e67bbffaa5019e83d0fb1b351ce19826dfce19cad",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "87457c821684b9f194e5dce70d5e26e98aa0b596822e8a00943071e958985d22",
+    "index": 29,
+    "ir_hash": "6c1712a7455921568e62ba1264b42e0f6f8fe8def642e920b3ace42ba6666e51",
+    "library_id": "synergy_pressure",
+    "profile": "derived",
+    "result_hash": "e79192ddd6929f586857d496e9ec37d8b7b716096dea3a5afe6687a147bb9119",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "89e4e140b3ac2f3b40467052d269d1d9798d1a7dec27deb06e569e8975806e3e",
+    "index": 30,
+    "ir_hash": "6c013efd92b704ff65deebbe146c4bae019bae1eecf4f41f5c2e73c449170ad2",
+    "library_id": "synergy_tempo",
+    "profile": "derived",
+    "result_hash": "c82edfaca19ae5a08f13f95f5eea2bc249aeeed27a32e4a8a080d13ff7ae22a1",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "f6380a55ec49d3751b47ef44548dafe7d3ae115f46227b10054233795093250f",
+    "index": 31,
+    "ir_hash": "5f33aedf1de970b4a0a0cbf67ab8511e487fd80358d4ae1b57d9d75e556cdbdf",
+    "library_id": "synergy_vital",
+    "profile": "derived",
+    "result_hash": "80ef4568129accb167420724d78adae6034690d14874db030bf90253a7c332ec",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "bf34d52b0636f19ec6db7ae1095e549a4115fafe740a404fb467b38ca451c5d1",
+    "index": 32,
+    "ir_hash": "e7f1dbf6d56fe745628c453476bf1f872cfe07d8921345e95b07001fa52dfc57",
+    "library_id": "synergy_flux",
+    "profile": "derived",
+    "result_hash": "84eb34755d4361bfb9bde653b23e78b95bd4da50a5868bed314e5c292942bd69",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "f79a6358bf50a50f0cfbd1a3219e773d6c3a1a8ef84e55144bb7cd7d7603f02f",
+    "index": 33,
+    "ir_hash": "95d420f1cf1f975c5f9f2c6673ac4bba91590f8b4b41012957c69d99b29cc5d3",
+    "library_id": "condition_all",
+    "profile": "derived",
+    "result_hash": "13db38904c10e5e84bae8a8083878b175aef83a66795153bd45fe8a23f23a08a",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "4b88271a84d98ba4a4789174ca27a4e0e683becaa2a159467602337ef312931e",
+    "index": 34,
+    "ir_hash": "2d261c9861cc7dd124c77a829080e9cff2a02b794564ca826bcc68c3744b73b5",
+    "library_id": "condition_any",
+    "profile": "derived",
+    "result_hash": "c84228825d299ff9b4ce2414868abd285fac322ff7a0aa2b26843116cb0342e7",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "7f6c065846ffdda92e5555e3374ef88e15355596adfc4855dd074c7f7fa5f9ea",
+    "index": 35,
+    "ir_hash": "f4e956f1a000249815d301ba38259dba0e18eebfa0676add5f368eb6518562d8",
+    "library_id": "condition_not",
+    "profile": "derived",
+    "result_hash": "05013a2bde0e7e07bbd0a0aeeb15bb928e8f67ce1e810f8abd210fbe57b50e0c",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "b2739255187676e53f5b82af1b29718215cd8b7ab59022171373c8bd42997fb7",
+    "index": 36,
+    "ir_hash": "30b5f231bbc716896f79e92a80d654a62788f08e2b3153751311ef2b47bb4915",
+    "library_id": "condition_field",
+    "profile": "derived",
+    "result_hash": "907e32458f6bbb7bbed5caacebec8b6598fad648b91696968d682947d77b812e",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "8282af05d6435429ca1b450ba62d36f8eea83e1bc753cb3ebe72a341c0e5397c",
+    "index": 37,
+    "ir_hash": "f60ab0345cd9e60edbf25ea0cee2f96cc7506687db8d811687ad7551bb39e8e1",
+    "library_id": "counter_mend",
+    "profile": "combat",
+    "result_hash": "ec3fa3d7ef5e414bb121ac82c1504b2d65cb30c80a65958a094b2833d1143d72",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "2157ace29887bcdd1c0289e479d770ce1749720666c944ecf3b6515e234c7cdb",
+    "index": 38,
+    "ir_hash": "b58508c6520eca2fd2e04f0505f34e8e846ebaec5fc485fd0b9054a1a35b23a7",
+    "library_id": "counter_shield",
+    "profile": "combat",
+    "result_hash": "83a7560206d684b36aaf818c6a518d07c2b19418553f00f3b0deda20fa576816",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "5ca95ccf3e834bf5cea027d2ac83978ded42407ac41698eb9314e2352eadd7cc",
+    "index": 39,
+    "ir_hash": "9ca28cd6a2ef332bbfbf41f4032ac3c4186917b9ce40f7ce1968ef8ea9e7bbc8",
+    "library_id": "counter_spark",
+    "profile": "combat",
+    "result_hash": "1c24050e97d41ff301fe311e4a86e42902dc8e936974511062832f2107ff049f",
+    "status": "compiled_unregistered"
+  },
+  {
+    "blueprint_hash": "982a41cf89d533c05f2e87272bc673a6afcb8717c6833aa6d134b1224b45e340",
+    "index": 40,
+    "ir_hash": "4db87e5056a2ad91322db559beba95300b8b91b6df3758acc71743b0261985b1",
+    "library_id": "counter_mana",
+    "profile": "derived",
+    "result_hash": "dfe0538896cd2b515f9fecd2fdbad7d139b0daa0f1aff8040acd49b5d5f7cc32",
+    "status": "compiled_unregistered"
+  }
+]

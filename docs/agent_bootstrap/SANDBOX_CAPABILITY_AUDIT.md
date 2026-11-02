@@ -569,3 +569,35 @@ or new Alpha UI. Next bounded task: offline ReplayProvider + strict bounded
 candidate decode/normalize/parse/compile, with compiled-but-unregistered output
 and no skipped sandbox/register stage labelled accepted; then actual Engine
 sandbox/behavior signatures, then reviewed live usage path/pilot/batches.
+
+## P3.1B Offline Replay / Compile Accepted (2026-11-02)
+
+Finite immutable ReplayProvider and strict bounded JSON decode/normalize/type/
+capability/budget/compile now delegate to the accepted IR compiler. Material
+authority is rederived from trusted traits, compared in full with Context and
+never replaced by display JSON. Repairs are limited to two; exhaustion stops.
+Only server-owned identity/provenance is normalized; unknown candidate fields
+remain for rejection. Output is compiled_unregistered, accepted=false,
+Sandbox not_run and Register not_available. No live generation request.
+
+Independent QA final ACCEPT: **234 passed /32 subtests** (49 owner,59 QA,
+16 Unicode regressions,96 Catalog/Context,14 IR). One real defect fixed:
+escaped lone surrogates bypassed the raw-wire check; decoded values AND keys
+now require valid UTF-8. All five original failing expectations and red logs
+are preserved; valid pairs/emoji/Chinese still pass. Main same-process old
+cross-module regression: **237 passed /22 subtests /27.46s**. Previous P2
+319 frozen Python files,5 accepted P3.1A files and130 protected files remain
+unchanged. This is NOT a fresh full-project run or P3 Gate acceptance.
+
+Evidence: P3_OFFLINE_PIPELINE_REVIEW.md, P3_OFFLINE_PIPELINE_INCREMENT.md,
+P3_OFFLINE_PIPELINE_UNICODE_FIX.md, evidence/p3_offline_main_acceptance.json.
+Accounting p3_1b cutoff 2026-11-02T04:06:44.566Z: subset CNY15.41330278
+(already included once), cumulative CNY509.98733256; safety CNY642.60974341
+/3000, Unknown0. Actual caches preserved; replay fixture calls have no model
+usage entries. Worker calls are charged by their actual rollout IDs. Bootstrap
+separate; closing overhead awaits the next ordinal snapshot.
+
+Next: a separately bounded real Engine Sandbox with trusted fixture selection,
+PLAYER/NPC/control execution, actual causal receipts and behavior signatures.
+No usable-pool admission, provider batch or Alpha UI/playtest claim yet.
+

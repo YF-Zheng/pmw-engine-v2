@@ -215,3 +215,8 @@ No new public/browser playtest. The 40 reference Skills execute in real mechanic
 ## P3.1A Playtest Boundary
 
 Offline Catalog/Context has no Alpha integration and no new public/browser playtest. No game skill generation or gameplay improvement is claimed.
+
+## P3.1B Scope Note (2026-11-02)
+Offline compiler increment independently accepted; no new browser/public
+playtest, Alpha UI, generated Skill pool or live world gameplay claim.
+Actual Engine Sandbox execution is the next unaccepted increment.

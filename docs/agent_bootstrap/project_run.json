@@ -277,6 +277,21 @@
       "id": "01a19a40-862d-7871-ab72-b3edaa2b2e4b",
       "task": "P3.1A independent Catalog/public Context QA",
       "stage": "P3"
+    },
+    {
+      "id": "01a19a51-9701-7502-a800-a09f69ee2061",
+      "task": "P3.1B offline replay/compile implementation",
+      "stage": "P3"
+    },
+    {
+      "id": "01a19a58-6c17-7443-a3ca-1ca422a1ad8f",
+      "task": "P3.1B independent offline replay/compile QA",
+      "stage": "P3"
+    },
+    {
+      "id": "01a19a5f-80aa-77e1-b176-95f3f344bb74",
+      "task": "P3.1B first product fix: escaped lone surrogate rejection",
+      "stage": "P3"
     }
   ],
   "turn_stages": {
@@ -409,11 +424,16 @@
         "task": "p3_1a",
         "main_end_ordinal": 9069,
         "snapshot": "docs\\agent_bootstrap\\evidence\\p3_1a_cost_snapshot.json"
+      },
+      {
+        "task": "p3_1b",
+        "main_end_ordinal": 9318,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\p3_1b_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 9069,
-    "current_task": "p3_1a",
-    "latest_checkpoint": "747fdde",
+    "main_ordinal_cursor": 9318,
+    "current_task": "p3_1b",
+    "latest_checkpoint": "6592694",
     "main_turn_models": {
       "01a1862b-a31c-7351-ac83-5a77abdf3769": "tencent/gpt-6.1-sol",
       "01a18a8c-d2f5-7751-86e4-3b662913c288": "tencent/claude-opus-5.5",

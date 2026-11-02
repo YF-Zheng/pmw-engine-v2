@@ -88,6 +88,44 @@ not sample size.
 - P3.2 live provider adapter + pilot batch of 10 + usage ledger integration.
 - P3.3 batches to >= 200 candidates, analysis report, P3 Gate review.
 
+## P3.1B Frozen Offline Replay / Compile Boundary (2026-11-02)
+
+Predecessor: offline Catalog/Context accepted at `6592694`. Scope is NEW
+`skill_designer/replay.py`, `skill_designer/pipeline.py`, owner/reviewer tests.
+No existing source edit, HTTP client, registration, batch, or WorldState
+mutation is allowed in this increment.
+
+- ReplayProvider consumes an immutable finite sequence of caller-provided
+  JSON reply texts. It has no network transport. Fixture provenance is
+  explicitly authored/offline; no real model/usage/billing is invented.
+  Provider requests/feedback are immutable bounded records.
+- Pipeline public inputs are server-owned material definitions/statuses and
+  the same public Context inputs, NOT an arbitrary displayed authority or
+  serialized Context. Build the Context and derive authority from validated
+  material traits again. No candidate-provided profile changes permissions.
+- Decode bounded UTF-8 text (maximum 65536 bytes), allow at most one complete
+  JSON code fence, reject duplicate object keys, NaN/Infinity, non-object JSON
+  and trailing text. Recursion/numeric failures return typed rejection, not
+  raw exceptions. Existing IR ingress provides its additional tree bounds.
+- Normalize only explicitly server-owned identity/provenance metadata. Keep
+  unknown keys so the strict IR parser rejects them; do not drop bad Effects
+  or reinterpret candidates. Submitted material IDs must match the selected
+  trusted materials; never replace an unauthorized material claim silently.
+  For synthetic replay, origin.source is authored and origin.model is null;
+  record replay provenance outside the IR. Actual live-generated provenance
+  is a later, independently reviewed path.
+- Parse/normalize/type/capability/budget/compile run through the accepted IR
+  parser/compiler. Retry only candidate-validation errors with structured
+  stage/reason feedback; max repairs 0..2 (strict integer, not bool).
+  Replay exhaustion/provider contract failure terminates immediately.
+- Valid output is **compiled_unregistered**, NOT accepted/usable. Sandbox and
+  Register are explicitly not_run/not_available, `accepted=false`, and no
+  registration API exists here. A result cannot skip these Gates and join
+  the usable pool. Deterministic replay is compiler-output evidence only,
+  not world/behavior or generation-diversity evidence.
+- Preserve attempt records and failure stages; fixture call counts are not
+  actual model token usage. Generate no model cost-ledger entries for replay.
+
 ## Resume Review / Next Bounded Increment (2026-11-02)
 
 P2.2 QA, frozen regression and accounting passed at `747fdde`. Implementation

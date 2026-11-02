@@ -1,0 +1,5 @@
+pipeline_library_cases=40
+deterministic_cases=40
+profiles=['combat', 'derived', 'field', 'process', 'relation', 'stock', 'travel']
+result_hash_set=40
+ir_hash_set=40

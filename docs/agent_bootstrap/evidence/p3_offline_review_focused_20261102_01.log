@@ -1,0 +1,323 @@
+.................FFFFFFFF..F.......................F...F.                [100%]
+================================== FAILURES ===================================
+______ test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ud800"}] ______
+
+text = '{"x":"\\ud800"}'
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            '{"x":"\\ud800"}',
+            '{"x":"\\udfff"}',
+            '{"x":"\\ud83d"}',
+            '{"x":"\\ude00"}',
+        ],
+    )
+    def test_decode_rejects_json_escaped_lone_surrogates(text):
+>       with pytest.raises(_CandidateRejection):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE _CandidateRejection
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:322: Failed
+______ test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\udfff"}] ______
+
+text = '{"x":"\\udfff"}'
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            '{"x":"\\ud800"}',
+            '{"x":"\\udfff"}',
+            '{"x":"\\ud83d"}',
+            '{"x":"\\ude00"}',
+        ],
+    )
+    def test_decode_rejects_json_escaped_lone_surrogates(text):
+>       with pytest.raises(_CandidateRejection):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE _CandidateRejection
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:322: Failed
+______ test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ud83d"}] ______
+
+text = '{"x":"\\ud83d"}'
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            '{"x":"\\ud800"}',
+            '{"x":"\\udfff"}',
+            '{"x":"\\ud83d"}',
+            '{"x":"\\ude00"}',
+        ],
+    )
+    def test_decode_rejects_json_escaped_lone_surrogates(text):
+>       with pytest.raises(_CandidateRejection):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE _CandidateRejection
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:322: Failed
+______ test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ude00"}] ______
+
+text = '{"x":"\\ude00"}'
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            '{"x":"\\ud800"}',
+            '{"x":"\\udfff"}',
+            '{"x":"\\ud83d"}',
+            '{"x":"\\ude00"}',
+        ],
+    )
+    def test_decode_rejects_json_escaped_lone_surrogates(text):
+>       with pytest.raises(_CandidateRejection):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE _CandidateRejection
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:322: Failed
+________ test_decode_bounds_utf8_depth_and_shape_with_typed_rejections ________
+
+    def test_decode_bounds_utf8_depth_and_shape_with_typed_rejections():
+        with pytest.raises(_CandidateRejection, match="65536 UTF-8 bytes"):
+            decode_candidate(" " * (MAX_REPLY_BYTES + 1))
+>       with pytest.raises(_CandidateRejection, match="too deep"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'too deep'
+E         Actual message: 'candidate exceeds JSON depth limit'
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:329: AssertionError
+____ test_decode_accepts_maximum_utf8_boundary_and_one_non_ascii_character ____
+
+    def test_decode_accepts_maximum_utf8_boundary_and_one_non_ascii_character():
+        exact = '{"x":"' + ("é" * 4096) + '"}'
+        assert len(exact.encode("utf-8")) <= MAX_REPLY_BYTES
+        decoded = decode_candidate(exact)
+        assert unicodedata.is_normalized("NFC", decoded.document["x"])
+    
+        prefix = '{"x":"'
+        suffix = '"}'
+        remaining = MAX_REPLY_BYTES - len(prefix) - len(suffix)
+        at_limit = prefix + ("a" * remaining) + suffix
+        assert len(at_limit.encode("utf-8")) == MAX_REPLY_BYTES
+>       assert decode_candidate(at_limit).document["x"] == "a" * remaining
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:348: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_designer\pipeline.py:383: in decode_candidate
+    _bounded_json(document)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = {'x': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}
+
+    def _bounded_json(root: Any) -> None:
+        stack = [(root, 0)]
+        values = 0
+        while stack:
+            value, depth = stack.pop()
+            values += 1
+            if values > 65536:
+                raise _CandidateRejection("decode", "candidate exceeds JSON value limit")
+            if isinstance(value, dict):
+                if depth + 1 > MAX_JSON_DEPTH:
+                    raise _CandidateRejection("decode", "candidate exceeds JSON depth limit")
+                stack.extend((item, depth + 1) for item in value.values())
+            elif isinstance(value, list):
+                if depth + 1 > MAX_JSON_DEPTH:
+                    raise _CandidateRejection("decode", "candidate exceeds JSON depth limit")
+                stack.extend((item, depth + 1) for item in value)
+            elif isinstance(value, str):
+                if len(value) > 4096:
+>                   raise _CandidateRejection("decode", "candidate string is too long")
+E                   experiments.generative_mechanics.next_tracks_v06.gameplay_v04.skill_designer.pipeline._CandidateRejection: candidate string is too long
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_designer\pipeline.py:660: _CandidateRejection
+__________ test_unknown_root_and_nested_effect_keys_are_not_dropped ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024D49173B30>
+
+    def test_unknown_root_and_nested_effect_keys_are_not_dropped(monkeypatch):
+        material = _material()
+        context = build_generation_context(
+            profile="combat",
+            materials=[material],
+            complexity=1,
+            public_known_rules=[],
+            acquired_capabilities=[],
+        )
+        unknown_root = _document()
+        unknown_root["unknown_root"] = {"sentinel": 17}
+        with pytest.raises(_CandidateRejection) as root_error:
+            normalize_candidate(
+                unknown_root,
+                context=context,
+                authority=_authority(material),
+                candidate_id=CANDIDATE_ID,
+            )
+>       assert "unknown_root" in str(root_error.value)
+E       AssertionError: assert 'unknown_root' in 'root object must contain exactly the Skill IR fields'
+E        +  where 'root object must contain exactly the Skill IR fields' = str(_CandidateRejection('root object must contain exactly the Skill IR fields'))
+E        +    where _CandidateRejection('root object must contain exactly the Skill IR fields') = <ExceptionInfo _CandidateRejection('root object must contain exactly the Skill IR fields') tblen=2>.value
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:369: AssertionError
+_____ test_submitted_material_ids_must_match_the_exact_trusted_selection ______
+
+    def test_submitted_material_ids_must_match_the_exact_trusted_selection():
+        first = _material(MATERIAL_ID)
+        second = _material(
+            MATERIAL_ID_2,
+            kinds=("shield",),
+            selectors=("self",),
+            budget=7.0,
+        )
+        base = _document(
+            material_ids=[MATERIAL_ID, MATERIAL_ID_2],
+            effects=[
+                _damage_effect(),
+                {
+                    "id": "review_guard",
+                    "kind": "shield",
+                    "target": {"kind": "self"},
+                    "commitment": "required",
+                    "amount": 2,
+                },
+            ],
+            selector="target_actor",
+            budget=12.0,
+        )
+        result, _ = _run([_snapshot(base)], materials=[first, second])
+        payload = result.to_dict()
+>       _assert_gate_closed(payload)
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:429: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+payload = {'attempts': [{'accepted': False, 'attempt': 1, 'context_hash': '7ba68bf2c06672eaf517cf748fc48d54cb63ff73e7f0f34c31f04...h': 'dea413d0280ac997ec643172c3fd4d9ab6470d4c1320683faa78e2c608bb50cd', ...}], 'candidate_id': 'review_candidate', ...}
+
+    def _assert_gate_closed(payload: dict) -> None:
+>       assert payload["status"] == "compiled_unregistered"
+E       AssertionError: assert 'rejected' == 'compiled_unregistered'
+E         
+E         - compiled_unregistered
+E         + rejected
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:191: AssertionError
+_________ test_forged_context_metadata_never_grants_effect_authority __________
+
+    def test_forged_context_metadata_never_grants_effect_authority():
+        material = _material(kinds=("damage",), selectors=("target_actor",), budget=12.0)
+        context = build_generation_context(
+            profile="combat",
+            materials=[material],
+            complexity=1,
+            public_known_rules=[],
+            acquired_capabilities=[],
+        )
+        displayed = context.to_dict()
+        displayed["authority"] = {
+            "material_ids": [MATERIAL_ID],
+            "effect_kinds": ["damage", "shield"],
+            "selectors": ["self", "target_actor"],
+            "budget_points": 999.0,
+            "derivation": "candidate_forged",
+        }
+>       forged_context = GenerationContext(
+            context.context_hash,
+            _snapshot(displayed),
+            context.catalog,
+        )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:590: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<string>:6: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = GenerationContext(context_hash='e73ef88cfe7a9058546b4e8d4a5e743ff6f791af0c29f8ea289742e68e239c5b', canonical_json='{"a...t","supported":true,"trigger":{"event":"damage_resolved","kind":"on_event"}}]},"version":"pmw-mechanism-catalog-v1"}'))
+
+    def __post_init__(self) -> None:
+        actual = hashlib.sha256(self.canonical_json.encode("utf-8")).hexdigest()
+        if actual != self.context_hash:
+>           raise GameplayContractError(
+                "generation context hash does not match canonical JSON"
+            )
+E           experiments.generative_mechanics.next_tracks_v06.gameplay_v04.contracts.GameplayContractError: generation context hash does not match canonical JSON
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_designer\context.py:123: GameplayContractError
+_______ test_provider_exhaustion_and_contract_failure_stop_immediately ________
+
+    def test_provider_exhaustion_and_contract_failure_stop_immediately():
+        result, provider = _run([], max_repairs=2)
+        payload = result.to_dict()
+        _assert_rejected(payload, stage="provider_exhausted")
+        assert payload["attempts"] == []
+        assert len(payload["calls"]) == 1
+        assert provider.calls[-1].reply_text is None
+    
+        class NonReplayReplyProvider(ReplayProvider):
+            def reply(self, request):
+                return "not-a-replay-reply"
+    
+        broken = NonReplayReplyProvider(())
+        result, provider = _run([], max_repairs=2, replay=broken)
+        payload = result.to_dict()
+>       _assert_rejected(payload, stage="provider_contract")
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:809: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+payload = {'attempts': [], 'blueprint_hash': None, 'calls': [{'attempt': 1, 'context_hash': 'c1a0b4110f4bf9cd4af281469d9daa47cde5a5e111dc95cbc132b87a2c2618ee', 'feedback': '', 'reply_hash': None, ...}], 'candidate_id': 'review_candidate', ...}
+stage = 'provider_contract'
+
+    def _assert_rejected(payload: dict, *, stage: str | None = None) -> None:
+        assert payload["status"] == "rejected"
+        assert payload["accepted"] if "accepted" in payload else False is False
+        assert payload["gate_state"] == {
+            "accepted": False,
+            "sandbox": "not_run",
+            "register": "not_available",
+            "usable_pool": False,
+        }
+        assert payload["ir"] is None
+        assert payload["ir_hash"] is None
+        assert payload["blueprint_hash"] is None
+        assert payload["failure"] is not None
+        if stage is not None:
+            stages = {row["stage"] for row in payload["attempts"]}
+            stages.add(payload["failure"]["stage"])
+>           assert stage in stages
+E           AssertionError: assert 'provider_contract' in {'provider_exhausted'}
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:224: AssertionError
+_________ test_library_catalog_documents_are_not_reimported_by_review _________
+
+    def test_library_catalog_documents_are_not_reimported_by_review():
+        review_source = Path(__file__).read_text(encoding="utf-8")
+>       assert "library.json" not in review_source
+E       assert 'library.json' not in 'from __futu... is None\n\n'
+E         
+E         'library.json' is contained here:
+E             assert "library.json" not in review_source
+E         ?           ++++++++++++
+E               assert "test_skill_designer_offline_pipeline import" not in review_source
+E               assert "PROFILE_MATERIALS" not in review_source
+E               assert "from .test_" not in review_source...
+E         
+E         ...Full output truncated, use '-vv' to show
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_offline_pipeline_review.py:925: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ud800"}]
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\udfff"}]
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ud83d"}]
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_decode_rejects_json_escaped_lone_surrogates[{"x":"\\ude00"}]
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_decode_bounds_utf8_depth_and_shape_with_typed_rejections
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_decode_accepts_maximum_utf8_boundary_and_one_non_ascii_character
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_unknown_root_and_nested_effect_keys_are_not_dropped
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_submitted_material_ids_must_match_the_exact_trusted_selection
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_forged_context_metadata_never_grants_effect_authority
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_provider_exhaustion_and_contract_failure_stop_immediately
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py::test_library_catalog_documents_are_not_reimported_by_review
+11 failed, 46 passed in 5.03s

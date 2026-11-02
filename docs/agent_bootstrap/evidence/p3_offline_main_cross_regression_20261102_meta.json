@@ -1,0 +1,36 @@
+{
+  "utc": "2026-11-02T04:05:29.546220+00:00",
+  "same_process_new_module_import": true,
+  "command": [
+    "C:\\Users\\orinzheng\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-c",
+    "import pytest,sys\nfrom experiments.generative_mechanics.next_tracks_v06.gameplay_v04.skill_designer.pipeline import decode_candidate\nfrom experiments.generative_mechanics.next_tracks_v06.gameplay_v04.skill_designer.replay import ReplayProvider\nassert decode_candidate('{\"ok\":true}').document=={\"ok\":True}\nraise SystemExit(pytest.main(sys.argv[1:]))",
+    "-p",
+    "no:cacheprovider",
+    "-q",
+    "tests/test_engine.py",
+    "tests/test_observation.py",
+    "tests/test_agent_cost_ledger.py",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p1_scenarios_completion.py",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_sandbox_derived_catalog.py",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_gate4_registry_checkpoint.py"
+  ],
+  "exit_code": 0,
+  "status": "passed",
+  "prior_source_count": 323,
+  "protected_count": 130,
+  "changed_new_sources": [],
+  "changed_old_sources": [],
+  "protected_mismatches": [],
+  "new_source_sha256": {
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/catalog.py": "0ad9aa4a70956e1bd30939a36d99cb15d2e45570b3df2e7606a0d32e76d6485c",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/context.py": "adf06258e75cb12ad8989658cceedf6d7277bf5cbb3ba1f6517385a2a4700213",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/pipeline.py": "61350f0de577e7a39e457cea870bd57a57cf057d85e6c288e13dbf647f9712a1",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/replay.py": "796117306cfcce9f6f254b165d2173696dde4e27b60a7119bb5ee6a6fdb971c8",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/__init__.py": "10272c5ca5c20a390571084d0c65c05bab85fb2991ad2ad50fb6f23116ddcf03",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline.py": "3c29497217f6c108724b0a8fdd3c19902df74b4d2b4a6b391fa37b22351bf242",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_review.py": "4066cfdad4f6ac4a04e8103e684f8afa2471eb3260a038265d0cd3e0873bf0ba",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py": "8b5ad0fb8ae096a1b2adfea8799f157e81702dd05ea93d711c3096424a34208d"
+  },
+  "raw_log_sha256": "e99a0fc1bcf67fb7adc6d214d5556a6654e113d15bb03ed5de327d97dcdfd269"
+}

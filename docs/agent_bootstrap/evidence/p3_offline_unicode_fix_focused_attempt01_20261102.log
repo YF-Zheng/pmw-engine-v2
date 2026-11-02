@@ -1,0 +1,24 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\orinzheng\AppData\Local\Programs\Python\Python312\python.exe
+rootdir: C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2
+configfile: pyproject.toml
+collecting ... collected 16 items
+
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_decode_rejects_lone_surrogates_in_values_and_keys_at_any_depth[{"x":"\\ud800"}] PASSED [  6%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_decode_rejects_lone_surrogates_in_values_and_keys_at_any_depth[{"x":"\\udfff"}] PASSED [ 12%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_decode_rejects_lone_surrogates_in_values_and_keys_at_any_depth[{"outer":{"items":[{"value":"\\ud83d"}]}}] PASSED [ 18%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_decode_rejects_lone_surrogates_in_values_and_keys_at_any_depth[{"outer":{"items":[{"value":"\\ude00"}]}}] PASSED [ 25%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_decode_rejects_lone_surrogates_in_values_and_keys_at_any_depth[{"\\ud800":1}] PASSED [ 31%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_decode_rejects_lone_surrogates_in_values_and_keys_at_any_depth[{"outer":{"\\udfff":1}}] PASSED [ 37%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_pipeline_rejects_wire_lone_surrogates_before_normalize_or_parse[identity_value-\\ud800] PASSED [ 43%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_pipeline_rejects_wire_lone_surrogates_before_normalize_or_parse[identity_key-\\udfff] PASSED [ 50%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_pipeline_rejects_wire_lone_surrogates_before_normalize_or_parse[display_value-\\ud800] PASSED [ 56%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_pipeline_rejects_wire_lone_surrogates_before_normalize_or_parse[display_key-\\udfff] PASSED [ 62%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_pipeline_rejects_wire_lone_surrogates_before_normalize_or_parse[origin_value-\\ud800] PASSED [ 68%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_pipeline_rejects_wire_lone_surrogates_before_normalize_or_parse[origin_key-\\udfff] PASSED [ 75%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_pipeline_rejects_wire_lone_surrogates_before_normalize_or_parse[nested_effect_key-\\ud800] PASSED [ 81%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_max_repairs_cannot_bypass_bad_unicode_decode_rejection PASSED [ 87%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_decode_applies_string_limit_to_keys PASSED [ 93%]
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_offline_pipeline_unicode_fix.py::test_valid_escaped_pair_literal_emoji_and_chinese_compile_exactly PASSED [100%]
+
+============================= 16 passed in 1.60s ==============================
