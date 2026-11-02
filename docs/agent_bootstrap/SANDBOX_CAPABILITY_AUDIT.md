@@ -521,3 +521,51 @@ no polling-related costs were erased. Bootstrap remains separate.
 Next independent target: P3.1A OFFLINE full mechanism Catalog + public Context,
 then review; no live generation until a separately accepted provider/accounting
 path is ready. Follow P3_SKILL_DESIGNER_DESIGN.md.
+
+
+## P3.1A Offline Catalog / Public Context Accepted (2026-11-02)
+
+NEW skill_designer/catalog.py + context.py: full supported mechanism catalog
+(15 Effect kinds / 7 Operators / 6 states / 5 selectors), exact closed-key
+schemas, pure conditions, supported vs reserved triggers/lifecycle, runtime
+profile boundaries and canonical hashes. Source-literal extraction is
+fail-closed; manually audited value/composition descriptions are explicitly
+labelled, not advertised as automatic extraction.
+
+Public context takes validated MaterialDefinitions and an explicit public
+facts/capability allowlist, derives its authority from actual material traits,
+limits list/string complexity, and defensively serializes canonical copies.
+Existing Skill structures are recompiled, omit identity/display/provenance,
+and retain semantic references/conditions/magnitudes. Structural hash is not
+behavioral equivalence; displayed authority/hash is not a capability grant.
+No WorldState or hidden registry dump is passed to a model.
+
+Independent QA James: final ACCEPT; 1 confirmed product defect fixed, 0 open
+(product P3QA-D001: two finite 1e308 budgets overflowed to infinity; public
+builder now rejects nonfinite/nonpositive aggregate with GameplayContractError).
+The original failing expectation and red logs remain unchanged. Exact final
+source hashes verified. QA combined **161 passed / 163 subtests** = 47 owner
++ 49 review + 65 selected IR. Main corrected the review's incorrect subgroup
+labels via collection audit without changing tests. See
+P3_CATALOG_CONTEXT_REVIEW.md and evidence/p3_catalog_main_acceptance.json.
+
+Main complementary cross-module regression imported new public modules in
+the same process as Core Engine / Observation / accounting / P1 completion /
+Derived tests: **230 passed /35.84s**. All 319 previous frozen Python sources
+and 130 protected files remain byte-identical. The preceding full-project
+P2 regression 1076/4257 is not claimed as a new full run after this package.
+A manually authored offline demo preserves authority at exactly 2 Effects /
+2 scopes /budget12, despite the full catalog; no provider calls or generated
+skills (`evidence/p3_catalog_main_public_example.json`).
+
+Accounting p3_1a cutoff 2026-11-02T03:29:44.298Z: subset USD 2.05592649 / CNY 13.70562835 (already in cumulative).
+Project reference CNY 494.57, safety CNY 623.19/3000, Unknown 0/malformed 0.
+P3 workers are tagged P3; the existing resumed main turn remains shared P2
+control accounting. Task ordinal boundaries allocate observed shared overhead,
+not exact semantic per-stage attribution. Bootstrap remains separate.
+
+P3 Gate is STILL OPEN: no provider/replay/pipeline/sandbox/registration/batch
+or new Alpha UI. Next bounded task: offline ReplayProvider + strict bounded
+candidate decode/normalize/parse/compile, with compiled-but-unregistered output
+and no skipped sandbox/register stage labelled accepted; then actual Engine
+sandbox/behavior signatures, then reviewed live usage path/pilot/batches.

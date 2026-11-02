@@ -1,0 +1,32 @@
+{
+  "utc": "2026-11-02T03:29:48.422291+00:00",
+  "status": "ACCEPT_OFFLINE_INCREMENT_ONLY",
+  "open_product_defects": 0,
+  "confirmed_fixed_defects": [
+    "P3QA-D001"
+  ],
+  "qa_result": "161 passed /163 subtests",
+  "qa_corrected_groups": {
+    "P3_owner": 47,
+    "P3_review": 49,
+    "selected_IR": 65
+  },
+  "main_cross_result": "230 passed /35.84s",
+  "prior_frozen_source_count": 319,
+  "prior_sources_unchanged": true,
+  "protected_count": 130,
+  "protected_unchanged": true,
+  "new_source_sha256": {
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/__init__.py": "10272c5ca5c20a390571084d0c65c05bab85fb2991ad2ad50fb6f23116ddcf03",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/catalog.py": "0ad9aa4a70956e1bd30939a36d99cb15d2e45570b3df2e7606a0d32e76d6485c",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/context.py": "adf06258e75cb12ad8989658cceedf6d7277bf5cbb3ba1f6517385a2a4700213",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_catalog_context.py": "701b3b08b415b489dfba1893d87bd47188daa5d0ef0c3f55e5fedaabe5dbc351",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_catalog_context_review.py": "a010236d07997b1ce7ba3397e9d7caaef910b42b7beac7c7fe68952a5e749f54"
+  },
+  "original_independent_report_sha256": "b049b886e4439b0aad1f0e125f386688a3ded6f19bbc93708151a0f804791d9d",
+  "report_with_main_addendum_sha256": "ea9afdee6eefde1d01d5c9611ce8b0a20e144786a23b4f3aaef383f466f0d479",
+  "full_P3_gate_accepted": false,
+  "provider_calls": 0,
+  "generated_skills": 0,
+  "note": "No unchanged-stage claims; no live generation, no new all-project full regression after package. Prior P2 full evidence is separate."
+}

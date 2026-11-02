@@ -1,0 +1,17 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.2.0, pluggy-1.7.0
+rootdir: C:\Users\orinzheng\Documents\Codex\2026-10-28\magpie-codex-deepseek-17-21-codex\pmw-engine-v2
+configfile: pyproject.toml
+collected 230 items
+
+tests\test_engine.py ................................................... [ 22%]
+........................................................................ [ 53%]
+........................................                                 [ 70%]
+tests\test_observation.py ...................................            [ 86%]
+tests\test_agent_cost_ledger.py .................                        [ 93%]
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_p1_scenarios_completion.py . [ 93%]
+...                                                                      [ 95%]
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_sandbox_derived_catalog.py . [ 95%]
+..........                                                               [100%]
+
+============================ 230 passed in 35.84s =============================

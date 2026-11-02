@@ -1,0 +1,43 @@
+{
+  "branch": "feature/alpha-v02-seventh-night",
+  "catalog_hash": "496a2788abdd2ba2202a99e5770a8949547fe1f4cf247268c44ae97f5d723202",
+  "catalog_version": "pmw-mechanism-catalog-v1",
+  "checkpoint": "747fdde",
+  "context_fixture": "profile=combat,material=probe_material,complexity=1,rules=[rule],capabilities=[basic.attack]",
+  "context_hash": "f5a21bf0b7d3bb8c49c353936d438595b71c536c23afc5dfe3a5b328bb5f7be5",
+  "context_protocol": "pmw-generation-context-v1",
+  "defects": [
+    {
+      "fix": "aggregate material authority budget must be finite and positive",
+      "id": "P3QA-D001",
+      "status": "fixed"
+    }
+  ],
+  "files": {
+    "docs/agent_bootstrap/P3_CATALOG_CONTEXT_INCREMENT.md": "dfb4ea759bcbef137b0606cfa2492822626e112baf42799da009c474b834bdf3",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/__init__.py": "10272c5ca5c20a390571084d0c65c05bab85fb2991ad2ad50fb6f23116ddcf03",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/catalog.py": "0ad9aa4a70956e1bd30939a36d99cb15d2e45570b3df2e7606a0d32e76d6485c",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/context.py": "adf06258e75cb12ad8989658cceedf6d7277bf5cbb3ba1f6517385a2a4700213",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_catalog_context.py": "701b3b08b415b489dfba1893d87bd47188daa5d0ef0c3f55e5fedaabe5dbc351"
+  },
+  "limitations": [
+    "catalog_context_only",
+    "no_provider_pipeline_registration",
+    "structural_not_behavioral_identity",
+    "no_p3_gate_claim"
+  ],
+  "status": "PASS_WITH_P3QA_D001_FIXED",
+  "test_logs": [
+    "docs/agent_bootstrap/evidence/p3_catalog_owner_fix1_owner_review_selected.log",
+    "docs/agent_bootstrap/evidence/p3_catalog_owner_fix1_final_selected.log",
+    "docs/agent_bootstrap/evidence/p3_catalog_owner_fix1_owner_only.log",
+    "docs/agent_bootstrap/evidence/p3_catalog_owner_fix1_qa_only_rerun.log"
+  ],
+  "tests": {
+    "owner_only": "47 passed",
+    "qa_only": "49 passed",
+    "selected_final": "128 passed",
+    "selected_with_subtests": "128 passed, 63 subtests passed"
+  },
+  "version": "pmw-p3-catalog-context-owner-evidence-v1"
+}

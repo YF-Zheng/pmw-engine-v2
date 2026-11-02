@@ -1,0 +1,22 @@
+{
+  "catalog_canonical_sha256": "496a2788abdd2ba2202a99e5770a8949547fe1f4cf247268c44ae97f5d723202",
+  "catalog_hash": "496a2788abdd2ba2202a99e5770a8949547fe1f4cf247268c44ae97f5d723202",
+  "catalog_version": "pmw-mechanism-catalog-v1",
+  "context_canonical_sha256": "f5a21bf0b7d3bb8c49c353936d438595b71c536c23afc5dfe3a5b328bb5f7be5",
+  "context_fixture": "profile=combat,material=probe_material,complexity=1,rules=[rule],capabilities=[basic.attack]",
+  "context_hash": "f5a21bf0b7d3bb8c49c353936d438595b71c536c23afc5dfe3a5b328bb5f7be5",
+  "context_protocol": "pmw-generation-context-v1",
+  "effect_kind_count": 15,
+  "limitations": [
+    "catalog_context_only",
+    "no_provider_pipeline_registration",
+    "structural_not_behavioral_identity",
+    "no_p3_gate_claim"
+  ],
+  "operator_family_count": 7,
+  "owner_log": "docs/agent_bootstrap/evidence/p3_catalog_owner_final_current.log",
+  "review_suite_included": false,
+  "state_class_count": 6,
+  "tests": "owner focused 78 passed, 63 subtests passed",
+  "version": "pmw-p3-catalog-context-owner-evidence-v1"
+}

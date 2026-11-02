@@ -1,0 +1,33 @@
+{
+  "count_breakdown": {
+    "p3_owner_review": 114,
+    "selected_ir_checkpoint": 47
+  },
+  "counts": {
+    "failed": 0,
+    "passed": 161,
+    "subtests": 163
+  },
+  "frozen_source_hashes": {
+    "checked": 317,
+    "mismatch": 0,
+    "missing": 0
+  },
+  "hashes": {
+    "final_fix1_log": "1685ec5435f518ea4d7aba4998beb75234f1ae5bcbfc7101cc96f61a04e2dba3",
+    "owner_catalog": "0ad9aa4a70956e1bd30939a36d99cb15d2e45570b3df2e7606a0d32e76d6485c",
+    "owner_context": "adf06258e75cb12ad8989658cceedf6d7277bf5cbb3ba1f6517385a2a4700213",
+    "owner_init": "10272c5ca5c20a390571084d0c65c05bab85fb2991ad2ad50fb6f23116ddcf03",
+    "owner_test": "701b3b08b415b489dfba1893d87bd47188daa5d0ef0c3f55e5fedaabe5dbc351",
+    "pre_fix_snapshot": "5d66c570af2778acea219d98f35a0fcacfa554029ac92ebdf51e879c1549814c",
+    "red_focused": "92248f306c8cba85204bedc546a62fc0dd98795ab4368a5cbc27f1448810c89b",
+    "red_owner_review": "2ed7fab04dd97d1f8d0e0c906e6040b3402bdc2f38c3fc9fd187410ddc579947",
+    "red_selected_ir": "91d16ef5b8884b8eafb70b356c7457d8bda9156fdd7d0f9fdee0b85b4e6cdb17",
+    "review_report": "b049b886e4439b0aad1f0e125f386688a3ded6f19bbc93708151a0f804791d9d",
+    "review_test": "a010236d07997b1ce7ba3397e9d7caaef910b42b7beac7c7fe68952a5e749f54"
+  },
+  "head": "747fdde",
+  "provider_or_gate_claimed": false,
+  "red_logs_preserved": true,
+  "verdict": "ACCEPT_OFFLINE_P31A_FIX1"
+}

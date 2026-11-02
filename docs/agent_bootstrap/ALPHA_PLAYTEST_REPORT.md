@@ -211,3 +211,7 @@ No new browser playtest was performed for P2.1 (Skill IR). It is a compiler/vali
 ## P2 Gate Playtest Boundary (2026-11-02)
 
 No new public/browser playtest. The 40 reference Skills execute in real mechanics fixtures, not the Alpha UI. Protected Alpha code is unchanged; no gameplay/UX improvement is claimed. P3 offline context work is next.
+
+## P3.1A Playtest Boundary
+
+Offline Catalog/Context has no Alpha integration and no new public/browser playtest. No game skill generation or gameplay improvement is claimed.

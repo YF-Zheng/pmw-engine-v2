@@ -1,7 +1,8 @@
 # P3 Skill Designer (DS V4 Flash) Design
 
-Status: DRAFT by Main (2026-10-30). Becomes frozen only after the P2 Gate is
-accepted. No provider call is made before that.
+Status: offline Catalog/Context scope frozen by Main on 2026-11-02 after
+the P2 Gate checkpoint `747fdde`. Later provider/pipeline/batch scopes remain
+draft and need their own reviews. No live generation call has been made.
 
 ## Principle
 
@@ -89,8 +90,9 @@ not sample size.
 
 ## Resume Review / Next Bounded Increment (2026-11-02)
 
-P2.2 is still pending QA sign-off. The following scope is planning only;
-do not start implementation or provider generation before the P2 Gate.
+P2.2 QA, frozen regression and accounting passed at `747fdde`. Implementation
+of ONLY the following offline scope may proceed; live provider generation
+still requires the separately reviewed provider/accounting path.
 
 First P3 increment is ONLY offline `catalog.py` + `context.py`. Provider,
 pipeline, registration, live generation and accounting ingestion remain
@@ -111,6 +113,16 @@ copies/canonical JSON so mutation cannot desynchronize context/catalog hashes.
 Existing-skill summaries must omit candidate identity/name and describe
 structural content; equivalent structures should not receive different
 summaries solely because IDs or prose differ.
+
+Snapshot dataclass constructors and JSON hashes are not capability grants.
+Future pipeline/registration must derive permission again from server-owned
+material definitions and trusted runtime state, not from an arbitrary
+deserialized Context object or the displayed `authority` JSON. Likewise,
+source/canonical hashes are integrity/provenance markers, not authentication.
+Preserve semantic references in structural summaries (field/resource IDs,
+Process/Drive/Relation profiles, relation types, trait/status IDs, conditions
+and magnitudes); remove only identity/display/provenance labels. Structural
+summary equality is not a behavioral-equivalence claim.
 
 Before live HTTP work, verify Magpie model catalog and response usage
 semantics again; a response model label is not sufficient evidence of the

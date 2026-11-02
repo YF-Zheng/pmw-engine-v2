@@ -1,0 +1,106 @@
+...................................................................F.... [ 75%]
+.......................                                                  [100%]
+================================== FAILURES ===================================
+______ test_material_authority_overflow_is_fail_closed_at_public_builder ______
+
+    def test_material_authority_overflow_is_fail_closed_at_public_builder():
+        materials = [
+            parse_material({
+                "id": f"p3_review_overflow_{index}",
+                "tier": "rare",
+                "region_rarity": "scarce",
+                "traits": [{
+                    "id": "overflow_trait",
+                    "effect_kinds": ["damage"],
+                    "selectors": ["target_actor"],
+                    "budget_points": 1e308,
+                }],
+            })
+            for index in range(2)
+        ]
+        with pytest.raises(GameplayContractError):
+>           build_generation_context(
+                profile="combat",
+                materials=materials,
+                complexity=1,
+                public_known_rules=(),
+                acquired_capabilities=(),
+            )
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_skill_designer_catalog_context_review.py:468: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\skill_designer\context.py:245: in build_generation_context
+    canonical_json = json.dumps(
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <json.encoder.JSONEncoder object at 0x000002790EBA8AD0>
+o = {'version': 'pmw-generation-context-v1', 'catalog': {'version': 'pmw-mechanism-catalog-v1', 'hash': '496a2788abdd2ba22...ts': {'max_children': 256, 'max_depth': 64, 'max_nodes': 4096}, ...}, ...}}, 'profile': 'combat', 'complexity': 1, ...}
+_one_shot = True
+
+    def iterencode(self, o, _one_shot=False):
+        """Encode the given object and yield each string
+        representation as available.
+    
+        For example::
+    
+            for chunk in JSONEncoder().iterencode(bigobject):
+                mysocket.write(chunk)
+    
+        """
+        if self.check_circular:
+            markers = {}
+        else:
+            markers = None
+        if self.ensure_ascii:
+            _encoder = encode_basestring_ascii
+        else:
+            _encoder = encode_basestring
+    
+        def floatstr(o, allow_nan=self.allow_nan,
+                _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
+            # Check for specials.  Note that this type of test is processor
+            # and/or platform-specific, so do tests which don't depend on the
+            # internals.
+    
+            if o != o:
+                text = 'NaN'
+            elif o == _inf:
+                text = 'Infinity'
+            elif o == _neginf:
+                text = '-Infinity'
+            else:
+                return _repr(o)
+    
+            if not allow_nan:
+                raise ValueError(
+                    "Out of range float values are not JSON compliant: " +
+                    repr(o))
+    
+            return text
+    
+    
+        if (_one_shot and c_make_encoder is not None
+                and self.indent is None):
+            _iterencode = c_make_encoder(
+                markers, self.default, _encoder, self.indent,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, self.allow_nan)
+        else:
+            _iterencode = _make_iterencode(
+                markers, self.default, _encoder, self.indent, floatstr,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, _one_shot)
+>       return _iterencode(o, 0)
+               ^^^^^^^^^^^^^^^^^
+E       ValueError: Out of range float values are not JSON compliant: inf
+
+..\..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py:258: ValueError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_catalog_context_review.py::test_material_authority_overflow_is_fail_closed_at_public_builder
+1 failed, 94 passed in 10.39s

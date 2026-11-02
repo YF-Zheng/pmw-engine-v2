@@ -1,0 +1,33 @@
+{
+  "catalog_hash": "496a2788abdd2ba2202a99e5770a8949547fe1f4cf247268c44ae97f5d723202",
+  "context_hash": "c7c365678e3c800ab3887634cccd27589386708cd5a5661576229757c2dadd5e",
+  "counts": {
+    "owner_review_failed": 1,
+    "owner_review_passed": 94,
+    "review_collected": 49,
+    "review_failed": 1,
+    "selected_ir_failed": 1,
+    "selected_ir_passed": 99,
+    "selected_ir_subtests": 131
+  },
+  "defects": [
+    {
+      "class": "PRODUCT_DEFECT",
+      "id": "P3QA-D001",
+      "module": "context.py/material_authority",
+      "severity": "P1",
+      "summary": "aggregate finite material budgets overflow to inf; public builder leaks ValueError"
+    }
+  ],
+  "head": "747fdde",
+  "owner_hashes": {
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/__init__.py": "10272c5ca5c20a390571084d0c65c05bab85fb2991ad2ad50fb6f23116ddcf03",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/catalog.py": "9cf8e2c885a40ed330e99fad756afe2e17e78bc946e385ff656c438ba2b08d27",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_designer/context.py": "81045b87b9b6bfc5c77ae2dfac6032c836910efbee9e8257bf324f221b091786"
+  },
+  "status": "PRELIMINARY_REJECT_CURRENT_STABLE_HASH",
+  "test_hashes": {
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_catalog_context.py": "d07e15caa214188fd08bed7e7406a4c591c25d5bb1f4514c89b2b0a692b3679d",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_skill_designer_catalog_context_review.py": "a010236d07997b1ce7ba3397e9d7caaef910b42b7beac7c7fe68952a5e749f54"
+  }
+}

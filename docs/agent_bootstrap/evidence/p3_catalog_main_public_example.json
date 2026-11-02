@@ -1,0 +1,2592 @@
+{
+  "kind": "OFFLINE_PUBLIC_CONTEXT_EXAMPLE_NOT_GENERATED_SKILL",
+  "catalog_hash": "496a2788abdd2ba2202a99e5770a8949547fe1f4cf247268c44ae97f5d723202",
+  "context_hash": "ccc7c8cfd69f3c119b92c5e80564ef9d1bdedce942aa23d3a72663dcfcdfc5e8",
+  "document": {
+    "acquired_capabilities": [
+      "public_impulse"
+    ],
+    "authority": {
+      "budget_points": 12.0,
+      "derivation": "validated_material_traits_only",
+      "effect_kinds": [
+        "damage",
+        "modify_field"
+      ],
+      "material_ids": [
+        "p3_offline_demo"
+      ],
+      "selectors": [
+        "current_area",
+        "target_actor"
+      ]
+    },
+    "catalog": {
+      "document": {
+        "attribute_terms": {
+          "attributes": [
+            "power",
+            "control",
+            "resilience",
+            "agility"
+          ],
+          "forms": {
+            "check": {
+              "comparators": [
+                "eq",
+                "neq",
+                "gt",
+                "gte",
+                "lt",
+                "lte"
+              ],
+              "required_keys": [
+                "kind",
+                "attribute",
+                "comparator",
+                "threshold"
+              ],
+              "threshold": "finite_number"
+            },
+            "modifier": {
+              "operations": [
+                "add",
+                "multiply"
+              ],
+              "required_keys": [
+                "kind",
+                "attribute",
+                "operation",
+                "value"
+              ],
+              "value": "finite_number"
+            },
+            "scaling": {
+              "coefficient": "finite_number",
+              "maximum": "nonnegative_finite_number",
+              "optional_keys": [
+                "maximum"
+              ],
+              "required_keys": [
+                "kind",
+                "attribute",
+                "coefficient"
+              ]
+            },
+            "threshold": {
+              "comparators": [
+                "eq",
+                "neq",
+                "gt",
+                "gte",
+                "lt",
+                "lte"
+              ],
+              "required_keys": [
+                "kind",
+                "attribute",
+                "comparator",
+                "threshold"
+              ],
+              "threshold": "finite_number"
+            }
+          },
+          "kind_values": [
+            "scaling",
+            "threshold",
+            "check",
+            "modifier"
+          ]
+        },
+        "budget_arithmetic": {
+          "attribute_term_cost": 0.25,
+          "compound_limit": "sum of entry budget_used <= document budget",
+          "duration_cost": {
+            "charged_ticks_cap": 20,
+            "per_tick": 0.1
+          },
+          "effect_costs": {
+            "add_resource": 2.0,
+            "apply_status": 3.0,
+            "damage": 2.0,
+            "drive_source": 5.0,
+            "dynamics_modifier": 3.0,
+            "grant_trait": 3.0,
+            "heal": 2.0,
+            "modify_attractor": 3.0,
+            "modify_field": 2.0,
+            "modify_rate": 3.0,
+            "move_actor": 2.0,
+            "process_modify": 5.0,
+            "process_start": 5.0,
+            "relation_modifier": 5.0,
+            "shield": 2.0
+          },
+          "limit": "positive <= trusted MaterialAuthority.budget_points",
+          "passive_overhead": 0.5,
+          "sensing_or_evadable_surcharge": 0.25
+        },
+        "composition": {
+          "at_most_one_on_use_entry_per_document": true,
+          "conflicting_write_footprints": "reject",
+          "effect_ids_unique": true,
+          "effect_order": "preserved",
+          "move_actor_incompatible_with": [
+            "damage",
+            "process_start",
+            "process_modify",
+            "drive_source",
+            "relation_modifier"
+          ],
+          "one_move_actor_per_entry": true,
+          "one_process_control_operation_per_entry": true,
+          "one_process_drive_relation_control_operation_per_entry": true,
+          "passive_entry_forbids": [
+            "process_start",
+            "process_modify",
+            "drive_source",
+            "relation_modifier",
+            "dynamics_modifier",
+            "move_actor"
+          ],
+          "per_entry_effects": "nonempty_list"
+        },
+        "conditions": {
+          "defaults": {
+            "max_children": 16,
+            "max_depth": 16,
+            "max_nodes": 64
+          },
+          "document_budget_shared": true,
+          "kinds": [
+            "all",
+            "any",
+            "not",
+            "attribute",
+            "resource",
+            "field",
+            "has_trait",
+            "has_status",
+            "derived"
+          ],
+          "maximum_accepted_limits": {
+            "max_children": 256,
+            "max_depth": 64,
+            "max_nodes": 4096
+          },
+          "null_condition": "always",
+          "semantics": {
+            "arbitrary_expression": false,
+            "derived_is_input_only": true,
+            "pure": true,
+            "read_only": true
+          },
+          "trusted_tighten_only": true,
+          "types": [
+            {
+              "kind": "all",
+              "maximum_children": 16,
+              "minimum_children": 1,
+              "value_shape": "nonempty_list_of_condition_nodes"
+            },
+            {
+              "kind": "any",
+              "maximum_children": 16,
+              "minimum_children": 1,
+              "value_shape": "nonempty_list_of_condition_nodes"
+            },
+            {
+              "kind": "not",
+              "value_shape": "one_condition_node"
+            },
+            {
+              "comparators": [
+                "eq",
+                "neq",
+                "gt",
+                "gte",
+                "lt",
+                "lte"
+              ],
+              "keys": [
+                "power",
+                "control",
+                "resilience",
+                "agility"
+              ],
+              "kind": "attribute",
+              "required_keys": [
+                "subject",
+                "key",
+                "comparator",
+                "value"
+              ],
+              "subjects": [
+                "self",
+                "target_actor",
+                "current_area"
+              ],
+              "value": "finite_number"
+            },
+            {
+              "comparators": [
+                "eq",
+                "neq",
+                "gt",
+                "gte",
+                "lt",
+                "lte"
+              ],
+              "keys": [
+                "hp",
+                "mana",
+                "shield"
+              ],
+              "kind": "resource",
+              "required_keys": [
+                "subject",
+                "key",
+                "comparator",
+                "value"
+              ],
+              "subjects": [
+                "self",
+                "target_actor",
+                "current_area"
+              ],
+              "value": "finite_number"
+            },
+            {
+              "comparators": [
+                "eq",
+                "neq",
+                "gt",
+                "gte",
+                "lt",
+                "lte"
+              ],
+              "global_field_ids_enumerated": false,
+              "keys": "nonempty_runtime_field_id",
+              "kind": "field",
+              "required_keys": [
+                "subject",
+                "key",
+                "comparator",
+                "value"
+              ],
+              "subjects": [
+                "self",
+                "target_actor",
+                "current_area"
+              ],
+              "value": "finite_number"
+            },
+            {
+              "id": "nonempty_trait_id",
+              "kind": "has_trait",
+              "required_keys": [
+                "subject",
+                "id"
+              ],
+              "subjects": [
+                "self",
+                "target_actor"
+              ]
+            },
+            {
+              "id": "nonempty_status_id",
+              "kind": "has_status",
+              "required_keys": [
+                "subject",
+                "id"
+              ],
+              "subjects": [
+                "self",
+                "target_actor"
+              ]
+            },
+            {
+              "comparators": [
+                "eq",
+                "neq",
+                "gt",
+                "gte",
+                "lt",
+                "lte"
+              ],
+              "global_derived_ids_enumerated": false,
+              "keys": "nonempty_runtime_derived_id",
+              "kind": "derived",
+              "read_only": true,
+              "required_keys": [
+                "subject",
+                "key",
+                "comparator",
+                "value"
+              ],
+              "subject_exact": "current_area",
+              "subjects": [
+                "current_area"
+              ],
+              "value": "finite_number"
+            }
+          ]
+        },
+        "coverage": {
+          "effect_kind_count": 15,
+          "effect_kinds": [
+            "damage",
+            "heal",
+            "shield",
+            "add_resource",
+            "apply_status",
+            "modify_field",
+            "modify_attractor",
+            "modify_rate",
+            "grant_trait",
+            "process_start",
+            "process_modify",
+            "drive_source",
+            "relation_modifier",
+            "dynamics_modifier",
+            "move_actor"
+          ],
+          "operator_families": [
+            "impulse",
+            "drive/source",
+            "attractor_modifier",
+            "dynamics_modifier",
+            "process_start",
+            "process_modify",
+            "relation_modifier"
+          ],
+          "operator_family_count": 7,
+          "operator_unmapped_effect_kinds": [],
+          "state_class_count": 6,
+          "state_classes": [
+            "Field",
+            "Stock",
+            "Process",
+            "Relation",
+            "Discrete",
+            "Derived"
+          ],
+          "state_unmapped_effect_kinds": [
+            "damage",
+            "heal",
+            "shield"
+          ]
+        },
+        "effects": {
+          "common_optional_keys": [
+            "attribute_terms",
+            "condition",
+            "targeting"
+          ],
+          "common_required_keys": [
+            "commitment",
+            "id",
+            "kind",
+            "target"
+          ],
+          "kinds": {
+            "add_resource": {
+              "allowed_keys": [
+                "amount",
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "id",
+                "kind",
+                "resource",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [],
+              "excluded_optional_keys": [],
+              "operators": [
+                "impulse"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "amount",
+                "commitment",
+                "id",
+                "kind",
+                "resource",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Stock"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "amount": {
+                  "finite": true,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through type validation; runtime's effect amount path treats it as 0.0.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "number"
+                },
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "resource": {
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through type validation; it does not identify a resource and should not be used.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "string",
+                  "values": [
+                    "hp",
+                    "mana",
+                    "shield"
+                  ]
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "apply_status": {
+              "allowed_keys": [
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "id",
+                "kind",
+                "status_id",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [],
+              "excluded_optional_keys": [],
+              "operators": [
+                "impulse"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "commitment",
+                "id",
+                "kind",
+                "status_id",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Discrete"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "status_id": {
+                  "known_status_registry_required": true,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through type validation; runtime still requires a known non-null status ID.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "damage": {
+              "allowed_keys": [
+                "amount",
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "id",
+                "kind",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [],
+              "excluded_optional_keys": [],
+              "operators": [
+                "impulse"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "amount",
+                "commitment",
+                "id",
+                "kind",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [],
+              "supported": true,
+              "value_constraints": {
+                "amount": {
+                  "finite": true,
+                  "minimum": 0,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through parse_skill_ir; runtime treats a missing value as 0.0 before attribute terms. Null is not a way to omit the scalar from an IR document.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "number"
+                },
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "drive_source": {
+              "allowed_keys": [
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "drive_profile_id",
+                "drive_rate",
+                "duration",
+                "id",
+                "kind",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [
+                {
+                  "rule": "target_exact",
+                  "source_rule": "parse_effect:drive_source:target",
+                  "value": {
+                    "kind": "current_area"
+                  }
+                },
+                {
+                  "rule": "commitment_exact",
+                  "source_rule": "parse_effect:drive_source:commitment",
+                  "value": "required"
+                },
+                {
+                  "rule": "attribute_terms_absent",
+                  "source_rule": "parse_effect:drive_source:terms"
+                },
+                {
+                  "rule": "targeting_default_only",
+                  "source_rule": "parse_effect:drive_source:targeting",
+                  "value": {
+                    "evadable": false,
+                    "sensing": "none"
+                  }
+                }
+              ],
+              "excluded_optional_keys": [],
+              "operators": [
+                "drive/source"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "commitment",
+                "drive_profile_id",
+                "drive_rate",
+                "duration",
+                "id",
+                "kind",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Stock"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "drive_profile_id": {
+                  "global_profile_ids_enumerated": false,
+                  "maximum_length": 128,
+                  "nonempty": true,
+                  "required": true,
+                  "type": "string"
+                },
+                "drive_rate": {
+                  "exclusive_minimum": 0,
+                  "finite": true,
+                  "parser_maximum": null,
+                  "required": true,
+                  "runtime_profile_bound": "Drive profile max_rate",
+                  "type": "number"
+                },
+                "duration": {
+                  "minimum": 1,
+                  "parser_maximum": null,
+                  "required": true,
+                  "runtime_profile_bound": "Drive profile max_duration_ticks",
+                  "type": "integer"
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "dynamics_modifier": {
+              "allowed_keys": [
+                "commitment",
+                "curve",
+                "curve_priority",
+                "duration",
+                "field_id",
+                "id",
+                "kind",
+                "rate_add",
+                "rate_multiplier",
+                "target"
+              ],
+              "conditional_rules": [
+                {
+                  "keys": [
+                    "condition",
+                    "attribute_terms",
+                    "targeting"
+                  ],
+                  "rule": "optional_keys_absent",
+                  "source_rule": "parse_effect:dynamics_modifier:allowed"
+                },
+                {
+                  "rule": "target_exact",
+                  "source_rule": "parse_effect:dynamics_modifier:target",
+                  "value": {
+                    "kind": "current_area"
+                  }
+                },
+                {
+                  "rule": "commitment_exact",
+                  "source_rule": "parse_effect:dynamics_modifier:commitment",
+                  "value": "required"
+                },
+                {
+                  "rule": "attribute_terms_absent",
+                  "source_rule": "parse_effect:dynamics_modifier:terms"
+                },
+                {
+                  "rule": "targeting_default_only",
+                  "source_rule": "parse_effect:dynamics_modifier:targeting",
+                  "value": {
+                    "evadable": false,
+                    "sensing": "none"
+                  }
+                }
+              ],
+              "excluded_optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "operators": [
+                "dynamics_modifier"
+              ],
+              "optional_keys": [],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "commitment",
+                "curve",
+                "curve_priority",
+                "duration",
+                "field_id",
+                "id",
+                "kind",
+                "rate_add",
+                "rate_multiplier",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Field"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "curve": {
+                  "required": true,
+                  "values": [
+                    "linear",
+                    "distance_squared",
+                    "none"
+                  ]
+                },
+                "curve_priority": {
+                  "maximum": 31,
+                  "minimum": 0,
+                  "required": true,
+                  "type": "integer"
+                },
+                "duration": {
+                  "maximum": 64,
+                  "minimum": 1,
+                  "required": true,
+                  "type": "integer"
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": "[a-z][a-z0-9_]{1,63}",
+                  "required": true,
+                  "type": "string"
+                },
+                "field_id": {
+                  "pattern": "[a-z][a-z0-9_]{1,47}",
+                  "required": true,
+                  "type": "string"
+                },
+                "rate_add": {
+                  "finite": true,
+                  "maximum": 1.0,
+                  "minimum": -1.0,
+                  "required": true,
+                  "type": "number"
+                },
+                "rate_multiplier": {
+                  "finite": true,
+                  "maximum": 8.0,
+                  "minimum": 0.0,
+                  "required": true,
+                  "type": "number"
+                }
+              }
+            },
+            "grant_trait": {
+              "allowed_keys": [
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "duration",
+                "id",
+                "kind",
+                "target",
+                "targeting",
+                "trait_id"
+              ],
+              "conditional_rules": [],
+              "excluded_optional_keys": [],
+              "operators": [
+                "impulse"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "commitment",
+                "duration",
+                "id",
+                "kind",
+                "target",
+                "trait_id"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Discrete"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "duration": {
+                  "minimum": 1,
+                  "parser_maximum": null,
+                  "required": true,
+                  "type": "integer"
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                },
+                "trait_id": {
+                  "nonempty": true,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through type validation; runtime still requires a concrete trait ID.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "string"
+                }
+              }
+            },
+            "heal": {
+              "allowed_keys": [
+                "amount",
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "id",
+                "kind",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [],
+              "excluded_optional_keys": [],
+              "operators": [
+                "impulse"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "amount",
+                "commitment",
+                "id",
+                "kind",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [],
+              "supported": true,
+              "value_constraints": {
+                "amount": {
+                  "finite": true,
+                  "minimum": 0,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through parse_skill_ir; runtime treats a missing value as 0.0 before attribute terms. Null is not a way to omit the scalar from an IR document.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "number"
+                },
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "modify_attractor": {
+              "allowed_keys": [
+                "amount",
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "duration",
+                "field_id",
+                "id",
+                "kind",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [],
+              "excluded_optional_keys": [],
+              "operators": [
+                "attractor_modifier"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "amount",
+                "commitment",
+                "duration",
+                "field_id",
+                "id",
+                "kind",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Field"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "amount": {
+                  "finite": true,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through type validation; runtime's effect amount path treats it as 0.0.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "number"
+                },
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "duration": {
+                  "minimum": 1,
+                  "parser_maximum": null,
+                  "required": true,
+                  "type": "integer"
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "field_id": {
+                  "global_field_ids_enumerated": false,
+                  "nonempty": true,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through type validation, but it is not a usable effect: runtime field lookup requires a concrete field ID. Prefer a non-null field ID.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "modify_field": {
+              "allowed_keys": [
+                "amount",
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "field_id",
+                "id",
+                "kind",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [],
+              "excluded_optional_keys": [],
+              "operators": [
+                "impulse"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "amount",
+                "commitment",
+                "field_id",
+                "id",
+                "kind",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Field"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "amount": {
+                  "finite": true,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through type validation; runtime's effect amount path treats it as 0.0.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "number"
+                },
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "field_id": {
+                  "global_field_ids_enumerated": false,
+                  "nonempty": true,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through type validation, but it is not a usable effect: runtime field lookup requires a concrete field ID. Prefer a non-null field ID.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "modify_rate": {
+              "allowed_keys": [
+                "amount",
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "duration",
+                "field_id",
+                "id",
+                "kind",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [],
+              "excluded_optional_keys": [],
+              "operators": [
+                "dynamics_modifier"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "amount",
+                "commitment",
+                "duration",
+                "field_id",
+                "id",
+                "kind",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Field"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "amount": {
+                  "finite": true,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through type validation; runtime's effect amount path treats it as 0.0.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "number"
+                },
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "duration": {
+                  "minimum": 1,
+                  "parser_maximum": null,
+                  "required": true,
+                  "type": "integer"
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "field_id": {
+                  "global_field_ids_enumerated": false,
+                  "nonempty": true,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through type validation, but it is not a usable effect: runtime field lookup requires a concrete field ID. Prefer a non-null field ID.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "move_actor": {
+              "allowed_keys": [
+                "commitment",
+                "id",
+                "kind",
+                "target"
+              ],
+              "conditional_rules": [
+                {
+                  "rule": "target_exact",
+                  "source_rule": "parse_effect:move_actor:target",
+                  "value": {
+                    "kind": "adjacent_area"
+                  }
+                },
+                {
+                  "rule": "commitment_exact",
+                  "source_rule": "parse_effect:move_actor:commitment",
+                  "value": "required"
+                },
+                {
+                  "rule": "effect_id_pattern",
+                  "source_rule": "parse_effect:move_actor:id",
+                  "value": "[a-z][a-z0-9_]{1,63}"
+                }
+              ],
+              "excluded_optional_keys": [],
+              "operators": [
+                "relation_modifier"
+              ],
+              "optional_keys": [],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "commitment",
+                "id",
+                "kind",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Relation"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required"
+                  ]
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": "[a-z][a-z0-9_]{1,63}",
+                  "required": true,
+                  "type": "string"
+                },
+                "target": {
+                  "exact": {
+                    "kind": "adjacent_area"
+                  },
+                  "required": true
+                }
+              }
+            },
+            "process_modify": {
+              "allowed_keys": [
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "id",
+                "kind",
+                "process_rate",
+                "process_remaining_ticks",
+                "process_template_id",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [
+                {
+                  "keys": [
+                    "process_rate",
+                    "process_remaining_ticks"
+                  ],
+                  "rule": "at_least_one_non_null",
+                  "source_rule": "parse_effect:process_modify:missing_required"
+                },
+                {
+                  "rule": "target_exact",
+                  "source_rule": "parse_effect:process_modify:target",
+                  "value": {
+                    "kind": "current_area"
+                  }
+                },
+                {
+                  "rule": "commitment_exact",
+                  "source_rule": "parse_effect:process_modify:commitment",
+                  "value": "required"
+                },
+                {
+                  "rule": "attribute_terms_absent",
+                  "source_rule": "parse_effect:process_modify:terms"
+                },
+                {
+                  "rule": "targeting_default_only",
+                  "source_rule": "parse_effect:process_modify:targeting",
+                  "value": {
+                    "evadable": false,
+                    "sensing": "none"
+                  }
+                }
+              ],
+              "excluded_optional_keys": [],
+              "operators": [
+                "process_modify"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "process_rate",
+                "process_remaining_ticks",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "commitment",
+                "id",
+                "kind",
+                "process_template_id",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Stock",
+                "Process"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "process_rate": {
+                  "exclusive_minimum": 0,
+                  "finite": true,
+                  "parser_maximum": null,
+                  "required": false,
+                  "runtime_profile_bound": "Process template max_rate",
+                  "type": "number"
+                },
+                "process_remaining_ticks": {
+                  "minimum": 1,
+                  "parser_maximum": null,
+                  "required": false,
+                  "runtime_profile_bound": "Process template max_duration_ticks",
+                  "type": "integer"
+                },
+                "process_template_id": {
+                  "global_profile_ids_enumerated": false,
+                  "maximum_length": 128,
+                  "nonempty": true,
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "process_start": {
+              "allowed_keys": [
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "id",
+                "kind",
+                "process_template_id",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [
+                {
+                  "rule": "target_exact",
+                  "source_rule": "parse_effect:process_start:target",
+                  "value": {
+                    "kind": "current_area"
+                  }
+                },
+                {
+                  "rule": "commitment_exact",
+                  "source_rule": "parse_effect:process_start:commitment",
+                  "value": "required"
+                },
+                {
+                  "rule": "attribute_terms_absent",
+                  "source_rule": "parse_effect:process_start:terms"
+                },
+                {
+                  "rule": "targeting_default_only",
+                  "source_rule": "parse_effect:process_start:targeting",
+                  "value": {
+                    "evadable": false,
+                    "sensing": "none"
+                  }
+                }
+              ],
+              "excluded_optional_keys": [],
+              "operators": [
+                "process_start"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "commitment",
+                "id",
+                "kind",
+                "process_template_id",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Stock",
+                "Process"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "process_template_id": {
+                  "global_profile_ids_enumerated": false,
+                  "maximum_length": 128,
+                  "nonempty": true,
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "relation_modifier": {
+              "allowed_keys": [
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "duration",
+                "id",
+                "kind",
+                "relation_enabled",
+                "relation_profile_id",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [
+                {
+                  "rule": "target_exact",
+                  "source_rule": "parse_effect:relation_modifier:target",
+                  "value": {
+                    "kind": "current_area"
+                  }
+                },
+                {
+                  "rule": "commitment_exact",
+                  "source_rule": "parse_effect:relation_modifier:commitment",
+                  "value": "required"
+                },
+                {
+                  "rule": "attribute_terms_absent",
+                  "source_rule": "parse_effect:relation_modifier:terms"
+                },
+                {
+                  "rule": "targeting_default_only",
+                  "source_rule": "parse_effect:relation_modifier:targeting",
+                  "value": {
+                    "evadable": false,
+                    "sensing": "none"
+                  }
+                }
+              ],
+              "excluded_optional_keys": [],
+              "operators": [
+                "relation_modifier"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "commitment",
+                "duration",
+                "id",
+                "kind",
+                "relation_enabled",
+                "relation_profile_id",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [
+                "Relation"
+              ],
+              "supported": true,
+              "value_constraints": {
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "duration": {
+                  "minimum": 1,
+                  "parser_maximum": null,
+                  "required": true,
+                  "runtime_profile_bound": "Relation profile max_duration_ticks",
+                  "type": "integer"
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "relation_enabled": {
+                  "required": true,
+                  "type": "strict_boolean"
+                },
+                "relation_profile_id": {
+                  "global_profile_ids_enumerated": false,
+                  "maximum_length": 128,
+                  "nonempty": true,
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            },
+            "shield": {
+              "allowed_keys": [
+                "amount",
+                "attribute_terms",
+                "commitment",
+                "condition",
+                "id",
+                "kind",
+                "target",
+                "targeting"
+              ],
+              "conditional_rules": [],
+              "excluded_optional_keys": [],
+              "operators": [
+                "impulse"
+              ],
+              "optional_keys": [
+                "attribute_terms",
+                "condition",
+                "targeting"
+              ],
+              "post_extraction_manifest": {
+                "allowed_keys_source": "source_ast_literal",
+                "derived_by": "catalog_owner_static_manifest",
+                "executes_candidate_data": false,
+                "required_keys_source": "source_ast_literal",
+                "role": "explicit source-anchored rules that are not expressible as a single parser literal"
+              },
+              "required_keys": [
+                "amount",
+                "commitment",
+                "id",
+                "kind",
+                "target"
+              ],
+              "schema_derivation": "source_ast_literal",
+              "source_rule": "parse_effect:fields[kind]",
+              "state_classes": [],
+              "supported": true,
+              "value_constraints": {
+                "amount": {
+                  "finite": true,
+                  "minimum": 0,
+                  "null_scope": {
+                    "annotation_is_source_anchored": false,
+                    "annotation_kind": "static_owner_review_manifest",
+                    "ir_ingress_note": "Skill IR preserves this null through parse_skill_ir; runtime treats a missing value as 0.0 before attribute terms. Null is not a way to omit the scalar from an IR document.",
+                    "ir_lowering_does_not_add_null_restriction": true,
+                    "parse_effect_null_allowed": true,
+                    "skill_ir_ingress_null_allowed": true
+                  },
+                  "required": true,
+                  "type": "number"
+                },
+                "attribute_terms": {
+                  "allowed": true,
+                  "empty_allowed": true,
+                  "required": false,
+                  "type": "list"
+                },
+                "commitment": {
+                  "required": true,
+                  "values": [
+                    "required",
+                    "conditional"
+                  ]
+                },
+                "condition": {
+                  "allowed": true,
+                  "null_means": "always",
+                  "required": false
+                },
+                "effect_id": {
+                  "nonempty": true,
+                  "pattern": null,
+                  "required": true,
+                  "type": "string"
+                },
+                "targeting": {
+                  "allowed": true,
+                  "default": {
+                    "evadable": false,
+                    "sensing": "none"
+                  },
+                  "evadable_requires": "at_least_one_check_attribute_term",
+                  "evadable_type": "strict_boolean",
+                  "required": false,
+                  "sensing_values": [
+                    "none",
+                    "visual",
+                    "mana"
+                  ]
+                }
+              }
+            }
+          },
+          "process_modify_optional_keys": [
+            "process_rate",
+            "process_remaining_ticks"
+          ]
+        },
+        "ir_protocol": "pmw-skill-ir-v1",
+        "language_status": {
+          "catalog_metadata_is_ir_member": false,
+          "executable": true,
+          "scope": "accepted P2.1/P2.2 subset only"
+        },
+        "lifecycle": {
+          "per_effect_duration": {
+            "note": "Effect parser duration rules in effects/kinds",
+            "supported": true
+          },
+          "registry_status_definitions": {
+            "note": "trusted status registry definitions, not IR lifecycle",
+            "supported": true
+          },
+          "status_duration": {
+            "non_null": {
+              "reason": "language_gap:lifecycle.status_duration",
+              "supported": false
+            },
+            "replacement": "per_effect_duration",
+            "supported": false,
+            "supported_value": null
+          }
+        },
+        "limits": {
+          "conditions": {
+            "default": {
+              "max_children": 16,
+              "max_depth": 16,
+              "max_nodes": 64
+            },
+            "ir_can_only_tighten_default": true,
+            "trusted_configuration_maximum": {
+              "max_children": 256,
+              "max_depth": 64,
+              "max_nodes": 4096
+            }
+          },
+          "controllers": {
+            "drive": {
+              "defaults": {
+                "max_active": 8,
+                "max_instances": 16
+              },
+              "enforcement": "DriveLimits",
+              "maximum_instances": 1024
+            },
+            "process": {
+              "defaults": {
+                "max_active": 8,
+                "max_instances": 16
+              },
+              "enforcement": "ProcessLimits",
+              "maximum_instances": 1024
+            },
+            "relation": {
+              "defaults": {
+                "max_active": 8,
+                "max_instances": 16
+              },
+              "enforcement": "RelationLimits",
+              "maximum_instances": 1024
+            }
+          },
+          "effect_count_bound": "shared budget plus composition rules",
+          "entries": {
+            "max_firings_per_root": {
+              "maximum": 8,
+              "minimum": 1
+            },
+            "maximum": 4,
+            "maximum_on_use_entries": 1,
+            "minimum": 1
+          },
+          "explicit_effect_count_limit": null,
+          "hooks": {
+            "defaults": {
+              "max_depth": 16,
+              "max_firings": 32,
+              "max_notifications": 64
+            },
+            "enforcement": "HookDispatchLimits",
+            "trusted_maximums": {
+              "max_depth": 16,
+              "max_firings": 32,
+              "max_notifications": 64
+            }
+          },
+          "json_ingress": {
+            "maximum_depth": 128,
+            "maximum_safe_integer_magnitude": 9007199254740992,
+            "maximum_string_or_key_length": 4096,
+            "maximum_values": 65536,
+            "nonfinite_numbers": "reject"
+          },
+          "skill_ir": {
+            "MAX_DESCRIPTION_LENGTH": 600,
+            "MAX_ENTRIES": 4,
+            "MAX_JSON_DEPTH": 128,
+            "MAX_JSON_SAFE_INT": 9007199254740992,
+            "MAX_JSON_STRING": 4096,
+            "MAX_JSON_VALUES": 65536,
+            "MAX_MODEL_LENGTH": 128,
+            "MAX_NAME_LENGTH": 80,
+            "MAX_SUMMARY_LENGTH": 240,
+            "MAX_TAGS": 8
+          }
+        },
+        "materials": {
+          "authority": "derived_only_from_validated_material_traits",
+          "region_rarities": [
+            "abundant",
+            "uncommon",
+            "scarce",
+            "unique"
+          ],
+          "tiers": [
+            "common",
+            "fine",
+            "rare",
+            "epic",
+            "legendary"
+          ],
+          "trait_budget": {
+            "exclusive_minimum": 0,
+            "finite": true,
+            "type": "number"
+          },
+          "trait_required_keys": [
+            "id",
+            "effect_kinds",
+            "selectors",
+            "budget_points"
+          ]
+        },
+        "operators": {
+          "attractor_modifier": [
+            "modify_attractor"
+          ],
+          "drive/source": [
+            "drive_source"
+          ],
+          "dynamics_modifier": [
+            "dynamics_modifier",
+            "modify_rate"
+          ],
+          "impulse": [
+            "add_resource",
+            "apply_status",
+            "damage",
+            "grant_trait",
+            "heal",
+            "modify_field",
+            "shield"
+          ],
+          "process_modify": [
+            "process_modify"
+          ],
+          "process_start": [
+            "process_start"
+          ],
+          "relation_modifier": [
+            "move_actor",
+            "relation_modifier"
+          ]
+        },
+        "provenance": {
+          "candidate_data_execution": false,
+          "composition_rules": "source_literal_and_static_source_anchored_manifest",
+          "effect_allowed_required_keys": "ast_literal_extraction_from_parse_effect",
+          "effect_conditional_rules": "static_source_anchored_manifest_checked_by_tests",
+          "effect_value_constraints": "static_source_anchored_manifest_checked_by_tests",
+          "reserved_and_lifecycle_semantics": "ast_constants_and_guard_source_check",
+          "runtime_caps": "ast_literal_extraction_from_closed_typed_sources",
+          "source_loading": "fixed_relative_sources_only; no candidate input is evaluated"
+        },
+        "runtime_profiles": {
+          "closed_profiles": [
+            "field",
+            "stock",
+            "process",
+            "relation",
+            "combat",
+            "travel",
+            "derived"
+          ],
+          "profile_specific_ids": {
+            "enumerated": false,
+            "kinds": [
+              "field_id",
+              "process_template_id",
+              "drive_profile_id",
+              "relation_profile_id"
+            ],
+            "reason": "profile fixtures expose local trusted IDs only at runtime; the public catalog must not infer a global union"
+          }
+        },
+        "selectors": {
+          "entries": [
+            {
+              "allowed_keys": [
+                "kind"
+              ],
+              "effect_target_restriction": "exactly_one_resolved_target",
+              "kind": "self",
+              "required_relation_type": false,
+              "resolution": "one_resolved_entity",
+              "supported": true
+            },
+            {
+              "allowed_keys": [
+                "kind"
+              ],
+              "effect_target_restriction": "exactly_one_resolved_target",
+              "kind": "target_actor",
+              "required_relation_type": false,
+              "resolution": "one_resolved_entity",
+              "supported": true
+            },
+            {
+              "allowed_keys": [
+                "kind"
+              ],
+              "effect_target_restriction": "exactly_one_resolved_target",
+              "kind": "current_area",
+              "required_relation_type": false,
+              "resolution": "one_resolved_current_area",
+              "supported": true
+            },
+            {
+              "allowed_keys": [
+                "kind",
+                "relation_type"
+              ],
+              "effect_target_restriction": "exactly_one_resolved_target",
+              "kind": "linked_object",
+              "required_relation_type": true,
+              "resolution": "one_or_more_linked_endpoints",
+              "supported": true
+            },
+            {
+              "allowed_keys": [
+                "kind"
+              ],
+              "effect_target_restriction": "exactly_one_resolved_target",
+              "kind": "adjacent_area",
+              "required_relation_type": false,
+              "resolution": "one_or_more_adjacent_areas",
+              "supported": true
+            }
+          ],
+          "kinds": [
+            "self",
+            "target_actor",
+            "current_area",
+            "linked_object",
+            "adjacent_area"
+          ],
+          "linked_object_relation_type": {
+            "field": "relation_type",
+            "global_relation_ids_enumerated": false,
+            "must_be_authorized_by_material_trait": true,
+            "must_be_in_targeting_relation_types": true,
+            "required": true,
+            "type": "nonempty_string"
+          },
+          "single_target_restriction": {
+            "exception": "move_actor uses exactly one requested adjacent target_area",
+            "multi_endpoint_selection_policy": false,
+            "rule": "exactly_one_resolved_target",
+            "source_rule": "actions.py:Gate 2 effects require exactly one target"
+          }
+        },
+        "semantics": {
+          "arbitrary_code": false,
+          "arbitrary_world_paths": false,
+          "catalog": "immutable_canonical_snapshot",
+          "conditions": "pure_read_only",
+          "parameter_values": "must_be_supplied_by_candidate",
+          "source_rules": "static_ast_extraction_fail_closed"
+        },
+        "source_anchors": [
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/attributes.py",
+            "role": "attribute term schema",
+            "sha256": "11432cd632ca211b18d75bac1affa6afabceda08335ec3daedc8ee3a3ebf9f11"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/conditions.py",
+            "role": "pure condition grammar and defaults",
+            "sha256": "a750139bbad3547d58fd3e8e258fc10a1e73a5c7a51acc78fc120dcbcd7dd373"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/contracts.py",
+            "role": "selector enum, attributes, curves, state classes",
+            "sha256": "ef7bb0c0a4a6a1ff8e85f6ca59244efa9ff4ad99e9fe0b0e30a08f6c2929f769"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/drives.py",
+            "role": "Drive runtime caps",
+            "sha256": "48e639d21b752e6fb0e02f32fdb91d18774bea720b200ce0d82ac399c0b52727"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/effects.py",
+            "role": "closed Effect kinds and per-kind parameter schema",
+            "sha256": "877c4bab899289b8d7163b16067eff05e3e103146ff024e0e6d53fbb60742e6c"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/hooks.py",
+            "role": "bounded passive dispatch limits",
+            "sha256": "cec4fcfb97c2ff8d3be9cfcc4bafec084794132c062c251c575026c2f25a3067"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/materials.py",
+            "role": "material revalidation and authority derivation",
+            "sha256": "1d17e040b5fd1a89cbcf59d2aac850c7b400a4d32f291a6105c02d3c22eb5218"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/processes.py",
+            "role": "Process runtime caps",
+            "sha256": "4f5f3b6941913b68ff3badac0d57e1c0c24cadb6516b1ea17a23d6488b78815b"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/reference_skills/fixtures.py",
+            "role": "closed reference profile set",
+            "sha256": "2da5268d0c1431c20af2cde8f4639a5387167a733ed1e52fc2518f3da916b4fb"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/relations.py",
+            "role": "Relation runtime caps",
+            "sha256": "16d2be0aa61cc8716de76f166a9ace2b7e9660b5e6cb84ac2da1e0f016bdbd88"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/selectors.py",
+            "role": "selector shape and linked relation field",
+            "sha256": "9e35189b4d700fd0504f13101d5403570ca98562b385f39b634528a8d1d6d856"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_ir.py",
+            "role": "IR protocol, triggers, operator/state maps, limits",
+            "sha256": "3d807d9f6d40dd6d631688824a21d295409ec94c01c72a4194cbc191364b61bb"
+          },
+          {
+            "path": "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skills.py",
+            "role": "lowered Skill constraints and budget arithmetic",
+            "sha256": "366523cf2915d3cf507940acea6679a661ca78bf09fc0bb0fb05c43c34551bcb"
+          }
+        ],
+        "state_classes": {
+          "Derived": [],
+          "Discrete": [
+            "apply_status",
+            "grant_trait"
+          ],
+          "Field": [
+            "dynamics_modifier",
+            "modify_attractor",
+            "modify_field",
+            "modify_rate"
+          ],
+          "Process": [
+            "process_modify",
+            "process_start"
+          ],
+          "Relation": [
+            "move_actor",
+            "relation_modifier"
+          ],
+          "Stock": [
+            "add_resource",
+            "drive_source",
+            "process_modify",
+            "process_start"
+          ]
+        },
+        "triggers": {
+          "accepted_event": "damage_resolved",
+          "reserved": [
+            {
+              "kind": "condition_enter",
+              "reason": "language_gap:condition_enter",
+              "supported": false
+            },
+            {
+              "kind": "condition_exit",
+              "reason": "language_gap:condition_exit",
+              "supported": false
+            },
+            {
+              "kind": "on_expire",
+              "reason": "language_gap:on_expire",
+              "supported": false
+            },
+            {
+              "kind": "on_tick",
+              "reason": "language_gap:on_tick",
+              "supported": false
+            },
+            {
+              "kind": "transition",
+              "reason": "language_gap:transition",
+              "supported": false
+            },
+            {
+              "event": "action_started",
+              "kind": "on_event",
+              "reason": "language_gap:on_event:action_started",
+              "supported": false
+            },
+            {
+              "event": "attack_applied",
+              "kind": "on_event",
+              "reason": "language_gap:on_event:attack_applied",
+              "supported": false
+            },
+            {
+              "event": "resource_harvested",
+              "kind": "on_event",
+              "reason": "language_gap:on_event:resource_harvested",
+              "supported": false
+            },
+            {
+              "event": "status_changed",
+              "kind": "on_event",
+              "reason": "language_gap:on_event:status_changed",
+              "supported": false
+            },
+            {
+              "event": "weather_changed",
+              "kind": "on_event",
+              "reason": "language_gap:on_event:weather_changed",
+              "supported": false
+            }
+          ],
+          "supported": [
+            {
+              "execution": "active_primary",
+              "kind": "on_use",
+              "supported": true,
+              "trigger": {
+                "kind": "on_use"
+              }
+            },
+            {
+              "event": "damage_resolved",
+              "execution": "bounded_passive_hook",
+              "kind": "on_event",
+              "supported": true,
+              "trigger": {
+                "event": "damage_resolved",
+                "kind": "on_event"
+              }
+            }
+          ]
+        },
+        "version": "pmw-mechanism-catalog-v1"
+      },
+      "hash": "496a2788abdd2ba2202a99e5770a8949547fe1f4cf247268c44ae97f5d723202",
+      "version": "pmw-mechanism-catalog-v1"
+    },
+    "complexity": 1,
+    "existing_skill_structures": [],
+    "materials": [
+      {
+        "id": "p3_offline_demo",
+        "region_rarity": "uncommon",
+        "tier": "fine",
+        "traits": [
+          {
+            "budget_points": 12.0,
+            "effect_kinds": [
+              "damage",
+              "modify_field"
+            ],
+            "id": "public_impulse",
+            "selectors": [
+              "target_actor",
+              "current_area"
+            ]
+          }
+        ]
+      }
+    ],
+    "profile": "field",
+    "public_known_rules": [],
+    "summary_semantics": {
+      "behavioral_identity_claimed": false,
+      "identity_labels_omitted": [
+        "skill_id",
+        "version",
+        "name",
+        "description",
+        "display",
+        "origin",
+        "entry_id",
+        "effect_id"
+      ],
+      "numeric_magnitudes_preserved": true,
+      "purpose": "bounded structural context only",
+      "semantic_references_preserved": true
+    },
+    "version": "pmw-generation-context-v1",
+    "visibility": {
+      "public_allowlist_only": true,
+      "registry_dump_included": false,
+      "world_state_included": false
+    }
+  },
+  "note": "Trusted manually authored demo material; no WorldState, no provider/model calls, no generated or registered skills."
+}

@@ -267,6 +267,16 @@
       "id": "01a19a0a-db54-7e22-a0cc-861e905591cc",
       "task": "P2.2 independent QA resume/report and bounded probes",
       "stage": "P2"
+    },
+    {
+      "id": "01a19a34-c5a1-7453-a76e-6c045182321a",
+      "task": "P3.1A offline Catalog/public Context implementation",
+      "stage": "P3"
+    },
+    {
+      "id": "01a19a40-862d-7871-ab72-b3edaa2b2e4b",
+      "task": "P3.1A independent Catalog/public Context QA",
+      "stage": "P3"
     }
   ],
   "turn_stages": {
@@ -316,7 +326,8 @@
     "2026-10-30 15:20 +08:00: user raised the total reference cap to CNY3000 ('\u6211\u8bbe\u4e00\u4e2a3000\u4eba\u6c11\u5e01\u7684\u603b\u4e0a\u9650'); tools/agent_cost_ledger.py MAX 2000->3000 and Reserve 150->1150 (extra CNY1000 to the overflow tier). Other stage limits unchanged.",
     "2026-10-30 17:45 +08:00: the CNY3000 cap (Reserve 1150, MAX 3000) moved from code defaults into budget_limits_cny, passed by refresh_cost_ledger.ps1 as --budget-limit. Code defaults restored to 150/2000 so the accepted ledger test stays unchanged; frozen run p2_ir_frozen failed only on that test and is preserved.",
     "2026-10-30 18:00 +08:00: main turn 01a18bac-45e0-76c3-afb0-86e1dfc45983 (P2.1 rounds 3-5 and P2.2) was defaulted to P1 by continuous_accounting.ps1, making P1 405.12/400 and the p2_1 capture fail closed before any snapshot was written. Corrected to P2 (actual work stage); script now defaults new main turns to continuous_run.default_turn_stage (P2).",
-    "2026-11-02: user explicitly resumed QA and development after the previous one-day window; heartbeat remains paused. Main status-query and resume turns registered as P2, actual rollout model tencent/gpt-6.1-sol. Old QA child is unavailable; its usage/evidence remains included. No retrospective removal or duplicate charging."
+    "2026-11-02: user explicitly resumed QA and development after the previous one-day window; heartbeat remains paused. Main status-query and resume turns registered as P2, actual rollout model tencent/gpt-6.1-sol. Old QA child is unavailable; its usage/evidence remains included. No retrospective removal or duplicate charging.",
+    "2026-11-02 P3.1A begins after P2 accepted. Worker usage is tagged P3. Current main turn began with P2 QA and remains P2 shared governance accounting; ordinal task snapshots split observed overhead, not exact semantic stage attribution. Future main turns default P3. No live generation calls. P2 checkpoint whitespace check preserved the frozen initializer bytes; one benign EOF-blank warning was allowed with -blank-at-eof, no source or test was weakened."
   ],
   "continuous_run": {
     "started_at_utc": "2026-10-29T05:39:29.235Z",
@@ -393,11 +404,16 @@
         "task": "p2_2",
         "main_end_ordinal": 8875,
         "snapshot": "docs\\agent_bootstrap\\evidence\\p2_2_cost_snapshot.json"
+      },
+      {
+        "task": "p3_1a",
+        "main_end_ordinal": 9069,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\p3_1a_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 8875,
-    "current_task": "p2_2",
-    "latest_checkpoint": "cb53694",
+    "main_ordinal_cursor": 9069,
+    "current_task": "p3_1a",
+    "latest_checkpoint": "747fdde",
     "main_turn_models": {
       "01a1862b-a31c-7351-ac83-5a77abdf3769": "tencent/gpt-6.1-sol",
       "01a18a8c-d2f5-7751-86e4-3b662913c288": "tencent/claude-opus-5.5",
@@ -406,7 +422,7 @@
       "01a19a05-6ac9-77c2-ae46-072d478c15b4": "tencent/gpt-6.1-sol",
       "01a19a09-a179-7380-8b3b-b69395c3cdb9": "tencent/gpt-6.1-sol"
     },
-    "default_turn_stage": "P2"
+    "default_turn_stage": "P3"
   },
   "budget_limits_cny": {
     "Reserve": 1150,
