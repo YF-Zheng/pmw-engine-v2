@@ -17,7 +17,9 @@
     "01a1862b-a31c-7351-ac83-5a77abdf3769",
     "01a18a8c-d2f5-7751-86e4-3b662913c288",
     "01a18b1c-e159-7f31-a86d-8f49af40678e",
-    "01a18bac-45e0-76c3-afb0-86e1dfc45983"
+    "01a18bac-45e0-76c3-afb0-86e1dfc45983",
+    "01a19a05-6ac9-77c2-ae46-072d478c15b4",
+    "01a19a09-a179-7380-8b3b-b69395c3cdb9"
   ],
   "default_phase": "P0",
   "agents": [
@@ -255,6 +257,16 @@
       "id": "01a18bcf-52aa-7ec2-af7e-3adf108e9d3a",
       "task": "P2.2 reference library owner",
       "stage": "P2"
+    },
+    {
+      "id": "01a18c3d-9550-7a33-bf2b-73b911abbf16",
+      "task": "P2.2 reference library independent QA",
+      "stage": "P2"
+    },
+    {
+      "id": "01a19a0a-db54-7e22-a0cc-861e905591cc",
+      "task": "P2.2 independent QA resume/report and bounded probes",
+      "stage": "P2"
     }
   ],
   "turn_stages": {
@@ -279,7 +291,9 @@
     "01a1862b-a31c-7351-ac83-5a77abdf3769": "P1",
     "01a18a8c-d2f5-7751-86e4-3b662913c288": "P1",
     "01a18b1c-e159-7f31-a86d-8f49af40678e": "Reserve",
-    "01a18bac-45e0-76c3-afb0-86e1dfc45983": "P2"
+    "01a18bac-45e0-76c3-afb0-86e1dfc45983": "P2",
+    "01a19a05-6ac9-77c2-ae46-072d478c15b4": "P2",
+    "01a19a09-a179-7380-8b3b-b69395c3cdb9": "P2"
   },
   "bootstrap": {
     "project_turn": "01a1825e-256e-7e92-93d0-a4e0a49ebfa8",
@@ -301,7 +315,8 @@
     "2026-10-30 12:41 +08:00: P1 stage reserve reached CNY366.37/400 after C5.1. User approved continuing ('\u989d\u5ea6\u591f\u7528\u4e0d\u7528\u62c5\u5fc3\uff0c\u5148\u7528\u7740'). Remaining P1-completion work from main turn 01a18b1c-e159-7f31-a86d-8f49af40678e onward and its workers is booked to the Reserve stage (limit CNY150) so the P1 stage limit is not overrun; total MAX 2000 still enforced.",
     "2026-10-30 15:20 +08:00: user raised the total reference cap to CNY3000 ('\u6211\u8bbe\u4e00\u4e2a3000\u4eba\u6c11\u5e01\u7684\u603b\u4e0a\u9650'); tools/agent_cost_ledger.py MAX 2000->3000 and Reserve 150->1150 (extra CNY1000 to the overflow tier). Other stage limits unchanged.",
     "2026-10-30 17:45 +08:00: the CNY3000 cap (Reserve 1150, MAX 3000) moved from code defaults into budget_limits_cny, passed by refresh_cost_ledger.ps1 as --budget-limit. Code defaults restored to 150/2000 so the accepted ledger test stays unchanged; frozen run p2_ir_frozen failed only on that test and is preserved.",
-    "2026-10-30 18:00 +08:00: main turn 01a18bac-45e0-76c3-afb0-86e1dfc45983 (P2.1 rounds 3-5 and P2.2) was defaulted to P1 by continuous_accounting.ps1, making P1 405.12/400 and the p2_1 capture fail closed before any snapshot was written. Corrected to P2 (actual work stage); script now defaults new main turns to continuous_run.default_turn_stage (P2)."
+    "2026-10-30 18:00 +08:00: main turn 01a18bac-45e0-76c3-afb0-86e1dfc45983 (P2.1 rounds 3-5 and P2.2) was defaulted to P1 by continuous_accounting.ps1, making P1 405.12/400 and the p2_1 capture fail closed before any snapshot was written. Corrected to P2 (actual work stage); script now defaults new main turns to continuous_run.default_turn_stage (P2).",
+    "2026-11-02: user explicitly resumed QA and development after the previous one-day window; heartbeat remains paused. Main status-query and resume turns registered as P2, actual rollout model tencent/gpt-6.1-sol. Old QA child is unavailable; its usage/evidence remains included. No retrospective removal or duplicate charging."
   ],
   "continuous_run": {
     "started_at_utc": "2026-10-29T05:39:29.235Z",
@@ -309,7 +324,9 @@
       "01a1862b-a31c-7351-ac83-5a77abdf3769",
       "01a18a8c-d2f5-7751-86e4-3b662913c288",
       "01a18b1c-e159-7f31-a86d-8f49af40678e",
-      "01a18bac-45e0-76c3-afb0-86e1dfc45983"
+      "01a18bac-45e0-76c3-afb0-86e1dfc45983",
+      "01a19a05-6ac9-77c2-ae46-072d478c15b4",
+      "01a19a09-a179-7380-8b3b-b69395c3cdb9"
     ],
     "accounted_tasks": [
       {
@@ -371,16 +388,23 @@
         "task": "p2_1",
         "main_end_ordinal": 8491,
         "snapshot": "docs\\agent_bootstrap\\evidence\\p2_1_cost_snapshot.json"
+      },
+      {
+        "task": "p2_2",
+        "main_end_ordinal": 8875,
+        "snapshot": "docs\\agent_bootstrap\\evidence\\p2_2_cost_snapshot.json"
       }
     ],
-    "main_ordinal_cursor": 8491,
-    "current_task": "p2_1",
-    "latest_checkpoint": "c14a81c04d1b28bcaa391b4000ff8bcee1fad242",
+    "main_ordinal_cursor": 8875,
+    "current_task": "p2_2",
+    "latest_checkpoint": "cb53694",
     "main_turn_models": {
       "01a1862b-a31c-7351-ac83-5a77abdf3769": "tencent/gpt-6.1-sol",
       "01a18a8c-d2f5-7751-86e4-3b662913c288": "tencent/claude-opus-5.5",
       "01a18b1c-e159-7f31-a86d-8f49af40678e": "tencent/claude-opus-5.5",
-      "01a18bac-45e0-76c3-afb0-86e1dfc45983": "tencent/claude-opus-5.5"
+      "01a18bac-45e0-76c3-afb0-86e1dfc45983": "tencent/claude-opus-5.5",
+      "01a19a05-6ac9-77c2-ae46-072d478c15b4": "tencent/gpt-6.1-sol",
+      "01a19a09-a179-7380-8b3b-b69395c3cdb9": "tencent/gpt-6.1-sol"
     },
     "default_turn_stage": "P2"
   },

@@ -1,6 +1,8 @@
 # Skill IR v1: Requirements And Status
 
-P2 specification draft, not an implemented or accepted v1 language.
+Latest status (2026-11-02): P2.1 compiler accepted at `cb536944b84d9b56e69176c6bab79f20399220d3`.
+P2.2 reference-library Gate accepted on 2026-11-02 for the supported subset. The original requirements
+below are retained as design intent, NOT a list of implemented features.
 
 Existing v06 `MechanismSpec` supports an operator sequence and catalog scope,
 but not the complete player action contract. Existing Gameplay `SkillBlueprint`
@@ -28,3 +30,60 @@ staged Gameplay transaction, never in a provider request.
 Acceptance is thirty reference skills through one compiler/runtime plus
 permission, budget, expiry, cross-area, save/load and replay tests. No such
 acceptance is claimed by this draft.
+
+## Implemented P2.1 Language
+
+Public entry points: `gameplay_v04.skill_ir.parse_skill_ir(raw, statuses,
+authority, condition_limits=...)` and `compile_skill_ir(parsed)`.
+Protocol is `pmw-skill-ir-v1`. The exact closed-key schema and operator
+mapping are documented in `P2_SKILL_IR_DESIGN.md`; code is the semantic
+authority. Compiling re-parses canonical JSON with trusted authority before
+lowering, so editable dataclass fields and a matching candidate hash cannot
+bypass validation.
+
+- Identity, Origin, Capability, Targeting, Costs, Entries, Lifecycle, Limits,
+  Display are required closed groups. Origins are reference/generated/authored.
+  Canonical JSON and SHA-256 link to all lowered blueprint identities/hashes.
+- One to four entries; at most one `on_use`, with the document Mana/Tick cost.
+  `on_event:damage_resolved` entries lower to separately equipped passives.
+  Each lower-level Skill keeps the existing registry/loadout authorization.
+- Conditions share a document budget, including effect predicates and null
+  nodes. Defaults depth 16 / nodes 64 / children 16; the optional IR limits
+  can only tighten them. Candidate JSON cannot raise trusted limits.
+- Material authority supplies effect-kind, selector and budget permissions.
+  Entry budgets are summed across the document, including passive overhead;
+  capability/display prose does not grant authority.
+- All seven operator families map to existing closed effects; all six state
+  classes are represented. Derived is read-only condition input, not a Skill
+  write. Legal selectors: self, target_actor, current_area, adjacent_area,
+  linked_object, subject to actual scope resolution and material authority.
+- Actions use the accepted Engine and staged Gameplay transaction. Passive
+  actions have their own traces and share the bounded causal root queue;
+  they do not introduce an extra paid Tick or another world clock.
+- JSON ingress is bounded before recursive copying: container depth 128,
+  values 65536, strings/keys 4096, safe integer magnitude at most 2**53.
+  Nonfinite numbers and non-JSON objects fail closed. Hostile Python
+  container subclasses are outside the plain-JSON threat model.
+
+## Explicit Language Gaps
+
+`on_tick`, `on_expire`, transition/condition-edge triggers, and other
+`on_event` families are reserved, rejected as `language_gap`; no generic
+event-trigger support is claimed. Non-null `lifecycle.status_duration` is
+also rejected. Supported lifecycles are actual per-effect durations and
+registry status definitions; owner_turn units are not World Ticks.
+
+Selectors do not offer arbitrary bounded object queries or multi-endpoint
+selection policies. `linked_object` effects require one resolved target.
+Process modifications require an already-running authorized local Process;
+start-plus-modify in a single entry is not supported. Movement composites
+obey the existing whitelist; no arbitrary dependency graph is implemented.
+
+## Acceptance Evidence
+
+P2.1 independent QA accepted round 5: 87 passed / 179 subtests. Frozen
+regression `p2_ir_frozen2`: 1065 passed / 4103 subtests, 317 immutable Python
+hashes. This is compiler evidence, not full P2 acceptance or Alpha playtest.
+The 40 reference IR documents and independent P2.2 tests already exist, but
+the interrupted QA has been completed; full frozen regression and accounting passed.
+See P2_REFERENCE_LIBRARY_REVIEW.md and evidence/p2_lib_main_acceptance.json.

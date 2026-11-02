@@ -1,0 +1,17 @@
+{
+  "utc": "2026-11-02T02:38:39.552047+00:00",
+  "command": [
+    "C:\\Users\\orinzheng\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p2_reference_library_resume_review.py::ReferenceLibraryResumeReviewTests"
+  ],
+  "exit_code": 0,
+  "source_sha256": "ef73d64ea7f99128c2dab603f5d26e665debf4575f089d31eb2d2d16a2d837b4",
+  "source_unchanged": true,
+  "original_QA_source_sha256": "79adb898c687eb940d9ca3b0ba69e39c24a150909e55f558f570f0414175feaf",
+  "hygiene_change": "Removed unused imported TestCase to prevent duplicate collection; all original eight tests remain in original module and all new three requirements are unchanged."
+}

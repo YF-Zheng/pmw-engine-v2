@@ -1,0 +1,2015 @@
+{
+  "protocol": "pmw-p2-reference-coverage-v1",
+  "skill_count": 40,
+  "skills": {
+    "adjacent_damp": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": null,
+          "status": "pass"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_field"
+      ],
+      "fixture_profile": "field",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "adjacent_area"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "attractor_adjacent": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": null,
+          "status": "pass"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_attractor"
+      ],
+      "fixture_profile": "field",
+      "operators": [
+        "attractor_modifier"
+      ],
+      "selectors": [
+        "adjacent_area"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "attractor_dawn": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_attractor"
+      ],
+      "fixture_profile": "field",
+      "operators": [
+        "attractor_modifier"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "bulwark": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "shield"
+      ],
+      "fixture_profile": "combat",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "self"
+      ],
+      "state_classes": [],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "condition_all": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_field"
+      ],
+      "fixture_profile": "derived",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Derived",
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "condition_any": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "heal"
+      ],
+      "fixture_profile": "derived",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "self"
+      ],
+      "state_classes": [
+        "Derived"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "condition_field": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_field"
+      ],
+      "fixture_profile": "derived",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Derived",
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "condition_not": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "shield"
+      ],
+      "fixture_profile": "derived",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "self"
+      ],
+      "state_classes": [
+        "Derived"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "counter_mana": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "add_resource",
+        "damage"
+      ],
+      "fixture_profile": "derived",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "self",
+        "target_actor"
+      ],
+      "state_classes": [
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_event",
+        "on_use"
+      ]
+    },
+    "counter_mend": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "damage",
+        "heal"
+      ],
+      "fixture_profile": "combat",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "self",
+        "target_actor"
+      ],
+      "state_classes": [],
+      "trigger_kinds": [
+        "on_event",
+        "on_use"
+      ]
+    },
+    "counter_shield": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "damage",
+        "shield"
+      ],
+      "fixture_profile": "combat",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "self",
+        "target_actor"
+      ],
+      "state_classes": [],
+      "trigger_kinds": [
+        "on_event",
+        "on_use"
+      ]
+    },
+    "counter_spark": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "damage"
+      ],
+      "fixture_profile": "combat",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "target_actor"
+      ],
+      "state_classes": [],
+      "trigger_kinds": [
+        "on_event",
+        "on_use"
+      ]
+    },
+    "damp_breeze": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_field"
+      ],
+      "fixture_profile": "field",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "drive_alt": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "drive_source"
+      ],
+      "fixture_profile": "stock",
+      "operators": [
+        "drive/source"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "drive_ember": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "drive_source"
+      ],
+      "fixture_profile": "stock",
+      "operators": [
+        "drive/source"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "ember_touch": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_field"
+      ],
+      "fixture_profile": "field",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "guarded_step": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "apply_status"
+      ],
+      "fixture_profile": "combat",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "self"
+      ],
+      "state_classes": [
+        "Discrete"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "link_off": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "relation_modifier"
+      ],
+      "fixture_profile": "relation",
+      "operators": [
+        "relation_modifier"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Relation"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "link_on": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "relation_modifier"
+      ],
+      "fixture_profile": "relation",
+      "operators": [
+        "relation_modifier"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Relation"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "linked_guard": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "shield"
+      ],
+      "fixture_profile": "combat",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "linked_object"
+      ],
+      "state_classes": [],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "mana_gift": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "add_resource"
+      ],
+      "fixture_profile": "stock",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "target_actor"
+      ],
+      "state_classes": [
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "mana_tithe": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "add_resource"
+      ],
+      "fixture_profile": "stock",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "target_actor"
+      ],
+      "state_classes": [
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "mend": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "heal"
+      ],
+      "fixture_profile": "combat",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "target_actor"
+      ],
+      "state_classes": [],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "process_extend": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "process_modify"
+      ],
+      "fixture_profile": "process",
+      "operators": [
+        "process_modify"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Process",
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "process_rate_boost": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "process_modify"
+      ],
+      "fixture_profile": "process",
+      "operators": [
+        "process_modify"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Process",
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "process_start_refine": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "process_start"
+      ],
+      "fixture_profile": "process",
+      "operators": [
+        "process_start"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Process",
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "process_start_smelt": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "process_start"
+      ],
+      "fixture_profile": "process",
+      "operators": [
+        "process_start"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Process",
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "process_tune": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "process_modify"
+      ],
+      "fixture_profile": "process",
+      "operators": [
+        "process_modify"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Process",
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "rate_adjacent": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": null,
+          "status": "pass"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_rate"
+      ],
+      "fixture_profile": "field",
+      "operators": [
+        "dynamics_modifier"
+      ],
+      "selectors": [
+        "adjacent_area"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "rate_slow": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "dynamics_modifier"
+      ],
+      "fixture_profile": "field",
+      "operators": [
+        "dynamics_modifier"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "rate_surge": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_rate"
+      ],
+      "fixture_profile": "field",
+      "operators": [
+        "dynamics_modifier"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "strike": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "damage"
+      ],
+      "fixture_profile": "combat",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "target_actor"
+      ],
+      "state_classes": [],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "synergy_flux": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "damage",
+        "dynamics_modifier"
+      ],
+      "fixture_profile": "derived",
+      "operators": [
+        "dynamics_modifier",
+        "impulse"
+      ],
+      "selectors": [
+        "current_area",
+        "target_actor"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "synergy_pressure": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_attractor",
+        "modify_field"
+      ],
+      "fixture_profile": "derived",
+      "operators": [
+        "attractor_modifier",
+        "impulse"
+      ],
+      "selectors": [
+        "current_area"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "synergy_tempo": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "damage",
+        "modify_rate"
+      ],
+      "fixture_profile": "derived",
+      "operators": [
+        "dynamics_modifier",
+        "impulse"
+      ],
+      "selectors": [
+        "current_area",
+        "target_actor"
+      ],
+      "state_classes": [
+        "Field"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "synergy_vital": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "add_resource",
+        "modify_attractor"
+      ],
+      "fixture_profile": "derived",
+      "operators": [
+        "attractor_modifier",
+        "impulse"
+      ],
+      "selectors": [
+        "current_area",
+        "target_actor"
+      ],
+      "state_classes": [
+        "Field",
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "trait_touch": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": "No adjacent_area selector or move_actor Effect; the Skill operates only on self, target_actor, current_area, or linked_object.",
+          "status": "n/a"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": null,
+          "status": "pass"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "grant_trait"
+      ],
+      "fixture_profile": "combat",
+      "operators": [
+        "impulse"
+      ],
+      "selectors": [
+        "target_actor"
+      ],
+      "state_classes": [
+        "Discrete"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "travel_step": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": null,
+          "status": "pass"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "add_resource",
+        "move_actor"
+      ],
+      "fixture_profile": "travel",
+      "operators": [
+        "impulse",
+        "relation_modifier"
+      ],
+      "selectors": [
+        "adjacent_area",
+        "self"
+      ],
+      "state_classes": [
+        "Relation",
+        "Stock"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "travel_trail": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": null,
+          "status": "pass"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "modify_field",
+        "move_actor"
+      ],
+      "fixture_profile": "travel",
+      "operators": [
+        "impulse",
+        "relation_modifier"
+      ],
+      "selectors": [
+        "adjacent_area",
+        "current_area"
+      ],
+      "state_classes": [
+        "Field",
+        "Relation"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    },
+    "travel_ward": {
+      "categories": {
+        "budget_overflow": {
+          "reason": null,
+          "status": "pass"
+        },
+        "checkpoint": {
+          "reason": null,
+          "status": "pass"
+        },
+        "cross_region": {
+          "reason": null,
+          "status": "pass"
+        },
+        "deterministic_replay": {
+          "reason": null,
+          "status": "pass"
+        },
+        "illegal_permission": {
+          "reason": null,
+          "status": "pass"
+        },
+        "lifecycle": {
+          "reason": "Active Effects are instantaneous; no per-Effect duration, expiry, Process/Drive/Relation state, or passive firing cap exists. The action Tick is covered by positive execution.",
+          "status": "n/a"
+        },
+        "positive_execution": {
+          "reason": null,
+          "status": "pass"
+        }
+      },
+      "effect_kinds": [
+        "move_actor",
+        "shield"
+      ],
+      "fixture_profile": "travel",
+      "operators": [
+        "impulse",
+        "relation_modifier"
+      ],
+      "selectors": [
+        "adjacent_area",
+        "self"
+      ],
+      "state_classes": [
+        "Relation"
+      ],
+      "trigger_kinds": [
+        "on_use"
+      ]
+    }
+  },
+  "summary": {
+    "category_totals": {
+      "budget_overflow": {
+        "fail": 0,
+        "n/a": 0,
+        "pass": 40
+      },
+      "checkpoint": {
+        "fail": 0,
+        "n/a": 0,
+        "pass": 40
+      },
+      "cross_region": {
+        "fail": 0,
+        "n/a": 34,
+        "pass": 6
+      },
+      "deterministic_replay": {
+        "fail": 0,
+        "n/a": 0,
+        "pass": 40
+      },
+      "illegal_permission": {
+        "fail": 0,
+        "n/a": 0,
+        "pass": 40
+      },
+      "lifecycle": {
+        "fail": 0,
+        "n/a": 16,
+        "pass": 24
+      },
+      "positive_execution": {
+        "fail": 0,
+        "n/a": 0,
+        "pass": 40
+      }
+    },
+    "operators": [
+      "attractor_modifier",
+      "drive/source",
+      "dynamics_modifier",
+      "impulse",
+      "process_modify",
+      "process_start",
+      "relation_modifier"
+    ],
+    "selectors": [
+      "adjacent_area",
+      "current_area",
+      "linked_object",
+      "self",
+      "target_actor"
+    ],
+    "state_classes": [
+      "Derived",
+      "Discrete",
+      "Field",
+      "Process",
+      "Relation",
+      "Stock"
+    ]
+  }
+}

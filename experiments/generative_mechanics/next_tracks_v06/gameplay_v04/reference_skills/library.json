@@ -1,0 +1,3016 @@
+[
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "ember_touch",
+      "version": 1,
+      "name": "Ember Touch",
+      "description": "Raise local humidity with a precise Field impulse."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_field_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "field_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 3,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "heat_pulse",
+            "kind": "modify_field",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.2
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Raise local humidity with a precise Field impulse.",
+      "tags": [
+        "fixture:field",
+        "instant_field",
+        "field_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "damp_breeze",
+      "version": 1,
+      "name": "Damp Breeze",
+      "description": "Apply a small local humidity change without a timed source."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_field_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "field_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 4,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "damp_pulse",
+            "kind": "modify_field",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.15
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Apply a small local humidity change without a timed source.",
+      "tags": [
+        "fixture:field",
+        "instant_field",
+        "field_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "adjacent_damp",
+      "version": 1,
+      "name": "Adjacent Dampening",
+      "description": "Change a Field in the single adjacent Area."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_field_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "field_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "adjacent_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "adjacent_pulse",
+            "kind": "modify_field",
+            "target": {
+              "kind": "adjacent_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": -0.1
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Change a Field in the single adjacent Area.",
+      "tags": [
+        "fixture:field",
+        "instant_field",
+        "cross_region",
+        "selector_adjacent",
+        "field_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "attractor_dawn",
+      "version": 1,
+      "name": "Attractor Dawn",
+      "description": "Invest in a temporary local humidity attractor."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_field_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "field_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "dawn_pull",
+            "kind": "modify_attractor",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.7,
+            "duration": 4
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Invest in a temporary local humidity attractor.",
+      "tags": [
+        "fixture:field",
+        "attractor",
+        "lifecycle_duration",
+        "field_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "attractor_adjacent",
+      "version": 1,
+      "name": "Adjacent Attractor",
+      "description": "Invest in the adjacent Area humidity attractor."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_field_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "field_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "adjacent_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 6,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "adjacent_pull",
+            "kind": "modify_attractor",
+            "target": {
+              "kind": "adjacent_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.6,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Invest in the adjacent Area humidity attractor.",
+      "tags": [
+        "fixture:field",
+        "attractor",
+        "cross_region",
+        "selector_adjacent",
+        "lifecycle_duration",
+        "field_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "rate_surge",
+      "version": 1,
+      "name": "Rate Surge",
+      "description": "Temporarily increase local recovery rate."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_field_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "field_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "surge_rate",
+            "kind": "modify_rate",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.2,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Temporarily increase local recovery rate.",
+      "tags": [
+        "fixture:field",
+        "recovery_rate",
+        "lifecycle_duration",
+        "field_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "rate_slow",
+      "version": 1,
+      "name": "Rate Slow",
+      "description": "Temporarily slow local dynamics with a typed modifier."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_field_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "field_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 6,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "slow_rate",
+            "kind": "dynamics_modifier",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "rate_add": -0.1,
+            "rate_multiplier": 1.0,
+            "curve": "linear",
+            "curve_priority": 2,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Temporarily slow local dynamics with a typed modifier.",
+      "tags": [
+        "fixture:field",
+        "recovery_rate",
+        "lifecycle_duration",
+        "field_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "rate_adjacent",
+      "version": 1,
+      "name": "Adjacent Recovery",
+      "description": "Increase the adjacent Area recovery rate."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_field_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "field_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "adjacent_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 6,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "adjacent_rate",
+            "kind": "modify_rate",
+            "target": {
+              "kind": "adjacent_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.15,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Increase the adjacent Area recovery rate.",
+      "tags": [
+        "fixture:field",
+        "recovery_rate",
+        "cross_region",
+        "selector_adjacent",
+        "lifecycle_duration",
+        "field_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "mana_gift",
+      "version": 1,
+      "name": "Mana Gift",
+      "description": "Restore Mana to the selected Actor."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_stock_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "stock_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 3,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "gift_mana",
+            "kind": "add_resource",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "resource": "mana",
+            "amount": 6
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Restore Mana to the selected Actor.",
+      "tags": [
+        "fixture:stock",
+        "resource_flow",
+        "stock_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "mana_tithe",
+      "version": 1,
+      "name": "Mana Tithe",
+      "description": "Return a smaller Mana Stock pulse to the target."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_stock_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "stock_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "tithe_mana",
+            "kind": "add_resource",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "resource": "mana",
+            "amount": 4
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Return a smaller Mana Stock pulse to the target.",
+      "tags": [
+        "fixture:stock",
+        "resource_flow",
+        "stock_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "drive_ember",
+      "version": 1,
+      "name": "Ember Drive",
+      "description": "Consume a finite Stock to drive a local Field."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_stock_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "stock_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 2
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "ember_drive",
+            "kind": "drive_source",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "drive_profile_id": "fixture_drive",
+            "drive_rate": 2.0,
+            "duration": 4
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Consume a finite Stock to drive a local Field.",
+      "tags": [
+        "fixture:stock",
+        "resource_flow",
+        "lifecycle_duration",
+        "stock_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "drive_alt",
+      "version": 1,
+      "name": "Alternate Ember Drive",
+      "description": "Run a shorter finite-Stock Field drive."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_stock_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "stock_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 6,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "short_drive",
+            "kind": "drive_source",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "drive_profile_id": "fixture_drive",
+            "drive_rate": 1.5,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Run a shorter finite-Stock Field drive.",
+      "tags": [
+        "fixture:stock",
+        "resource_flow",
+        "lifecycle_duration",
+        "stock_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "process_start_refine",
+      "version": 1,
+      "name": "Start Refinement",
+      "description": "Start the trusted ore conversion Process."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_process_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "process_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "start_refine",
+            "kind": "process_start",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "process_template_id": "fixture_refine"
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Start the trusted ore conversion Process.",
+      "tags": [
+        "fixture:process",
+        "process",
+        "lifecycle_process",
+        "process_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "process_start_smelt",
+      "version": 1,
+      "name": "Start Smelting",
+      "description": "Start the same trusted Process through a second reference recipe."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_process_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "process_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 6,
+      "duration": 2
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "start_smelt",
+            "kind": "process_start",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "process_template_id": "fixture_refine"
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Start the same trusted Process through a second reference recipe.",
+      "tags": [
+        "fixture:process",
+        "process",
+        "lifecycle_process",
+        "process_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "process_rate_boost",
+      "version": 1,
+      "name": "Process Rate Boost",
+      "description": "Increase the running Process conversion rate."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_process_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "process_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "boost_process",
+            "kind": "process_modify",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "process_template_id": "fixture_refine",
+            "process_rate": 2.0
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Increase the running Process conversion rate.",
+      "tags": [
+        "fixture:process",
+        "process",
+        "lifecycle_process",
+        "process_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "process_extend",
+      "version": 1,
+      "name": "Process Extension",
+      "description": "Extend the remaining duration of the running Process."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_process_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "process_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "extend_process",
+            "kind": "process_modify",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "process_template_id": "fixture_refine",
+            "process_remaining_ticks": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Extend the remaining duration of the running Process.",
+      "tags": [
+        "fixture:process",
+        "process",
+        "lifecycle_process",
+        "process_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "process_tune",
+      "version": 1,
+      "name": "Process Tuning",
+      "description": "Change both Process rate and remaining duration."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_process_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "process_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 6,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "tune_process",
+            "kind": "process_modify",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "process_template_id": "fixture_refine",
+            "process_rate": 1.5,
+            "process_remaining_ticks": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Change both Process rate and remaining duration.",
+      "tags": [
+        "fixture:process",
+        "process",
+        "lifecycle_process",
+        "process_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "link_off",
+      "version": 1,
+      "name": "Suppress Supply Link",
+      "description": "Temporarily disable the trusted supply Relation."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_relation_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "relation_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": [
+        "fixture_supply"
+      ]
+    },
+    "costs": {
+      "mana": 3,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "disable_link",
+            "kind": "relation_modifier",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "relation_profile_id": "fixture_link",
+            "relation_enabled": false,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Temporarily disable the trusted supply Relation.",
+      "tags": [
+        "fixture:relation",
+        "relation",
+        "lifecycle_duration",
+        "relation_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "link_on",
+      "version": 1,
+      "name": "Invoke Supply Link",
+      "description": "Activate a temporary enabled overlay on the supply Relation."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_relation_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "relation_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": [
+        "fixture_supply"
+      ]
+    },
+    "costs": {
+      "mana": 4,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "enable_link",
+            "kind": "relation_modifier",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "relation_profile_id": "fixture_link",
+            "relation_enabled": true,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Activate a temporary enabled overlay on the supply Relation.",
+      "tags": [
+        "fixture:relation",
+        "relation",
+        "lifecycle_duration",
+        "relation_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "travel_step",
+      "version": 1,
+      "name": "Adjacent Step",
+      "description": "Move to the adjacent Area and restore a little Mana."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_travel_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "travel_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "adjacent_area",
+        "self"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 4,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "travel",
+            "kind": "move_actor",
+            "target": {
+              "kind": "adjacent_area"
+            },
+            "commitment": "required"
+          },
+          {
+            "id": "arrival_mana",
+            "kind": "add_resource",
+            "target": {
+              "kind": "self"
+            },
+            "commitment": "required",
+            "resource": "mana",
+            "amount": 2
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Move to the adjacent Area and restore a little Mana.",
+      "tags": [
+        "fixture:travel",
+        "relation",
+        "cross_region",
+        "synergy",
+        "travel_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "travel_ward",
+      "version": 1,
+      "name": "Warded Step",
+      "description": "Move to the adjacent Area behind a new shield."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_travel_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "travel_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "adjacent_area",
+        "self"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "travel",
+            "kind": "move_actor",
+            "target": {
+              "kind": "adjacent_area"
+            },
+            "commitment": "required"
+          },
+          {
+            "id": "ward",
+            "kind": "shield",
+            "target": {
+              "kind": "self"
+            },
+            "commitment": "required",
+            "amount": 5
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Move to the adjacent Area behind a new shield.",
+      "tags": [
+        "fixture:travel",
+        "relation",
+        "cross_region",
+        "synergy",
+        "travel_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "travel_trail",
+      "version": 1,
+      "name": "Trailing Step",
+      "description": "Change the origin Field and then move adjacent."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_travel_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "travel_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area",
+        "adjacent_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 6,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "origin_pulse",
+            "kind": "modify_field",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.1
+          },
+          {
+            "id": "travel",
+            "kind": "move_actor",
+            "target": {
+              "kind": "adjacent_area"
+            },
+            "commitment": "required"
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Change the origin Field and then move adjacent.",
+      "tags": [
+        "fixture:travel",
+        "relation",
+        "cross_region",
+        "synergy",
+        "travel_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "strike",
+      "version": 1,
+      "name": "Focused Strike",
+      "description": "Apply a single direct damage impulse."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_combat_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "combat_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 3,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "hit",
+            "kind": "damage",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "amount": 4
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Apply a single direct damage impulse.",
+      "tags": [
+        "fixture:combat",
+        "combat",
+        "combat_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "mend",
+      "version": 1,
+      "name": "Mend Wounds",
+      "description": "Heal the target Actor by a bounded amount."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_combat_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "combat_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 4,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "mend",
+            "kind": "heal",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "amount": 5
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Heal the target Actor by a bounded amount.",
+      "tags": [
+        "fixture:combat",
+        "combat",
+        "combat_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "bulwark",
+      "version": 1,
+      "name": "Bulwark",
+      "description": "Grant the caster a deterministic shield layer."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_combat_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "combat_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "self"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 3,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "guard",
+            "kind": "shield",
+            "target": {
+              "kind": "self"
+            },
+            "commitment": "required",
+            "amount": 6
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Grant the caster a deterministic shield layer.",
+      "tags": [
+        "fixture:combat",
+        "combat",
+        "combat_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "guarded_step",
+      "version": 1,
+      "name": "Guarded Step",
+      "description": "Apply the registry guard status to the caster."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_combat_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "combat_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "self"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 3,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "guard_status",
+            "kind": "apply_status",
+            "target": {
+              "kind": "self"
+            },
+            "commitment": "required",
+            "status_id": "basic_guarding"
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Apply the registry guard status to the caster.",
+      "tags": [
+        "fixture:combat",
+        "combat",
+        "discrete",
+        "combat_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "trait_touch",
+      "version": 1,
+      "name": "Trait Touch",
+      "description": "Grant a temporary typed trait to the target."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_combat_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "combat_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 4,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "mark",
+            "kind": "grant_trait",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "trait_id": "fixture_marked",
+            "duration": 2
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Grant a temporary typed trait to the target.",
+      "tags": [
+        "fixture:combat",
+        "combat",
+        "discrete",
+        "lifecycle_duration",
+        "combat_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "linked_guard",
+      "version": 1,
+      "name": "Linked Guard",
+      "description": "Shield the Actor linked to the current Area."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_combat_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "combat_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "linked_object"
+      ],
+      "relation_types": [
+        "fixture_link"
+      ]
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "linked_shield",
+            "kind": "shield",
+            "target": {
+              "kind": "linked_object",
+              "relation_type": "fixture_link"
+            },
+            "commitment": "required",
+            "amount": 4
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Shield the Actor linked to the current Area.",
+      "tags": [
+        "fixture:combat",
+        "combat",
+        "selector_linked",
+        "combat_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "synergy_pressure",
+      "version": 1,
+      "name": "Pressure Synthesis",
+      "description": "Combine a Field impulse with a timed attractor."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_derived_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "derived_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 6,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "pressure",
+            "kind": "modify_field",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.1
+          },
+          {
+            "id": "pull",
+            "kind": "modify_attractor",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.5,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Combine a Field impulse with a timed attractor.",
+      "tags": [
+        "fixture:derived",
+        "synergy",
+        "attractor",
+        "lifecycle_duration",
+        "derived_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "synergy_tempo",
+      "version": 1,
+      "name": "Tempo Synthesis",
+      "description": "Combine direct damage with a recovery-rate modifier."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_derived_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "derived_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor",
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 7,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "hit",
+            "kind": "damage",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "amount": 3
+          },
+          {
+            "id": "tempo",
+            "kind": "modify_rate",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.1,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Combine direct damage with a recovery-rate modifier.",
+      "tags": [
+        "fixture:derived",
+        "synergy",
+        "recovery_rate",
+        "lifecycle_duration",
+        "derived_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "synergy_vital",
+      "version": 1,
+      "name": "Vital Synthesis",
+      "description": "Combine a Mana Stock impulse with an attractor."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_derived_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "derived_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor",
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 6,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "vital",
+            "kind": "add_resource",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "resource": "mana",
+            "amount": 5
+          },
+          {
+            "id": "pull",
+            "kind": "modify_attractor",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.4,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Combine a Mana Stock impulse with an attractor.",
+      "tags": [
+        "fixture:derived",
+        "synergy",
+        "attractor",
+        "resource_flow",
+        "lifecycle_duration",
+        "derived_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "synergy_flux",
+      "version": 1,
+      "name": "Flux Synthesis",
+      "description": "Combine damage with a bounded dynamics modifier."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_derived_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "derived_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor",
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 7,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "flux_hit",
+            "kind": "damage",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "amount": 3
+          },
+          {
+            "id": "flux",
+            "kind": "dynamics_modifier",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "rate_add": 0.1,
+            "rate_multiplier": 1.0,
+            "curve": "linear",
+            "curve_priority": 3,
+            "duration": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Combine damage with a bounded dynamics modifier.",
+      "tags": [
+        "fixture:derived",
+        "synergy",
+        "recovery_rate",
+        "lifecycle_duration",
+        "derived_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "condition_all",
+      "version": 1,
+      "name": "All Conditions",
+      "description": "Require Derived comfort and post-cost Mana together."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_derived_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "derived_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 4,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "conditioned_pulse",
+            "kind": "modify_field",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.12,
+            "condition": {
+              "all": [
+                {
+                  "derived": {
+                    "subject": "current_area",
+                    "key": "comfort",
+                    "comparator": "gte",
+                    "value": 0.1
+                  }
+                },
+                {
+                  "resource": {
+                    "subject": "self",
+                    "key": "mana",
+                    "comparator": "gte",
+                    "value": 10
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Require Derived comfort and post-cost Mana together.",
+      "tags": [
+        "fixture:derived",
+        "condition_combo",
+        "derived",
+        "derived_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "condition_any",
+      "version": 1,
+      "name": "Any Condition",
+      "description": "Use an any-combination of Derived and Mana leaves."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_derived_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "derived_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "self"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "conditioned_heal",
+            "kind": "heal",
+            "target": {
+              "kind": "self"
+            },
+            "commitment": "required",
+            "amount": 3,
+            "condition": {
+              "any": [
+                {
+                  "derived": {
+                    "subject": "current_area",
+                    "key": "comfort",
+                    "comparator": "gte",
+                    "value": 0.1
+                  }
+                },
+                {
+                  "resource": {
+                    "subject": "self",
+                    "key": "mana",
+                    "comparator": "gte",
+                    "value": 100
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Use an any-combination of Derived and Mana leaves.",
+      "tags": [
+        "fixture:derived",
+        "condition_combo",
+        "derived",
+        "derived_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "condition_not",
+      "version": 1,
+      "name": "Negated Condition",
+      "description": "Negate a compound Derived and high-HP condition."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_derived_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "derived_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "self"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 4,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "conditioned_shield",
+            "kind": "shield",
+            "target": {
+              "kind": "self"
+            },
+            "commitment": "required",
+            "amount": 4,
+            "condition": {
+              "not": {
+                "all": [
+                  {
+                    "derived": {
+                      "subject": "current_area",
+                      "key": "comfort",
+                      "comparator": "gte",
+                      "value": 0.1
+                    }
+                  },
+                  {
+                    "resource": {
+                      "subject": "self",
+                      "key": "hp",
+                      "comparator": "gte",
+                      "value": 100
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Negate a compound Derived and high-HP condition.",
+      "tags": [
+        "fixture:derived",
+        "condition_combo",
+        "derived",
+        "derived_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "condition_field",
+      "version": 1,
+      "name": "Field And Derived",
+      "description": "Combine a Field threshold with Derived comfort."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_derived_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "derived_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "current_area"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 4,
+      "duration": 1
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "conditioned_flow",
+            "kind": "modify_field",
+            "target": {
+              "kind": "current_area"
+            },
+            "commitment": "required",
+            "field_id": "humidity",
+            "amount": 0.08,
+            "condition": {
+              "all": [
+                {
+                  "derived": {
+                    "subject": "current_area",
+                    "key": "comfort",
+                    "comparator": "gte",
+                    "value": 0.1
+                  }
+                },
+                {
+                  "field": {
+                    "subject": "current_area",
+                    "key": "humidity",
+                    "comparator": "gte",
+                    "value": 0.1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Combine a Field threshold with Derived comfort.",
+      "tags": [
+        "fixture:derived",
+        "condition_combo",
+        "derived",
+        "derived_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "counter_mend",
+      "version": 1,
+      "name": "Counter Mend",
+      "description": "Two impacts trigger one capped self-heal reaction."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_combat_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "combat_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor",
+        "self"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 4,
+      "duration": 2
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "root_hit",
+            "kind": "damage",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "amount": 2
+          }
+        ],
+        "max_firings_per_root": 1
+      },
+      {
+        "id": "reaction",
+        "trigger": {
+          "kind": "on_event",
+          "event": "damage_resolved"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "reactive_heal",
+            "kind": "heal",
+            "target": {
+              "kind": "self"
+            },
+            "commitment": "required",
+            "amount": 3
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Two impacts trigger one capped self-heal reaction.",
+      "tags": [
+        "fixture:combat",
+        "passive",
+        "lifecycle_firing_cap",
+        "combat_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "counter_shield",
+      "version": 1,
+      "name": "Counter Shield",
+      "description": "Two impacts trigger one capped shield reaction."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_combat_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "combat_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor",
+        "self"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 2
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "root_hit",
+            "kind": "damage",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "amount": 2
+          }
+        ],
+        "max_firings_per_root": 1
+      },
+      {
+        "id": "reaction",
+        "trigger": {
+          "kind": "on_event",
+          "event": "damage_resolved"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "reactive_shield",
+            "kind": "shield",
+            "target": {
+              "kind": "self"
+            },
+            "commitment": "required",
+            "amount": 2
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Two impacts trigger one capped shield reaction.",
+      "tags": [
+        "fixture:combat",
+        "passive",
+        "lifecycle_firing_cap",
+        "combat_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "counter_spark",
+      "version": 1,
+      "name": "Counter Spark",
+      "description": "Two impacts trigger one capped retaliatory spark."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_combat_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "combat_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 2
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "root_hit",
+            "kind": "damage",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "amount": 2
+          }
+        ],
+        "max_firings_per_root": 1
+      },
+      {
+        "id": "reaction",
+        "trigger": {
+          "kind": "on_event",
+          "event": "damage_resolved"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "reactive_spark",
+            "kind": "damage",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "amount": 1
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Two impacts trigger one capped retaliatory spark.",
+      "tags": [
+        "fixture:combat",
+        "passive",
+        "lifecycle_firing_cap",
+        "combat_reference"
+      ]
+    }
+  },
+  {
+    "protocol": "pmw-skill-ir-v1",
+    "identity": {
+      "id": "counter_mana",
+      "version": 1,
+      "name": "Counter Mana",
+      "description": "Two impacts trigger one capped Mana return."
+    },
+    "origin": {
+      "source": "reference",
+      "model": null,
+      "context_hash": null,
+      "material_ids": [
+        "p22_derived_material"
+      ]
+    },
+    "capability": {
+      "traits": [
+        "combat_reference"
+      ]
+    },
+    "targeting": {
+      "selectors": [
+        "target_actor",
+        "self"
+      ],
+      "relation_types": []
+    },
+    "costs": {
+      "mana": 5,
+      "duration": 2
+    },
+    "entries": [
+      {
+        "id": "active",
+        "trigger": {
+          "kind": "on_use"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "root_hit",
+            "kind": "damage",
+            "target": {
+              "kind": "target_actor"
+            },
+            "commitment": "required",
+            "amount": 2
+          }
+        ],
+        "max_firings_per_root": 1
+      },
+      {
+        "id": "reaction",
+        "trigger": {
+          "kind": "on_event",
+          "event": "damage_resolved"
+        },
+        "condition": null,
+        "effects": [
+          {
+            "id": "reactive_mana",
+            "kind": "add_resource",
+            "target": {
+              "kind": "self"
+            },
+            "commitment": "required",
+            "resource": "mana",
+            "amount": 2
+          }
+        ],
+        "max_firings_per_root": 1
+      }
+    ],
+    "lifecycle": {
+      "status_duration": null
+    },
+    "limits": {
+      "budget": 80
+    },
+    "display": {
+      "summary": "Two impacts trigger one capped Mana return.",
+      "tags": [
+        "fixture:derived",
+        "passive",
+        "lifecycle_firing_cap",
+        "combat_reference"
+      ]
+    }
+  }
+]

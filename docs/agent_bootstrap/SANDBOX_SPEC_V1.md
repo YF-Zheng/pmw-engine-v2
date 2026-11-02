@@ -429,3 +429,48 @@ Accounting p2_1: USD 11.02583293 / CNY 73.50261264; safety 575.49/3000; P1
 mis-defaulted to P1 was corrected to P2 before the snapshot was written.
 No Alpha UI/playtest or generation claim. Next: P2.2 reference library (40
 Skills, owner Faraday done) independent QA, then the P2 Gate.
+
+
+## P2 Reference-Library Gate Accepted (2026-11-02)
+
+**P2 GATE ACCEPTED for the supported pmw-skill-ir-v1 runtime subset.**
+Forty reference Skills use the same parser/compiler and actual Gameplay
+runtime, covering seven Operators, six state classes, five selectors and
+all seven required test categories. Per-Skill matrix: positive 40/40 (both
+PLAYER/NPC plus control); permission rejection 40; budget rejection 40;
+lifecycle 24 pass / 16 reasoned N/A; cross-region 6 pass / 34 N/A;
+checkpoint 40; deterministic replay 40. No Skill-specific runtime code or
+Alpha source change was added.
+
+Independent QA completed by Rawls (DeepSeek Flash,
+01a19a0a-db54-7e22-a0cc-861e905591cc), recovering Mill's interrupted review:
+ACCEPT, product defects 0, historical test gap 1 (a tautological cap-owner
+assertion) closed by a new exact dual-owner probe, scope notes 3. See
+P2_REFERENCE_LIBRARY_REVIEW.md. New evidence proves strict before/at expiry,
+real restored versus independently continued second attacks with distinct
+request IDs, two counter owners firing once with bounded duplicate skips,
+and no extra paid Tick. Main removed an unused imported TestCase so original
+QA methods are not collected twice; all assertions preserved, new class
+3 passed in 15.11s. Recovery failures are test-fixture errors, not product
+fixes; original rollout output strings preserved.
+
+Frozen full regression p2_lib_frozen_20261102: **1076 passed / 4257 subtests
+in 1212.41s**, exit 0, 319 Python source hashes unchanged; 130 protected files
+unchanged; library JSON and prior production/test sources unchanged.
+Main acceptance: evidence/p2_lib_main_acceptance.json.
+
+Limits remain explicit: reserved on_tick/on_expire/edge/other-event triggers
+and non-null lifecycle.status_duration fail as language_gap; linked_object
+requires one endpoint; no general effect-dependency graph; no staggered
+two-timed-effect library row; passive caps in this library are only 1.
+Gate acceptance is NOT a claim that every aspirational trigger/query or
+all cap values are supported. Nor is it an Alpha playability milestone.
+
+Accounting p2_2 snapshot cutoff 2026-11-02T02:59:18.189Z: task subset USD 4.84947528 / CNY 32.32854201
+(already included once in the cumulative ledger). Project CNY 480.87;
+safety-reserved CNY 605.92 / 3000; P2 106.88 / 350; Unknown 0, malformed 0.
+The two November resumed main turns and actual old/new child IDs are included;
+no polling-related costs were erased. Bootstrap remains separate.
+Next independent target: P3.1A OFFLINE full mechanism Catalog + public Context,
+then review; no live generation until a separately accepted provider/accounting
+path is ready. Follow P3_SKILL_DESIGNER_DESIGN.md.

@@ -1,0 +1,807 @@
+
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/actions.py:910:100
+910:                 "shield": actor_state["shield"],
+911:                 "shield_component": actor_state["_shield_component"],
+912:             })
+913:         shield_layer_slot = (candidate_layer if spec.on_expire_resource and
+914:                              spec.on_expire_resource[0] == "shield" else None)
+915:         if shield_layer_slot is not None:
+916:             bind_layer_to_status(actor_state["_shield_component"], shield_layer_slot, instance_id)
+917:         value = active_status_slot(spec, instance_id=instance_id, source_id=definition.id,
+918:                                    owner_id=request.actor_id, stacks=stacks,
+919:                                    shield_layer_slot=shield_layer_slot)
+920:         slots[slot] = value; reservations.append((target_id, slot, value)); values = {"slot": slot, "status": value, "status_component": {"slots": slots}}
+921:     elif effect.kind in {
+922:         "modify_field", "modify_attractor", "modify_rate", "dynamics_modifier",
+923:     }:
+924:         fields = target_entity.components.get("pmw_gameplay_dynamics", {}).get("fields", {})
+925:         field = fields.get(effect.field_id)
+926:         if field is None: raise GameplayContractError("effect targets unknown Field")
+927:         row = writes.setdefault(target_id, {})
+928:         if effect.kind == "modify_field": row[f"field:{effect.field_id}:value"] = max(field["domain_min"], min(field["domain_max"], field["value"] + amount)); values = {"value": row[f"field:{effect.field_id}:value"]}
+929:         elif effect.kind == "dynamics_modifier":
+930:             slot = next((
+931:                 name for name, value in sorted(field["temporary_modifiers"].items())
+932:                 if not value["active"] and not _field_slot_reserved(
+933:                     source_slots, target_id, effect.field_id, name
+934:                 )
+935:             ), None)
+936:             if slot is None:
+937:                 raise GameplayContractError(
+938:                     "temporary dynamics modifier capacity exhausted"
+939:                 )
+940:             profile = next((
+941:                 item for item in session.profiles
+942:                 if item.entity_id == target_id and item.field.id == effect.field_id
+943:             ), None)
+944:             if profile is None:
+945:                 raise GameplayContractError("effect targets unknown Field profile")
+946:             source_id = _dynamics_source_id(
+947:                 request.request_id, definition.id, effect.id, request.actor_id
+948:             )
+949:             dynamics_source = DynamicsSource(
+950:                 source_id, request.actor_id,
+951:                 rate_add=float(effect.rate_add),
+952:                 rate_multiplier=float(effect.rate_multiplier),
+953:                 curve=effect.curve,
+954:                 curve_priority=effect.curve_priority,
+955:                 duration_ticks=effect.duration,
+956:             )
+957:             validate_source(dynamics_source, profile.field, temporary=True)
+958:             if any(
+959:                 item["active"]
+960:                 and item["curve_priority"] == dynamics_source.curve_priority
+961:                 for layer in ("persistent_patches", "temporary_modifiers")
+962:                 for item in field[layer].values()
+963:             ):
+964:                 raise GameplayContractError("curve override priority conflict")
+965:             handle = f"pmw:v04:action-expiry:{request.request_id}:{effect.id}"
+966:             prepared = {
+967:                 "active": True, "source_id": source_id, "owner": request.actor_id,
+968:                 "target": 0.0, "target_weight": 0.0,
+969:                 "rate_add": dynamics_source.rate_add,
+970:                 "rate_multiplier": dynamics_source.rate_multiplier,
+971:                 "curve": dynamics_source.curve,
+972:                 "curve_priority": dynamics_source.curve_priority,
+973:                 "expiry_handle": handle,
+974:             }
+975:             source_slots.append((target_id, effect.field_id, slot))
+976:             values = {
+977:                 "slot": slot, "source": prepared, "expiry_handle": handle,
+978:                 "expiry_time": session.state.sim_time + effect.duration,
+979:             }
+980:         else:
+981:             slot = next((
+982:                 name for name, value in sorted(field["temporary_modifiers"].items())
+983:                 if not value["active"] and not _field_slot_reserved(
+984:                     source_slots, target_id, effect.field_id, name
+985:                 )
+986:             ), None)
+987:             if slot is None: raise GameplayContractError("temporary dynamics modifier capacity exhausted")
+988:             handle = f"pmw:v04:action-expiry:{request.request_id}:{effect.id}"
+989:             source = {"active": True, "source_id": f"{definition.id}_{effect.id}", "owner": request.actor_id,
+990:                       "target": max(field["domain_min"], min(field["domain_max"], amount)) if effect.kind == "modify_attractor" else 0.0,
+991:                       "target_weight": 1.0 if effect.kind == "modify_attractor" else 0.0,
+992:                       "rate_add": amount if effect.kind == "modify_rate" else 0.0, "rate_multiplier": 1.0,
+993:                       "curve": None, "curve_priority": -1, "expiry_handle": handle}
+994:             source_slots.append((target_id, effect.field_id, slot))
+995:             values = {"slot": slot, "source": source, "expiry_handle": handle,
+996:                       "expiry_time": session.state.sim_time + effect.duration}
+997:     return {"effect_id": effect.id, "kind": effect.kind, "status": "applied", "target_id": target_id,
+998:             "amount": amount, "values": values, "attribute_terms": term_trace}
+999: 
+1000: 
+1001: def _field_slot_reserved(source_slots, target_id, field_id, slot):
+1002:     return any(
+1003:         row == (target_id, field_id, slot) for row in source_slots
+1004:     )
+1005: 
+1006: 
+1007: def _dynamics_source_id(request_id, action_id, effect_id, owner):
+1008:     payload = "\0".join((request_id, action_id, effect_id, owner)).encode()
+1009:     return "dm_" + hashlib.sha256(payload).hexdigest()[:32]
+
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/runtime.py:1:220
+1: """Trusted Gate 1 adapter; all authoritative writes are PMW Event/Law effects."""
+2: 
+3: from __future__ import annotations
+4: 
+5: from dataclasses import dataclass
+6: from pathlib import Path
+7: from typing import Any, Iterable, Mapping
+8: 
+9: from pmw import Engine, Entity, Event, WorldState, load_world, parse_law, save_world
+10: 
+11: from .contracts import DynamicsSource, FieldDefinition, FieldProfile, GameplayContractError, TickResult
+12: from .dynamics import (
+13:     CLOCK_COMPONENT, COMBAT_ROUND_EVENT, DYNAMICS_COMPONENT, OWNER_TURN_EVENT,
+14:     SOURCE_APPLY_EVENT, SOURCE_EXPIRE_EVENT, SOURCE_REMOVE_EVENT,
+15:     WORLD_TICK_EVENT, build_dynamics_laws, source_state, validate_source,
+16: )
+17: from .shields import (SHIELD_COMPONENT, migrate_status_shield_ownership,
+18:                       reconcile_shields, shield_component)
+19: from .status import STATUS_COMPONENT
+20: 
+21: 
+22: @dataclass(slots=True)
+23: class GameplaySession:
+24:     runtime: Any
+25:     profiles: tuple[FieldProfile, ...]
+26: 
+27:     @property
+28:     def state(self):
+29:         return self.runtime.state
+30: 
+31:     @property
+32:     def stats(self):
+33:         return self.runtime.stats
+34: 
+35:     def snapshot(self):
+36:         return self.runtime.snapshot()
+37: 
+38: 
+39: def clock_entity(clock_id: str = "pmw:v04:clock") -> Entity:
+40:     return Entity(clock_id, "pmw_gameplay_clock", components={CLOCK_COMPONENT: {
+41:         "next_step": 1, "next_time": 1.0, "last_completed_step": 0,
+42:     }})
+43: 
+44: 
+45: def discover_profiles(world: WorldState) -> tuple[FieldProfile, ...]:
+46:     profiles: list[FieldProfile] = []
+47:     for entity_id, entity in sorted(world.entities.items()):
+48:         component = entity.components.get(DYNAMICS_COMPONENT)
+49:         if not isinstance(component, dict):
+50:             continue
+51:         fields = component.get("fields")
+52:         if not isinstance(fields, dict):
+53:             raise GameplayContractError(f"invalid dynamics fields on {entity_id!r}")
+54:         for field_id, state in sorted(fields.items()):
+55:             baseline = state["baseline"]
+56:             definition = FieldDefinition(
+57:                 field_id, float(state["domain_min"]), float(state["domain_max"]),
+58:                 float(state["value"]), float(baseline["target"]),
+59:                 float(baseline["rate"]), baseline["curve"],
+60:                 len(state["persistent_patches"]), len(state["temporary_modifiers"]),
+61:             )
+62:             mirror = ("pmw_gameplay_actor", "mana") if field_id == "mana" and "pmw_gameplay_actor" in entity.components else None
+63:             profiles.append(FieldProfile(entity_id, definition, mirror))
+64:     return tuple(profiles)
+65: 
+66: 
+67: def build_runtime(
+68:     world: WorldState,
+69:     profiles: Iterable[FieldProfile] | None = None,
+70:     extra_laws: Iterable[Mapping[str, Any]] = (),
+71: ) -> GameplaySession:
+72:     migrate_gameplay_world(world)
+73:     profiles = tuple(profiles) if profiles is not None else discover_profiles(world)
+74:     laws = [*build_dynamics_laws(profiles), *[dict(item) for item in extra_laws]]
+75:     parsed = [parse_law(item) for item in sorted(laws, key=lambda item: item["id"])]
+76:     return GameplaySession(Engine(parsed).attach(world), profiles)
+77: 
+78: 
+79: def migrate_gameplay_world(world: WorldState) -> None:
+80:     """Idempotently attach fields introduced after the original v0.4 checkpoint.
+81: 
+82:     Unknown historical shield provenance is deliberately represented as one
+83:     unowned legacy layer.  In particular, an active historical Guard status is
+84:     never allowed to claim that value and therefore cannot erase it on expiry.
+85:     """
+86:     for entity in world.entities.values():
+87:         actor = entity.components.get("pmw_gameplay_actor")
+88:         if not isinstance(actor, dict):
+89:             continue
+90:         if SHIELD_COMPONENT not in entity.components:
+91:             component = shield_component()
+92:             reconcile_shields(actor, component)
+93:             entity.components[SHIELD_COMPONENT] = component
+94:         statuses = entity.components.get(STATUS_COMPONENT)
+95:         slots = statuses.get("slots") if isinstance(statuses, dict) else None
+96:         if isinstance(slots, dict):
+97:             for row in slots.values():
+98:                 if isinstance(row, dict) and "shield_layer_slot" not in row:
+99:                     row["shield_layer_slot"] = None
+100:         ownership_statuses = statuses if isinstance(slots, dict) else {"slots": {}}
+101:         migrate_status_shield_ownership(
+102:             actor, ownership_statuses, entity.components[SHIELD_COMPONENT]
+103:         )
+104: 
+105: 
+106: def apply_source(
+107:     session: GameplaySession,
+108:     *,
+109:     entity_id: str,
+110:     field_id: str,
+111:     layer: str,
+112:     source: DynamicsSource,
+113: ):
+114:     if layer not in {"persistent", "temporary"}:
+115:         raise GameplayContractError("layer must be persistent or temporary")
+116:     profile = _profile(session, entity_id, field_id)
+117:     validate_source(source, profile.field, temporary=layer == "temporary")
+118:     field = _field_state(session, entity_id, field_id)
+119:     all_slots = [
+120:         *field["persistent_patches"].values(),
+121:         *field["temporary_modifiers"].values(),
+122:     ]
+123:     if any(item["active"] and item["source_id"] == source.source_id for item in all_slots):
+124:         raise GameplayContractError("source_id is already active on this Field")
+125:     if source.curve_priority is not None and any(
+126:         item["active"] and item["curve_priority"] == source.curve_priority
+127:         for item in all_slots
+128:     ):
+129:         raise GameplayContractError("curve override priority conflict")
+130:     key = "persistent_patches" if layer == "persistent" else "temporary_modifiers"
+131:     slot = next((name for name, item in sorted(field[key].items()) if not item["active"]), None)
+132:     if slot is None:
+133:         raise GameplayContractError(f"{layer} source capacity exhausted")
+134:     handle = None
+135:     expiry_event = None
+136:     if layer == "temporary":
+137:         handle = f"pmw:v04:expiry:{entity_id}:{field_id}:{source.source_id}:{source.owner}"
+138:         expiry_time = session.state.sim_time + source.duration_ticks
+139:         expiry_payload = {
+140:             "entity_id": entity_id, "field_id": field_id, "layer": layer,
+141:             "slot": slot, "source_id": source.source_id, "owner": source.owner,
+142:             "expiry_handle": handle,
+143:         }
+144:         expiry_event = {
+145:             "id": handle, "type": SOURCE_EXPIRE_EVENT, "time": expiry_time,
+146:             "source": source.owner, "target": entity_id, "payload": expiry_payload,
+147:         }
+148:     payload = {
+149:         "entity_id": entity_id, "field_id": field_id, "layer": layer,
+150:         "slot": slot, "source_id": source.source_id, "owner": source.owner,
+151:         "source": source_state(source, handle), "expiry_event": expiry_event,
+152:     }
+153:     event = Event(
+154:         id=f"pmw:v04:source:apply:{entity_id}:{field_id}:{source.source_id}",
+155:         type=SOURCE_APPLY_EVENT, time=session.state.sim_time,
+156:         source=source.owner, target=entity_id, payload=payload,
+157:     )
+158:     result = session.runtime.run_event(event)
+159:     if not result.changed:
+160:         raise GameplayContractError("source apply did not match its reserved slot")
+161:     return result
+162: 
+163: 
+164: def remove_source(
+165:     session: GameplaySession,
+166:     *,
+167:     entity_id: str,
+168:     field_id: str,
+169:     source_id: str,
+170:     owner: str,
+171: ):
+172:     _profile(session, entity_id, field_id)
+173:     field = _field_state(session, entity_id, field_id)
+174:     matches = []
+175:     for layer, key in (("persistent", "persistent_patches"), ("temporary", "temporary_modifiers")):
+176:         matches.extend(
+177:             (layer, slot, item) for slot, item in field[key].items()
+178:             if item["active"] and item["source_id"] == source_id and item["owner"] == owner
+179:         )
+180:     if len(matches) != 1:
+181:         raise GameplayContractError("source ownership does not identify one active source")
+182:     layer, slot, item = matches[0]
+183:     payload = {
+184:         "entity_id": entity_id, "field_id": field_id, "layer": layer,
+185:         "slot": slot, "source_id": source_id, "owner": owner,
+186:         "expiry_handle": item["expiry_handle"],
+187:     }
+188:     result = session.runtime.run_event(Event(
+189:         id=f"pmw:v04:source:remove:{entity_id}:{field_id}:{source_id}",
+190:         type=SOURCE_REMOVE_EVENT, time=session.state.sim_time,
+191:         source=owner, target=entity_id, payload=payload,
+192:     ))
+193:     if not result.changed:
+194:         raise GameplayContractError("source removal failed")
+195:     return result
+196: 
+197: 
+198: def advance_world_tick(session: GameplaySession, *, clock_id: str = "pmw:v04:clock") -> TickResult:
+199:     clock = _clock(session, clock_id)
+200:     step = clock["next_step"]
+201:     target_time = clock["next_time"]
+202:     session.runtime.advance_to(float(target_time))
+203:     _validate_runtime_priorities(session)
+204:     result = session.runtime.run_event(Event(
+205:         id=f"pmw:v04:world-tick:{step:08d}", type=WORLD_TICK_EVENT,
+206:         time=float(target_time), source=clock_id, payload={"step": step},
+207:     ))
+208:     completed = _clock(session, clock_id)
+209:     if completed["last_completed_step"] != step or completed["next_step"] != step + 1:
+210:         raise GameplayContractError("world_tick did not complete exactly once")
+211:     return TickResult(step, float(target_time), result, session.snapshot())
+212: 
+213: 
+214: def run_phase_event(session: GameplaySession, phase: str, *, actor_id: str | None = None):
+215:     event_type = {"combat_round": COMBAT_ROUND_EVENT, "owner_turn": OWNER_TURN_EVENT}.get(phase)
+216:     if event_type is None:
+217:         raise GameplayContractError("unknown gameplay clock phase")
+218:     return session.runtime.run_event(Event(
+219:         id=f"pmw:v04:{phase}:{session.state.tick:08d}:{actor_id or 'none'}",
+220:         type=event_type, time=session.state.sim_time, source=actor_id,
+
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_ir.py:1:145
+1: """Versioned Skill IR validation and lowering to frozen v0.4 blueprints."""
+2: 
+3: from __future__ import annotations
+4: 
+5: from copy import deepcopy
+6: from dataclasses import dataclass
+7: import hashlib
+8: import json
+9: import math
+10: import re
+11: from types import MappingProxyType
+12: from typing import Any, Mapping, NamedTuple
+13: 
+14: from .conditions import ConditionLimits
+15: from .contracts import GameplayContractError
+16: from .materials import MaterialAuthority
+17: from .skills import SkillBlueprint, parse_skill_blueprint
+18: 
+19: 
+20: PROTOCOL = "pmw-skill-ir-v1"
+21: MAX_ENTRIES = 4
+22: MAX_TAGS = 8
+23: MAX_SUMMARY_LENGTH = 240
+24: MAX_NAME_LENGTH = 80
+25: MAX_DESCRIPTION_LENGTH = 600
+26: MAX_MODEL_LENGTH = 128
+27: MAX_JSON_DEPTH = 128
+28: MAX_JSON_VALUES = 65536
+29: MAX_JSON_STRING = 4096
+30: MAX_JSON_SAFE_INT = 2**53
+31: SUPPORTED_EVENT = "damage_resolved"
+32: RESERVED_TRIGGERS = frozenset({
+33:     "on_tick", "on_expire", "transition", "condition_enter", "condition_exit",
+34: })
+35: RESERVED_EVENTS = frozenset({
+36:     "action_started", "attack_applied", "status_changed", "weather_changed",
+37:     "resource_harvested",
+38: })
+39: SELECTOR_KINDS = frozenset({
+40:     "self", "target_actor", "current_area", "linked_object", "adjacent_area",
+41: })
+42: ORIGIN_SOURCES = frozenset({"reference", "generated", "authored"})
+43: _ID = re.compile(r"[a-z][a-z0-9_]{1,63}\Z")
+44: _HEX64 = re.compile(r"[0-9a-f]{64}\Z")
+45: 
+46: OPERATOR_KINDS = {
+47:     "impulse": frozenset({
+48:         "damage", "heal", "shield", "add_resource", "modify_field",
+49:         "apply_status", "grant_trait",
+50:     }),
+51:     "drive/source": frozenset({"drive_source"}),
+52:     "attractor_modifier": frozenset({"modify_attractor"}),
+53:     "dynamics_modifier": frozenset({"modify_rate", "dynamics_modifier"}),
+54:     "process_start": frozenset({"process_start"}),
+55:     "process_modify": frozenset({"process_modify"}),
+56:     "relation_modifier": frozenset({
+57:         "relation_modifier", "move_actor",
+58:     }),
+59: }
+60: STATE_CLASS_KINDS = {
+61:     "Field": frozenset({
+62:         "modify_field", "modify_attractor", "modify_rate",
+63:         "dynamics_modifier",
+64:     }),
+65:     "Stock": frozenset({
+66:         "add_resource", "process_start", "process_modify", "drive_source",
+67:     }),
+68:     "Process": frozenset({"process_start", "process_modify"}),
+69:     "Relation": frozenset({"relation_modifier", "move_actor"}),
+70:     "Discrete": frozenset({"apply_status", "grant_trait"}),
+71:     "Derived": frozenset(),
+72: }
+73: 
+74: 
+75: @dataclass(frozen=True, slots=True)
+76: class SkillEntryIR:
+77:     id: str
+78:     trigger_kind: str
+79:     event: str | None
+80:     condition: dict[str, Any] | None
+81:     effects: tuple[dict[str, Any], ...]
+82:     max_firings_per_root: int
+83: 
+84: 
+85: @dataclass(frozen=True, slots=True)
+86: class SkillIR:
+87:     id: str
+88:     version: int
+89:     name: str
+90:     description: str
+91:     origin_source: str
+92:     origin_model: str | None
+93:     context_hash: str | None
+94:     material_ids: tuple[str, ...]
+95:     traits: tuple[str, ...]
+96:     selectors: tuple[str, ...]
+97:     relation_types: tuple[str, ...]
+98:     mana: float
+99:     duration: int
+100:     entries: tuple[SkillEntryIR, ...]
+101:     status_duration: Mapping[str, Any] | None
+102:     budget: float
+103:     summary: str
+104:     tags: tuple[str, ...]
+105:     authority: MaterialAuthority
+106:     statuses: Mapping[str, Any]
+107:     canonical_hash: str
+108:     canonical_json: str
+109:     condition_nodes: int
+110:     condition_limits: ConditionLimits
+111: 
+112: 
+113: class SkillIRMetadata(NamedTuple):
+114:     id: str
+115:     version: int
+116:     canonical_hash: str
+117: 
+118: 
+119: @dataclass(frozen=True, slots=True)
+120: class CompiledSkillIR:
+121:     ir: SkillIR
+122:     blueprints: tuple[SkillBlueprint, ...]
+123:     canonical_hash: str
+124:     metadata: tuple[SkillIRMetadata, ...]
+125:     metadata_by_ir_hash: Mapping[str, tuple[SkillIRMetadata, ...]]
+126:     operators: tuple[str, ...]
+127:     state_classes: tuple[str, ...]
+128:     preview: Mapping[str, Any]
+129: 
+130: 
+131: def _validate_json_shape(raw: Any) -> None:
+132:     """Reject non-JSON values and excessive input before recursive copying."""
+133:     stack = [(raw, "$", 0)]
+134:     value_count = 1
+135:     if value_count > MAX_JSON_VALUES:
+136:         raise GameplayContractError(
+137:             f"$ exceeds JSON value limit {MAX_JSON_VALUES}"
+138:         )
+139:     while stack:
+140:         value, path, depth = stack.pop()
+141: 
+142:         if value is None:
+143:             continue
+144:         if isinstance(value, dict):
+145:             child_depth = depth + 1
+
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/skill_ir.py:430:90
+430:         context_hash, material_ids, traits, selectors, relation_types, mana,
+431:         duration, entries,
+432:         None if status_duration is None else MappingProxyType(status_duration),
+433:         budget, summary, tags, authority, MappingProxyType(dict(statuses)),
+434:         canonical_hash, canonical_json, condition_nodes, condition_limits,
+435:     )
+436: 
+437: 
+438: def compile_skill_ir(ir: SkillIR) -> CompiledSkillIR:
+439:     """Lower a validated IR into unchanged v0.4 SkillBlueprint values."""
+440:     if not isinstance(ir, SkillIR):
+441:         raise GameplayContractError("compile_skill_ir requires a trusted SkillIR")
+442:     if not isinstance(ir.authority, MaterialAuthority):
+443:         raise GameplayContractError(
+444:             "SkillIR authority must be a trusted MaterialAuthority"
+445:         )
+446:     if not isinstance(ir.condition_limits, ConditionLimits):
+447:         raise GameplayContractError(
+448:             "SkillIR condition_limits must be a trusted ConditionLimits"
+449:         )
+450:     if not isinstance(ir.statuses, Mapping):
+451:         raise GameplayContractError(
+452:             "SkillIR statuses must be a trusted mapping"
+453:         )
+454:     if not isinstance(ir.canonical_json, str):
+455:         raise GameplayContractError(
+456:             "SkillIR canonical_json must be canonical JSON text"
+457:         )
+458:     try:
+459:         fresh = parse_skill_ir(
+460:             json.loads(ir.canonical_json),
+461:             ir.statuses,
+462:             ir.authority,
+463:             condition_limits=ir.condition_limits,
+464:         )
+465:         if fresh.canonical_hash != ir.canonical_hash:
+466:             raise GameplayContractError(
+467:                 "SkillIR canonical_hash does not match validated canonical_json"
+468:             )
+469:         blueprints = tuple(
+470:             _lower_entry(fresh, entry)
+471:             for entry in fresh.entries
+472:         )
+473:         metadata = tuple(
+474:             SkillIRMetadata(item.id, item.version, item.canonical_hash)
+475:             for item in blueprints
+476:         )
+477:         operators = _operators(blueprints)
+478:         state_classes = _state_classes(fresh, blueprints)
+479:         preview = _preview(
+480:             fresh, blueprints, operators, state_classes
+481:         )
+482:     except GameplayContractError:
+483:         raise
+484:     except (
+485:         json.JSONDecodeError, TypeError, KeyError, AttributeError, ValueError,
+486:         RecursionError,
+487:     ) as error:
+488:         raise GameplayContractError(
+489:             "delegated SkillIR lowering failed: "
+490:             f"{type(error).__name__}: {error}"
+491:         ) from error
+492:     return CompiledSkillIR(
+493:         fresh, blueprints, fresh.canonical_hash, metadata,
+494:         MappingProxyType({fresh.canonical_hash: metadata}),
+495:         operators, state_classes,
+496:         MappingProxyType(preview),
+497:     )
+498: 
+499: 
+500: def _parse_entry(raw: Any, index: int) -> SkillEntryIR:
+501:     path = f"$.entries[{index}]"
+502:     data = _strict(
+503:         raw,
+504:         {"id", "trigger", "condition", "effects", "max_firings_per_root"},
+505:         path,
+506:     )
+507:     entry_id = _identifier(data["id"], f"{path}.id")
+508:     trigger = data["trigger"]
+509:     trigger_kind, event = _trigger(trigger, f"{path}.trigger")
+510:     condition = data["condition"]
+511:     if condition is not None:
+512:         _validate_condition_shape(condition, f"{path}.condition")
+513:     raw_effects = data["effects"]
+514:     if not isinstance(raw_effects, list) or not raw_effects:
+515:         raise GameplayContractError(f"{path}.effects must be non-empty")
+516:     effects = []
+517:     for effect_index, effect in enumerate(raw_effects):
+518:         if not isinstance(effect, dict):
+519:             raise GameplayContractError(
+
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/action_compiler.py:135:110
+135:                 },
+136:             })
+137:         result = [{"id": prefix, "mode": "event", "priority": 100, "bindings": identity,
+138:                    "when": {"all": conditions}, "effects": effects}]
+139:         if effect.kind == "add_resource" and effect.resource == "mana":
+140:             mirror_identity = {binding: {"kind": "entity", "requires": [ACTOR_COMPONENT, "pmw_gameplay_dynamics"]}}
+141:             result.append({"id": f"{prefix}.mana_mirror", "mode": "event", "priority": 100,
+142:                            "bindings": mirror_identity, "when": {"all": conditions},
+143:                            "effects": [{"op": "set", "target": f"${binding}.pmw_gameplay_dynamics.fields.mana.value",
+144:                                         "value": f"{value_root}.mana"}]})
+145:         return result
+146:     if effect.kind == "modify_field":
+147:         suffix, key = "value", "value"
+148:         return [{"id": prefix, "mode": "event", "priority": 100, "bindings": identity,
+149:                  "when": {"all": conditions}, "effects": [{"op": "set",
+150:                     "target": f"${binding}.pmw_gameplay_dynamics.fields.{effect.field_id}.{suffix}",
+151:                     "value": f"{value_root}.{key}"}]}]
+152:     if effect.kind in {"modify_attractor", "modify_rate", "dynamics_modifier"}:
+153:         result = []
+154:         expiry_type = f"pmw.v04.action.{token}.{effect.id}.expire"
+155:         for index in range(dynamics_slots):
+156:             slot = f"slot_{index}"; slot_root = f"${binding}.pmw_gameplay_dynamics.fields.{effect.field_id}.temporary_modifiers.{slot}"
+157:             slot_condition = {"ref": f"{value_root}.slot", "eq": slot}
+158:             result.append({"id": f"{prefix}.{slot}.apply", "mode": "event", "priority": 100, "bindings": identity,
+159:                            "when": {"all": [*conditions, slot_condition]}, "effects": [
+160:                                {"op": "set", "target": slot_root, "value": f"{value_root}.source"},
+161:                                {"op": "schedule_event", "event": {"id": f"{value_root}.expiry_handle", "type": expiry_type,
+162:                                 "time": f"{value_root}.expiry_time", "source": "$event.source", "target": f"${binding}.id",
+163:                                 "payload": {"action_id": action_id, "action_hash": action_hash, "effect_id": effect.id,
+164:                                             "slot": slot, "field_id": effect.field_id, "owner": "$event.source",
+165:                                             "expiry_handle": f"{value_root}.expiry_handle"}}}]})
+166:             expire_conditions = [{"event.type": {"eq": expiry_type}}, {"ref": "$event.id", "eq": "$event.payload.expiry_handle"},
+167:                                  {"ref": f"${binding}.id", "eq": "$event.target"}, {"ref": f"{slot_root}.active", "eq": True},
+168:                                  {"ref": f"{slot_root}.owner", "eq": "$event.payload.owner"},
+169:                                  {"ref": f"{slot_root}.expiry_handle", "eq": "$event.id"}]
+170:             result.append({"id": f"{prefix}.{slot}.expire", "mode": "event", "priority": 100, "bindings": identity,
+171:                            "when": {"all": expire_conditions}, "effects": [
+172:                                {"op": "set", "target": slot_root, "value": {"active": False, "source_id": None, "owner": None,
+173:                                 "target": 0.0, "target_weight": 0.0, "rate_add": 0.0, "rate_multiplier": 1.0,
+174:                                 "curve": None, "curve_priority": -1, "expiry_handle": None}},
+175:                                {"op": "cancel_scheduled", "value": "$event.id"}]})
+176:         return result
+177:     if effect.kind in {"apply_status", "grant_trait"}:
+178:         return [{"id": prefix, "mode": "event", "priority": 100, "bindings": identity,
+179:                  "when": {"all": conditions}, "effects": [{"op": "set", "target": f"${binding}.{STATUS_COMPONENT}",
+180:                                                                "value": f"{value_root}.status_component"}]}]
+181:     if effect.kind == "process_start":
+182:         if effect.process_template_id is None:
+183:             raise GameplayContractError("compiled process_start requires process_template_id")
+184:         process_conditions = [
+185:             *conditions,
+186:             {"ref": "$event.payload.execution_kind", "eq": "primary"},
+187:         ]
+188:         return [{
+189:             "id": prefix,
+190:             "mode": "event",
+191:             "priority": 100,
+192:             "bindings": identity,
+193:             "when": {"all": process_conditions},
+194:             "effects": [{
+195:                 "op": "emit_event",
+196:                 "event": {
+197:                     "type": PROCESS_START_EVENT,
+198:                     "time": "$event.time",
+199:                     "source": "$event.source",
+200:                     "target": f"{value_root}.process_target_id",
+201:                     "payload": {
+202:                         "profile_id": f"{value_root}.process_profile_id",
+203:                         "profile_hash": f"{value_root}.process_profile_hash",
+204:                         "process_template_id": f"{value_root}.process_template_id",
+205:                     },
+206:                 },
+207:             }],
+208:         }]
+209:     if effect.kind == "process_modify":
+210:         if effect.process_template_id is None:
+211:             raise GameplayContractError(
+212:                 "compiled process_modify requires process_template_id"
+213:             )
+214:         process_conditions = [
+215:             *conditions,
+216:             {"ref": "$event.payload.execution_kind", "eq": "primary"},
+217:         ]
+218:         payload_root = f"{value_root}.process_prepared"
+219:         return [{
+220:             "id": prefix,
+221:             "mode": "event",
+222:             "priority": 100,
+223:             "bindings": identity,
+224:             "when": {"all": process_conditions},
+225:             "effects": [{
+226:                 "op": "emit_event",
+227:                 "event": {
+228:                     "type": PROCESS_MODIFY_EVENT,
+229:                     "time": "$event.time",
+230:                     "source": "$event.source",
+231:                     "target": f"{value_root}.process_target_id",
+232:                     "payload": {
+233:                         "profile_id": f"{payload_root}.profile_id",
+234:                         "profile_hash": f"{payload_root}.profile_hash",
+235:                         "expiry_handle": f"{payload_root}.expiry_handle",
+236:                         "before_rate": f"{payload_root}.before_rate",
+237:                         "before_duration_ticks": f"{payload_root}.before_duration_ticks",
+238:                         "before_remaining_ticks": f"{payload_root}.before_remaining_ticks",
+239:                         "after_rate": f"{payload_root}.after_rate",
+240:                         "after_duration": f"{payload_root}.after_duration",
+241:                         "after_remaining": f"{payload_root}.after_remaining",
+242:                         "after_progress": f"{payload_root}.after_progress",
+243:                         "deadline": f"{payload_root}.deadline",
+244:                     },
+
+experiments/generative_mechanics/next_tracks_v06/gameplay_v04/actions.py:313:130
+313: def _resolve_action(session, registry: ActionRegistry, request: ActionRequest, *, execution_kind: str = "primary",
+314:                     hook_context: Mapping[str, Any] | None = None,
+315:                     parent_event_id: str | None = None) -> ActionOutcome:
+316:     if execution_kind not in {"primary", "hook"}: raise GameplayContractError("invalid action execution kind")
+317:     if (execution_kind == "hook") != (hook_context is not None): raise GameplayContractError("hook execution requires trusted hook context")
+318:     if parent_event_id is not None and execution_kind != "hook":
+319:         raise GameplayContractError("parent event is valid only for hook execution")
+320:     definition = registry.actions.get(request.action_id)
+321:     if definition is None: raise GameplayContractError("unknown registered action")
+322:     move_effects = tuple(
+323:         effect for effect in definition.effects if effect.kind == "move_actor"
+324:     )
+325:     if move_effects and execution_kind != "primary":
+326:         raise GameplayContractError(
+327:             "move_actor is supported only for active primary execution"
+328:         )
+329:     if not move_effects and request.target_area_id is not None:
+330:         raise GameplayContractError(
+331:             "target_area_id is valid only for an Action with move_actor"
+332:         )
+333:     if move_effects and request.target_area_id is None:
+334:         raise GameplayContractError("move_actor requires target_area_id")
+335:     actor_entity = session.state.entities.get(request.actor_id)
+336:     if actor_entity is None or ACTOR_COMPONENT not in actor_entity.components: raise GameplayContractError("request actor is not an Actor")
+337:     actor = _actor_view(actor_entity)
+338:     if actor["hp"] <= 0: raise GameplayContractError("defeated Actor cannot act")
+339:     target_entity = session.state.entities.get(request.target_actor_id) if request.target_actor_id else None
+340:     if request.target_actor_id and (target_entity is None or ACTOR_COMPONENT not in target_entity.components): raise GameplayContractError("target is not an Actor")
+341:     context = SelectorContext(request.actor_id, request.target_actor_id)
+342:     shadow = {request.actor_id: deepcopy(actor)}
+343:     if target_entity is not None: shadow[target_entity.id] = _actor_view(target_entity)
+344:     if (execution_kind == "primary" and
+345:             not evaluate_condition(
+346:                 definition.condition,
+347:                 _condition_context(session, request, shadow),
+348:             )):
+349:         raise GameplayContractError("action condition is not satisfied")
+350:     quote = definition.cost
+351:     if execution_kind == "primary":
+352:         duration, mana = quote.duration, quote.mana
+353:         cost_context = _condition_context(session, request, shadow)
+354:         for modifier in definition.cost_modifiers:
+355:             if evaluate_condition(modifier.condition, cost_context):
+356:                 duration += modifier.duration_add; mana += modifier.mana_add
+357:         quote = ActionCost(max(1, duration), max(0.0, mana))
+358:     else:
+359:         quote = ActionCost(1, 0.0)
+360:     if actor["mana"] < quote.mana: raise GameplayContractError("insufficient mana")
+361:     shadow[request.actor_id]["mana"] -= quote.mana
+362:     writes: dict[str, dict[str, Any]] = {request.actor_id: {"mana": shadow[request.actor_id]["mana"]}}
+363:     outcomes = []
+364:     reservations: list[tuple[str, str, dict[str, Any]]] = []
+365:     source_slots: list[tuple[str, str, str]] = []
+366:     source_writers: list[tuple[str, str, str]] = []
+367:     has_dynamics_modifier = any(
+368:         effect.kind == "dynamics_modifier" for effect in definition.effects
+369:     )
+370:     for effect in definition.effects:
+371:         if (effect.kind in {"process_start", "process_modify", "drive_source",
+372:                             "relation_modifier", "dynamics_modifier"}
+373:                 and execution_kind != "primary"):
+374:             raise GameplayContractError(f"{effect.kind} is supported only for active primary execution")
+375:         targets = resolve_selector(session.state, effect.target, context, definition.capability)
+376:         move_prepared = None
+377:         if effect.kind == "move_actor":
+378:             target_id, move_prepared = _prepare_move_actor(
+379:                 session, request, targets
+380:             )
+381:         else:
+382:             if len(targets) != 1: raise GameplayContractError("Gate 2 effects require exactly one resolved target")
+383:             target_id = targets[0]
+384:         cond_context = _condition_context(session, request, shadow)
+385:         enabled = evaluate_condition(effect.condition, cond_context)
+386:         if effect.commitment == "required" and not enabled: raise GameplayContractError(f"required effect {effect.id!r} condition failed")
+387:         if not enabled:
+388:             outcomes.append({"effect_id": effect.id, "kind": effect.kind, "status": "skipped", "target_id": target_id, "values": {}}); continue
+389:         if effect.kind in {"modify_attractor", "modify_rate", "dynamics_modifier"}:
+390:             if has_dynamics_modifier and any(
+391:                 owner == target_id and field_id == effect.field_id
+392:                 for owner, field_id, _effect_id in source_writers
+393:             ):
+394:                 raise GameplayContractError(
+395:                     "effects conflict on one Field source footprint"
+396:                 )
+397:             source_writers.append((target_id, effect.field_id, effect.id))
+398:         outcome = _simulate_effect(
+399:             session, registry, request, definition, effect, target_id, shadow,
+400:             writes, reservations, source_slots,
+401:             execution_kind=execution_kind,
+402:             move_prepared=move_prepared,
+403:         )
+404:         outcomes.append(outcome)
+405:     for outcome in outcomes:
+406:         final_actor = shadow.get(outcome["target_id"])
+407:         if (final_actor is not None and final_actor.get("_replacement_released_shield") and
+408:                 "shield" in outcome["values"]):
+409:             outcome["values"]["shield"] = final_actor["shield"]
+410:             outcome["values"]["shield_component"] = final_actor["_shield_component"]
+411:     for actor_state in shadow.values():
+412:         validate_status_shield_ownership(
+413:             {"slots": actor_state["status_slots"]}, actor_state["_shield_component"]
+414:         )
+415:     payload = {"protocol": "pmw-gameplay-v0.4", "request_id": request.request_id, "action_id": definition.id,
+416:                "action_hash": definition.canonical_hash, "actor_id": request.actor_id, "target_actor_id": request.target_actor_id,
+417:                "execution_kind": execution_kind, "actor_mana": shadow[request.actor_id]["mana"], "action_duration": quote.duration,
+418:                "writes": writes, "reservations": reservations,
+419:                "effects": {row["effect_id"]: row for row in outcomes}, "outcomes": outcomes}
+420:     if request.target_area_id is not None:
+421:         payload["target_area_id"] = request.target_area_id
+422:     if hook_context is not None: payload["hook"] = dict(hook_context)
+423:     payload = json.loads(json.dumps(payload, sort_keys=True, allow_nan=False))
+424:     before = session.state.to_dict()
+425:     provenance = (
+426:         {"kind": "derived", "parent_event": parent_event_id}
+427:         if parent_event_id is not None
+428:         else {"kind": "external", "parent_event": None}
+429:     )
+430:     result = session.runtime.run_event(Event(f"pmw:v04:action:{request.request_id}", ACTION_EVENT,
+431:                                               session.state.sim_time, request.actor_id, request.target_actor_id, payload,
+432:                                               provenance))
+433:     matched = any(event.event_law_matches for event in result.trace.events)
+434:     if not matched:
+435:         if session.state.to_dict() != before: raise GameplayContractError("failed action mutated state")
+436:         raise GameplayContractError("action did not match installed definition")
+437:     move_rows = [
+438:         row for row in outcomes
+439:         if row["kind"] == "move_actor" and row["status"] == "applied"
+440:     ]
+441:     if move_rows:
+442:         values = move_rows[0]["values"]

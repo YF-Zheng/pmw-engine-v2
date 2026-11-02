@@ -1,0 +1,51 @@
+.........F                                                     [100%]
+================================== FAILURES ===================================
+_ ReferenceLibraryResumeReviewTests.test_timed_effect_is_active_before_and_clear_after_its_expiry _
+
+self = <test_p2_reference_library_resume_review.ReferenceLibraryResumeReviewTests testMethod=test_timed_effect_is_active_before_and_clear_after_its_expiry>
+
+    def test_timed_effect_is_active_before_and_clear_after_its_expiry(self):
+        for skill_id in (
+            "attractor_dawn",
+            "synergy_pressure",
+            "synergy_tempo",
+            "synergy_vital",
+            "synergy_flux",
+        ):
+            document = self.by_id[skill_id]
+            fixture, parsed, _compiled, _gate3, runtime, _content = _build(
+                document, PLAYER
+            )
+            result = _run_skill(runtime, PLAYER, parsed)
+            expiry_times = _scheduled_expiry_times(runtime)
+            self.assertEqual(len(expiry_times), 1, skill_id)
+            expiry = expiry_times[0]
+            self.assertGreater(expiry, runtime.session.state.sim_time)
+    
+            timed_effects = [
+                effect
+                for effect in _primary_effects(parsed)
+                if effect.get("duration") is not None
+            ]
+            self.assertEqual(len(timed_effects), 1, skill_id)
+            effect = timed_effects[0]
+            outcome = next(
+                row
+                for row in result.action.effect_outcomes
+                if row["effect_id"] == effect["id"]
+            )
+            source = _field(
+                runtime, outcome["target_id"], effect["field_id"]
+            )["temporary_modifiers"][outcome["values"]["slot"]]
+            self.assertTrue(source["active"])
+            _advance_until(runtime, expiry - 0.5)
+            source = _field(
+                runtime, outcome["target_id"], effect["field_id"]
+            )["temporary_modifiers"][outcome["values"]["slot"]]
+>           self.assertTrue(source["active"])
+E           AssertionError: False is not true
+
+experiments\generative_mechanics\next_tracks_v06\gameplay_v04\tests\test_p2_reference_library_resume_review.py:76: AssertionError
+=========================== short test summary info ===========================
+FAILED experiments/generative_mechanics/next_tracks_v06/gameplay_v04/tests/test_p2_reference_library_resume_review.py::ReferenceLibraryResumeReviewTests::test_timed_effect_is_active_before_and_clear_after_its_expiry
+1 failed, 9 passed, 154 subtests passed in 345.20s (0:05:45)
